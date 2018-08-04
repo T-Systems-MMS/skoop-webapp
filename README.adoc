@@ -1,0 +1,127 @@
+= MySkills Server
+Georg Wittberger <georg.wittberger@gmail.com>
+v0.0.1, 2018-08-04
+
+A single page application providing a responsive web user interface to the MySkills server application.
+
+== INCUBATION WARNING
+
+*This project is in the incubation stage and is by far NOT ready for production use!*
+
+== Getting started
+
+=== Introduction
+
+MySkills WebApp is a single page application which provides a responsive web user interface for the MySkills Server. It makes use of the REST API provided by the server to interact with the various MySkills functionalities like relating users to skills, viewing statistics and many more.
+
+=== System requirements
+
+For hosting the pre-built distribution:
+
+* Web server of your choice (e.g. Nginx, Apache HTTP Server)
+
+For running the application as a Docker container (coming soon):
+
+* Docker 18.06 (or higher)
+* _Optional:_ Docker Compose
+
+For development:
+
+* Node.js 10.7.x (or higher)
+* NPM 6.2.x (or higher)
+
+=== Running the pre-built distribution
+
+The static assets of the application (HTML, CSS, JavaScript) can be hosted by any web server.
+
+_Important configurations:_
+
+The web server must provide the `index.html` file for every route of the application. For example, if a user requests the deeplink `/skills/123/users` the main page must be served for this request as well. The Angular router will show the appropriate component once the application has been initialized.
+
+See the following documentation for example configurations: https://angular.io/guide/deployment#server-configuration
+
+Additionally, the web server must forward every request starting with `/api/` to the MySkills Server application. For example, the MySkills WebApp will request the user identity by calling `/api/my-identity`. The web server receiving this request must strip off the leading `/api` and forward the request for `/my-identity` to the MySkills Server.
+
+=== Running as Docker container
+
+There is no Docker support yet. Stay tuned.
+
+=== Testing the setup
+
+Once the static assets are served by a web server the main HTML page should be available at the root, e.g. http://localhost/ (assuming the web server is listening on port 80).
+
+The requests to the MySkills Server API are working if there is a prompt for authentication right after loading the application. As soon as valid credentials have been provided the user name should be displayed in the top right corner.
+
+== Development
+
+=== Call for contributors
+
+Become a contributor to MySkills by joining our KnowledgeAssets organization! Everyone can help, from UX designer over software developers and testers to documentation writers. Get involved and be part of a great community project!
+
+Interested? Contact georg.wittberger (at) gmail.com
+
+=== Technology overview
+
+As described in the introduction the MySkills WebApp is a browser-based single page application which provides a web user interface to interact with the MySkills Server. Therefore, it focuses on the presentation of the data retrieved from the REST API endpoints of the server. The project makes use of the following noteworthy frameworks:
+
+* https://angular.io/[Angular]: The popular JavaScript framework is the basis of the application. We use the Angular routing for navigation to different views.
+* https://github.com/angular/angular-cli[Angular CLI]: Makes development and the build process of the application much easier. It encapsulates the Webpack build configuration and provides some reasonable conventions to follow instead. The CLI also provides some convenient commands to generate new components, services, etc.
+* https://material.angular.io/[Angular Material]: Provides components to build an application with Google's Material design. We use it as a basis for our graphical layout.
+* https://github.com/angular/flex-layout[Angular Flex-Layout]: Provides directives to create responsive layouts with Angular based on Flexbox CSS. We use it to make the application look great on handsets and desktops.
+* https://sass-lang.com/[SASS]: Stylesheet pre-processor used for component style definitions.
+* https://rxjs-dev.firebaseapp.com/[RxJS]: When it comes to asynchronous operations the reactive extensions with their well-known `Observables` come into play. We use them primarily when requesting the API of the MySkills Server.
+* https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine]: The standard tools for test automation in Angular projects.
+
+=== Installing the dependencies
+
+Before starting with development you have to download the project dependencies using NPM. Run the following command in the project root:
+
+    npm install
+
+The installation takes some time... be patient 😴
+
+=== Running the development server
+
+Once the dependencies have been installed you can launch the Webpack development server by running this command:
+
+    npm start
+
+As soon as the server is running open this URL in your browser: http://localhost:4200/
+
+Webpack automatically reloads modules when you change the source code. There is no need to restart the server after each modification.
+
+=== Testing the application
+
+The automated tests can be executed by running the following command in the project root:
+
+    npm test
+
+_Note: At the moment the Karma configuration relies on Chrome as the browser to run the tests. If it cannot find Chrome on your system it will complain. Then you should open a browser of your choice and navigate to http://localhost:9876/. Then simply save your test case one more time and Karma will run the tests again in your browser._
+
+=== Building the application
+
+The production build can be performed with the following NPM script:
+
+    npm run build
+
+This produces the final static assets in the `dist/myskills-webapp` directory. These files can be served by an arbitrary web server to host the application.
+
+=== Architecture overview
+
+Fundamentally, the MySkills WebApp project follows the principles of https://angular.io/[Angular] projects. The directory structure and naming follows the conventions given by the https://github.com/angular/angular-cli[Angular CLI] tool and the https://angular.io/guide/styleguide[Angular style guide].
+
+In the application source directory `src/app` there are various subdirectories focusing on specific parts of the domain model. For example, the directory `src/app/my-skills` contains everything related to the presentation of the user's personal skill profile page (components, services, tests). The `src/app/shared` directory contains cross-cutting sources which are used all across the application.
+
+The routing to different views is accomplished by the Angular router. The configuration is encapsulated in its own module `src/app/app-routing.module.ts`.
+
+The import of all Angular Material components is also centralized in the module `src/app/app-material.module.ts`. This module can also be imported in test specs to have the Material components ready to go.
+
+There are some general design principles to follow in the project.
+
+Components should never make use of the `HttpClient` directly. Calling the API of the MySkills Server is the responsibility of services. These services should return the `Observable` of the HTTP response directly to their calling code without subscribing on their own (except there is some reason to do so).
+
+Components should define their own view model for the dynamic data they need for presentation. Instead of using the responses from services (API-driven data models) directly each component should map this data to its own view model. This can pretty well include only a subset of properties if not all the data is required for rendering.
+
+== License
+
+https://opensource.org/licenses/MIT[MIT]

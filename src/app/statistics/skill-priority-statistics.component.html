@@ -1,0 +1,39 @@
+<div class="skill-priority-statistics mat-typography">
+  <h1>Skill priority statistics</h1>
+  <mat-card *ngFor="let skillStatistic of skillStatistics; index as rank" class="skill-priority-statistics-card">
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex>
+          <h2 class="skill-priority-statistics-skill-name">{{ (rank + 1) }}. {{ skillStatistic.skill.name }}</h2>
+        </div>
+        <div fxFlex="none">
+          <a mat-icon-button [routerLink]="['/skills', skillStatistic.skill.id, 'users']" title="See users" aria-label="See users">
+            <mat-icon>people</mat-icon>
+          </a>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex="33%">
+          <div class="skill-priority-statistics-level-label">Average:</div>
+          <div>
+            <mat-icon fxHide.lt-md="true" *ngFor="let threshold of [0.5,1.5,2.5,3.5]" aria-hidden="true">{{ (skillStatistic.averagePriority >= threshold)? 'star' : 'star_border' }}</mat-icon>
+            <span fxHide.gt-sm="true" class="skill-priority-statistics-level-value">{{ skillStatistic.averagePriority | number:'1.1-1' }}</span>
+          </div>
+        </div>
+        <div fxFlex="33%">
+          <div class="skill-priority-statistics-level-label">Maximum:</div>
+          <div>
+            <mat-icon fxHide.lt-md="true" *ngFor="let threshold of [0.5,1.5,2.5,3.5]" aria-hidden="true">{{ (skillStatistic.maximumPriority >= threshold)? 'star' : 'star_border' }}</mat-icon>
+            <span fxHide.gt-sm="true" class="skill-priority-statistics-level-value">{{ skillStatistic.maximumPriority | number:'1.1-1' }}</span>
+          </div>
+        </div>
+        <div fxFlex="33%">
+          <div class="skill-priority-statistics-level-label">User count:</div>
+          <div>
+            <span class="skill-priority-statistics-level-value">{{ skillStatistic.userCount }}</span>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

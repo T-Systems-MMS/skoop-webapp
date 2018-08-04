@@ -1,0 +1,37 @@
+<div class="my-skills-new" (keypress)="onKeyPress($event)">
+  <div *ngIf="errorMessage" class="my-skills-new-error">{{ errorMessage }}</div>
+  <div>
+    <mat-form-field class="my-skills-new-form-field">
+      <input type="text" id="my-skills-new-skill-name" matInput [formControl]="skillName" placeholder="Skill name">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="30%">
+      <label for="currentLevel">Current level:</label>
+    </div>
+    <div fxFlex>
+      <mat-slider id="currentLevel" min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="currentLevel" class="my-skills-new-form-field"></mat-slider>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="30%">
+      <label for="desiredLevel">Desired level:</label>
+    </div>
+    <div fxFlex>
+      <mat-slider min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="desiredLevel" class="my-skills-new-form-field"></mat-slider>
+    </div>
+  </div>
+  <div fxLayout="row">
+    <div fxFlex="30%">
+      <label for="priority">Priority:</label>
+    </div>
+    <div fxFlex>
+      <mat-slider min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="priority" class="my-skills-new-form-field"></mat-slider>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button color="primary" (click)="addUserSkill()" [disabled]="operationInProgress" aria-label="Add skill"
+      class="my-skills-new-button">Add skill</button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="my-skills-new-button">Close</button>
+  </div>
+</div>
