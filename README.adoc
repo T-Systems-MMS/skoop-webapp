@@ -1,8 +1,8 @@
-= MySkills Server
+= MySkills WebApp
 Georg Wittberger <georg.wittberger@gmail.com>
 v0.0.1, 2018-08-04
 
-A single page application providing a responsive web user interface to the MySkills server application.
+A single page application providing a responsive web user interface for the MySkills server application.
 
 == INCUBATION WARNING
 
