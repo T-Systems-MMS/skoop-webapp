@@ -90,6 +90,8 @@ As soon as the server is running open this URL in your browser: http://localhost
 
 Webpack automatically reloads modules when you change the source code. There is no need to restart the server after each modification.
 
+The server proxies all requests starting with the path `/api/` to http://localhost:8080/ (stripping that prefix). For example, a request to `/api/skills` will be forwarded to `http://localhost:8080/skills`. This allows the development server to collaborate with the real MySkills Server application.
+
 === Testing the application
 
 The automated tests can be executed by running the following command in the project root:
