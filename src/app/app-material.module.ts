@@ -8,8 +8,9 @@ import {
   MatCardModule,
   MatBottomSheetModule,
   MatFormFieldModule,
+  MatInputModule,
   MatSliderModule,
-  MatInputModule
+  MatAutocompleteModule
 } from '@angular/material';
 
 @NgModule({
@@ -23,7 +24,8 @@ import {
     MatBottomSheetModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSliderModule
+    MatSliderModule,
+    MatAutocompleteModule
   ],
   exports: [
     MatSidenavModule,
@@ -35,7 +37,8 @@ import {
     MatBottomSheetModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSliderModule
+    MatSliderModule,
+    MatAutocompleteModule
   ]
 })
 export class AppMaterialModule { }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { UserSkill } from './user-skill';
 import { User } from '../users/user';
@@ -13,6 +13,7 @@ export class UserSkillsService {
   private userSkillsUrlPattern = '/api/users/{userId}/skills';
   private userSkillUrlPattern = '/api/users/{userId}/skills/{skillId}';
   private userSkillCoachesUrlPattern = '/api/users/{userId}/skills/{skillId}/coaches';
+  private userSkillSuggestionsUrlPattern = '/api/users/{userId}/skill-suggestions';
   private skillUsersUrlPattern = '/api/skills/{skillId}/users';
 
   constructor(private httpClient: HttpClient) { }
@@ -23,6 +24,14 @@ export class UserSkillsService {
 
   getUserSkillCoaches(userId: string, skillId: string): Observable<User[]> {
     return this.httpClient.get<User[]>(this.userSkillCoachesUrlPattern.replace('{userId}', userId).replace('{skillId}', skillId));
+  }
+
+  getUserSkillSuggestions(userId: string, search: string): Observable<string[]> {
+    if (!search) { return of([]); }
+    return this.httpClient.get<string[]>(this.userSkillSuggestionsUrlPattern.replace('{userId}', userId),
+      {
+        params: new HttpParams().set('search', search)
+      });
   }
 
   getSkillUsers(skillId: string, minPriority?: number): Observable<SkillUser[]> {

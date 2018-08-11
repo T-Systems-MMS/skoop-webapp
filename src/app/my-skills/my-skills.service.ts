@@ -23,6 +23,11 @@ export class MySkillsService {
       .pipe(switchMap(userIdentity => this.userSkillsService.getUserSkillCoaches(userIdentity.userId, skillId)));
   }
 
+  getCurrentUserSkillSuggestions(search: string): Observable<string[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity => this.userSkillsService.getUserSkillSuggestions(userIdentity.userId, search)));
+  }
+
   createCurrentUserSkill(skillName: string, currentLevel: number, desiredLevel: number, priority: number): Observable<UserSkill> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity => this.userSkillsService.createUserSkill(

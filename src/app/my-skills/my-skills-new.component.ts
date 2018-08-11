@@ -2,6 +2,8 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { startWith, switchMap } from 'rxjs/operators';
 
 import { MySkillsService } from './my-skills.service';
 
@@ -18,11 +20,15 @@ export class MySkillsNewComponent implements OnInit {
   addedSkillsCount = 0;
   operationInProgress = false;
   errorMessage: string = null;
+  skillSuggestions$: Observable<string[]>;
 
   constructor(private mySkillsService: MySkillsService, private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef) { }
 
-  ngOnInit() { }
+  ngOnInit(): void {
+    this.skillSuggestions$ = this.skillName.valueChanges
+      .pipe(switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
+  }
 
   addUserSkill(): void {
     this.operationInProgress = true;
