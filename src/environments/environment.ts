@@ -3,7 +3,15 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  authentication: {
+    issuer: 'http://localhost:9000/auth/realms/MySkills',
+    clientId: 'myskills',
+    scope: 'openid profile email',
+    redirectUri: null,
+    silentRefreshRedirectUri: null
+  },
+  serverApiUrl: 'http://localhost:4200/api'
 };
 
 /*

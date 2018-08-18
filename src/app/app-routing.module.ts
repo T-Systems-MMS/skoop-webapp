@@ -10,7 +10,7 @@ const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },
   { path: 'skills/:skillId/users', component: SkillUsersComponent },
-  { path: '', redirectTo: '/my-skills', pathMatch: 'full' },
+  { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 

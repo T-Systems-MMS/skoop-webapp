@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
+import { environment } from '../../environments/environment';
 import { UserSkill } from './user-skill';
 import { User } from '../users/user';
 import { SkillUser } from './skill-user';
@@ -10,11 +11,11 @@ import { SkillUser } from './skill-user';
   providedIn: 'root'
 })
 export class UserSkillsService {
-  private userSkillsUrlPattern = '/api/users/{userId}/skills';
-  private userSkillUrlPattern = '/api/users/{userId}/skills/{skillId}';
-  private userSkillCoachesUrlPattern = '/api/users/{userId}/skills/{skillId}/coaches';
-  private userSkillSuggestionsUrlPattern = '/api/users/{userId}/skill-suggestions';
-  private skillUsersUrlPattern = '/api/skills/{skillId}/users';
+  private userSkillsUrlPattern = environment.serverApiUrl + '/users/{userId}/skills';
+  private userSkillUrlPattern = environment.serverApiUrl + '/users/{userId}/skills/{skillId}';
+  private userSkillCoachesUrlPattern = environment.serverApiUrl + '/users/{userId}/skills/{skillId}/coaches';
+  private userSkillSuggestionsUrlPattern = environment.serverApiUrl + '/users/{userId}/skill-suggestions';
+  private skillUsersUrlPattern = environment.serverApiUrl + '/skills/{skillId}/users';
 
   constructor(private httpClient: HttpClient) { }
 

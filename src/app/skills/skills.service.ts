@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment';
 import { Skill } from './skill';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SkillsService {
-  private skillUrlPattern = '/api/skills/{skillId}';
+  private skillUrlPattern = environment.serverApiUrl + '/skills/{skillId}';
 
   constructor(private httpClient: HttpClient) { }
 

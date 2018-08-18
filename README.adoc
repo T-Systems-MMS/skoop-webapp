@@ -68,6 +68,7 @@ As described in the introduction the MySkills WebApp is a browser-based single p
 * https://github.com/angular/angular-cli[Angular CLI]: Makes development and the build process of the application much easier. It encapsulates the Webpack build configuration and provides some reasonable conventions to follow instead. The CLI also provides some convenient commands to generate new components, services, etc.
 * https://material.angular.io/[Angular Material]: Provides components to build an application with Google's Material design. We use it as a basis for our graphical layout.
 * https://github.com/angular/flex-layout[Angular Flex-Layout]: Provides directives to create responsive layouts with Angular based on Flexbox CSS. We use it to make the application look great on handsets and desktops.
+* https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC]: Enables support for user authentication via OpenID Connect using an external authorization server.
 * https://sass-lang.com/[SASS]: Stylesheet pre-processor used for component style definitions.
 * https://rxjs-dev.firebaseapp.com/[RxJS]: When it comes to asynchronous operations the reactive extensions with their well-known `Observables` come into play. We use them primarily when requesting the API of the MySkills Server.
 * https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine]: The standard tools for test automation in Angular projects.
@@ -91,6 +92,10 @@ As soon as the server is running open this URL in your browser: http://localhost
 Webpack automatically reloads modules when you change the source code. There is no need to restart the server after each modification.
 
 The server proxies all requests starting with the path `/api/` to http://localhost:8080/ (stripping that prefix). For example, a request to `/api/skills` will be forwarded to `http://localhost:8080/skills`. This allows the development server to collaborate with the real MySkills Server application.
+
+=== Configuring authentication
+
+In order to set up the OIDC login you need to install KeyCloak and configure a suitable realm. Please see the https://github.com/KnowledgeAssets/myskills-server[MySkills Server] for some hints and a preconfigured KeyCloak realm.
 
 === Testing the application
 

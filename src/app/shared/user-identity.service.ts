@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
+import { environment } from '../../environments/environment';
 import { UserIdentity } from './user-identity';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserIdentityService {
-  private userIdentityUrl = '/api/my-identity';
+  private userIdentityUrl = environment.serverApiUrl + '/my-identity';
   private userIdentity: UserIdentity;
 
   constructor(private httpClient: HttpClient) { }
