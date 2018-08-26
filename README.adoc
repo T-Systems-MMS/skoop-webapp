@@ -95,7 +95,11 @@ The server proxies all requests starting with the path `/api/` to http://localho
 
 === Configuring authentication
 
-In order to set up the OIDC login you need to install KeyCloak and configure a suitable realm. Please see the https://github.com/KnowledgeAssets/myskills-server[MySkills Server] for some hints and a preconfigured KeyCloak realm.
+In order to set up the OpenID Connect login you need to install a local KeyCloak server and configure a suitable realm.
+
+In the development configuration the MySkills WebApp expects the KeyCloak server to listen on port 9000. There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
+
+Please see the https://github.com/KnowledgeAssets/myskills-server[MySkills Server] for more hints and a preconfigured KeyCloak test realm.
 
 === Testing the application
 
@@ -117,11 +121,23 @@ This produces the final static assets in the `dist/myskills-webapp` directory. T
 
 Fundamentally, the MySkills WebApp project follows the principles of https://angular.io/[Angular] projects. The directory structure and naming follows the conventions given by the https://github.com/angular/angular-cli[Angular CLI] tool and the https://angular.io/guide/styleguide[Angular style guide].
 
+==== Source code structure
+
 In the application source directory `src/app` there are various subdirectories focusing on specific parts of the domain model. For example, the directory `src/app/my-skills` contains everything related to the presentation of the user's personal skill profile page (components, services, tests). The `src/app/shared` directory contains cross-cutting sources which are used all across the application.
+
+==== Routing
 
 The routing to different views is accomplished by the Angular router. The configuration is encapsulated in its own module `src/app/app-routing.module.ts`.
 
+==== Material components
+
 The import of all Angular Material components is also centralized in the module `src/app/app-material.module.ts`. This module can also be imported in test specs to have the Material components ready to go.
+
+==== Authentication and authorization
+
+The application makes use of the https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC] module to authenticates users against an external OpenID Connect provider (e.g. KeyCloak) using the implicit flow. The obtained ID tokens are automatically added to any API requests sent to the MySkills Server using an auto-configured `HttpInterceptor`.
+
+==== Code guidelines
 
 There are some general design principles to follow in the project.
 
