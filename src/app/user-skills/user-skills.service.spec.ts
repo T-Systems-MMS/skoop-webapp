@@ -2,6 +2,7 @@ import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
+import { environment } from '../../environments/environment';
 import { UserSkillsService } from './user-skills.service';
 import { UserSkill } from './user-skill';
 
@@ -55,7 +56,10 @@ describe('UserSkillsService', () => {
         expect(userSkills).toEqual(userSkillsTestData);
       });
 
-      const request = httpTestingController.expectOne({ method: 'GET', url: '/api/users/123/skills' });
+      const request = httpTestingController.expectOne({
+        method: 'GET',
+        url: `${environment.serverApiUrl}/users/123/skills`
+      });
 
       expect(request.request.responseType).toEqual('json');
 
@@ -79,7 +83,10 @@ describe('UserSkillsService', () => {
         expect(userSkill).toEqual(userSkillTestData);
       });
 
-      const request = httpTestingController.expectOne({ method: 'POST', url: '/api/users/123/skills' });
+      const request = httpTestingController.expectOne({
+        method: 'POST',
+        url: `${environment.serverApiUrl}/users/123/skills`
+      });
 
       expect(request.request.responseType).toEqual('json');
       expect(request.request.headers.get('Content-Type')).toEqual('application/json');

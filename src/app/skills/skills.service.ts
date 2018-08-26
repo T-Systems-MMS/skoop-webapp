@@ -9,7 +9,7 @@ import { Skill } from './skill';
   providedIn: 'root'
 })
 export class SkillsService {
-  private skillUrlPattern = environment.serverApiUrl + '/skills/{skillId}';
+  private skillUrlPattern = `${environment.serverApiUrl}/skills/{skillId}`;
 
   constructor(private httpClient: HttpClient) { }
 

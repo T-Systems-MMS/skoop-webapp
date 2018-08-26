@@ -2,6 +2,7 @@ import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
+import { environment } from '../../environments/environment';
 import { UserIdentityService } from './user-identity.service';
 import { UserIdentity } from './user-identity';
 
@@ -41,7 +42,10 @@ describe('UserIdentityService', () => {
         expect(userIdentity).toEqual(userIdentityTestData);
       });
 
-      const request = httpTestingController.expectOne({ method: 'GET', url: '/api/my-identity' });
+      const request = httpTestingController.expectOne({
+        method: 'GET',
+        url: `${environment.serverApiUrl}/my-identity`
+      });
 
       expect(request.request.responseType).toEqual('json');
 
@@ -65,7 +69,10 @@ describe('UserIdentityService', () => {
         });
       });
 
-      const request = httpTestingController.expectOne({ method: 'GET', url: '/api/my-identity' });
+      const request = httpTestingController.expectOne({
+        method: 'GET',
+        url: `${environment.serverApiUrl}/my-identity`
+      });
 
       expect(request.request.responseType).toEqual('json');
 

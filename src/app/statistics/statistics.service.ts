@@ -9,7 +9,7 @@ import { UserSkillPriorityAggregation } from './user-skill-priority-aggregation'
   providedIn: 'root'
 })
 export class StatisticsService {
-  private topPrioritizedSkillsUrl = environment.serverApiUrl + '/statistics/skills/top-priority';
+  private topPrioritizedSkillsUrl = `${environment.serverApiUrl}/statistics/skills/top-priority`;
 
   constructor(private httpClient: HttpClient) { }
 

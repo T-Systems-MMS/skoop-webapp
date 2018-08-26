@@ -10,7 +10,7 @@ import { UserIdentity } from './user-identity';
   providedIn: 'root'
 })
 export class UserIdentityService {
-  private userIdentityUrl = environment.serverApiUrl + '/my-identity';
+  private userIdentityUrl = `${environment.serverApiUrl}/my-identity`;
   private userIdentity: UserIdentity;
 
   constructor(private httpClient: HttpClient) { }

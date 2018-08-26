@@ -11,11 +11,11 @@ import { SkillUser } from './skill-user';
   providedIn: 'root'
 })
 export class UserSkillsService {
-  private userSkillsUrlPattern = environment.serverApiUrl + '/users/{userId}/skills';
-  private userSkillUrlPattern = environment.serverApiUrl + '/users/{userId}/skills/{skillId}';
-  private userSkillCoachesUrlPattern = environment.serverApiUrl + '/users/{userId}/skills/{skillId}/coaches';
-  private userSkillSuggestionsUrlPattern = environment.serverApiUrl + '/users/{userId}/skill-suggestions';
-  private skillUsersUrlPattern = environment.serverApiUrl + '/skills/{skillId}/users';
+  private userSkillsUrlPattern = `${environment.serverApiUrl}/users/{userId}/skills`;
+  private userSkillUrlPattern = `${environment.serverApiUrl}/users/{userId}/skills/{skillId}`;
+  private userSkillCoachesUrlPattern = `${environment.serverApiUrl}/users/{userId}/skills/{skillId}/coaches`;
+  private userSkillSuggestionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/skill-suggestions`;
+  private skillUsersUrlPattern = `${environment.serverApiUrl}/skills/{skillId}/users`;
 
   constructor(private httpClient: HttpClient) { }
 
