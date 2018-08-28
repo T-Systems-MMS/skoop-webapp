@@ -95,9 +95,9 @@ The server proxies all requests starting with the path `/api/` to http://localho
 
 === Configuring authentication
 
-In order to set up the OpenID Connect login you need to install a local KeyCloak server and configure a suitable realm.
+In order to set up the OpenID Connect login you need to install a local https://www.keycloak.org/[KeyCloak] server and configure an appropriate realm.
 
-In the development configuration the MySkills WebApp expects the KeyCloak server to listen on port 9000. There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
+In the development configuration the MySkills WebApp expects the KeyCloak server to be available on `localhost:9000`. There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
 
 Please see the https://github.com/KnowledgeAssets/myskills-server[MySkills Server] for more hints and a preconfigured KeyCloak test realm.
 
