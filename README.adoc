@@ -137,9 +137,17 @@ The import of all Angular Material components is also centralized in the module 
 
 The application makes use of the https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC] module to authenticates users against an external OpenID Connect provider (e.g. KeyCloak) using the implicit flow. The obtained ID tokens are automatically added to any API requests sent to the MySkills Server using an auto-configured `HttpInterceptor`.
 
-=== Styling
+==== Styling
 
 The directory `src/styles` is configured as a Sass include path. All files from this directory can be imported directly without traversal. For example, the variables module `src/styles/_variables.scss` can be imported in any other Sass source file using `@import 'variables';`.
+
+==== Environment configuration
+
+Environment-specific configuration is located in the module `src/environments/environment.ts` (Angular CLI convention). This module contains the development configuration. During the production build this module is replaced by the production version `environment.prod.ts`. The main HTML page `src/index.html` is handled in a similar way. During the production build it is replaced by `src/index.prod.html`.
+
+The concept for external environment configuration assumes that environment-specific settings are given as `meta` elements in the main HTML page. Therefore, the production `environment` module looks for external configuration in such specific `meta` elements in the document.
+
+The main HTML page for production contains the supported `meta` elements with server-side-include tags inside their `content` attributes. This allows the Apache HTTP Server hosting the MySkills WebApp to resolve these placeholders to configuration values given as external environment variables.
 
 ==== Code guidelines
 
