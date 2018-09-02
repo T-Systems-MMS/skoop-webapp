@@ -137,6 +137,10 @@ The import of all Angular Material components is also centralized in the module 
 
 The application makes use of the https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC] module to authenticates users against an external OpenID Connect provider (e.g. KeyCloak) using the implicit flow. The obtained ID tokens are automatically added to any API requests sent to the MySkills Server using an auto-configured `HttpInterceptor`.
 
+=== Styling
+
+The directory `src/styles` is configured as a Sass include path. All files from this directory can be imported directly without traversal. For example, the variables module `src/styles/_variables.scss` can be imported in any other Sass source file using `@import 'variables';`.
+
 ==== Code guidelines
 
 There are some general design principles to follow in the project.
@@ -144,6 +148,8 @@ There are some general design principles to follow in the project.
 Components should never make use of the `HttpClient` directly. Calling the API of the MySkills Server is the responsibility of services. These services should return the `Observable` of the HTTP response directly to their calling code without subscribing on their own (except there is some reason to do so).
 
 Components should define their own view model for the dynamic data they need for presentation. Instead of using the responses from services (API-driven data models) directly each component should map this data to its own view model. This can pretty well include only a subset of properties if not all the data is required for rendering.
+
+Reusable styles should be written as Sass mixins in the file `src/styles/_mixins.scss`. Common values for sizes and colors should be written as variables in the file `src/styles/_variables.scss` and then the variable should be used for the specific style property.
 
 == License
 
