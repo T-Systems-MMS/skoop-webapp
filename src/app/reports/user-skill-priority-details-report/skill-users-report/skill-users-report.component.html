@@ -1,5 +1,8 @@
 <div class="skill-users mat-typography">
   <h1>Users of {{ skill?.name }}</h1>
+  <div class="my-skills-toolbar">
+    <button mat-raised-button (click)="backToSkillPriorityReport()" aria-label="Back To Skill Priority Report">Back To Skill Priority Report</button>
+  </div>
   <mat-card *ngFor="let skillUser of skillUsers" class="skill-users-card">
     <app-skill-user [skillUser]="skillUser"></app-skill-user>
   </mat-card>

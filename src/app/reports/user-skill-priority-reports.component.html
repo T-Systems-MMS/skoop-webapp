@@ -1,0 +1,29 @@
+<div *ngIf="activatedRoute.children.length === 0">
+  <div class="skill-priority-statistics mat-typography ">
+    <h1>User Skill Priority Reports</h1>
+    <mat-card *ngFor="let priorityReport of priorityReports; index as rank " class="skill-priority-statistics-card ">
+      <mat-card-content>
+        <div fxLayout="row ">
+          <div fxFlex="33% ">
+            <div class="skill-priority-statistics-level-label ">Date:</div>
+            <div>
+              <span>{{ priorityReport.date }}</span>
+            </div>
+          </div>
+          <div fxFlex="33% ">
+            <div class="skill-priority-statistics-level-label ">Skill count:</div>
+            <div>
+              <span>{{ priorityReport.skillCount }}</span>
+            </div>
+          </div>
+          <div fxFlex="33% ">
+            <a mat-raised-button routerLink=". " title="See skill priority report " aria-label="See skill priority report " (click)="goDetails(priorityReport.id) ">DETAILS</a>
+            <!-- <button mat-button  [routerLink]="[ '/skills', priorityReport.id, 'users'] " >DETAILS</button> -->
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

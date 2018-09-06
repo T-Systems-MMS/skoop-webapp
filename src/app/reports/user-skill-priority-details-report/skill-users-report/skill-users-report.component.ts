@@ -1,23 +1,28 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { UserSkillPriorityReportsService } from '../../user-skill-priority-reports.service';
+import { SkillUserView } from '../../../skill-users/skill-users.component';
+import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-
-import { SkillsService } from '../skills/skills.service';
-import { UserSkillsService } from '../user-skills/user-skills.service';
+import { SkillsService } from '../../../skills/skills.service';
+import { SkillView } from '../../../my-skills/my-skills-edit.component';
 
 @Component({
-  selector: 'app-skill-users',
-  templateUrl: './skill-users.component.html',
-  styleUrls: ['./skill-users.component.scss']
+  selector: 'app-skill-users-report',
+  templateUrl: './skill-users-report.component.html',
+  styleUrls: ['./skill-users-report.component.scss']
 })
-export class SkillUsersComponent implements OnInit {
+export class SkillUsersReportComponent implements OnInit {
+
   skill: SkillView = null;
   skillUsers: SkillUserView[] = [];
 
-  constructor(private activatedRoute: ActivatedRoute, private skillsService: SkillsService,
-    private userSkillsService: UserSkillsService) { }
+  constructor(private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private skillsService: SkillsService,
+    private userSkillPriorityReportsService: UserSkillPriorityReportsService) {
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.activatedRoute.paramMap
       .pipe(map(params => params.get('skillId')))
       .subscribe(skillId => {
@@ -27,13 +32,13 @@ export class SkillUsersComponent implements OnInit {
   }
 
   private loadSkill(skillId: string) {
-    this.skillsService.getSkill(skillId)
+    this.userSkillPriorityReportsService.getSkill(skillId)
       .pipe(map(skill => (<SkillView>{ id: skill.id, name: skill.name })))
       .subscribe(skill => this.skill = skill);
   }
 
   private loadSkillUsers(skillId: string) {
-    this.userSkillsService.getSkillUsers(skillId, 1)
+    this.userSkillPriorityReportsService.getUserSkillReportById(skillId)
       .pipe(map(skillUsers => skillUsers.map<SkillUserView>(skillUser => ({
         user: {
           id: skillUser.user.id,
@@ -52,21 +57,9 @@ export class SkillUsersComponent implements OnInit {
         });
       });
   }
-}
 
-export interface SkillView {
-  id: string;
-  name: string;
-}
+  backToSkillPriorityReport() {
+    this.router.navigate(['../../', { skillId: this.skill.id }], { relativeTo: this.activatedRoute });
+  }
 
-export interface SkillUserView {
-  user: UserView;
-  currentLevel: number;
-  desiredLevel: number;
-  priority: number;
-}
-
-export interface UserView {
-  id: string;
-  userName: string;
 }

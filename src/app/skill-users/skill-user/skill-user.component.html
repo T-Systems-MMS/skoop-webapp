@@ -1,0 +1,29 @@
+<mat-card-content>
+  <h2 class="skill-users-user-name">{{ skillUser.user.userName }}</h2>
+  <div fxLayout="row">
+    <div fxFlex="33%">
+      <div class="skill-users-level-label">Current level:</div>
+      <div>
+        <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (skillUser.currentLevel >= level)?
+          'star' : 'star_border' }}</mat-icon>
+        <span fxHide.gt-sm="true" class="skill-users-level-value">{{ skillUser.currentLevel }}</span>
+      </div>
+    </div>
+    <div fxFlex="33%">
+      <div class="skill-users-level-label">Desired level:</div>
+      <div>
+        <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (skillUser.desiredLevel >= level)?
+          'star' : 'star_border' }}</mat-icon>
+        <span fxHide.gt-sm="true" class="skill-users-level-value">{{ skillUser.desiredLevel }}</span>
+      </div>
+    </div>
+    <div fxFlex="33%">
+      <div class="skill-users-level-label">Priority:</div>
+      <div>
+        <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (skillUser.priority >= level)?
+          'star' : 'star_border' }}</mat-icon>
+        <span fxHide.gt-sm="true" class="skill-users-level-value">{{ skillUser.priority }}</span>
+      </div>
+    </div>
+  </div>
+</mat-card-content>

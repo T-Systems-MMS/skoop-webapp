@@ -32,14 +32,14 @@ export class SkillPriorityStatisticsComponent implements OnInit {
   }
 }
 
-interface UserSkillPriorityAggregationView {
+export interface UserSkillPriorityAggregationView {
   skill: SkillView;
   averagePriority: number;
   maximumPriority: number;
   userCount: number;
 }
 
-interface SkillView {
+export interface SkillView {
   id: string;
   name: string;
 }
