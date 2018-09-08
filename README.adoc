@@ -44,7 +44,24 @@ Additionally, the web server must forward every request starting with `/api/` to
 
 === Running as Docker container
 
-There is no Docker support yet. Stay tuned.
+We do not provide any public Docker images at the moment. But you can create your own after building the application from source, see section "Building the application".
+
+You can build the Docker image from the compiled output in the `dist` directory by running the following command in the project root (mind the dot at the end):
+
+    docker build -t myskills/webapp:latest .
+
+Then you can run the container like this:
+
+    docker run -d --name myskills-webapp -p 4200:80
+      --link myskills-server
+      -e SERVER_NAME=localhost:4200
+      -e MYSKILLS_SERVER_BASE_URL=http://myskills-server:8080
+      -e MYSKILLS_CONFIG_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/MySkills
+      myskills/webapp:latest
+
+Now the MySkills WebApp is accessible at http://localhost:4200/
+
+_Note: This command example assumes that you have created a container for the MySkills Server named "myskills-server" and that a KeyCloak server with a "MySkills" realm is running on localhost:9000._
 
 === Testing the setup
 
