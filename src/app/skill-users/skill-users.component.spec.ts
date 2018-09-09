@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Component, Input } from '@angular/core';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -6,11 +7,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable, of } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
-import { SkillUsersComponent } from './skill-users.component';
+import { SkillUsersComponent, SkillUserView } from './skill-users.component';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { UserSkillsService } from '../user-skills/user-skills.service';
 import { SkillUser } from '../user-skills/skill-user';
+
+@Component({ selector: 'app-skill-user', template: '' })
+class SkillUserStubComponent {
+  @Input('skillUser')
+  public skillUser: SkillUserView;
+}
 
 const skillsServiceStub: Partial<SkillsService> = {
   getSkill(skillId: string): Observable<Skill> { return null; }
@@ -50,7 +57,10 @@ describe('SkillUsersComponent', () => {
         FlexLayoutModule,
         AppMaterialModule
       ],
-      declarations: [SkillUsersComponent],
+      declarations: [
+        SkillUsersComponent,
+        SkillUserStubComponent
+      ],
       providers: [
         { provide: SkillsService, useValue: skillsServiceStub },
         { provide: UserSkillsService, useValue: userSkillsServiceStub }
