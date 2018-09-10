@@ -38,6 +38,7 @@ export class UserSkillPriorityDetailsReportComponent implements OnInit {
   }
 
   goDetails(skillId: Number) {
+    console.log('skillId:' + skillId);
     this.router.navigate(['users', skillId], { relativeTo: this.activatedRoute });
   }
 

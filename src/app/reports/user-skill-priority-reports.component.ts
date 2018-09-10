@@ -28,4 +28,11 @@ export class UserSkillPriorityReportsComponent implements OnInit {
     this.router.navigate([id], { relativeTo: this.activatedRoute });
   }
 
+  createReport() {
+    this.userSkillPriorityReportsService.createRport().subscribe(newReport => {
+      this.priorityReports.unshift(newReport);
+    });
+    // this.userSkillPriorityReportsService.getReports()
+    //   .subscribe(priorityReports => this.priorityReports = priorityReports);
+  }
 }

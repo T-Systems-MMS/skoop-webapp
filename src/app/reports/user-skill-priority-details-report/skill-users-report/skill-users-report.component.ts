@@ -15,6 +15,7 @@ export class SkillUsersReportComponent implements OnInit {
 
   skill: SkillView = null;
   skillUsers: SkillUserView[] = [];
+  userSkillPriorityAggregationReportId: String;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
@@ -24,10 +25,11 @@ export class SkillUsersReportComponent implements OnInit {
 
   ngOnInit() {
     this.activatedRoute.paramMap
-      .pipe(map(params => params.get('skillId')))
-      .subscribe(skillId => {
-        this.loadSkill(skillId);
-        this.loadSkillUsers(skillId);
+      .pipe(map(params => params.get('userSkillPriorityAggregationReportId')))
+      .subscribe(userSkillPriorityAggregationReportId => {
+        // this.loadSkill(skillId);
+        this.userSkillPriorityAggregationReportId = userSkillPriorityAggregationReportId;
+        this.loadSkillUsers(userSkillPriorityAggregationReportId);
       });
   }
 
@@ -37,8 +39,8 @@ export class SkillUsersReportComponent implements OnInit {
       .subscribe(skill => this.skill = skill);
   }
 
-  private loadSkillUsers(skillId: string) {
-    this.userSkillPriorityReportsService.getUserSkillReportById(skillId)
+  private loadSkillUsers(userSkillPriorityAggregationReportId: string) {
+    this.userSkillPriorityReportsService.getUserSkillReportById(userSkillPriorityAggregationReportId)
       .pipe(map(skillUsers => skillUsers.map<SkillUserView>(skillUser => ({
         user: {
           id: skillUser.user.id,
@@ -59,7 +61,7 @@ export class SkillUsersReportComponent implements OnInit {
   }
 
   backToSkillPriorityReport() {
-    this.router.navigate(['../../', { skillId: this.skill.id }], { relativeTo: this.activatedRoute });
+    this.router.navigate(['../../', { skillId: this.userSkillPriorityAggregationReportId}], { relativeTo: this.activatedRoute });
   }
 
 }

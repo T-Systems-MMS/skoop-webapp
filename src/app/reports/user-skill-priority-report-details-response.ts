@@ -1,9 +1,9 @@
 export interface UserSkillPriorityReportDetailsResponse {
     id: String;
-    skill: SkillReport;
     averagePriority: number;
     maximumPriority: number;
     userCount: number;
+    skill: SkillReport;
 }
 
 export interface SkillReport {

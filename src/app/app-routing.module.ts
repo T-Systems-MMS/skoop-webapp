@@ -22,7 +22,7 @@ const routes: Routes = [
         component: UserSkillPriorityDetailsReportComponent,
         children: [
           {
-            path: 'users/:skillId',
+            path: 'users/:userSkillPriorityAggregationReportId',
             component: SkillUsersReportComponent
           }
         ]
