@@ -3,7 +3,6 @@ import { UserSkillPriorityReportsService } from '../../user-skill-priority-repor
 import { SkillUserView } from '../../../skill-users/skill-users.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
-import { SkillsService } from '../../../skills/skills.service';
 import { SkillView } from '../../../my-skills/my-skills-edit.component';
 
 @Component({
@@ -19,7 +18,6 @@ export class SkillUsersReportComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
-    private skillsService: SkillsService,
     private userSkillPriorityReportsService: UserSkillPriorityReportsService) {
   }
 

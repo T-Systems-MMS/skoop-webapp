@@ -11,7 +11,7 @@ export class SkillPriorityStatisticComponent implements OnInit {
   @Input('skillStatistic')
   public skillStatistic: UserSkillPriorityAggregationView;
   @Input()
-  public rank: Number;
+  public rank: number;
 
   constructor() { }
 

@@ -1,6 +1,10 @@
 = MySkills WebApp
 Georg Wittberger <georg.wittberger@gmail.com>
-v0.0.1, 2018-08-04
+v0.0.1, 2018-09-09
+
+image:https://travis-ci.org/KnowledgeAssets/myskills-webapp.svg?branch=master["Build Status", link="https://travis-ci.org/KnowledgeAssets/myskills-webapp"]
+image:https://img.shields.io/github/issues-raw/KnowledgeAssets/myskills-webapp.svg["GitHub issues",link="https://github.com/KnowledgeAssets/myskills-webapp/issues"]
+image:https://img.shields.io/github/license/KnowledgeAssets/myskills-webapp.svg["MIT License"]
 
 A single page application providing a responsive web user interface for the MySkills server application.
 
@@ -30,7 +34,16 @@ For development:
 * Node.js 10.7.x (or higher)
 * NPM 6.2.x (or higher)
 
-=== Running the pre-built distribution
+=== Building the application from source
+
+The project uses https://www.npmjs.com/[NPM] in conjunction with https://github.com/angular/angular-cli[Angular CLI] to build the final static assets of the application. Run the following commands in the project root to build the application:
+
+    npm install
+    npm run build
+
+This installs the dependencies and then compiles the final static assets in the `dist/myskills-webapp` directory. These files can be served by an arbitrary web server.
+
+=== Hosting the compiled distribution
 
 The static assets of the application (HTML, CSS, JavaScript) can be hosted by any web server.
 
@@ -44,13 +57,24 @@ Additionally, the web server must forward every request starting with `/api/` to
 
 === Running as Docker container
 
-There is no Docker support yet. Stay tuned.
+We do not provide any public Docker images at the moment. But you can create your own after building the application from source.
 
-=== Testing the setup
+After completing the NPM build run the following command in the project root (mind the dot at the end):
 
-Once the static assets are served by a web server the main HTML page should be available at the root, e.g. http://localhost/ (assuming the web server is listening on port 80).
+    docker build -t myskills/webapp:latest .
 
-The requests to the MySkills Server API are working if there is a prompt for authentication right after loading the application. As soon as valid credentials have been provided the user name should be displayed in the top right corner.
+Then you can start the container as usual:
+
+    docker run -d --name myskills-webapp -p 4200:80
+      --link myskills-server
+      -e SERVER_NAME=localhost:4200
+      -e MYSKILLS_SERVER_BASE_URL=http://myskills-server:8080
+      -e MYSKILLS_CONFIG_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/MySkills
+      myskills/webapp:latest
+
+Now the MySkills WebApp is accessible at http://localhost:4200/
+
+_Note: This command example assumes that you have created a container for the MySkills Server named "myskills-server" and that a KeyCloak server with a "MySkills" realm is running on `localhost:9000`._
 
 == Development
 
@@ -108,14 +132,6 @@ The automated tests can be executed by running the following command in the proj
     npm test
 
 _Note: At the moment the Karma configuration relies on Chrome as the browser to run the tests. If it cannot find Chrome on your system it will complain. Then you should open a browser of your choice and navigate to http://localhost:9876/. Then simply save your test case one more time and Karma will run the tests again in your browser._
-
-=== Building the application
-
-The production build can be performed with the following NPM script:
-
-    npm run build
-
-This produces the final static assets in the `dist/myskills-webapp` directory. These files can be served by an arbitrary web server to host the application.
 
 === Architecture overview
 

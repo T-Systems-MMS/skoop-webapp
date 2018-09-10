@@ -16,7 +16,7 @@ import { AppMaterialModule } from './app-material.module';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 
 // Authentication module
-import { OAuthModule, OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
+import { OAuthModule, OAuthModuleConfig, OAuthService, JwksValidationHandler } from 'angular-oauth2-oidc';
 
 // Components
 import { AppComponent } from './app.component';
@@ -50,7 +50,6 @@ import { SkillUsersReportComponent } from './reports/user-skill-priority-details
     ReactiveFormsModule,
     OAuthModule.forRoot({
       resourceServer: {
-        allowedUrls: [environment.serverApiUrl],
         sendAccessToken: true
       }
     })
@@ -59,7 +58,7 @@ import { SkillUsersReportComponent } from './reports/user-skill-priority-details
     {
       provide: APP_INITIALIZER,
       useFactory: initAuthentication,
-      deps: [OAuthService],
+      deps: [OAuthModuleConfig, OAuthService],
       multi: true
     }
   ],
@@ -71,8 +70,10 @@ import { SkillUsersReportComponent } from './reports/user-skill-priority-details
 })
 export class AppModule { }
 
-export function initAuthentication(oauthService: OAuthService): Function {
+export function initAuthentication(moduleConfig: OAuthModuleConfig, oauthService: OAuthService): Function {
   return () => {
+    // IMPORTANT: Dynamic environment value for allowed URLs cannot be set in @NgModule decorator!
+    moduleConfig.resourceServer.allowedUrls = [environment.serverApiUrl];
     oauthService.configure({
       issuer: environment.authentication.issuer,
       clientId: environment.authentication.clientId,
