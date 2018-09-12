@@ -35,6 +35,14 @@ export class MySkillsNewComponent implements OnInit {
   ngOnInit(): void {
     this.skillSuggestions$ = this.skillName.valueChanges
       .pipe(switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
+    this.skillSuggestions$
+      .subscribe(() => { }
+        , (errorResponse: HttpErrorResponse) => {
+          this.operationInProgress = false;
+          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+          // Dirty fix because of: https://github.com/angular/angular/issues/17772
+          this.changeDetector.markForCheck();
+        });
   }
 
   addUserSkill(): void {
