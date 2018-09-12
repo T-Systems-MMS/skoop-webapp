@@ -1,11 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatBottomSheet } from '@angular/material';
-import { HttpErrorResponse } from '@angular/common/http';
 import { filter, map } from 'rxjs/operators';
 
 import { MySkillsService } from './my-skills.service';
 import { MySkillsNewComponent } from './my-skills-new.component';
 import { MySkillsEditComponent, UserSkillView as EditUserSkillView } from './my-skills-edit.component';
+import { ResponseError } from '../error/response-error';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({
   selector: 'app-my-skills',
@@ -16,8 +18,10 @@ export class MySkillsComponent implements OnInit {
   userSkills: UserSkillView[] = [];
   errorMessage: string = null;
 
-  constructor(private mySkillsService: MySkillsService, private bottomSheet: MatBottomSheet,
-    private changeDetector: ChangeDetectorRef) { }
+  constructor(private mySkillsService: MySkillsService,
+    private bottomSheet: MatBottomSheet,
+    private changeDetector: ChangeDetectorRef,
+    private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   ngOnInit(): void {
     this.loadUserSkills();
@@ -29,7 +33,12 @@ export class MySkillsComponent implements OnInit {
         id: coach.id,
         userName: coach.userName
       }))))
-      .subscribe(coaches => userSkill.coaches = coaches);
+      .subscribe(coaches => { userSkill.coaches = coaches; }
+        , (errorResponse: HttpErrorResponse) => {
+          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+          // Dirty fix because of: https://github.com/angular/angular/issues/17772
+          this.changeDetector.markForCheck();
+        });
   }
 
   openNewDialog(): void {
@@ -55,18 +64,8 @@ export class MySkillsComponent implements OnInit {
     this.mySkillsService.deleteCurrentUserSkill(userSkill.skill.id)
       .subscribe(() => {
         this.loadUserSkills();
-      }, (error: HttpErrorResponse) => {
-        this.errorMessage = 'Error: ';
-        if (error.error instanceof ErrorEvent) {
-          // A client-side or network error occurred.
-          this.errorMessage += error.error.message;
-          console.error(`Error deleting user skill: ${error.error.message}`);
-        } else {
-          // A server-side error occurred.
-          this.errorMessage += error.error.message;
-          console.error(`Error deleting user skill. `
-            + `Server returned code ${error.status}, message was: ${error.error.message}`);
-        }
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
@@ -90,6 +89,10 @@ export class MySkillsComponent implements OnInit {
           if (a.currentLevel !== b.currentLevel) { return b.currentLevel - a.currentLevel; }
           return a.skill.name.toLocaleLowerCase().localeCompare(b.skill.name.toLocaleLowerCase());
         });
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
       });
   }
 }

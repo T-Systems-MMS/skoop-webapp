@@ -1,9 +1,11 @@
 import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { HttpErrorResponse } from '@angular/common/http';
 
 import { MySkillsService } from './my-skills.service';
+import { ResponseError } from '../error/response-error';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({
   selector: 'app-my-skills-edit',
@@ -17,8 +19,11 @@ export class MySkillsEditComponent implements OnInit {
   operationInProgress = false;
   errorMessage: string = null;
 
-  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView, private mySkillsService: MySkillsService,
-    private bottomSheet: MatBottomSheetRef, private changeDetector: ChangeDetectorRef) { }
+  constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView,
+    private mySkillsService: MySkillsService,
+    private bottomSheet: MatBottomSheetRef,
+    private changeDetector: ChangeDetectorRef,
+    private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   ngOnInit() { }
 
@@ -30,19 +35,9 @@ export class MySkillsEditComponent implements OnInit {
       .subscribe(() => {
         // Return 'true' to indicate that the user skill was changed.
         this.bottomSheet.dismiss(true);
-      }, (error: HttpErrorResponse) => {
+      }, (errorResponse: HttpErrorResponse) => {
         this.operationInProgress = false;
-        this.errorMessage = 'Error: ';
-        if (error.error instanceof ErrorEvent) {
-          // A client-side or network error occurred.
-          this.errorMessage += error.error.message;
-          console.error(`Error updating user skill: ${error.error.message}`);
-        } else {
-          // A server-side error occurred.
-          this.errorMessage += error.error.message;
-          console.error(`Error updating user skill. `
-            + `Server returned code ${error.status}, message was: ${error.error.message}`);
-        }
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });

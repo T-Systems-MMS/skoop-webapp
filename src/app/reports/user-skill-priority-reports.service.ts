@@ -7,6 +7,8 @@ import { UserSkillPriorityReportResponse } from './user-skill-priority-report-re
 import { UserSkillPriorityReportDetailsResponse } from './user-skill-priority-report-details-response';
 import { SkillUser } from '../user-skills/skill-user';
 import { Skill } from '../skills/skill';
+import { catchError } from 'rxjs/operators';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +17,19 @@ export class UserSkillPriorityReportsService {
 
   private reportsUrl = `${environment.serverApiUrl}/reports`;
 
+  private priorityAggregationReportUrl = `${environment.serverApiUrl}/reports/userskillpriorityaggregationreport/{id}`;
+
   private reportUrlPattern = `${environment.serverApiUrl}/reports/{reportId}`;
   private reportSkillUser = `${environment.serverApiUrl}/reports/{userSkillPriorityAggregationReportId}/users`;
   private skillUrlPattern = `${environment.serverApiUrl}/reports/skill/{skillId}`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   getReports(): Observable<UserSkillPriorityReportResponse[]> {
     return this.httpClient.get<UserSkillPriorityReportResponse[]>(this.reportsUrl);
   }
 
   createRport(): Observable<UserSkillPriorityReportResponse> {
-
-    console.log('this is createReport method');
     return this.httpClient.post<UserSkillPriorityReportResponse>(this.reportsUrl,
       null,
       {
@@ -39,6 +41,11 @@ export class UserSkillPriorityReportsService {
 
   getUserSkillPriorityReportDetails(reportId: string): Observable<UserSkillPriorityReportDetailsResponse[]> {
     return this.httpClient.get<UserSkillPriorityReportDetailsResponse[]>(this.reportUrlPattern.replace('{reportId}', reportId));
+  }
+
+  getSkillName(userSkillPriorityAggregationReportId: string): Observable<any> {
+    return this.httpClient.get(this.priorityAggregationReportUrl
+      .replace('{id}', userSkillPriorityAggregationReportId), { responseType: 'text' });
   }
 
   getUserSkillReportById(userSkillPriorityAggregationReportId: string): Observable<SkillUser[]> {

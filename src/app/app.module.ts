@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -25,6 +25,7 @@ import { MySkillsEditComponent } from './my-skills/my-skills-edit.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SkillPriorityStatisticComponent } from './statistics/statistic/skill-priority-statistic.component';
 import { SkillUsersReportComponent } from './reports/user-skill-priority-details-report/skill-users-report/skill-users-report.component';
+import { GlobalErrorHandlerService } from './error/global-error-handler.service';
 
 // Services
 
@@ -55,6 +56,7 @@ import { SkillUsersReportComponent } from './reports/user-skill-priority-details
     })
   ],
   providers: [
+    GlobalErrorHandlerService,
     {
       provide: APP_INITIALIZER,
       useFactory: initAuthentication,

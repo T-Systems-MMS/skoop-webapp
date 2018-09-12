@@ -1,6 +1,7 @@
 <div *ngIf="activatedRoute.children.length === 0">
   <div class="skill-priority-statistics mat-typography">
     <h1>Skill priority statistics</h1>
+    <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
     <div class="my-skills-toolbar">
       <button mat-raised-button (click)="backToReport()" aria-label="Back To Reports">Back To Reports</button>
     </div>

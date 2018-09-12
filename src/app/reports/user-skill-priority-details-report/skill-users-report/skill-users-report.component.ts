@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { UserSkillPriorityReportsService } from '../../user-skill-priority-reports.service';
 import { SkillUserView } from '../../../skill-users/skill-users.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs/operators';
 import { SkillView } from '../../../my-skills/my-skills-edit.component';
+import { ResponseError, ResponseSubError } from '../../../error/response-error';
+import { GlobalErrorHandlerService } from '../../../error/global-error-handler.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-skill-users-report',
@@ -12,29 +15,37 @@ import { SkillView } from '../../../my-skills/my-skills-edit.component';
 })
 export class SkillUsersReportComponent implements OnInit {
 
-  skill: SkillView = null;
+  skillName: string = null;
   skillUsers: SkillUserView[] = [];
   userSkillPriorityAggregationReportId: String;
+  errorMessage: string = null;
 
   constructor(private activatedRoute: ActivatedRoute,
     private router: Router,
-    private userSkillPriorityReportsService: UserSkillPriorityReportsService) {
+    private userSkillPriorityReportsService: UserSkillPriorityReportsService,
+    private changeDetector: ChangeDetectorRef,
+    private globalErrorHandlerService: GlobalErrorHandlerService) {
   }
 
   ngOnInit() {
     this.activatedRoute.paramMap
       .pipe(map(params => params.get('userSkillPriorityAggregationReportId')))
       .subscribe(userSkillPriorityAggregationReportId => {
-        // this.loadSkill(skillId);
         this.userSkillPriorityAggregationReportId = userSkillPriorityAggregationReportId;
+        this.loadSkillName(userSkillPriorityAggregationReportId);
         this.loadSkillUsers(userSkillPriorityAggregationReportId);
       });
   }
 
-  private loadSkill(skillId: string) {
-    this.userSkillPriorityReportsService.getSkill(skillId)
-      .pipe(map(skill => (<SkillView>{ id: skill.id, name: skill.name })))
-      .subscribe(skill => this.skill = skill);
+  private loadSkillName(userSkillPriorityAggregationReportId: string) {
+    this.userSkillPriorityReportsService.getSkillName(userSkillPriorityAggregationReportId)
+      .subscribe(skillName => {
+        this.skillName = skillName + '';
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
+      });
   }
 
   private loadSkillUsers(userSkillPriorityAggregationReportId: string) {
@@ -55,11 +66,15 @@ export class SkillUsersReportComponent implements OnInit {
           if (a.currentLevel !== b.currentLevel) { return b.currentLevel - a.currentLevel; }
           return a.user.userName.toLocaleLowerCase().localeCompare(b.user.userName.toLocaleLowerCase());
         });
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
       });
   }
 
   backToSkillPriorityReport() {
-    this.router.navigate(['../../', { skillId: this.userSkillPriorityAggregationReportId}], { relativeTo: this.activatedRoute });
+    this.router.navigate(['../../', { skillId: this.userSkillPriorityAggregationReportId }], { relativeTo: this.activatedRoute });
   }
 
 }

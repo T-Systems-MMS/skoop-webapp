@@ -1,11 +1,13 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
-import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { startWith, switchMap } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { MySkillsService } from './my-skills.service';
+import { ResponseError } from '../error/response-error';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({
   selector: 'app-my-skills-new',
@@ -13,7 +15,11 @@ import { MySkillsService } from './my-skills.service';
   styleUrls: ['./my-skills-new.component.scss']
 })
 export class MySkillsNewComponent implements OnInit {
-  skillName: FormControl = new FormControl('');
+  skillName: FormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(3),
+  ]);
+
   currentLevel: FormControl = new FormControl(0);
   desiredLevel: FormControl = new FormControl(0);
   priority: FormControl = new FormControl(0);
@@ -23,7 +29,8 @@ export class MySkillsNewComponent implements OnInit {
   skillSuggestions$: Observable<string[]>;
 
   constructor(private mySkillsService: MySkillsService, private bottomSheet: MatBottomSheetRef,
-    private changeDetector: ChangeDetectorRef) { }
+    private changeDetector: ChangeDetectorRef,
+    private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   ngOnInit(): void {
     this.skillSuggestions$ = this.skillName.valueChanges
@@ -32,7 +39,7 @@ export class MySkillsNewComponent implements OnInit {
 
   addUserSkill(): void {
     this.operationInProgress = true;
-    this.errorMessage = null;
+    this.errorMessage = '';
     this.mySkillsService.createCurrentUserSkill(
       this.skillName.value, this.currentLevel.value, this.desiredLevel.value, this.priority.value)
       .subscribe(() => {
@@ -43,22 +50,13 @@ export class MySkillsNewComponent implements OnInit {
         this.desiredLevel.reset(0);
         this.priority.reset(0);
         document.querySelector<HTMLElement>('#my-skills-new-skill-name').focus();
-      }, (error: HttpErrorResponse) => {
+      }, (errorResponse: HttpErrorResponse) => {
         this.operationInProgress = false;
-        this.errorMessage = 'Error: ';
-        if (error.error instanceof ErrorEvent) {
-          // A client-side or network error occurred.
-          this.errorMessage += error.error.message;
-          console.error(`Error creating new user skill: ${error.error.message}`);
-        } else {
-          // A server-side error occurred.
-          this.errorMessage += error.error.message;
-          console.error(`Error creating new user skill. `
-            + `Server returned code ${error.status}, message was: ${error.error.message}`);
-        }
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+
   }
 
   close(): void {

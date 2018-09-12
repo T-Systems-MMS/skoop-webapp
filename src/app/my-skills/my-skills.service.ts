@@ -1,17 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { switchMap, catchError } from 'rxjs/operators';
 
 import { UserSkill } from '../user-skills/user-skill';
 import { UserSkillsService } from '../user-skills/user-skills.service';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from '../users/user';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MySkillsService {
-  constructor(private userSkillsService: UserSkillsService, private userIdentityService: UserIdentityService) { }
+  constructor(private userSkillsService: UserSkillsService,
+    private userIdentityService: UserIdentityService,
+    private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   getCurrentUserSkills(): Observable<UserSkill[]> {
     return this.userIdentityService.getUserIdentity()
