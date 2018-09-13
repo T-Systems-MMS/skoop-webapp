@@ -1,5 +1,4 @@
-import { Injectable, Injector, ErrorHandler } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Injectable} from '@angular/core';
 import { ResponseError, ResponseSubError } from './response-error';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -7,13 +6,12 @@ import { HttpErrorResponse } from '@angular/common/http';
  * It creates the fullMessage that we finally show to clients.
  * If in server an error occures, It will always return a ResponseError object; Beacuase ResponseError object has more
  * information besides the message, we have created this class as a util to create the fullMessage.
- * Developrs can either use this class or  createFullMessage of this class or create their own message.
+ * Developrs can either use this class or manage their own for handling HttpErrorResponse.
  */
 @Injectable()
 export class GlobalErrorHandlerService {
 
     createFullMessage(errorResponse: HttpErrorResponse): string {
-        console.log('-> ' + errorResponse);
         if (errorResponse.error instanceof ErrorEvent) {
             // A client-side or network error occurred.
             console.error(`Error creating new user skill: ${errorResponse.error.message}`);
@@ -21,16 +19,13 @@ export class GlobalErrorHandlerService {
         } else {
             // A server-side error occurred.
             let serverDetailsError: ResponseError;
-            if (typeof errorResponse.error === 'string') {
-                console.log('B1');
+            if (typeof errorResponse.error === 'string' && this.instanceOfResponseError(JSON.parse(errorResponse.error))) {
+                console.log('for text!');
                 serverDetailsError = JSON.parse(errorResponse.error);
-            } else if (typeof errorResponse.error === 'undefined') {
-                console.log('B2');
-                console.log('inside undefined error section : ' + errorResponse.message);
-                console.log('error: ' + errorResponse.error);
+            } else if (typeof errorResponse.error === 'object' && (!this.instanceOfResponseError(errorResponse.error))) {
+                // This means we get an error from other servers, except Myskill-Server, like Keycloak-Server ...
                 return errorResponse.message;
-            } else  {
-                console.log('B3');
+            } else {
                 serverDetailsError = errorResponse.error;
             }
 
@@ -46,6 +41,11 @@ export class GlobalErrorHandlerService {
             }
             return fullMessage;
         }
+    }
+
+    instanceOfResponseError(object: any): object is ResponseError {
+        return 'errorCode' in object || 'timestamp' in object;
+        // return object.discriminator === 'I-AM-A';
     }
 
 }

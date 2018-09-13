@@ -4,7 +4,8 @@
     <button mat-raised-button (click)="openNewDialog()" aria-label="Add skill">Add skill</button>
     <!-- TODO: Searching, filtering and sorting elements could be added here -->
   </div>
-  <div *ngIf="errorMessage" class="my-skills-error">{{ errorMessage }}</div>
+  <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
+
   <mat-card *ngFor="let userSkill of userSkills" class="my-skills-card">
     <mat-card-content>
       <div fxLayout="row">
@@ -27,21 +28,24 @@
         <div fxFlex="33%">
           <div class="my-skills-level-label">Current level:</div>
           <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.currentLevel >= level)? 'star' : 'star_border' }}</mat-icon>
+            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.currentLevel
+              >= level)? 'star' : 'star_border' }}</mat-icon>
             <span fxHide.gt-sm="true" class="my-skills-level-value">{{ userSkill.currentLevel }}</span>
           </div>
         </div>
         <div fxFlex="33%">
           <div class="my-skills-level-label">Desired level:</div>
           <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.desiredLevel >= level)? 'star' : 'star_border' }}</mat-icon>
+            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.desiredLevel
+              >= level)? 'star' : 'star_border' }}</mat-icon>
             <span fxHide.gt-sm="true" class="my-skills-level-value">{{ userSkill.desiredLevel }}</span>
           </div>
         </div>
         <div fxFlex="33%">
           <div class="my-skills-level-label">Priority:</div>
           <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.priority >= level)? 'star' : 'star_border' }}</mat-icon>
+            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.priority >=
+              level)? 'star' : 'star_border' }}</mat-icon>
             <span fxHide.gt-sm="true" class="my-skills-level-value">{{ userSkill.priority }}</span>
           </div>
         </div>
