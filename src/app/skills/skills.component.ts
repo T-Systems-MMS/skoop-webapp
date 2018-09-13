@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Skill } from './skill';
 import { SkillsService } from './skills.service';
-import { MatBottomSheet } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MySkillsNewComponent } from '../my-skills/my-skills-new.component';
@@ -9,6 +9,7 @@ import { map, filter } from 'rxjs/operators';
 import { MySkillsEditComponent } from '../my-skills/my-skills-edit.component';
 import { SkillsNewComponent } from './skills-new.component';
 import { SkillsEditComponent } from './skills-edit.component';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-skills',
@@ -23,7 +24,8 @@ export class SkillsComponent implements OnInit {
   constructor(private skillsService: SkillsService,
     private bottomSheet: MatBottomSheet,
     private changeDetector: ChangeDetectorRef,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private globalErrorHandlerService: GlobalErrorHandlerService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadSkills();
@@ -61,14 +63,22 @@ export class SkillsComponent implements OnInit {
   }
 
   delete(skill: Skill): void {
-    this.skillsService.deleteSkill(skill.id)
-      .subscribe(() => {
-        this.loadSkills();
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
-      });
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.skillsService.deleteSkill(skill.id)
+          .subscribe(() => {
+            this.loadSkills();
+          }, (errorResponse: HttpErrorResponse) => {
+            this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+            // Dirty fix because of: https://github.com/angular/angular/issues/17772
+            this.changeDetector.markForCheck();
+          });
+      }
+    });
   }
 
 }

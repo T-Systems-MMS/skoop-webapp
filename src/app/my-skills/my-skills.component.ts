@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MatBottomSheet } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { filter, map } from 'rxjs/operators';
 
 import { MySkillsService } from './my-skills.service';
@@ -7,6 +7,7 @@ import { MySkillsNewComponent } from './my-skills-new.component';
 import { MySkillsEditComponent, UserSkillView as EditUserSkillView } from './my-skills-edit.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 @Component({
   selector: 'app-my-skills',
@@ -20,7 +21,8 @@ export class MySkillsComponent implements OnInit {
   constructor(private mySkillsService: MySkillsService,
     private bottomSheet: MatBottomSheet,
     private changeDetector: ChangeDetectorRef,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private globalErrorHandlerService: GlobalErrorHandlerService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadUserSkills();
@@ -60,14 +62,22 @@ export class MySkillsComponent implements OnInit {
   }
 
   delete(userSkill: UserSkillView): void {
-    this.mySkillsService.deleteCurrentUserSkill(userSkill.skill.id)
-      .subscribe(() => {
-        this.loadUserSkills();
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
-      });
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: {}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.mySkillsService.deleteCurrentUserSkill(userSkill.skill.id)
+          .subscribe(() => {
+            this.loadUserSkills();
+          }, (errorResponse: HttpErrorResponse) => {
+            this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+            // Dirty fix because of: https://github.com/angular/angular/issues/17772
+            this.changeDetector.markForCheck();
+          });
+      }
+    });
   }
 
   private loadUserSkills(): void {
