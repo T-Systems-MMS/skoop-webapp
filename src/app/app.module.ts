@@ -24,20 +24,20 @@ import { MySkillsNewComponent } from './my-skills/my-skills-new.component';
 import { MySkillsEditComponent } from './my-skills/my-skills-edit.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SkillPriorityStatisticComponent } from './statistics/statistic/skill-priority-statistic.component';
-import { SkillUsersReportComponent } from './reports/user-skill-priority-details-report/skill-users-report/skill-users-report.component';
 import { GlobalErrorHandlerService } from './error/global-error-handler.service';
-
-// Services
+import { SkillsNewComponent } from './skills/skills-new.component';
+import { SkillsEditComponent } from './skills/skills-edit.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    routingComponents,
+    PageNotFoundComponent,
     MySkillsNewComponent,
     MySkillsEditComponent,
     SkillPriorityStatisticComponent,
-    routingComponents,
-    PageNotFoundComponent,
-    SkillUsersReportComponent,
+    SkillsNewComponent,
+    SkillsEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -66,7 +66,9 @@ import { GlobalErrorHandlerService } from './error/global-error-handler.service'
   ],
   entryComponents: [
     MySkillsNewComponent,
-    MySkillsEditComponent
+    MySkillsEditComponent,
+    SkillsNewComponent,
+    SkillsEditComponent,
   ],
   bootstrap: [AppComponent]
 })

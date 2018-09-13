@@ -1,0 +1,16 @@
+@import 'variables';
+
+.my-skills-new-form-field {
+  width: 100%;
+}
+
+.my-skills-new-button {
+  margin-right: 16px;
+}
+
+.my-skills-new-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
