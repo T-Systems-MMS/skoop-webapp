@@ -27,6 +27,9 @@ import { SkillPriorityStatisticComponent } from './statistics/statistic/skill-pr
 import { GlobalErrorHandlerService } from './error/global-error-handler.service';
 import { SkillsNewComponent } from './skills/skills-new.component';
 import { SkillsEditComponent } from './skills/skills-edit.component';
+import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { SkillsComponent } from './skills/skills.component';
+import { MatDialogModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,7 @@ import { SkillsEditComponent } from './skills/skills-edit.component';
     SkillPriorityStatisticComponent,
     SkillsNewComponent,
     SkillsEditComponent,
+    DeleteConfirmationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,6 +53,7 @@ import { SkillsEditComponent } from './skills/skills-edit.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatDialogModule,
     OAuthModule.forRoot({
       resourceServer: {
         sendAccessToken: true
@@ -65,6 +70,7 @@ import { SkillsEditComponent } from './skills/skills-edit.component';
     }
   ],
   entryComponents: [
+    DeleteConfirmationDialogComponent,
     MySkillsNewComponent,
     MySkillsEditComponent,
     SkillsNewComponent,

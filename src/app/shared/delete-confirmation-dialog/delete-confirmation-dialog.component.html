@@ -1,0 +1,11 @@
+<div fxLayout="row" >
+  <div fxFlex fxLayoutAlign="center center" mat-dialog-content>
+    <p>{{ data.message}}</p>
+  </div>
+</div>
+<div fxLayout="row">
+  <div fxFlex fxLayoutAlign="center center" mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" cdkFocusInitial>No</button>
+    <button mat-button [mat-dialog-close]="data.delete">Yes</button>
+  </div>
+</div>
