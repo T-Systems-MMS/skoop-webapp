@@ -2,10 +2,13 @@
   <h1>Skill management</h1>
   <div class="my-skills-toolbar">
     <button mat-raised-button (click)="openNewDialog()" aria-label="Add skill">Add skill</button>
+    <mat-form-field style="margin-left: 15px;">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
     <!-- TODO: Searching, filtering and sorting elements could be added here -->
   </div>
   <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
-  <mat-card *ngFor="let skill of skills" class="my-skills-card">
+  <mat-card *ngFor="let skill of (skillsFiltered ? skillsFiltered : skills)" class="my-skills-card">
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex>
@@ -21,8 +24,8 @@
         </div>
       </div>
       <div fxLayout="row">
-          <div fxFlex="5%" class="my-skills-description-label">Description:</div>
-          <div fxFlex="95%">{{ skill.description }}</div>
+        <div class="my-skills-description-label">Description:</div>
+        <div>{{ skill.description }}</div>
       </div>
     </mat-card-content>
   </mat-card>

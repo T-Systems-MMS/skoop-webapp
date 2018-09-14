@@ -19,6 +19,7 @@ import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation
 export class SkillsComponent implements OnInit {
 
   skills: Skill[] = [];
+  skillsFiltered: Skill[] = [];
   errorMessage: string = null;
 
   constructor(private skillsService: SkillsService,
@@ -40,6 +41,7 @@ export class SkillsComponent implements OnInit {
       }))))
       .subscribe(skills => {
         this.skills = skills;
+        this.skillsFiltered = skills;
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
@@ -81,4 +83,21 @@ export class SkillsComponent implements OnInit {
     });
   }
 
+  applyFilter(filterValue: string) {
+    const search: string = filterValue.trim().toLowerCase();
+    this.skillsFiltered = this.skills.filter((skill) => {
+      return this.searchInName(search, skill) || this.searchInDescription(search, skill);
+    });
+  }
+
+  private searchInName(search: string, skill: Skill): boolean {
+    return skill.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
+  }
+
+  private searchInDescription(search: string, skill: Skill): boolean {
+    if (skill.description) {
+      return skill.description.toLowerCase().indexOf(search.toLowerCase()) > -1;
+    }
+    return false;
+  }
 }
