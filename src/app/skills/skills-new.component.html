@@ -3,6 +3,8 @@
   <div>
     <mat-form-field class="my-skills-new-form-field">
       <input type="text" id="my-skills-new-skill-name"  matInput [formControl]="skillName"  placeholder="Skill name">
+      <mat-error *ngIf="skillName.hasError('required')">Skill name is Mandetory</mat-error>
+      <mat-error *ngIf="skillName.hasError('minlength')">Put in at least 3 characters, please</mat-error>
     </mat-form-field>
   </div>
   <div>
@@ -11,7 +13,7 @@
     </mat-form-field>
   </div>
   <div>
-    <button mat-raised-button color="primary" (click)="addSkill()" [disabled]="operationInProgress" aria-label="Add skill"
+    <button mat-raised-button color="primary" (click)="addSkill()" [disabled]="operationInProgress || skillName.invalid" aria-label="Add skill"
       class="my-skills-new-button">Add skill</button>
     <button mat-raised-button (click)="close()" aria-label="Close" class="my-skills-new-button">Close</button>
   </div>
