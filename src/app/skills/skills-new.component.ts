@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { SkillsService } from './skills.service';
 import { MatBottomSheetRef } from '@angular/material';
@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
   templateUrl: './skills-new.component.html',
   styleUrls: ['./skills-new.component.scss']
 })
-export class SkillsNewComponent implements OnInit {
+export class SkillsNewComponent implements OnInit, OnDestroy {
 
   skillName: FormControl = new FormControl('', [
     Validators.required,
@@ -48,6 +48,10 @@ export class SkillsNewComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  ngOnDestroy(): void {
+    this.bottomSheet.dismiss(this.addedSkillsCount > 0);
   }
 
   addSkill(): void {

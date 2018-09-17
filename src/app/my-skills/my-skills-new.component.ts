@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -13,7 +13,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
   templateUrl: './my-skills-new.component.html',
   styleUrls: ['./my-skills-new.component.scss']
 })
-export class MySkillsNewComponent implements OnInit {
+export class MySkillsNewComponent implements OnInit, OnDestroy {
 
   skillName: FormControl = new FormControl('', [
     Validators.required,
@@ -43,6 +43,10 @@ export class MySkillsNewComponent implements OnInit {
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
           this.changeDetector.markForCheck();
         });
+  }
+
+  ngOnDestroy(): void {
+    this.bottomSheet.dismiss(this.addedSkillsCount > 0);
   }
 
   addUserSkill(): void {
