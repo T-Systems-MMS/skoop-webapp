@@ -1,0 +1,41 @@
+<div  class="skill-priority-statistics mat-typography ">
+    <h1>User profile</h1>
+    <div *ngIf="errorMessage" class="my-skills-edit-error">{{ errorMessage }}</div>
+</div>
+<div *ngIf="dataAvailable" fxLayoutAlign="center center">
+  <form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)" class="form">
+    <mat-grid-list rowHeight="300px" cols="2">
+      <mat-grid-tile>
+        <div class="controles-container">
+          <input type="hidden" formControlName="$id">
+          <mat-form-field>
+            <input matInput placeholder="User Name" formControlName="userName" [readonly]="true">
+            <mat-error>This is Mandetory</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="First Name" formControlName="firstName" [readonly]="true">
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput placeholder="Last Name" formControlName="lastName" [readonly]="true">
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+      <mat-grid-tile>
+        <div class="controles-container">
+          <mat-form-field>
+            <input matInput placeholder="Email address" formControlName="email" [readonly]="true">
+            <mat-error>Invalid email address</mat-error>
+            <mat-error *ngIf="userForm.controls['email'].errors?.required">This is Mandetory</mat-error>
+          </mat-form-field>
+          <div class="add-bottom-padding"> </div>
+          <div>
+            <mat-checkbox formControlName="coach">show as coach?</mat-checkbox>
+          </div>
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">Update</button>
+          </div>
+        </div>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </form>
+</div>

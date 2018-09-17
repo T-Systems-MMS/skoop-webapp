@@ -1,0 +1,43 @@
+@import 'variables';
+
+.skill-priority-statistics-card {
+  margin-bottom: 8px;
+}
+.my-skills-toolbar {
+  margin-bottom: 16px;
+}
+
+.my-skills-edit-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+
+
+.form {
+  margin: 10px;
+  min-width: 150px;
+  max-width: 80%;
+  width: 100%;
+}
+
+.button {
+  width: 100%;
+}
+
+.controles-container {
+  width: 100%;
+  padding: 5%;
+}
+
+.controles-container > * {
+  width: 100%;
+}
+
+.add-bottom-padding {
+  padding-bottom: 10px;
+}
+
+.button-row {
+  padding-top: 25px;
+}
