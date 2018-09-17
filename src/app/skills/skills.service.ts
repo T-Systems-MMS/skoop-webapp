@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Skill } from './skill';
 import { UserIdentityService } from '../shared/user-identity.service';
-import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

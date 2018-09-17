@@ -66,7 +66,6 @@ export class SkillsNewComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
-
   }
 
   close(): void {

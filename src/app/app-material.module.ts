@@ -10,7 +10,12 @@ import {
   MatFormFieldModule,
   MatInputModule,
   MatSliderModule,
-  MatAutocompleteModule
+  MatSelectModule,
+  MatCheckboxModule,
+  MatAutocompleteModule,
+  MatDialogModule,
+  MatMenuModule,
+  MatGridListModule,
 } from '@angular/material';
 
 @NgModule({
@@ -25,7 +30,12 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatSliderModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatGridListModule,
   ],
   exports: [
     MatSidenavModule,
@@ -38,7 +48,12 @@ import {
     MatFormFieldModule,
     MatInputModule,
     MatSliderModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatDialogModule,
+    MatMenuModule,
+    MatGridListModule,
   ]
 })
 export class AppMaterialModule { }

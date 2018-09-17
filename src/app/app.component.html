@@ -3,10 +3,14 @@
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
     <mat-toolbar color="primary" class="sidenav-toolbar">MySkills</mat-toolbar>
     <mat-nav-list>
-      <a mat-list-item routerLink="/my-skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">My skill profile</a>
-      <a mat-list-item routerLink="/statistics/skill-priority" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill priority statistics</a>
-      <a mat-list-item routerLink="/report/skill-priority-report" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill priority reports</a>
-      <a mat-list-item routerLink="/skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill management</a>
+      <a mat-list-item routerLink="/my-skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">My
+        skill profile</a>
+      <a mat-list-item routerLink="/statistics/skill-priority" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
+        priority statistics</a>
+      <a mat-list-item routerLink="/report/skill-priority-report" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
+        priority reports</a>
+      <a mat-list-item routerLink="/skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
+        management</a>
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
@@ -16,6 +20,19 @@
       </button>
       <span class="space-consumer"></span>
       <span class="page-header-username">{{ (userIdentity$ | async)?.userName }}</span>
+      <button mat-icon-button [matMenuTriggerFor]="menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button routerLink="/users" mat-menu-item>
+          <mat-icon>edit</mat-icon>
+          <span>Profile</span>
+        </button>
+        <button mat-menu-item>
+          <mat-icon>exit_to_app</mat-icon>
+          <span>Log out</span>
+        </button>
+      </mat-menu>
     </mat-toolbar>
     <div class="page-content">
       <router-outlet></router-outlet>

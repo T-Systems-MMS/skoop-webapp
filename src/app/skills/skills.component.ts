@@ -42,6 +42,7 @@ export class SkillsComponent implements OnInit {
       .subscribe(skills => {
         this.skills = skills;
         this.skillsFiltered = skills;
+        console.log('skillSize:' + this.skills.length + ' skillFilterSize:' + this.skillsFiltered.length)
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772

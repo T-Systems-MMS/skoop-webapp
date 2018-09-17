@@ -7,7 +7,6 @@ import { UserSkillPriorityReportResponse } from './user-skill-priority-report-re
 import { UserSkillPriorityReportDetailsResponse } from './user-skill-priority-report-details-response';
 import { SkillUser } from '../user-skills/skill-user';
 import { Skill } from '../skills/skill';
-import { catchError } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Injectable({
