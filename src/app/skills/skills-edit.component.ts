@@ -36,9 +36,6 @@ export class SkillsEditComponent implements OnInit {
     this.skillName.valueChanges
       .pipe(switchMap(search => this.skillsService.isSkillExist(search)))
       .subscribe(isSkillExist => {
-        // console.log('isSkillExist: ' + isSkillExist);
-        // console.log('skillNameString: ' + this.skillNameString);
-        // console.log('this.skill.name: ' + this.skillName.value);
         if (isSkillExist && this.skillNameString !== this.skillName.value) {
           this.errorMessage = 'Skill with this name has already existed!';
           this.operationInProgress = true;

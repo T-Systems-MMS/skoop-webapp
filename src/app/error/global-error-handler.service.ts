@@ -1,4 +1,4 @@
-import { Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ResponseError, ResponseSubError } from './response-error';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -18,9 +18,10 @@ export class GlobalErrorHandlerService {
             return errorResponse.error.message;
         } else {
             // A server-side error occurred.
+            console.error(`Error creating new user skill: ${errorResponse.message}`);
+
             let serverDetailsError: ResponseError;
             if (typeof errorResponse.error === 'string' && this.instanceOfResponseError(JSON.parse(errorResponse.error))) {
-                console.log('for text!');
                 serverDetailsError = JSON.parse(errorResponse.error);
             } else if (typeof errorResponse.error === 'object' && (!this.instanceOfResponseError(errorResponse.error))) {
                 // This means we get an error from other servers, except Myskill-Server, like Keycloak-Server ...
