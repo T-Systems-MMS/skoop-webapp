@@ -1,7 +1,4 @@
-import { HttpErrorResponse } from '@angular/common/http';
-
 export interface ResponseError {
-    errorCode: number;
     message: string;
     // fullMessage is created inside GlobalErrorHandlerService. It's combination of message and subErrors.
     fullMessage: string;

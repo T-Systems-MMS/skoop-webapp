@@ -30,7 +30,7 @@ export class GlobalErrorHandlerService {
                 serverDetailsError = errorResponse.error;
             }
 
-            let fullMessage: string = '(#' + serverDetailsError.errorCode + ') - ' + serverDetailsError.message;
+            let fullMessage: string = serverDetailsError.message;
 
             const responseSubErrors: ResponseSubError[] = serverDetailsError.subErrors;
             if (responseSubErrors) {
@@ -45,7 +45,7 @@ export class GlobalErrorHandlerService {
     }
 
     instanceOfResponseError(object: any): object is ResponseError {
-        return 'errorCode' in object || 'timestamp' in object;
+        return 'timestamp' in object;
         // return object.discriminator === 'I-AM-A';
     }
 
