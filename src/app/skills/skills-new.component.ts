@@ -77,7 +77,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy {
   }
 
   onKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addSkill();
     }
   }

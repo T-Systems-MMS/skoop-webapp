@@ -11,7 +11,7 @@
     </mat-form-field>
   </div>
   <div>
-    <button mat-raised-button color="primary" (click)="editSkill()" [disabled]="operationInProgress" aria-label="Add skill"
+    <button mat-raised-button color="primary" (click)="editSkill()" [disabled]="operationInProgress || skillName.invalid" aria-label="Add skill"
       class="my-skills-new-button">Update skill</button>
     <button mat-raised-button (click)="close()" aria-label="Close" class="my-skills-new-button">Close</button>
   </div>

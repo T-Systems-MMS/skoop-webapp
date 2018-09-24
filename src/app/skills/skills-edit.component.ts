@@ -74,7 +74,7 @@ export class SkillsEditComponent implements OnInit {
   }
 
   onKeyPress(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.editSkill();
     }
   }
