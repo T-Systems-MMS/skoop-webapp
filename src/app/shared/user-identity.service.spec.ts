@@ -1,21 +1,20 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { UserIdentityService } from './user-identity.service';
 import { UserIdentity } from './user-identity';
 
 describe('UserIdentityService', () => {
-  let httpClient: HttpClient;
+  let userIdentityService: UserIdentityService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
+    const bed = TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [UserIdentityService]
     });
-    httpClient = TestBed.get(HttpClient);
+    userIdentityService = bed.get(UserIdentityService);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
@@ -27,17 +26,17 @@ describe('UserIdentityService', () => {
     expect(service).toBeTruthy();
   }));
 
+  const userIdentityTestData: UserIdentity = {
+    userId: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
+    userName: 'tester',
+    firstName: 'Toni',
+    lastName: 'Tester',
+    email: 'toni.tester@myskills.io',
+    roles: ['ROLE_ADMIN', 'ROLE_USER']
+  };
+
   it('should provide the user identity returned by the server',
     async(inject([UserIdentityService], (service: UserIdentityService) => {
-      const userIdentityTestData: UserIdentity = {
-        userId: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
-        userName: 'tester',
-        firstName: 'Toni',
-        lastName: 'Tester',
-        email: 'toni.tester@myskills.io',
-        roles: ['ROLE_ADMIN', 'ROLE_USER']
-      };
-
       service.getUserIdentity().subscribe(userIdentity => {
         expect(userIdentity).toEqual(userIdentityTestData);
       });
@@ -54,15 +53,6 @@ describe('UserIdentityService', () => {
 
   it('should provide the cached user identity without calling the server again',
     async(inject([UserIdentityService], (service: UserIdentityService) => {
-      const userIdentityTestData: UserIdentity = {
-        userId: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
-        userName: 'tester',
-        firstName: 'Toni',
-        lastName: 'Tester',
-        email: 'toni.tester@myskills.io',
-        roles: ['ROLE_ADMIN', 'ROLE_USER']
-      };
-
       service.getUserIdentity().subscribe(() => {
         service.getUserIdentity().subscribe(userIdentity => {
           expect(userIdentity).toEqual(userIdentityTestData);
@@ -77,5 +67,5 @@ describe('UserIdentityService', () => {
       expect(request.request.responseType).toEqual('json');
 
       request.flush(userIdentityTestData);
-    })));
+})));
 });

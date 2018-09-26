@@ -26,7 +26,8 @@ const userSkillPriorityReportsServiceStub: Partial<UserSkillPriorityReportsServi
   getReports(): Observable<UserSkillPriorityReportResponse[]> { return null; },
   getUserSkillPriorityReportDetails(reportId: string): Observable<UserSkillPriorityReportDetailsResponse[]> { return null; },
   getUserSkillReportById(userSkillReportId: string): Observable<SkillUser[]> { return null; },
-  getSkill(skillId: string): Observable<Skill> { return null; }
+  getSkill(skillId: string): Observable<Skill> { return null; },
+  getSkillName(skillName: string): Observable<any> { return null; }
 };
 
 describe('SkillUsersReportComponent', () => {
@@ -39,6 +40,9 @@ describe('SkillUsersReportComponent', () => {
       name: 'Angular',
       description: 'JavaScript Framework'
     }));
+    spyOn(userSkillPriorityReportsServiceStub, 'getSkillName').and.returnValue(of<any>(
+      'Angular'
+    ));
     spyOn(userSkillPriorityReportsServiceStub, 'getUserSkillReportById').and.returnValue(of<SkillUser[]>([{
       user: {
         id: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
