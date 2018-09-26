@@ -8,6 +8,7 @@ import { AppMaterialModule } from '../app-material.module';
 import { MySkillsComponent } from './my-skills.component';
 import { MySkillsService } from './my-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   getCurrentUserSkills(): Observable<UserSkill[]> { return null; }
@@ -38,6 +39,7 @@ describe('MySkillsComponent', () => {
       ],
       declarations: [MySkillsComponent],
       providers: [
+        GlobalErrorHandlerService,
         { provide: MySkillsService, useValue: mySkillsServiceStub }
       ]
     }).compileComponents();

@@ -12,6 +12,7 @@ import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { UserSkillsService } from '../user-skills/user-skills.service';
 import { SkillUser } from '../user-skills/skill-user';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({ selector: 'app-skill-user', template: '' })
 class SkillUserStubComponent {
@@ -62,6 +63,7 @@ describe('SkillUsersComponent', () => {
         SkillUserStubComponent
       ],
       providers: [
+        GlobalErrorHandlerService,
         { provide: SkillsService, useValue: skillsServiceStub },
         { provide: UserSkillsService, useValue: userSkillsServiceStub }
       ]

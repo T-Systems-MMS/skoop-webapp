@@ -11,6 +11,7 @@ import { AppMaterialModule } from '../app-material.module';
 import { MySkillsNewComponent } from './my-skills-new.component';
 import { MySkillsService } from './my-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   createCurrentUserSkill(skillName: string, currentLevel: number, desiredLevel: number, priority: number):
@@ -38,6 +39,7 @@ describe('MySkillsNewComponent', () => {
       ],
       declarations: [MySkillsNewComponent],
       providers: [
+        GlobalErrorHandlerService,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub }
       ]

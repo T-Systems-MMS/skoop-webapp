@@ -4,7 +4,6 @@ import { UsersService } from './users.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -20,7 +19,6 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private usersService: UsersService,
     private formBuilder: FormBuilder,
-    private router: Router,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
@@ -45,7 +43,6 @@ export class UserProfileComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
-
   }
 
   onSubmit() {

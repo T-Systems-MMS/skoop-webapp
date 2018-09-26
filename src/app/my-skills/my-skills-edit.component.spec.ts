@@ -10,6 +10,8 @@ import { AppMaterialModule } from '../app-material.module';
 import { MySkillsEditComponent, UserSkillView } from './my-skills-edit.component';
 import { MySkillsService } from './my-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { By } from '@angular/platform-browser';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
@@ -47,6 +49,7 @@ describe('MySkillsEditComponent', () => {
       ],
       declarations: [MySkillsEditComponent],
       providers: [
+        GlobalErrorHandlerService,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData }
@@ -67,5 +70,8 @@ describe('MySkillsEditComponent', () => {
   it('should render the skill name as heading', async(() => {
     const element = fixture.debugElement.nativeElement;
     expect(element.querySelector('h2').textContent).toContain('Angular');
+
+    const h1 = fixture.debugElement.query(By.css('h2'));
+    expect(h1.nativeElement.innerText).toBe('Angular');
   }));
 });

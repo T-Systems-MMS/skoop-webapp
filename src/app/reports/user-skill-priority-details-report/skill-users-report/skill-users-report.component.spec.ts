@@ -14,6 +14,7 @@ import { UserSkillPriorityReportResponse } from '../../user-skill-priority-repor
 import { UserSkillPriorityReportDetailsResponse } from '../../user-skill-priority-report-details-response';
 import { SkillUser } from '../../../user-skills/skill-user';
 import { Skill } from '../../../skills/skill';
+import { GlobalErrorHandlerService } from '../../../error/global-error-handler.service';
 
 @Component({ selector: 'app-skill-user', template: '' })
 class SkillUserStubComponent {
@@ -63,6 +64,7 @@ describe('SkillUsersReportComponent', () => {
         SkillUserStubComponent
       ],
       providers: [
+        GlobalErrorHandlerService,
         { provide: UserSkillPriorityReportsService, useValue: userSkillPriorityReportsServiceStub }
       ]
     }).compileComponents();

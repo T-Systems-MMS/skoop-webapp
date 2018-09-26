@@ -6,6 +6,7 @@ import { UserSkillsService } from '../user-skills/user-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 const userSkillsServiceStub: Partial<UserSkillsService> = {
   getUserSkills(userId: string): Observable<UserSkill[]> { return null; }
@@ -34,7 +35,7 @@ describe('MySkillsService', () => {
     }));
     TestBed.configureTestingModule({
       providers: [
-        MySkillsService,
+        MySkillsService, GlobalErrorHandlerService,
         { provide: UserSkillsService, useValue: userSkillsServiceStub },
         { provide: UserIdentityService, useValue: userIdentityServiceStub }
       ]
