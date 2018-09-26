@@ -5,7 +5,6 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { SkillsService } from './skills.service';
 
 describe('SkillsService', () => {
-  let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -13,7 +12,6 @@ describe('SkillsService', () => {
       imports: [HttpClientTestingModule],
       providers: [SkillsService]
     });
-    httpClient = TestBed.get(HttpClient);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 

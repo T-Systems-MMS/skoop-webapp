@@ -1,13 +1,11 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { environment } from '../../environments/environment';
 import { UserSkillsService } from './user-skills.service';
 import { UserSkill } from './user-skill';
 
 describe('UserSkillsService', () => {
-  let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -15,7 +13,6 @@ describe('UserSkillsService', () => {
       imports: [HttpClientTestingModule],
       providers: [UserSkillsService]
     });
-    httpClient = TestBed.get(HttpClient);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 

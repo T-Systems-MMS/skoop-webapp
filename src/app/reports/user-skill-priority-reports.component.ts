@@ -2,7 +2,6 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserSkillPriorityReportsService } from './user-skill-priority-reports.service';
 import { UserSkillPriorityReportResponse } from './user-skill-priority-report-response';
-import { ResponseError } from '../error/response-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 

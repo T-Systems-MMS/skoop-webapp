@@ -12,9 +12,9 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
   providedIn: 'root'
 })
 export class MySkillsService {
+
   constructor(private userSkillsService: UserSkillsService,
-    private userIdentityService: UserIdentityService,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private userIdentityService: UserIdentityService) { }
 
   getCurrentUserSkills(): Observable<UserSkill[]> {
     return this.userIdentityService.getUserIdentity()
