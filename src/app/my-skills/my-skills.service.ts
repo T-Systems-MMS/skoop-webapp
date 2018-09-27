@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap, catchError } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 import { UserSkill } from '../user-skills/user-skill';
 import { UserSkillsService } from '../user-skills/user-skills.service';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from '../users/user';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Injectable({
   providedIn: 'root'

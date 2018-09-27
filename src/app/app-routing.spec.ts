@@ -11,7 +11,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { By, BrowserModule } from '@angular/platform-browser';
-import { click, advance, expectPathToBe } from './Helper';
+import { click, advance, expectPathToBe, expectPathToNotBe } from './app-routing.helper';
 import { HttpClientModule } from '@angular/common/http';
 import { UserIdentityService } from './shared/user-identity.service';
 import { UserIdentity } from './shared/user-identity';
@@ -79,6 +79,6 @@ describe('Router: App', () => {
         expectPathToBe(location, '/my-skills');
         click(allLinkDes[3]);
         advance(fixture);
-        expectPathToBe(location, '/skills', 'link should not have navigated yet');
+        expectPathToNotBe(location, '/my-skills', 'link should have navigated yet');
     }));
 });

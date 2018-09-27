@@ -1,10 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { SkillsService } from './skills.service';
 
 describe('SkillsService', () => {
+  let service: SkillsService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -12,6 +12,7 @@ describe('SkillsService', () => {
       imports: [HttpClientTestingModule],
       providers: [SkillsService]
     });
+    service = TestBed.get(SkillsService);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
@@ -19,7 +20,7 @@ describe('SkillsService', () => {
     httpTestingController.verify();
   });
 
-  it('should be created', inject([SkillsService], (service: SkillsService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 });

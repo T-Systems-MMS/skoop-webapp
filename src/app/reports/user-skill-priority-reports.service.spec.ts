@@ -23,11 +23,11 @@ describe('UserSkillPriorityReportsService', () => {
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
-    const bed = TestBed.configureTestingModule({
+    TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [UserSkillPriorityReportsService]
     });
-    service = bed.get(UserSkillPriorityReportsService);
+    service = TestBed.get(UserSkillPriorityReportsService);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 

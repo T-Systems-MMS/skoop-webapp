@@ -17,6 +17,8 @@ const userIdentityServiceStub: Partial<UserIdentityService> = {
 };
 
 describe('MySkillsService', () => {
+  let service: MySkillsService;
+
   beforeEach(() => {
     spyOn(userSkillsServiceStub, 'getUserSkills').and.returnValue(of([{
       skill: {
@@ -40,20 +42,22 @@ describe('MySkillsService', () => {
         { provide: UserIdentityService, useValue: userIdentityServiceStub }
       ]
     });
+
+    service = TestBed.get(MySkillsService);
   });
 
-  it('should be created', inject([MySkillsService], (service: MySkillsService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 
-  it('should request the user skills for the current user ID', async(inject([MySkillsService], (service: MySkillsService) => {
+  it('should request the user skills for the current user ID', async () => {
     service.getCurrentUserSkills().subscribe(userSkills => {
       expect(userIdentityServiceStub.getUserIdentity).toHaveBeenCalled();
       expect(userSkillsServiceStub.getUserSkills).toHaveBeenCalledWith('9a96f28f-8f50-40d9-be1c-605aedd9dfc9');
     });
-  })));
+  });
 
-  it('should return all the user skills data', async(inject([MySkillsService], (service: MySkillsService) => {
+  it('should return all the user skills data', async () => {
     service.getCurrentUserSkills().subscribe(userSkills => {
       expect(userSkills).toBeDefined();
       expect(userSkills.length).toBe(1);
@@ -65,5 +69,5 @@ describe('MySkillsService', () => {
       expect(userSkills[0].desiredLevel).toBe(3);
       expect(userSkills[0].priority).toBe(4);
     });
-  })));
+  });
 });

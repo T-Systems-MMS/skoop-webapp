@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppMaterialModule } from '../../app-material.module';
 import { SkillUserComponent } from './skill-user.component';
+import { By } from '@angular/platform-browser';
 
 describe('SkillUserComponent', () => {
   let component: SkillUserComponent;
@@ -40,4 +41,10 @@ describe('SkillUserComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should correctly render the passed @Input value', () => {
+    const h2 = fixture.debugElement.query(By.css('h2'));
+    expect(h2.nativeElement.innerText).toBe(component.skillUser.user.userName);
+  });
+
 });

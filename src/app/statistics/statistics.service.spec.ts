@@ -1,11 +1,10 @@
 import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import { StatisticsService } from './statistics.service';
 
 describe('StatisticsService', () => {
-  let httpClient: HttpClient;
+  let service: StatisticsService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -13,7 +12,7 @@ describe('StatisticsService', () => {
       imports: [HttpClientTestingModule],
       providers: [StatisticsService]
     });
-    httpClient = TestBed.get(HttpClient);
+    service = TestBed.get(StatisticsService);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
@@ -21,7 +20,7 @@ describe('StatisticsService', () => {
     httpTestingController.verify();
   });
 
-  it('should be created', inject([StatisticsService], (service: StatisticsService) => {
+  it('should be created', () => {
     expect(service).toBeTruthy();
-  }));
+  });
 });

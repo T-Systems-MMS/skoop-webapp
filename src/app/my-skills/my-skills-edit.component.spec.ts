@@ -12,6 +12,7 @@ import { MySkillsService } from './my-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
+import { DebugElement } from '@angular/core';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
@@ -68,10 +69,12 @@ describe('MySkillsEditComponent', () => {
   });
 
   it('should render the skill name as heading', async(() => {
-    const element = fixture.debugElement.nativeElement;
-    expect(element.querySelector('h2').textContent).toContain('Angular');
+    // access through nativeElement
+    const element = fixture.nativeElement.querySelector('h2');
+    expect(element.textContent).toContain('Angular');
 
-    const h1 = fixture.debugElement.query(By.css('h2'));
+    // access through debugElement
+    const h1: DebugElement = fixture.debugElement.query(By.css('h2'));
     expect(h1.nativeElement.innerText).toBe('Angular');
   }));
 });

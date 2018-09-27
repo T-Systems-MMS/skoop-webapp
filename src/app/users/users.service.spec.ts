@@ -2,10 +2,9 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { UsersService } from './users.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { HttpClient } from '@angular/common/http';
 
 describe('UsersService', () => {
-  let httpClient: HttpClient;
+  let service: UsersService;
   let httpTestingController: HttpTestingController;
 
   beforeEach(() => {
@@ -13,11 +12,20 @@ describe('UsersService', () => {
       imports: [HttpClientTestingModule],
       providers: [UsersService]
     });
-    httpClient = TestBed.get(HttpClient);
+    service = TestBed.get(UsersService);
     httpTestingController = TestBed.get(HttpTestingController);
   });
 
-  it('should be created', inject([UsersService], (service: UsersService) => {
-    expect(service).toBeTruthy();
+  afterEach(() => {
+    httpTestingController.verify();
+  });
+
+  // both of below tests are equal
+  it('should be created with inline inject', inject([UsersService], (usersService: UsersService) => {
+    expect(usersService).toBeTruthy();
   }));
+  it('should be created with global inject', () => {
+    expect(service).toBeTruthy();
+  });
+
 });

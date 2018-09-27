@@ -1,7 +1,7 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, tick } from '@angular/core/testing';
 import { Location } from '@angular/common';
-import {} from 'jasmine';
+import { } from 'jasmine';
 
 export const ButtonClickEvents = {
     left: { button: 0 },
@@ -25,7 +25,10 @@ export function advance(f: ComponentFixture<any>, time?: number): void {
     f.detectChanges();
 }
 
-export function expectPathToBe(
-    l: Location, path: string, expectationFailOutput?: any) {
+export function expectPathToBe(l: Location, path: string, expectationFailOutput?: any) {
     expect(l.path()).toEqual(path, expectationFailOutput || l.path());
+}
+
+export function expectPathToNotBe(l: Location, path: string, expectationFailOutput?: any) {
+    expect(l.path()).not.toEqual(path, expectationFailOutput || l.path());
 }
