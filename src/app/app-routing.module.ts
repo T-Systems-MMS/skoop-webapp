@@ -7,12 +7,11 @@ import { UserSkillPriorityReportsComponent } from './reports/user-skill-priority
 import { SkillUsersComponent } from './skill-users/skill-users.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { UserSkillPriorityDetailsReportComponent } from './reports/user-skill-priority-details-report/user-skill-priority-details-report.component';
-import { SkillUserComponent } from './skill-users/skill-user/skill-user.component';
 import { SkillUsersReportComponent } from './reports/user-skill-priority-details-report/skill-users-report/skill-users-report.component';
 import { SkillsComponent } from './skills/skills.component';
 import { UserProfileComponent } from './users/user-profile.component';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },
   {
@@ -44,10 +43,10 @@ export const routingComponents = [
   UserSkillPriorityReportsComponent,
   SkillUsersComponent,
   UserSkillPriorityDetailsReportComponent,
-  SkillUserComponent,
   SkillUsersReportComponent,
   SkillsComponent,
   UserProfileComponent,
+  PageNotFoundComponent,
 ];
 
 @NgModule({

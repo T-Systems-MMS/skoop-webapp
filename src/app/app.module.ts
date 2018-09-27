@@ -22,18 +22,18 @@ import { OAuthModule, OAuthModuleConfig, OAuthService, JwksValidationHandler } f
 import { AppComponent } from './app.component';
 import { MySkillsNewComponent } from './my-skills/my-skills-new.component';
 import { MySkillsEditComponent } from './my-skills/my-skills-edit.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { SkillPriorityStatisticComponent } from './statistics/statistic/skill-priority-statistic.component';
 import { GlobalErrorHandlerService } from './error/global-error-handler.service';
 import { SkillsNewComponent } from './skills/skills-new.component';
 import { SkillsEditComponent } from './skills/skills-edit.component';
 import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { SkillUserComponent } from './skill-users/skill-user/skill-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
-    PageNotFoundComponent,
+    SkillUserComponent,
     MySkillsNewComponent,
     MySkillsEditComponent,
     SkillPriorityStatisticComponent,
