@@ -12,7 +12,6 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 })
 export class UserProfileComponent implements OnInit {
   userForm: FormGroup = null;
-  loading = false;
   submitted = false;
   errorMessage: string = null;
   dataAvailable = false;
@@ -48,12 +47,20 @@ export class UserProfileComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
     const user: User = this.userForm.value;
-    this.usersService.updateUser(user.userName, user.coach)
-      .subscribe(() => { },
+    this.usersService.updateUser(user.userName, user.coach).subscribe(
+      updatedUser => {
+        this.userForm.controls['$id'].setValue(updatedUser.id);
+        this.userForm.controls['userName'].setValue(updatedUser.userName);
+        this.userForm.controls['firstName'].setValue(updatedUser.firstName);
+        this.userForm.controls['lastName'].setValue(updatedUser.lastName);
+        this.userForm.controls['email'].setValue(updatedUser.email);
+        this.userForm.controls['coach'].setValue(updatedUser.coach);
+      },
         (errorResponse: HttpErrorResponse) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
           this.changeDetector.markForCheck();
-        });
+      }
+    );
   }
 }

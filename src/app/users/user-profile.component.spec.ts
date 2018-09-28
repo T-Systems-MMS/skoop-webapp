@@ -10,9 +10,12 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UsersService } from './users.service';
 import { User } from './user';
 import { Observable, of } from 'rxjs';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 
 const usersServiceStub: Partial<UsersService> = {
-  getUser(): Observable<User> { return null; }
+  getUser(): Observable<User> { return null; },
+  updateUser(userName: string, coach: boolean): Observable<User> { return null; },
 };
 
 describe('UserProfileComponent', () => {
@@ -21,11 +24,23 @@ describe('UserProfileComponent', () => {
 
   beforeEach(async(() => {
     spyOn(usersServiceStub, 'getUser')
-      .and.returnValue(of<User[]>([{
-        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-        userName: 'tester',
-        firstName: 'testername'
-      }]));
+      .and.returnValue(of<User>(
+        {
+          id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+          userName: 'tester',
+          firstName: 'testername'
+        }
+      ));
+
+    spyOn(usersServiceStub, 'updateUser')
+      .and.returnValue(of<User>(
+        {
+          id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+          userName: 'tester',
+          firstName: 'testername',
+          coach: true,
+        }
+      ));
 
     TestBed.configureTestingModule({
       imports: [
@@ -40,8 +55,7 @@ describe('UserProfileComponent', () => {
         GlobalErrorHandlerService,
         { provide: UsersService, useValue: usersServiceStub },
       ]
-    })
-      .compileComponents();
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -52,6 +66,12 @@ describe('UserProfileComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should initialize properties', () => {
+    expect(component.submitted).toBeFalsy();
+    expect(component.userForm).toBeTruthy();
+    expect(component.errorMessage).toBeNull();
   });
 
   it('userName field required with blank validity', () => {
@@ -82,5 +102,22 @@ describe('UserProfileComponent', () => {
     expect(errors['minlength']).toBeUndefined();
     expect(userNameField.valid).toBeTruthy();
     expect(component.userForm.valid).toBeTruthy();
+  });
+
+  it('should show "User profile" as heading', async(() => {
+    const h1DebugElement: DebugElement = fixture.debugElement.query(By.css('h1'));
+    expect(h1DebugElement.nativeElement.innerText).toBe('User profile');
+  }));
+
+  it('updating a user profile', () => {
+    expect(component.userForm.controls['coach'].value).toBeNull();
+
+    component.onSubmit();
+
+    // Now we can check to make sure the user profile has updated
+    expect(component.userForm.controls['$id'].value).toBe('e6b808eb-b6bd-447d-8dce-3e0d66b17759');
+    expect(component.userForm.controls['userName'].value).toBe('tester');
+    expect(component.userForm.controls['firstName'].value).toBe('testername');
+    expect(component.userForm.controls['coach'].value).toBe(true);
   });
 });

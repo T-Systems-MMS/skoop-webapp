@@ -1,6 +1,6 @@
-<div  class="skill-priority-statistics mat-typography ">
-    <h1>User profile</h1>
-    <div *ngIf="errorMessage" class="my-skills-edit-error">{{ errorMessage }}</div>
+<div class="skill-priority-statistics mat-typography ">
+  <h1>User profile</h1>
+  <div *ngIf="errorMessage" class="my-skills-edit-error">{{ errorMessage }}</div>
 </div>
 <div *ngIf="dataAvailable" fxLayoutAlign="center center">
   <form [formGroup]="userForm" (ngSubmit)="onSubmit(userForm.value)" class="form">

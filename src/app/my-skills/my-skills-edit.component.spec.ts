@@ -68,13 +68,18 @@ describe('MySkillsEditComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render the skill name as heading', async(() => {
+  it('should have <h2> with "Angular"', async(() => {
     // access through nativeElement
-    const element = fixture.nativeElement.querySelector('h2');
-    expect(element.textContent).toContain('Angular');
+    const mySkillEditElement: HTMLElement = fixture.nativeElement;
+    const h2 = mySkillEditElement.querySelector('h2');
+    expect(h2.textContent).toContain('Angular');
+  }));
 
+  it('should find the <h2> with fixture.debugElement.nativeElement)', async(() => {
     // access through debugElement
-    const h1: DebugElement = fixture.debugElement.query(By.css('h2'));
-    expect(h1.nativeElement.innerText).toBe('Angular');
+    const mySkillEditDe: DebugElement = fixture.debugElement;
+    const mySkillEditEl: HTMLElement = mySkillEditDe.nativeElement;
+    const h2 = mySkillEditEl.querySelector('h2');
+    expect(h2.textContent).toEqual('Angular');
   }));
 });
