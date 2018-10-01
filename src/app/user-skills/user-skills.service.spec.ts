@@ -111,7 +111,7 @@ describe('UserSkillsService', () => {
     request.flush(mockUserSkillsData);
   }));
 
-  it('should send the API request to create a user skill with the given data and provide the result', async(() => {
+  it('should create a user skill with the given data and provide the result', async(() => {
     const mockUserSkillData: UserSkill = {
       skill: {
         id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -139,6 +139,38 @@ describe('UserSkillsService', () => {
       currentLevel: 2,
       desiredLevel: 3,
       priority: 4
+    });
+
+    request.flush(mockUserSkillData);
+  }));
+
+  it('should update a user skill with the given data and provide the result', async(() => {
+    const mockUserSkillData: UserSkill = {
+      skill: {
+        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+        name: 'Angular',
+        description: 'JavaScript Framework'
+      },
+      currentLevel: 3,
+      desiredLevel: 4,
+      priority: 0
+    };
+
+    service.updateUserSkill('123', '456', 3, 4, 0).subscribe(userSkill => {
+      expect(userSkill).toEqual(mockUserSkillData);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/123/skills/456`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+    expect(request.request.headers.get('Content-Type')).toEqual('application/json');
+    expect(request.request.body).toEqual({
+      currentLevel: 3,
+      desiredLevel: 4,
+      priority: 0
     });
 
     request.flush(mockUserSkillData);
