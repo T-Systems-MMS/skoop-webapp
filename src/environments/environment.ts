@@ -1,15 +1,18 @@
+import { EnvironmentConfig } from './environment.config';
+
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build ---prod` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
-export const environment = {
+export const environment: EnvironmentConfig = {
   production: false,
   authentication: {
     issuer: 'http://localhost:9000/auth/realms/MySkills',
     clientId: 'myskills',
     scope: 'openid profile email',
     redirectUri: null,
-    silentRefreshRedirectUri: null
+    silentRefreshRedirectUri: null,
+    requireHttps: false
   },
   serverApiUrl: 'http://localhost:4200/api'
 };

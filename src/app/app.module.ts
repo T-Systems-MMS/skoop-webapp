@@ -86,7 +86,8 @@ export function initAuthentication(moduleConfig: OAuthModuleConfig, oauthService
       clientId: environment.authentication.clientId,
       scope: environment.authentication.scope,
       redirectUri: environment.authentication.redirectUri ? environment.authentication.redirectUri : window.location.origin + '/',
-      oidc: true
+      oidc: true,
+      requireHttps: environment.authentication.requireHttps
     });
     oauthService.tokenValidationHandler = new JwksValidationHandler();
     return oauthService.loadDiscoveryDocumentAndLogin();

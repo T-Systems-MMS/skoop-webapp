@@ -76,8 +76,10 @@ docker run \
   -p 4200:80 \
   --link myskills-server \
   -e SERVER_NAME=localhost:4200 \
-  -e MYSKILLS_SERVER_BASE_URL=http://myskills-server:8080 \
-  -e MYSKILLS_CONFIG_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/MySkills \
+  -e SERVER_ADMIN=your-name@your-domain.com
+  -e MYSKILLS_SERVER_URL=http://myskills-server:8080 \
+  -e MYSKILLS_WEBAPP_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/MySkills \
+  -e MYSKILLS_WEBAPP_AUTHENTICATION_INSECURE=true \
   myskills/webapp:latest
 ----
 
