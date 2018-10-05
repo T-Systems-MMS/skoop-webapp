@@ -18,67 +18,67 @@ import { UserIdentity } from './shared/user-identity';
 import { Observable, of } from 'rxjs';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
-    getUserIdentity(): Observable<UserIdentity> { return null; }
+  getUserIdentity(): Observable<UserIdentity> { return null; }
 };
 
 describe('Router: App', () => {
-    let location: SpyLocation;
-    let allLinkDes: DebugElement[];
-    let fixture: ComponentFixture<AppComponent>;
+  let location: SpyLocation;
+  let allLinkDes: DebugElement[];
+  let fixture: ComponentFixture<AppComponent>;
 
-    beforeEach(async(() => {
-        spyOn(userIdentityServiceStub, 'getUserIdentity')
-            .and.returnValue(of<UserIdentity>({
-                userId: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
-                userName: 'tester',
-                roles: ['ROLE_USER']
-            }));
+  beforeEach(async(() => {
+    spyOn(userIdentityServiceStub, 'getUserIdentity')
+      .and.returnValue(of<UserIdentity>({
+        userId: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
+        userName: 'tester',
+        roles: ['ROLE_USER']
+      }));
 
-        TestBed.configureTestingModule({
-            imports: [
-                RouterTestingModule.withRoutes([
-                    { path: 'my-skills', component: AppComponent },
-                    { path: 'skills', component: AppComponent },
-                    { path: 'skills/:skillId/users', component: AppComponent },
-                    { path: 'users', component: AppComponent },
-                    { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
-                    { path: '**', component: AppComponent }
-                ]),
-                BrowserAnimationsModule,
-                LayoutModule,
-                FlexLayoutModule,
-                ReactiveFormsModule,
-                BrowserModule,
-                AppMaterialModule,
-                HttpClientModule
-            ],
-            declarations: [
-                AppComponent,
-            ],
-            providers: [
-                { provide: UserIdentityService, useValue: userIdentityServiceStub }
-            ]
-        }).compileComponents();
-    }));
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([
+          { path: 'my-skills', component: AppComponent },
+          { path: 'skills', component: AppComponent },
+          { path: 'skills/:skillId/users', component: AppComponent },
+          { path: 'user-profile', component: AppComponent },
+          { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
+          { path: '**', component: AppComponent }
+        ]),
+        BrowserAnimationsModule,
+        LayoutModule,
+        FlexLayoutModule,
+        ReactiveFormsModule,
+        BrowserModule,
+        AppMaterialModule,
+        HttpClientModule
+      ],
+      declarations: [
+        AppComponent,
+      ],
+      providers: [
+        { provide: UserIdentityService, useValue: userIdentityServiceStub }
+      ]
+    }).compileComponents();
+  }));
 
-    beforeEach(() => {
-        fixture = TestBed.createComponent(AppComponent);
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AppComponent);
 
-        const injector = fixture.debugElement.injector;
-        location = injector.get(Location) as SpyLocation;
+    const injector = fixture.debugElement.injector;
+    location = injector.get(Location) as SpyLocation;
 
-        allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
+    allLinkDes = fixture.debugElement.queryAll(By.directive(RouterLinkWithHref));
 
-        fixture.detectChanges();
-    });
+    fixture.detectChanges();
+  });
 
-    it('all items takes me home', fakeAsync(() => {
-        expectPathToBe(location, '', 'link should not have navigated yet');
-        click(allLinkDes[0]);
-        advance(fixture);
-        expectPathToBe(location, '/my-skills');
-        click(allLinkDes[3]);
-        advance(fixture);
-        expectPathToNotBe(location, '/my-skills', 'link should have navigated yet');
-    }));
+  it('all items takes me home', fakeAsync(() => {
+    expectPathToBe(location, '', 'link should not have navigated yet');
+    click(allLinkDes[0]);
+    advance(fixture);
+    expectPathToBe(location, '/my-skills');
+    click(allLinkDes[3]);
+    advance(fixture);
+    expectPathToNotBe(location, '/my-skills', 'link should have navigated yet');
+  }));
 });

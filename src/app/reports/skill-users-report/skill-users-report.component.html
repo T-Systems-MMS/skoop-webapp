@@ -2,9 +2,9 @@
   <h1>Users of {{ skillName }}</h1>
   <div *ngIf="errorMessage" class="my-skills-edit-error">{{ errorMessage }}</div>
   <div class="my-skills-toolbar">
-    <button mat-raised-button (click)="backToSkillPriorityReport()" aria-label="Back To Skill Priority Report">Back To Skill
-      Priority Report</button>
+    <button mat-raised-button (click)="backToReport()" aria-label="Back to report">Back To Report</button>
   </div>
+
   <mat-card *ngFor="let skillUser of skillUsers" class="skill-users-card">
     <app-skill-user [skillUser]="skillUser"></app-skill-user>
   </mat-card>

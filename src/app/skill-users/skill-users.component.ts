@@ -45,10 +45,7 @@ export class SkillUsersComponent implements OnInit {
   private loadSkillUsers(skillId: string) {
     this.userSkillsService.getSkillUsers(skillId, 1)
       .pipe(map(skillUsers => skillUsers.map<SkillUserView>(skillUser => ({
-        user: {
-          id: skillUser.user.id,
-          userName: skillUser.user.userName
-        },
+        userName: skillUser.user.userName,
         currentLevel: skillUser.currentLevel,
         desiredLevel: skillUser.desiredLevel,
         priority: skillUser.priority
@@ -58,7 +55,7 @@ export class SkillUsersComponent implements OnInit {
           if (a.priority !== b.priority) { return b.priority - a.priority; }
           if (a.desiredLevel !== b.desiredLevel) { return b.desiredLevel - a.desiredLevel; }
           if (a.currentLevel !== b.currentLevel) { return b.currentLevel - a.currentLevel; }
-          return a.user.userName.toLocaleLowerCase().localeCompare(b.user.userName.toLocaleLowerCase());
+          return a.userName.toLocaleLowerCase().localeCompare(b.userName.toLocaleLowerCase());
         });
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
@@ -74,13 +71,8 @@ export interface SkillView {
 }
 
 export interface SkillUserView {
-  user: UserView;
+  userName: string;
   currentLevel: number;
   desiredLevel: number;
   priority: number;
-}
-
-export interface UserView {
-  id: string;
-  userName: string;
 }

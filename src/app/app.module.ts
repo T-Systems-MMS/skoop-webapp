@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
@@ -27,7 +27,7 @@ import { GlobalErrorHandlerService } from './error/global-error-handler.service'
 import { SkillsNewComponent } from './skills/skills-new.component';
 import { SkillsEditComponent } from './skills/skills-edit.component';
 import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { SkillUserComponent } from './skill-users/skill-user/skill-user.component';
+import { SkillUserComponent } from './skill-users/skill-user.component';
 
 @NgModule({
   declarations: [

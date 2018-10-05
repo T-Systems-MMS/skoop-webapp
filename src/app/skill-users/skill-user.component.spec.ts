@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
-import { AppMaterialModule } from '../../app-material.module';
+import { AppMaterialModule } from '../app-material.module';
 import { SkillUserComponent } from './skill-user.component';
 import { By } from '@angular/platform-browser';
 
@@ -27,10 +27,7 @@ describe('SkillUserComponent', () => {
     fixture = TestBed.createComponent(SkillUserComponent);
     component = fixture.componentInstance;
     component.skillUser = {
-      user: {
-        id: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
-        userName: 'tester'
-      },
+      userName: 'tester',
       currentLevel: 2,
       desiredLevel: 3,
       priority: 4
@@ -44,7 +41,7 @@ describe('SkillUserComponent', () => {
 
   it('should correctly render the passed @Input value', () => {
     const h2 = fixture.debugElement.query(By.css('h2'));
-    expect(h2.nativeElement.innerText).toBe(component.skillUser.user.userName);
+    expect(h2.nativeElement.innerText).toBe(component.skillUser.userName);
   });
 
 });

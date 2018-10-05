@@ -1,0 +1,57 @@
+<div *ngIf="activatedRoute.children.length === 0">
+  <div class="skill-priority-report mat-typography">
+    <h1>Skill priority report</h1>
+    <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
+    <div class="my-skills-toolbar">
+      <button mat-raised-button (click)="backToReports()" aria-label="Back to reports">Back To Reports</button>
+    </div>
+
+    <div *ngIf="report">
+      <p>Creation date: {{ report.date | date:'medium'}}</p>
+      <mat-card *ngFor="let aggregationReport of report.aggregationReports; index as rank"
+        class="skill-priority-report-card">
+        <mat-card-content>
+          <div fxLayout="row">
+            <div fxFlex>
+              <h2 class="skill-priority-report-skill-name">{{ (rank + 1) }}. {{ aggregationReport.skillName }}</h2>
+            </div>
+            <div fxFlex="none">
+              <a mat-icon-button title="Show users" (click)="showUsers(aggregationReport.id)" aria-label="Show users">
+                <mat-icon>people</mat-icon>
+              </a>
+            </div>
+          </div>
+          <div fxLayout="row">
+            <div fxFlex="33%">
+              <div class="skill-priority-report-level-label">Average:</div>
+              <div>
+                <mat-icon fxHide.lt-md="true" *ngFor="let threshold of [0.5,1.5,2.5,3.5]" aria-hidden="true">{{ (aggregationReport.averagePriority
+                  >= threshold)? 'star' : 'star_border' }}</mat-icon>
+                <span fxHide.gt-sm="true" class="skill-priority-report-level-value">{{ aggregationReport.averagePriority |
+                  number:'1.1-1' }}
+                </span>
+              </div>
+            </div>
+            <div fxFlex="33%">
+              <div class="skill-priority-report-level-label">Maximum:</div>
+              <div>
+                <mat-icon fxHide.lt-md="true" *ngFor="let threshold of [0.5,1.5,2.5,3.5]" aria-hidden="true">{{ (aggregationReport.maximumPriority
+                  >= threshold)? 'star' : 'star_border' }}</mat-icon>
+                <span fxHide.gt-sm="true" class="skill-priority-report-level-value">{{ aggregationReport.maximumPriority |
+                  number:'1.1-1' }}
+                </span>
+              </div>
+            </div>
+            <div fxFlex="33%">
+              <div class="skill-priority-report-level-label">User count:</div>
+              <div>
+                <span class="skill-priority-report-level-value">{{ aggregationReport.userCount }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+<router-outlet></router-outlet>

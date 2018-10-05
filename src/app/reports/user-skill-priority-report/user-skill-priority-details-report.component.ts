@@ -1,9 +1,8 @@
-import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { UserSkillPriorityReportsService } from '../user-skill-priority-reports.service';
-import { UserSkillPriorityReportDetailsResponse } from '../user-skill-priority-report-details-response';
+import { UserSkillPriorityReportsService } from './user-skill-priority-reports.service';
+import { UserSkillPriorityReport } from './user-skill-priority-report';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ResponseError } from '../../error/response-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
 
@@ -15,7 +14,7 @@ import { GlobalErrorHandlerService } from '../../error/global-error-handler.serv
 export class UserSkillPriorityDetailsReportComponent implements OnInit {
 
   reportId: String;
-  skillStatistics: UserSkillPriorityReportDetailsResponse[] = [];
+  report: UserSkillPriorityReport = null;
   errorMessage: string = null;
 
   constructor(
@@ -30,26 +29,26 @@ export class UserSkillPriorityDetailsReportComponent implements OnInit {
       .pipe(map(params => params.get('reportId')))
       .subscribe(reportId => {
         this.reportId = reportId;
-        this.loadSkillStatistics(reportId);
+        this.loadReport(reportId);
       });
   }
 
-  private loadSkillStatistics(reportId: string): void {
-    this.userSkillPriorityReportsService.getUserSkillPriorityReportDetails(reportId)
-      .subscribe(skillStatistics => { this.skillStatistics = skillStatistics; }
-        , (errorResponse: HttpErrorResponse) => {
+  private loadReport(reportId: string): void {
+    this.userSkillPriorityReportsService.getReportDetails(reportId)
+      .subscribe(report => { this.report = report; },
+        (errorResponse: HttpErrorResponse) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
           this.changeDetector.markForCheck();
         });
   }
 
-  backToReport() {
+  backToReports() {
     this.router.navigate(['../', { reportId: this.reportId }], { relativeTo: this.activatedRoute });
   }
 
-  goDetails(skillId: Number) {
-    this.router.navigate(['users', skillId], { relativeTo: this.activatedRoute });
+  showUsers(aggregationReportId: string) {
+    this.router.navigate(['users', aggregationReportId], { relativeTo: this.activatedRoute });
   }
 
 }

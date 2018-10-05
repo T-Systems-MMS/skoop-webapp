@@ -7,7 +7,7 @@
         skill profile</a>
       <a mat-list-item routerLink="/statistics/skill-priority" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
         priority statistics</a>
-      <a mat-list-item routerLink="/report/skill-priority-report" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
+      <a mat-list-item routerLink="/reports/skill-priority-reports" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
         priority reports</a>
       <a mat-list-item routerLink="/skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
         management</a>
@@ -24,7 +24,7 @@
         <mat-icon>menu</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button routerLink="/users" mat-menu-item>
+        <button routerLink="/user-profile" mat-menu-item>
           <mat-icon>edit</mat-icon>
           <span>Profile</span>
         </button>

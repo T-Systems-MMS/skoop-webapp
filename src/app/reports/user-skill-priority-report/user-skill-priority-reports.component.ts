@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserSkillPriorityReportsService } from './user-skill-priority-reports.service';
-import { UserSkillPriorityReportResponse } from './user-skill-priority-report-response';
+import { UserSkillPriorityReportMetaData } from './user-skill-priority-report-meta-data';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
 
 @Component({
   selector: 'app-user-skill-priority-reports',
@@ -11,7 +11,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
   styleUrls: ['./user-skill-priority-reports.component.scss']
 })
 export class UserSkillPriorityReportsComponent implements OnInit {
-  priorityReports: UserSkillPriorityReportResponse[] = [];
+  priorityReports: UserSkillPriorityReportMetaData[] = [];
   errorMessage: string = null;
 
   constructor(private userSkillPriorityReportsService: UserSkillPriorityReportsService,
@@ -35,12 +35,12 @@ export class UserSkillPriorityReportsComponent implements OnInit {
       });
   }
 
-  goDetails(id: Number) {
+  openReport(id: string) {
     this.router.navigate([id], { relativeTo: this.activatedRoute });
   }
 
   createReport() {
-    this.userSkillPriorityReportsService.createRport()
+    this.userSkillPriorityReportsService.createReport()
       .subscribe(newReport => {
         this.priorityReports.unshift(newReport);
       }, (errorResponse: HttpErrorResponse) => {

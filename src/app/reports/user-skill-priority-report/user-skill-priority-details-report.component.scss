@@ -1,0 +1,26 @@
+@import 'variables';
+
+.skill-priority-report-card {
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.skill-priority-report-skill-name {
+  margin: 0;
+  line-height: 40px;
+}
+
+.skill-priority-report-level-value {
+  font-size: 24px;
+}
+
+.my-skills-toolbar {
+  margin-bottom: 16px;
+}
+
+.my-skills-new-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}

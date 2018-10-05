@@ -1,10 +1,10 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { UserSkillPriorityReportsService } from './user-skill-priority-reports.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
-import { UserSkillPriorityReportResponse } from './user-skill-priority-report-response';
+import { environment } from '../../../environments/environment';
+import { UserSkillPriorityReportMetaData } from './user-skill-priority-report-meta-data';
 
-const mockReportsData: UserSkillPriorityReportResponse[] = [
+const mockReportsData: UserSkillPriorityReportMetaData[] = [
   {
     id: 'e6b808eb-b6bd-447d-8dce-3e0d66b1773y',
     date: new Date('2018-09-25T12:00:00Z'),
@@ -17,7 +17,6 @@ const mockReportsData: UserSkillPriorityReportResponse[] = [
   }
 ];
 
-// No worth testing if no logic other than http
 describe('UserSkillPriorityReportsService', () => {
   let service: UserSkillPriorityReportsService;
   let httpTestingController: HttpTestingController;
@@ -42,19 +41,12 @@ describe('UserSkillPriorityReportsService', () => {
   it('should provide all reports requested via API', async(() => {
     service.getReports().subscribe(reports => {
       expect(reports).toBeDefined();
-      expect(reports.length).toBe(2);
-      expect(reports[0].id).toBe('e6b808eb-b6bd-447d-8dce-3e0d66b1773y');
-      expect(reports[0].date).toEqual(new Date('2018-09-25T12:00:00Z'));
-      expect(reports[0].skillCount).toBe(2);
-      expect(reports[1].id).toBe('89b808eb-b6bd-447d-8dce-3e0d66b17759');
-      expect(reports[1].date).toEqual(new Date('2018-09-26T12:16:00Z'));
-      expect(reports[1].skillCount).toBe(3);
       expect(reports).toEqual(mockReportsData);
     });
 
     const request = httpTestingController.expectOne({
       method: 'GET',
-      url: `${environment.serverApiUrl}/reports`
+      url: `${environment.serverApiUrl}/reports/skills/priority`
     });
 
     expect(request.request.responseType).toEqual('json');
@@ -63,16 +55,14 @@ describe('UserSkillPriorityReportsService', () => {
   }));
 
   it('should send the API request to create a report of available data', async(() => {
-    service.createRport().subscribe(createdReport => {
+    service.createReport().subscribe(createdReport => {
       expect(createdReport).toBeDefined();
       expect(createdReport).toEqual(mockReportsData[0]);
-      expect(createdReport.id).toEqual('e6b808eb-b6bd-447d-8dce-3e0d66b1773y');
-      expect(createdReport.skillCount).toBeLessThan(3);
     });
 
     const request = httpTestingController.expectOne({
       method: 'POST',
-      url: `${environment.serverApiUrl}/reports`
+      url: `${environment.serverApiUrl}/reports/skills/priority`
     });
 
     expect(request.request.responseType).toEqual('json');
