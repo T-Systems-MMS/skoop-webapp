@@ -2,9 +2,10 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
-import { UserSkillPriorityReportsService } from '../user-skill-priority-report/user-skill-priority-reports.service';
+
 import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
-import { SkillUserView } from '../../skill-users/skill-users.component';
+import { UserSkillPriorityReportsService } from '../user-skill-priority-report/user-skill-priority-reports.service';
+import { SkillUserView } from '../../skill-users/skill-user.component';
 
 @Component({
   selector: 'app-skill-users-report',
@@ -42,30 +43,37 @@ export class SkillUsersReportComponent implements OnInit {
   private loadSkillUsers() {
     this.userSkillPriorityReportsService.getUserSkillReportsByAggregationReportId(this.reportId, this.aggregationReportId)
       .pipe(tap(userSkillReports => {
-        if (userSkillReports.length) { this.skillName = userSkillReports[0].skillName; }
+        if (userSkillReports.length) { this.skillName = userSkillReports[0].skill.name; }
       }))
-      .pipe(map(userSkillReports => userSkillReports.map<SkillUserView>(skillUser => ({
-        userName: skillUser.userName,
-        currentLevel: skillUser.currentLevel,
-        desiredLevel: skillUser.desiredLevel,
-        priority: skillUser.priority
+      .pipe(map(userSkillReports => userSkillReports.map<SkillUserView>(userSkillReport => ({
+        user: {
+          userName: userSkillReport.user.userName,
+          firstName: userSkillReport.user.firstName,
+          lastName: userSkillReport.user.lastName
+        },
+        currentLevel: userSkillReport.currentLevel,
+        desiredLevel: userSkillReport.desiredLevel,
+        priority: userSkillReport.priority
       }))))
-      .subscribe(skillUsers => {
-        this.skillUsers = skillUsers.sort((a, b) => {
-          if (a.priority !== b.priority) { return b.priority - a.priority; }
-          if (a.desiredLevel !== b.desiredLevel) { return b.desiredLevel - a.desiredLevel; }
-          if (a.currentLevel !== b.currentLevel) { return b.currentLevel - a.currentLevel; }
-          return a.userName.toLocaleLowerCase().localeCompare(b.userName.toLocaleLowerCase());
+      .subscribe(
+        (skillUsers) => {
+          this.skillUsers = skillUsers.sort((a, b) => {
+            if (a.priority !== b.priority) { return b.priority - a.priority; }
+            if (a.desiredLevel !== b.desiredLevel) { return b.desiredLevel - a.desiredLevel; }
+            if (a.currentLevel !== b.currentLevel) { return b.currentLevel - a.currentLevel; }
+            return a.user.userName.toLocaleLowerCase().localeCompare(b.user.userName.toLocaleLowerCase());
+          });
+        },
+        (errorResponse: HttpErrorResponse) => {
+          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+          // Dirty fix because of: https://github.com/angular/angular/issues/17772
+          this.changeDetector.markForCheck();
         });
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
-      });
   }
 
   backToReport() {
-    this.router.navigate(['../../', { aggregationReportId: this.aggregationReportId }], { relativeTo: this.activatedRoute });
+    this.router.navigate(['../../', { aggregationReportId: this.aggregationReportId }],
+      { relativeTo: this.activatedRoute });
   }
 
 }

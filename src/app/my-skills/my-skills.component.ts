@@ -32,10 +32,13 @@ export class MySkillsComponent implements OnInit {
     this.mySkillsService.getCurrentUserSkillCoaches(userSkill.skill.id)
       .pipe(map(coaches => coaches.map<UserView>(coach => ({
         id: coach.id,
-        userName: coach.userName
+        userName: coach.userName,
+        firstName: coach.firstName,
+        lastName: coach.lastName
       }))))
-      .subscribe(coaches => { userSkill.coaches = coaches; }
-        , (errorResponse: HttpErrorResponse) => {
+      .subscribe(
+        (coaches) => { userSkill.coaches = coaches; },
+        (errorResponse: HttpErrorResponse) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
           this.changeDetector.markForCheck();
@@ -122,4 +125,6 @@ interface SkillView {
 interface UserView {
   id: string;
   userName: string;
+  firstName?: string;
+  lastName?: string;
 }

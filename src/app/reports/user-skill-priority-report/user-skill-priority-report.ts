@@ -1,14 +1,13 @@
+import { SkillReportSimple } from '../shared/skill-report-simple';
+
 export interface UserSkillPriorityReport {
   id: string;
-  date: Date;
-  aggregationReports: UserSkillPriorityAggregationReport[];
-}
-
-export interface UserSkillPriorityAggregationReport {
-  id: string;
-  averagePriority: number;
-  maximumPriority: number;
-  userCount: number;
-  skillName: string;
-  skillDescription: string;
+  date: string;
+  aggregationReports: {
+    id: string;
+    averagePriority: number;
+    maximumPriority: number;
+    userCount: number;
+    skill: SkillReportSimple;
+  }[];
 }

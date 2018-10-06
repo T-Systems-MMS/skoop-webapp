@@ -54,7 +54,7 @@
         <mat-icon fxFlex="none" aria-label="Coaches" class="my-skills-coaches-icon">school</mat-icon>
         <div fxFlex *ngIf="userSkill.coaches.length === 0">No coaches found.</div>
         <div fxFlex="none" *ngFor="let coach of userSkill.coaches; last as isLast">
-          {{ coach.userName }}<span *ngIf="!isLast">,&nbsp;</span>
+          {{ coach.firstName }} {{ coach.lastName }} ({{ coach.userName }})<span *ngIf="!isLast">,&nbsp;</span>
         </div>
       </div>
     </mat-card-content>

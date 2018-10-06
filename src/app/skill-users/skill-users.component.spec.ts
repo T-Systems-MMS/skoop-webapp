@@ -7,12 +7,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { Observable, of } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
-import { SkillUsersComponent, SkillUserView } from './skill-users.component';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { SkillUsersComponent } from './skill-users.component';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
-import { UserSkillsService } from '../user-skills/user-skills.service';
-import { SkillUser } from '../user-skills/skill-user';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { SkillUsersService } from './skill-users.service';
+import { SkillUser } from './skill-user';
+import { SkillUserView } from './skill-user.component';
 
 @Component({ selector: 'app-skill-user', template: '' })
 class SkillUserStubComponent {
@@ -24,7 +25,7 @@ const skillsServiceStub: Partial<SkillsService> = {
   getSkill(skillId: string): Observable<Skill> { return null; }
 };
 
-const userSkillsServiceStub: Partial<UserSkillsService> = {
+const skillUsersServiceStub: Partial<SkillUsersService> = {
   getSkillUsers(skillId: string, minPriority?: number): Observable<SkillUser[]> { return null; }
 };
 
@@ -38,13 +39,14 @@ describe('SkillUsersComponent', () => {
       name: 'Angular',
       description: 'JavaScript Framework'
     }));
-    spyOn(userSkillsServiceStub, 'getSkillUsers').and.returnValue(of<SkillUser[]>([{
+    spyOn(skillUsersServiceStub, 'getSkillUsers').and.returnValue(of<SkillUser[]>([{
       user: {
         id: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@myskills.com'
+        email: 'toni.tester@myskills.com',
+        coach: true
       },
       currentLevel: 2,
       desiredLevel: 3,
@@ -65,7 +67,7 @@ describe('SkillUsersComponent', () => {
       providers: [
         GlobalErrorHandlerService,
         { provide: SkillsService, useValue: skillsServiceStub },
-        { provide: UserSkillsService, useValue: userSkillsServiceStub }
+        { provide: SkillUsersService, useValue: skillUsersServiceStub }
       ]
     }).compileComponents();
   }));

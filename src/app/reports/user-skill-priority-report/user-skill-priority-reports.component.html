@@ -6,24 +6,24 @@
       <button mat-raised-button (click)="createReport()" aria-label="Create Report">Create Report</button>
       <!-- TODO: Searching, filtering and sorting elements could be added here -->
     </div>
-    <mat-card *ngFor="let priorityReport of priorityReports; index as rank " class="skill-priority-report-card">
+    <mat-card *ngFor="let report of reports; index as rank " class="skill-priority-report-card">
       <mat-card-content>
         <div fxLayout="row ">
           <div fxFlex="33% ">
             <div class="skill-priority-report-level-label ">Date:</div>
             <div>
-              <span>{{ priorityReport.date | date:'medium'}}</span>
+              <span>{{ report.date | date:'medium'}}</span>
             </div>
           </div>
           <div fxFlex="33% ">
             <div class="skill-priority-report-level-label ">Skill count:</div>
             <div>
-              <span>{{ priorityReport.skillCount }}</span>
+              <span>{{ report.skillCount }}</span>
             </div>
           </div>
           <div fxFlex="33% ">
             <a mat-raised-button title="Open report " aria-label="Open report "
-              (click)="openReport(priorityReport.id) ">Open Report</a>
+              (click)="openReport(report.id) ">Open Report</a>
           </div>
         </div>
       </mat-card-content>

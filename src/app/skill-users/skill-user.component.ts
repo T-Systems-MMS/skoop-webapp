@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { SkillUserView } from './skill-users.component';
 
 @Component({
   selector: 'app-skill-user',
@@ -16,4 +15,15 @@ export class SkillUserComponent implements OnInit {
   ngOnInit() {
   }
 
+}
+
+export interface SkillUserView {
+  user: {
+    userName: string;
+    firstName?: string;
+    lastName?: string;
+  };
+  currentLevel: number;
+  desiredLevel: number;
+  priority: number;
 }

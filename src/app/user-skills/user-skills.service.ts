@@ -5,7 +5,6 @@ import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserSkill } from './user-skill';
 import { User } from '../users/user';
-import { SkillUser } from './skill-user';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,6 @@ export class UserSkillsService {
   private userSkillUrlPattern = `${environment.serverApiUrl}/users/{userId}/skills/{skillId}`;
   private userSkillCoachesUrlPattern = `${environment.serverApiUrl}/users/{userId}/skills/{skillId}/coaches`;
   private userSkillSuggestionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/skill-suggestions`;
-  private skillUsersUrlPattern = `${environment.serverApiUrl}/skills/{skillId}/users`;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -32,17 +30,6 @@ export class UserSkillsService {
     return this.httpClient.get<string[]>(this.userSkillSuggestionsUrlPattern.replace('{userId}', userId),
       {
         params: new HttpParams().set('search', search)
-      });
-  }
-
-  getSkillUsers(skillId: string, minPriority?: number): Observable<SkillUser[]> {
-    let httpParams = new HttpParams();
-    if (minPriority) {
-      httpParams = httpParams.set('minPriority', minPriority.toString());
-    }
-    return this.httpClient.get<SkillUser[]>(this.skillUsersUrlPattern.replace('{skillId}', skillId),
-      {
-        params: httpParams
       });
   }
 

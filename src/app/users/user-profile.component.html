@@ -23,13 +23,13 @@
       <mat-grid-tile>
         <div class="controles-container">
           <mat-form-field>
-            <input matInput placeholder="Email address" formControlName="email" [readonly]="true">
+            <input matInput placeholder="E-mail address" formControlName="email" [readonly]="true">
             <mat-error>Invalid email address</mat-error>
             <mat-error *ngIf="userForm.controls['email'].errors?.required">This is Mandetory</mat-error>
           </mat-form-field>
           <div class="add-bottom-padding"> </div>
           <div>
-            <mat-checkbox formControlName="coach">show as coach?</mat-checkbox>
+            <mat-checkbox formControlName="coach">I agree to be shown as coach to other users</mat-checkbox>
           </div>
           <div class="button-row">
             <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">Update</button>

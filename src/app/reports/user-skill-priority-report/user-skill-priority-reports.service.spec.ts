@@ -2,17 +2,17 @@ import { TestBed, async } from '@angular/core/testing';
 import { UserSkillPriorityReportsService } from './user-skill-priority-reports.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
-import { UserSkillPriorityReportMetaData } from './user-skill-priority-report-meta-data';
+import { UserSkillPriorityReportSimple } from './user-skill-priority-report-simple';
 
-const mockReportsData: UserSkillPriorityReportMetaData[] = [
+const mockReportsData: UserSkillPriorityReportSimple[] = [
   {
     id: 'e6b808eb-b6bd-447d-8dce-3e0d66b1773y',
-    date: new Date('2018-09-25T12:00:00Z'),
+    date: '2018-09-25T12:00:00Z',
     skillCount: 2
   },
   {
     id: '89b808eb-b6bd-447d-8dce-3e0d66b17759',
-    date: new Date('2018-09-26T12:16:00Z'),
+    date: '2018-09-26T12:16:00Z',
     skillCount: 3
   }
 ];

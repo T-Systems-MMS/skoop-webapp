@@ -1,10 +1,10 @@
-<mat-card-content>
+<mat-card-content class="skill-priority-statistics-card-content">
   <div fxLayout="row">
     <div fxFlex>
       <h2 class="skill-priority-statistics-skill-name">{{ (rank + 1) }}. {{ skillStatistic.skill.name }}</h2>
     </div>
     <div fxFlex="none">
-      <a mat-icon-button [routerLink]="['/skills', skillStatistic.skill.id, 'users']" title="See users" aria-label="See users">
+      <a mat-icon-button [routerLink]="['/skills', skillStatistic.skill.id, 'users']" title="Show users" aria-label="Show users">
         <mat-icon>people</mat-icon>
       </a>
     </div>

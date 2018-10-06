@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { UserSkillPriorityReportMetaData } from './user-skill-priority-report-meta-data';
+import { UserSkillPriorityReportSimple } from './user-skill-priority-report-simple';
 import { UserSkillPriorityReport } from './user-skill-priority-report';
 import { UserSkillReport } from '../shared/user-skill-report';
 
@@ -19,12 +19,12 @@ export class UserSkillPriorityReportsService {
 
   constructor(private httpClient: HttpClient) { }
 
-  getReports(): Observable<UserSkillPriorityReportMetaData[]> {
-    return this.httpClient.get<UserSkillPriorityReportMetaData[]>(this.reportsUrl);
+  getReports(): Observable<UserSkillPriorityReportSimple[]> {
+    return this.httpClient.get<UserSkillPriorityReportSimple[]>(this.reportsUrl);
   }
 
-  createReport(): Observable<UserSkillPriorityReportMetaData> {
-    return this.httpClient.post<UserSkillPriorityReportMetaData>(this.reportsUrl,
+  createReport(): Observable<UserSkillPriorityReportSimple> {
+    return this.httpClient.post<UserSkillPriorityReportSimple>(this.reportsUrl,
       null,
       {
         headers: new HttpHeaders({
