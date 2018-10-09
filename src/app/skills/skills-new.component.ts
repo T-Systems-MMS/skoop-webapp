@@ -1,11 +1,13 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { SkillsService } from './skills.service';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { Observable } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Observable } from 'rxjs';
+import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 
 @Component({
   selector: 'app-skills-new',
@@ -13,23 +15,34 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./skills-new.component.scss']
 })
 export class SkillsNewComponent implements OnInit, OnDestroy {
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  selectedGroups: Set<string> = new Set([]);
+  groupSuggestions$: Observable<string[]>;
+  groupCtrl = new FormControl();
+  @ViewChild('groupInput') groupInput: ElementRef<HTMLInputElement>;
 
+  addedSkillsCount = 0;
+  operationInProgress = false;
+  errorMessage: string = null;
   skillName: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl('');
 
-  addedSkillsCount = 0;
-  operationInProgress = false;
-  errorMessage: string = null;
-
   constructor(private skillsService: SkillsService,
+    private skillGroupsService: SkillGroupsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   ngOnInit(): void {
+    this.groupSuggestions$ = this.groupCtrl.valueChanges
+      .pipe(switchMap(search => this.skillGroupsService.getSkillGroupSuggestions(search)));
+
     this.skillName.valueChanges
       .pipe(switchMap(search => this.skillsService.isSkillExist(search)))
       .subscribe(isSkillExist => {
@@ -57,7 +70,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy {
   addSkill(): void {
     this.operationInProgress = true;
     this.errorMessage = '';
-    this.skillsService.createSkill(this.skillName.value, this.skillDescription.value)
+    this.skillsService.createSkill(this.skillName.value, this.skillDescription.value, this.selectedGroups)
       .subscribe(() => {
         this.addedSkillsCount++;
         this.operationInProgress = false;
@@ -80,6 +93,38 @@ export class SkillsNewComponent implements OnInit, OnDestroy {
     if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addSkill();
     }
+  }
+
+  // ********************************************
+  // ********************************************
+  // All below methods are for group autocomplete
+  // ********************************************
+  // ********************************************
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our group to skill
+    if ((value || '').trim()) {
+      this.selectedGroups.add(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    this.groupCtrl.setValue(null);
+  }
+
+  remove(group: string): void {
+    this.selectedGroups.delete(group);
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedGroups.add(event.option.viewValue);
+    this.groupInput.nativeElement.value = '';
+    this.groupCtrl.setValue(null);
   }
 
 }

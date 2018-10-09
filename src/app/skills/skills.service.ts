@@ -26,11 +26,13 @@ export class SkillsService {
     return this.httpClient.get<Skill[]>(this.skillUrl);
   }
 
-  createSkill(name: string, description: string): Observable<Skill> {
+  createSkill(name: string, description: string, selectedGroups: Set<string>): Observable<Skill> {
+    const skillGroups = Array.from(selectedGroups);
     return this.httpClient.post<Skill>(this.skillUrl,
       {
         name,
-        description
+        description,
+        skillGroups
       },
       {
         headers: new HttpHeaders({
@@ -39,11 +41,13 @@ export class SkillsService {
       });
   }
 
-  updateSkill(skillId: string, name: string, description: string): Observable<Skill> {
+  updateSkill(skillId: string, name: string, description: string, selectedGroups: Set<string>): Observable<Skill> {
+    const skillGroups = Array.from(selectedGroups);
     return this.httpClient.put<Skill>(this.skillUrlPattern.replace('{skillId}', skillId),
       {
         name,
-        description
+        description,
+        skillGroups
       },
       {
         headers: new HttpHeaders({

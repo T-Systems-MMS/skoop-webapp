@@ -28,6 +28,8 @@ import { SkillsNewComponent } from './skills/skills-new.component';
 import { SkillsEditComponent } from './skills/skills-edit.component';
 import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { SkillUserComponent } from './skill-users/skill-user.component';
+import { SkillGroupsEditComponent } from './skill-groups/skill-groups-edit.component';
+import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { SkillUserComponent } from './skill-users/skill-user.component';
     SkillsNewComponent,
     SkillsEditComponent,
     DeleteConfirmationDialogComponent,
+    SkillGroupsNewComponent,
+    SkillGroupsEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +76,8 @@ import { SkillUserComponent } from './skill-users/skill-user.component';
     MySkillsEditComponent,
     SkillsNewComponent,
     SkillsEditComponent,
+    SkillGroupsNewComponent,
+    SkillGroupsEditComponent,
   ],
   bootstrap: [AppComponent]
 })

@@ -15,7 +15,9 @@ import {
   MatAutocompleteModule,
   MatDialogModule,
   MatMenuModule,
+  MatChipsModule,
   MatGridListModule,
+  MatTooltipModule,
 } from '@angular/material';
 
 @NgModule({
@@ -35,7 +37,9 @@ import {
     MatCheckboxModule,
     MatDialogModule,
     MatMenuModule,
+    MatChipsModule,
     MatGridListModule,
+    MatTooltipModule,
   ],
   exports: [
     MatSidenavModule,
@@ -53,7 +57,9 @@ import {
     MatCheckboxModule,
     MatDialogModule,
     MatMenuModule,
+    MatChipsModule,
     MatGridListModule,
+    MatTooltipModule,
   ]
 })
 export class AppMaterialModule { }

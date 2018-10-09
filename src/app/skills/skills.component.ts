@@ -37,7 +37,8 @@ export class SkillsComponent implements OnInit {
       .pipe(map(skills => skills.map<Skill>(skill => ({
         id: skill.id,
         name: skill.name,
-        description: skill.description
+        description: skill.description,
+        skillGroups: skill.skillGroups
       }))))
       .subscribe(skills => {
         this.skills = skills;
@@ -59,7 +60,8 @@ export class SkillsComponent implements OnInit {
       data: <Skill>{
         id: skill.id,
         name: skill.name,
-        description: skill.description
+        description: skill.description,
+        skillGroups: skill.skillGroups
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadSkills());
   }

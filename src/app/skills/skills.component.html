@@ -27,6 +27,11 @@
         <div class="my-skills-description-label">Description:</div>
         <div>{{ skill.description }}</div>
       </div>
+      <div fxLayout="row" *ngIf="skill.skillGroups" class="my-skills-coaches">
+        <mat-chip-list *ngFor="let skillGroup of skill.skillGroups; last as isLast" matTooltip="Skill groups">
+          <mat-chip color="accent" selected> {{ skillGroup }} </mat-chip> &nbsp;
+        </mat-chip-list>
+      </div>
     </mat-card-content>
   </mat-card>
 </div>

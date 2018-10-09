@@ -11,6 +11,7 @@ import { UserSkillPriorityDetailsReportComponent } from './reports/user-skill-pr
 import { SkillUsersReportComponent } from './reports/skill-users-report/skill-users-report.component';
 import { SkillsComponent } from './skills/skills.component';
 import { UserProfileComponent } from './users/user-profile.component';
+import { SkillGroupsComponent } from './skill-groups/skill-groups.component';
 
 export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
@@ -32,6 +33,7 @@ export const routes: Routes = [
     ]
   },
   { path: 'skills', component: SkillsComponent },
+  { path: 'groups', component: SkillGroupsComponent },
   { path: 'skills/:skillId/users', component: SkillUsersComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
@@ -46,6 +48,7 @@ export const routingComponents = [
   UserSkillPriorityDetailsReportComponent,
   SkillUsersReportComponent,
   SkillsComponent,
+  SkillGroupsComponent,
   UserProfileComponent,
   PageNotFoundComponent,
 ];

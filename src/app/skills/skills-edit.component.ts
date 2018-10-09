@@ -1,11 +1,14 @@
-import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Inject, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { SkillsService } from './skills.service';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { switchMap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Skill } from './skill';
+import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { Observable } from 'rxjs';
+import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 
 @Component({
   selector: 'app-skills-edit',
@@ -14,24 +17,36 @@ import { Skill } from './skill';
 })
 export class SkillsEditComponent implements OnInit {
 
+  selectable = true;
+  removable = true;
+  addOnBlur = true;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  selectedGroups: Set<string> = new Set([]);
+  groupSuggestions$: Observable<string[]>;
+  groupCtrl = new FormControl(this.skill.skillGroups);
+  @ViewChild('groupInput') groupInput: ElementRef<HTMLInputElement>;
+
+  addedSkillsCount = 0;
+  operationInProgress = false;
+  errorMessage: string = null;
+  skillNameString: string = null;
   skillName: FormControl = new FormControl(this.skill.name, [
     Validators.required,
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl(this.skill.description);
 
-  addedSkillsCount = 0;
-  operationInProgress = false;
-  errorMessage: string = null;
-  skillNameString: string = null;
-
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public skill: Skill,
     private skillsService: SkillsService,
+    private skillGroupsService: SkillGroupsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   ngOnInit(): void {
+    this.groupSuggestions$ = this.groupCtrl.valueChanges
+      .pipe(switchMap(search => this.skillGroupsService.getSkillGroupSuggestions(search)));
+    this.selectedGroups = new Set(this.skill.skillGroups);
     this.skillNameString = this.skill.name;
     this.skillName.valueChanges
       .pipe(switchMap(search => this.skillsService.isSkillExist(search)))
@@ -56,17 +71,16 @@ export class SkillsEditComponent implements OnInit {
   editSkill(): void {
     this.operationInProgress = true;
     this.errorMessage = '';
-    this.skillsService.updateSkill(this.skill.id, this.skillName.value, this.skillDescription.value)
+    this.skillsService.updateSkill(this.skill.id, this.skillName.value, this.skillDescription.value, this.selectedGroups)
       .subscribe(() => {
-         // Return 'true' to indicate that the user skill was changed.
-         this.bottomSheet.dismiss(true);
+        // Return 'true' to indicate that the user skill was changed.
+        this.bottomSheet.dismiss(true);
       }, (errorResponse: HttpErrorResponse) => {
         this.operationInProgress = false;
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
-
   }
 
   close(): void {
@@ -79,4 +93,35 @@ export class SkillsEditComponent implements OnInit {
     }
   }
 
+  // ********************************************
+  // ********************************************
+  // All below methods are for group autocomplete
+  // ********************************************
+  // ********************************************
+
+  add(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our group to skill
+    if ((value || '').trim()) {
+      this.selectedGroups.add(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+    this.groupCtrl.setValue(null);
+  }
+
+  remove(group: string): void {
+    this.selectedGroups.delete(group);
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.selectedGroups.add(event.option.viewValue);
+    this.groupInput.nativeElement.value = '';
+    this.groupCtrl.setValue(null);
+  }
 }
