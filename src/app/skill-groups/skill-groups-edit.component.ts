@@ -34,7 +34,7 @@ export class SkillGroupsEditComponent implements OnInit {
   ngOnInit(): void {
     this.skillNameString = this.skillGroup.name;
     this.groupName.valueChanges
-      .pipe(switchMap(search => this.skillGroupsService.isGroupExist(search)))
+      .pipe(switchMap(search => this.skillGroupsService.isSkillGroupExist(search)))
       .subscribe(isSkillExist => {
         if (isSkillExist && this.skillNameString !== this.groupName.value) {
           this.errorMessage = 'Skill with this name has already existed!';
@@ -56,7 +56,7 @@ export class SkillGroupsEditComponent implements OnInit {
   editGroup(): void {
     this.operationInProgress = true;
     this.errorMessage = '';
-    this.skillGroupsService.updateGroup(this.skillGroup.id, this.groupName.value, this.groupDescription.value)
+    this.skillGroupsService.updateSkillGroup(this.skillGroup.id, this.groupName.value, this.groupDescription.value)
       .subscribe(() => {
         // Return 'true' to indicate that the skill group was changed.
         this.bottomSheet.dismiss(true);

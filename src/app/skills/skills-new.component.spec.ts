@@ -11,10 +11,16 @@ import { SkillsService } from './skills.service';
 import { Observable } from 'rxjs';
 import { Skill } from './skill';
 import { MatBottomSheetRef } from '@angular/material';
+import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 
 const skillsServiceStub: Partial<SkillsService> = {
   createSkill(name: string, description: string):
     Observable<Skill> { return null; }
+};
+
+const skillGroupsServiceStub: Partial<SkillGroupsService> = {
+  getSkillGroupSuggestions(search: string):
+    Observable<string[]> { return null; }
 };
 
 const bottomSheetStub: Partial<MatBottomSheetRef> = {
@@ -27,6 +33,7 @@ describe('SkillsNewComponent', () => {
 
   beforeEach(async(() => {
     spyOn(skillsServiceStub, 'createSkill');
+    spyOn(skillGroupsServiceStub, 'getSkillGroupSuggestions');
     spyOn(bottomSheetStub, 'dismiss');
     TestBed.configureTestingModule({
       imports: [
@@ -40,6 +47,7 @@ describe('SkillsNewComponent', () => {
       providers: [
         GlobalErrorHandlerService,
         { provide: SkillsService, useValue: skillsServiceStub},
+        { provide: SkillGroupsService, useValue: skillGroupsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub }
       ]
     })

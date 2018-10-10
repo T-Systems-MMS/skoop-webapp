@@ -29,7 +29,7 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.groupName.valueChanges
-      .pipe(switchMap(search => this.skillGroupsService.isGroupExist(search)))
+      .pipe(switchMap(search => this.skillGroupsService.isSkillGroupExist(search)))
       .subscribe(isSkillGroupExist => {
         if (isSkillGroupExist) {
           this.errorMessage = 'Skill group with this name has already existed!';
@@ -55,7 +55,7 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy {
   addGroup(): void {
     this.operationInProgress = true;
     this.errorMessage = '';
-    this.skillGroupsService.createGroup(this.groupName.value, this.groupDescription.value)
+    this.skillGroupsService.createSkillGroup(this.groupName.value, this.groupDescription.value)
       .subscribe(() => {
         this.addedGroupsCount++;
         this.operationInProgress = false;

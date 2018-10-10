@@ -11,10 +11,16 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
+import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 
 const skillsServiceStub: Partial<SkillsService> = {
-  createSkill(name: string, description: string):
+  updateSkill(name: string, description: string):
     Observable<Skill> { return null; }
+};
+
+const skillGroupsServiceStub: Partial<SkillGroupsService> = {
+  getSkillGroupSuggestions(search: string):
+    Observable<string[]> { return null; }
 };
 
 const bottomSheetStub: Partial<MatBottomSheetRef> = {
@@ -32,7 +38,8 @@ describe('SkillsEditComponent', () => {
   let fixture: ComponentFixture<SkillsEditComponent>;
 
   beforeEach(async(() => {
-    spyOn(skillsServiceStub, 'createSkill');
+    spyOn(skillsServiceStub, 'updateSkill');
+    spyOn(skillGroupsServiceStub, 'getSkillGroupSuggestions');
     spyOn(bottomSheetStub, 'dismiss');
     TestBed.configureTestingModule({
       imports: [
@@ -46,6 +53,7 @@ describe('SkillsEditComponent', () => {
       providers: [
         GlobalErrorHandlerService,
         { provide: SkillsService, useValue: skillsServiceStub },
+        { provide: SkillGroupsService, useValue: skillGroupsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData }
       ]

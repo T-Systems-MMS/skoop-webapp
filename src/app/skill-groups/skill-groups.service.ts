@@ -26,15 +26,15 @@ export class SkillGroupsService {
       });
   }
 
-  getGroup(groupId: string): Observable<SkillGroup> {
+  getSkillGroup(groupId: string): Observable<SkillGroup> {
     return this.httpClient.get<SkillGroup>(this.groupUrlPattern.replace('{groupId}', groupId));
   }
 
-  getAllGroups(): Observable<SkillGroup[]> {
+  getAllSkillGroups(): Observable<SkillGroup[]> {
     return this.httpClient.get<SkillGroup[]>(this.groupUrl);
   }
 
-  createGroup(name: string, description: string): Observable<SkillGroup> {
+  createSkillGroup(name: string, description: string): Observable<SkillGroup> {
     return this.httpClient.post<SkillGroup>(this.groupUrl,
       {
         name,
@@ -47,7 +47,7 @@ export class SkillGroupsService {
       });
   }
 
-  updateGroup(groupId: string, name: string, description: string): Observable<SkillGroup> {
+  updateSkillGroup(groupId: string, name: string, description: string): Observable<SkillGroup> {
     return this.httpClient.put<SkillGroup>(this.groupUrlPattern.replace('{groupId}', groupId),
       {
         name,
@@ -60,11 +60,11 @@ export class SkillGroupsService {
       });
   }
 
-  deleteGroup(groupId: string): Observable<void> {
+  deleteSkillGroup(groupId: string): Observable<void> {
     return this.httpClient.delete<void>(this.groupUrlPattern.replace('{groupId}', groupId));
   }
 
-  isGroupExist(search: string): Observable<boolean> {
+  isSkillGroupExist(search: string): Observable<boolean> {
     if (!search) { return of(false); }
     return this.httpClient.get<boolean>(this.skillGroupExistenceUrlPattern,
       {

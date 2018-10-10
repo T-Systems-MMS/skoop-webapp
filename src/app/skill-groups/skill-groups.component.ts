@@ -31,7 +31,7 @@ export class SkillGroupsComponent implements OnInit {
   }
 
   private loadGroups(): void {
-    this.skillGroupsService.getAllGroups()
+    this.skillGroupsService.getAllSkillGroups()
       .pipe(map(groups => groups.map<SkillGroup>(group => ({
         id: group.id,
         name: group.name,
@@ -69,7 +69,7 @@ export class SkillGroupsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.skillGroupsService.deleteGroup(skillGroup.id)
+        this.skillGroupsService.deleteSkillGroup(skillGroup.id)
           .subscribe(() => {
             this.loadGroups();
           }, (errorResponse: HttpErrorResponse) => {
