@@ -26,14 +26,6 @@ export class SkillGroupsService {
       });
   }
 
-  getSkillGroupSuggestionsBySkillId(skillId: string, search: string): Observable<string[]> {
-    if (!search) { return of([]); }
-    return this.httpClient.get<string[]>(this.userSkillSuggestionsUrlPatternBySkillId.replace('{skillId}', skillId),
-      {
-        params: new HttpParams().set('search', search)
-      });
-  }
-
   getGroup(groupId: string): Observable<SkillGroup> {
     return this.httpClient.get<SkillGroup>(this.groupUrlPattern.replace('{groupId}', groupId));
   }
