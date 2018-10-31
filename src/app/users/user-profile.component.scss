@@ -1,44 +1,29 @@
 @import 'variables';
 
-.skill-priority-statistics-card {
-  margin-bottom: 8px;
-}
-.my-skills-toolbar {
-  margin-bottom: 16px;
-}
-
-.my-skills-edit-error {
+.user-profile-error {
   color: $myskills-error-message-text-color;
   font-size: 14px;
   margin-bottom: 16px;
   white-space: pre-wrap;
 }
 
-
-.form {
-  margin: 10px;
-  min-width: 150px;
-  max-width: 80%;
+.user-profile-form {
   width: 100%;
 }
 
-.button {
+.user-profile-form-field {
   width: 100%;
 }
 
-.controles-container {
-  width: 100%;
-  padding: 5%;
+.user-profile-settings-section {
+  margin-top: 16px;
+  margin-bottom: 16px;
 }
 
-.controles-container > * {
-  width: 100%;
+.user-profile-settings-explanation {
+  margin-bottom: 16px;
 }
 
-.add-bottom-padding {
-  padding-bottom: 10px;
-}
-
-.button-row {
-  padding-top: 25px;
+.user-profile-actions {
+  margin-top: 16px;
 }

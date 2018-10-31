@@ -1,21 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { UserProfileComponent } from './user-profile.component';
+import { DebugElement } from '@angular/core';
+import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule, AbstractControl, Validators } from '@angular/forms';
+import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { Observable, of } from 'rxjs';
+
 import { AppMaterialModule } from '../app-material.module';
+import { UserProfileComponent } from './user-profile.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UsersService } from './users.service';
 import { User } from './user';
-import { Observable, of } from 'rxjs';
-import { DebugElement } from '@angular/core';
-import { By } from '@angular/platform-browser';
+import { UserPermissionScope } from './user-permission-scope';
 
 const usersServiceStub: Partial<UsersService> = {
   getUser(): Observable<User> { return null; },
   updateUser(userName: string, coach: boolean): Observable<User> { return null; },
+  getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
+  updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
 };
 
 describe('UserProfileComponent', () => {
@@ -28,8 +31,23 @@ describe('UserProfileComponent', () => {
         {
           id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
           userName: 'tester',
-          firstName: 'testername'
+          firstName: 'Toni',
+          lastName: 'Tester',
+          email: 'toni.tester@myskills.io',
+          coach: false,
         }
+      ));
+
+    spyOn(usersServiceStub, 'getAuthorizedUsers')
+      .and.returnValue(of<User[]>(
+        [{
+          id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+          userName: 'testing',
+          firstName: 'Tina',
+          lastName: 'Testing',
+          email: 'tina.testing@myskills.io',
+          coach: false,
+        }]
       ));
 
     spyOn(usersServiceStub, 'updateUser')
@@ -37,9 +55,31 @@ describe('UserProfileComponent', () => {
         {
           id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
           userName: 'tester',
-          firstName: 'testername',
+          firstName: 'Toni',
+          lastName: 'Tester',
+          email: 'toni.tester@myskills.io',
           coach: true,
         }
+      ));
+
+    spyOn(usersServiceStub, 'updateAuthorizedUsers')
+      .and.returnValue(of<User[]>(
+        [{
+          id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+          userName: 'testing',
+          firstName: 'Tina',
+          lastName: 'Testing',
+          email: 'tina.testing@myskills.io',
+          coach: false,
+        },
+        {
+          id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+          userName: 'testbed',
+          firstName: 'Tabia',
+          lastName: 'Testbed',
+          email: 'tabia.testbed@myskills.io',
+          coach: false,
+        }]
       ));
 
     TestBed.configureTestingModule({
@@ -66,58 +106,124 @@ describe('UserProfileComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should initialize properties', () => {
-    expect(component.submitted).toBeFalsy();
-    expect(component.userForm).toBeTruthy();
     expect(component.errorMessage).toBeNull();
   });
 
-  it('userName field required with blank validity', () => {
-    const userNameField: AbstractControl = component.userForm.controls['userName'];
-    userNameField.setValue('');
-    const errors = userNameField.errors || {};
-    expect(errors['required']).toBeDefined('required validator not triggered');
-    expect(errors['minlength']).toBeUndefined('min length validator was triggered');
-    expect(userNameField.valid).toBeFalsy();
-    expect(component.userForm.valid).toBeFalsy();
+  it('should render "User profile" as heading', () => {
+    const heading: DebugElement = fixture.debugElement.query(By.css('h1'));
+    expect(heading.nativeElement.innerText).toBe('User profile');
   });
 
-  it('userName field min length too short validity', () => {
-    const userNameField: AbstractControl = component.userForm.controls['userName'];
-    userNameField.setValue('1');
-    const errors = userNameField.errors || {};
-    expect(errors['required']).toBeUndefined('required validator was triggered');
-    expect(errors['minlength']).toBeDefined('min length validator not triggered');
-    expect(userNameField.valid).toBeFalsy();
-    expect(component.userForm.valid).toBeFalsy();
+  it('should initialize the user profile form', () => {
+    expect(component.userForm.get('firstName').value).toBe('Toni');
+    expect(component.userForm.get('lastName').value).toBe('Tester');
+    expect(component.userForm.get('userName').value).toBe('tester');
+    expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
+    expect(component.userForm.get('coach').value).toBeFalsy();
   });
 
-  it('userName field is valid', () => {
-    const userNameField: AbstractControl = component.userForm.controls['userName'];
-    userNameField.setValue('tester');
-    const errors = userNameField.errors || {};
-    expect(errors['required']).toBeUndefined();
-    expect(errors['minlength']).toBeUndefined();
-    expect(userNameField.valid).toBeTruthy();
-    expect(component.userForm.valid).toBeTruthy();
+  it('should initialize the list of authorized users', () => {
+    expect(component.authorizedUsers).toEqual([{
+      id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+      userName: 'testing',
+      firstName: 'Tina',
+      lastName: 'Testing',
+      email: 'tina.testing@myskills.io',
+      coach: false,
+    }]);
   });
 
-  it('should show "User profile" as heading', async(() => {
-    const h1DebugElement: DebugElement = fixture.debugElement.query(By.css('h1'));
-    expect(h1DebugElement.nativeElement.innerText).toBe('User profile');
+  it('should remove a given user from the list of authorized users', () => {
+    component.authorizedUsers = [{
+      id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+      userName: 'testing',
+      firstName: 'Tina',
+      lastName: 'Testing',
+      email: 'tina.testing@myskills.io',
+      coach: false,
+    },
+    {
+      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+      userName: 'testbed',
+      firstName: 'Tabia',
+      lastName: 'Testbed',
+      email: 'tabia.testbed@myskills.io',
+      coach: false,
+    }];
+    component.onAuthorizedUserRemoved(component.authorizedUsers[0]);
+    expect(component.authorizedUsers).toEqual([{
+      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+      userName: 'testbed',
+      firstName: 'Tabia',
+      lastName: 'Testbed',
+      email: 'tabia.testbed@myskills.io',
+      coach: false,
+    }]);
+  });
+
+  it('should submit and update the user profile form', async(() => {
+    component.userForm.get('coach').setValue(true);
+    component.onSubmit();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.userForm.get('firstName').value).toBe('Toni');
+      expect(component.userForm.get('lastName').value).toBe('Tester');
+      expect(component.userForm.get('userName').value).toBe('tester');
+      expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
+      expect(component.userForm.get('coach').value).toBeTruthy();
+
+      expect(usersServiceStub.updateUser).toHaveBeenCalledWith('tester', true);
+    });
   }));
 
-  it('updating a user profile', () => {
-    expect(component.userForm.controls['coach'].value).toBeNull();
-
+  it('should submit and update the list of authorized users', async(() => {
+    component.authorizedUsers.push({
+      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+      userName: 'testbed',
+      firstName: 'Tabia',
+      lastName: 'Testbed',
+      email: 'tabia.testbed@myskills.io',
+      coach: false,
+    });
     component.onSubmit();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(component.authorizedUsers).toEqual([{
+        id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+        userName: 'testing',
+        firstName: 'Tina',
+        lastName: 'Testing',
+        email: 'tina.testing@myskills.io',
+        coach: false,
+      },
+      {
+        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+        userName: 'testbed',
+        firstName: 'Tabia',
+        lastName: 'Testbed',
+        email: 'tabia.testbed@myskills.io',
+        coach: false,
+      }]);
 
-    // Now we can check to make sure the user profile has updated
-    expect(component.userForm.controls['$id'].value).toBe('e6b808eb-b6bd-447d-8dce-3e0d66b17759');
-    expect(component.userForm.controls['userName'].value).toBe('tester');
-    expect(component.userForm.controls['firstName'].value).toBe('testername');
-    expect(component.userForm.controls['coach'].value).toBe(true);
-  });
+      expect(usersServiceStub.updateAuthorizedUsers).toHaveBeenCalledWith(
+        UserPermissionScope.READ_USER_SKILLS,
+        [{
+          id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+          userName: 'testing',
+          firstName: 'Tina',
+          lastName: 'Testing',
+          email: 'tina.testing@myskills.io',
+          coach: false,
+        },
+        {
+          id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+          userName: 'testbed',
+          firstName: 'Tabia',
+          lastName: 'Testbed',
+          email: 'tabia.testbed@myskills.io',
+          coach: false,
+        }]
+      );
+    });
+  }));
 });
