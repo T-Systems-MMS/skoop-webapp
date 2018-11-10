@@ -1,19 +1,19 @@
-<div class="my-skills mat-typography">
+<div class="mySkills mat-typography">
   <h1>My skill profile</h1>
-  <div class="my-skills-toolbar">
+  <div class="mySkillsToolbar">
     <button mat-raised-button (click)="openNewDialog()" aria-label="Add skill">Add skill</button>
     <!-- TODO: Searching, filtering and sorting elements could be added here -->
   </div>
-  <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
+  <div *ngIf="errorMessage" class="mySkillsErrorMessage">{{errorMessage}}</div>
 
-  <mat-card *ngFor="let userSkill of userSkills" class="my-skills-card">
+  <mat-card *ngFor="let userSkill of userSkills" class="mySkillsCard">
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex>
-          <h2 class="my-skills-skill-name">{{ userSkill.skill.name }}</h2>
+          <h2 class="mySkillsCard__heading">{{ userSkill.skill.name }}</h2>
         </div>
         <div fxFlex="none">
-          <button mat-icon-button (click)="getCoaches(userSkill)" title="Find coaches" aria-label="Find coaches">
+          <button mat-icon-button (click)="getCoaches(userSkill)" title="Find coaches" aria-label="Find coaches" class="mySkillsCard__findCoachesButton">
             <mat-icon>school</mat-icon>
           </button>
           <button mat-icon-button (click)="openEditDialog(userSkill)" title="Edit" aria-label="Edit">
@@ -26,32 +26,32 @@
       </div>
       <div fxLayout="row">
         <div fxFlex="33%">
-          <div class="my-skills-level-label">Current level:</div>
+          <div class="mySkillsCard__levelLabel">Current level:</div>
           <div>
             <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.currentLevel
               >= level)? 'star' : 'star_border' }}</mat-icon>
-            <span fxHide.gt-sm="true" class="my-skills-level-value">{{ userSkill.currentLevel }}</span>
+            <span fxHide.gt-sm="true" class="mySkillsCard__levelValue mySkillsCard__currentLevelValue">{{ userSkill.currentLevel }}</span>
           </div>
         </div>
         <div fxFlex="33%">
-          <div class="my-skills-level-label">Desired level:</div>
+          <div class="mySkillsCard__levelLabel">Desired level:</div>
           <div>
             <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.desiredLevel
               >= level)? 'star' : 'star_border' }}</mat-icon>
-            <span fxHide.gt-sm="true" class="my-skills-level-value">{{ userSkill.desiredLevel }}</span>
+            <span fxHide.gt-sm="true" class="mySkillsCard__levelValue mySkillsCard__desiredLevelValue">{{ userSkill.desiredLevel }}</span>
           </div>
         </div>
         <div fxFlex="33%">
-          <div class="my-skills-level-label">Priority:</div>
+          <div class="mySkillsCard__levelLabel">Priority:</div>
           <div>
             <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.priority >=
               level)? 'star' : 'star_border' }}</mat-icon>
-            <span fxHide.gt-sm="true" class="my-skills-level-value">{{ userSkill.priority }}</span>
+            <span fxHide.gt-sm="true" class="mySkillsCard__levelValue mySkillsCard__priorityValue">{{ userSkill.priority }}</span>
           </div>
         </div>
       </div>
-      <div fxLayout="row" *ngIf="userSkill.coaches" class="my-skills-coaches">
-        <mat-icon fxFlex="none" aria-label="Coaches" class="my-skills-coaches-icon">school</mat-icon>
+      <div fxLayout="row" *ngIf="userSkill.coaches" class="mySkillsCard__coaches">
+        <mat-icon fxFlex="none" aria-label="Coaches" class="mySkillsCard__coachesIcon">school</mat-icon>
         <div fxFlex *ngIf="userSkill.coaches.length === 0">No coaches found.</div>
         <div fxFlex="none" *ngFor="let coach of userSkill.coaches; last as isLast">
           {{ coach.firstName }} {{ coach.lastName }} ({{ coach.userName }})<span *ngIf="!isLast">,&nbsp;</span>
