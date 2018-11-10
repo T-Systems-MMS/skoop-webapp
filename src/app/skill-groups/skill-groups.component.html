@@ -8,7 +8,7 @@
     <!-- TODO: Searching, filtering and sorting elements could be added here -->
   </div>
   <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
-  <mat-card *ngFor="let group of (groupsFiltered ? groupsFiltered : groups)" class="my-skills-card">
+  <mat-card *ngFor="let group of groupsFiltered" class="my-skills-card">
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex>
