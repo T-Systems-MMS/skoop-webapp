@@ -16,12 +16,12 @@
     </mat-nav-list>
   </mat-sidenav>
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar color="primary" class="contentToolbar">
       <button type="button" aria-label="Toggle navigation" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
         <mat-icon aria-label="Navigation toggle icon">menu</mat-icon>
       </button>
       <span class="space-consumer"></span>
-      <span class="page-header-username">{{ (userIdentity$ | async)?.userName }}</span>
+      <span class="contentToolbar__username">{{ (userIdentity$ | async)?.userName }}</span>
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
@@ -36,7 +36,7 @@
         </button>
       </mat-menu>
     </mat-toolbar>
-    <div class="page-content">
+    <div class="contentBody">
       <router-outlet></router-outlet>
     </div>
   </mat-sidenav-content>
