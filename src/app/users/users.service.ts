@@ -1,12 +1,12 @@
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { UserIdentityService } from '../shared/user-identity.service';
-import { Observable, of } from 'rxjs';
 import { User } from './user';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { switchMap, map } from 'rxjs/operators';
-import { UserPermissionScope } from './user-permission-scope';
 import { UserPermission } from './user-permission';
+import { UserPermissionScope } from './user-permission-scope';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,6 @@ export class UsersService {
         params: new HttpParams().set('search', search)
       });
   }
-
 
   getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> {
     return this.userIdentityService.getUserIdentity()
