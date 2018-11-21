@@ -1,11 +1,16 @@
-<div class="my-skills-new" (keypress)="onKeyPress($event)">
-  <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
+<div class="mySkillsNewDialog">
+  <div *ngIf="errorMessage" class="mySkillsNewDialog__errorMessage">{{errorMessage}}</div>
   <div>
-    <mat-form-field class="my-skills-new-form-field">
-      <input type="text" id="my-skills-new-skill-name" matInput [formControl]="skillName" [matAutocomplete]="auto"
+    <mat-form-field class="mySkillsNewDialog__formField">
+      <input
+        type="text"
+        id="mySkillsNewDialog__skillNameInput"
+        matInput
+        [formControl]="skillName"
+        [matAutocomplete]="auto"
         placeholder="Skill name">
-      <mat-error *ngIf="skillName.hasError('required')">Skill name is Mandetory</mat-error>
-      <mat-error *ngIf="skillName.hasError('minlength')">Put in at least 3 characters, please</mat-error>
+      <mat-error *ngIf="skillName.hasError('required')">Skill name is mandatory.</mat-error>
+      <mat-error *ngIf="skillName.hasError('minlength')">Please enter at least 3 characters.</mat-error>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let skillSuggestion of skillSuggestions$ | async" [value]="skillSuggestion">
           {{ skillSuggestion }}
@@ -15,32 +20,73 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="currentLevel">Current level:</label>
+      <label for="mySkillsNewDialog__currentLevelInput">Current level:</label>
     </div>
     <div fxFlex>
-      <mat-slider id="currentLevel" min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="currentLevel"
-        class="my-skills-new-form-field"></mat-slider>
+      <mat-slider
+        id="mySkillsNewDialog__currentLevelInput"
+        min="0"
+        max="4"
+        step="1"
+        thumbLabel
+        tickInterval="1"
+        [formControl]="currentLevel"
+        class="mySkillsNewDialog__formField">
+      </mat-slider>
     </div>
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="desiredLevel">Desired level:</label>
+      <label for="mySkillsNewDialog__desiredLevelInput">Desired level:</label>
     </div>
     <div fxFlex>
-      <mat-slider min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="desiredLevel" class="my-skills-new-form-field"></mat-slider>
+      <mat-slider
+        id="mySkillsNewDialog__desiredLevelInput"
+        min="0"
+        max="4"
+        step="1"
+        thumbLabel
+        tickInterval="1"
+        [formControl]="desiredLevel"
+        class="mySkillsNewDialog__formField">
+      </mat-slider>
     </div>
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="priority">Priority:</label>
+      <label for="mySkillsNewDialog__priorityInput">Priority:</label>
     </div>
     <div fxFlex>
-      <mat-slider min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="priority" class="my-skills-new-form-field"></mat-slider>
+      <mat-slider
+        id="mySkillsNewDialog__priorityInput"
+        min="0"
+        max="4"
+        step="1"
+        thumbLabel
+        tickInterval="1"
+        [formControl]="priority"
+        class="mySkillsNewDialog__formField">
+      </mat-slider>
     </div>
   </div>
   <div>
-    <button mat-raised-button color="primary" [disabled]="skillName.invalid" (click)="addUserSkill()" aria-label="Add skill"
-      class="my-skills-new-button">Add skill</button>
-    <button mat-raised-button (click)="close()" aria-label="Close" class="my-skills-new-button">Close</button>
+    <button
+      mat-raised-button
+      color="primary"
+      [disabled]="skillName.invalid"
+      (click)="addUserSkill()"
+      aria-label="Add skill"
+      class="mySkillsNewDialog__button"
+      id="mySkillsNewDialog__addButton">
+      Add skill
+    </button>
+    <button
+      mat-raised-button
+      (click)="close()"
+      aria-label="Close"
+      class="mySkillsNewDialog__button"
+      id="mySkillsNewDialog__closeButton">
+      Close
+    </button>
   </div>
 </div>

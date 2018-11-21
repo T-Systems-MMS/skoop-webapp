@@ -1,12 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-
-import { MySkillsService } from './my-skills.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { MySkillsService } from './my-skills.service';
 
 @Component({
   selector: 'app-my-skills-new',
@@ -14,7 +13,6 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
   styleUrls: ['./my-skills-new.component.scss']
 })
 export class MySkillsNewComponent implements OnInit, OnDestroy {
-
   skillName: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(3),
@@ -35,8 +33,9 @@ export class MySkillsNewComponent implements OnInit, OnDestroy {
     this.skillSuggestions$ = this.skillName.valueChanges
       .pipe(switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
     this.skillSuggestions$
-      .subscribe(() => { }
-        , (errorResponse: HttpErrorResponse) => {
+      .subscribe(
+        () => { },
+        (errorResponse: HttpErrorResponse) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
           this.changeDetector.markForCheck();
@@ -50,26 +49,26 @@ export class MySkillsNewComponent implements OnInit, OnDestroy {
   addUserSkill(): void {
     this.errorMessage = '';
     this.mySkillsService.createCurrentUserSkill(
-      this.skillName.value, this.currentLevel.value, this.desiredLevel.value, this.priority.value)
-      .subscribe(() => {
-        this.addedSkillsCount++;
-        this.skillName.reset('');
-        this.currentLevel.reset(0);
-        this.desiredLevel.reset(0);
-        this.priority.reset(0);
-        document.querySelector<HTMLElement>('#my-skills-new-skill-name').focus();
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
-      });
-
+      this.skillName.value, this.currentLevel.value, this.desiredLevel.value, this.priority.value
+    ).subscribe(() => {
+      this.addedSkillsCount++;
+      this.skillName.reset('');
+      this.currentLevel.reset(0);
+      this.desiredLevel.reset(0);
+      this.priority.reset(0);
+      document.querySelector<HTMLElement>('#mySkillsNewDialog__skillNameInput').focus();
+    }, (errorResponse: HttpErrorResponse) => {
+      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+      // Dirty fix because of: https://github.com/angular/angular/issues/17772
+      this.changeDetector.markForCheck();
+    });
   }
 
   close(): void {
     this.bottomSheet.dismiss(this.addedSkillsCount > 0);
   }
 
+  @HostListener('keypress', ['$event'])
   onKeyPress(event: KeyboardEvent): void {
     if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addUserSkill();

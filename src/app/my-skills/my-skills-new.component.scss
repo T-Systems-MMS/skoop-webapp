@@ -1,14 +1,14 @@
 @import 'variables';
 
-.my-skills-new-form-field {
+.mySkillsNewDialog__formField {
   width: 100%;
 }
 
-.my-skills-new-button {
+.mySkillsNewDialog__button {
   margin-right: 16px;
 }
 
-.my-skills-new-error {
+.mySkillsNewDialog__errorMessage {
   color: $myskills-error-message-text-color;
   font-size: 14px;
   margin-bottom: 16px;
