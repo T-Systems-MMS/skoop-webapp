@@ -7,7 +7,7 @@ import { EnvironmentConfig } from './environment.config';
 export const environment: EnvironmentConfig = {
   production: false,
   authentication: {
-    issuer: 'http://localhost:9000/auth/realms/MySkills',
+    issuer: 'http://docker.local:9000/auth/realms/MySkills',
     clientId: 'myskills',
     scope: 'openid profile email',
     redirectUri: null,
