@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -17,6 +17,8 @@ export class MySkillsNewComponent implements OnInit, OnDestroy {
     Validators.required,
     Validators.minLength(3),
   ]);
+  @ViewChild('skillNameInput')
+  skillNameInput: ElementRef<HTMLInputElement>;
   currentLevel: FormControl = new FormControl(0);
   desiredLevel: FormControl = new FormControl(0);
   priority: FormControl = new FormControl(0);
@@ -40,6 +42,8 @@ export class MySkillsNewComponent implements OnInit, OnDestroy {
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
           this.changeDetector.markForCheck();
         });
+    // Defer focusing the input to avoid error of accessing uninitialized mat-autocomplete directive.
+    setTimeout(() => this.skillNameInput.nativeElement.focus(), 0);
   }
 
   ngOnDestroy(): void {
@@ -56,7 +60,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy {
       this.currentLevel.reset(0);
       this.desiredLevel.reset(0);
       this.priority.reset(0);
-      document.querySelector<HTMLElement>('#mySkillsNewDialog__skillNameInput').focus();
+      this.skillNameInput.nativeElement.focus();
     }, (errorResponse: HttpErrorResponse) => {
       this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
       // Dirty fix because of: https://github.com/angular/angular/issues/17772

@@ -60,13 +60,13 @@ describe('AppComponent', () => {
     expect(userIdentityService.getUserIdentity).toHaveBeenCalled();
   });
 
-  it('should render the app name in the sidenav toolbar', () => {
-    const toolbar = fixture.debugElement.query(By.css('.sidenav-toolbar'));
-    expect(toolbar.nativeElement.textContent).toContain('MySkills');
+  it('should render the app name in the toolbar', () => {
+    const title = fixture.debugElement.query(By.css('.toolbar__title'));
+    expect(title.nativeElement.textContent).toContain('MySkills');
   });
 
   it('should render the user name in the toolbar', () => {
-    const username = fixture.debugElement.query(By.css('.contentToolbar__username'));
+    const username = fixture.debugElement.query(By.css('.toolbar__username'));
     expect(username.nativeElement.textContent).toBe('tester');
   });
 });
