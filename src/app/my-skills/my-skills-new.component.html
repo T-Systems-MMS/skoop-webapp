@@ -2,13 +2,13 @@
   <div *ngIf="errorMessage" class="mySkillsNewDialog__errorMessage">{{errorMessage}}</div>
   <div>
     <mat-form-field class="mySkillsNewDialog__formField">
-      <input
-        type="text"
-        id="mySkillsNewDialog__skillNameInput"
-        matInput
-        [formControl]="skillName"
-        [matAutocomplete]="auto"
-        placeholder="Skill name">
+      <input #skillNameInput
+             id="mySkillsNewDialog__skillNameInput"
+             [formControl]="skillName"
+             [matAutocomplete]="auto"
+             type="text"
+             matInput
+             placeholder="Skill name">
       <mat-error *ngIf="skillName.hasError('required')">Skill name is mandatory.</mat-error>
       <mat-error *ngIf="skillName.hasError('minlength')">Please enter at least 3 characters.</mat-error>
       <mat-autocomplete #auto="matAutocomplete">
