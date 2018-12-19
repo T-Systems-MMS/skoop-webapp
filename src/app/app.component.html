@@ -1,43 +1,54 @@
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav" fixedInViewport="true" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="!(isHandset$ | async)">
-    <mat-toolbar color="primary" class="sidenav-toolbar">MySkills</mat-toolbar>
+<mat-toolbar class="toolbar" color="primary">
+  <button *ngIf="isHandset$ | async" (click)="drawer.toggle()" type="button" mat-icon-button aria-label="Toggle navigation">
+    <mat-icon aria-label="Navigation toggle icon">menu</mat-icon>
+  </button>
+  <span class="toolbar__title">MySkills</span>
+  <span class="toolbar__spacer"></span>
+  <span class="toolbar__username">{{ (userIdentity$ | async)?.userName }}</span>
+  <button [matMenuTriggerFor]="menu" type="button" mat-icon-button>
+    <mat-icon>menu</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button routerLink="/user-profile" mat-menu-item>
+      <mat-icon>edit</mat-icon>
+      <span>My Profile</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Log out</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+<mat-sidenav-container class="sidenavContainer"
+                       ngClass.lt-md="sidenavContainer--mobile"
+                       ngClass.gt-sm="sidenavContainer--desktop">
+  <mat-sidenav #drawer
+               class="sidenavContainer__drawer"
+               ngClass.lt-md="sidenavContainer__drawer--mobile"
+               ngClass.gt-sm="sidenavContainer__drawer--desktop"
+               fixedInViewport="true"
+               [mode]="(isHandset$ | async) ? 'over' : 'side'"
+               [opened]="!(isHandset$ | async)"
+               [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'">
     <mat-nav-list>
-      <a mat-list-item routerLink="/my-skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">My
-        skill profile</a>
-      <a mat-list-item routerLink="/statistics/skill-priority" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
-        priority statistics</a>
-      <a mat-list-item routerLink="/reports/skill-priority-reports" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
-        priority reports</a>
-      <a mat-list-item routerLink="/skills" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
-        management</a>
-      <a mat-list-item routerLink="/groups" routerLinkActive="active" (click)="(drawer.mode === 'over') ? drawer.close() : true">Skill
-        group management</a>
+      <a routerLink="/my-skills" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
+        My skill profile
+      </a>
+      <a routerLink="/statistics/skill-priority" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
+        Skill priority statistics
+      </a>
+      <a routerLink="/reports/skill-priority-reports" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
+        Skill priority reports
+      </a>
+      <a routerLink="/skills" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
+        Skill management
+      </a>
+      <a routerLink="/groups" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
+        Skill group management
+      </a>
     </mat-nav-list>
   </mat-sidenav>
-  <mat-sidenav-content>
-    <mat-toolbar color="primary" class="contentToolbar">
-      <button type="button" aria-label="Toggle navigation" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$ | async">
-        <mat-icon aria-label="Navigation toggle icon">menu</mat-icon>
-      </button>
-      <span class="space-consumer"></span>
-      <span class="contentToolbar__username">{{ (userIdentity$ | async)?.userName }}</span>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <button routerLink="/user-profile" mat-menu-item>
-          <mat-icon>edit</mat-icon>
-          <span>Profile</span>
-        </button>
-        <button mat-menu-item>
-          <mat-icon>exit_to_app</mat-icon>
-          <span>Log out</span>
-        </button>
-      </mat-menu>
-    </mat-toolbar>
-    <div class="contentBody">
-      <router-outlet></router-outlet>
-    </div>
+  <mat-sidenav-content class="sidenavContainer__content">
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
