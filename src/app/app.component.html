@@ -6,7 +6,7 @@
   <span class="toolbar__spacer"></span>
   <span class="toolbar__username">{{ (userIdentity$ | async)?.userName }}</span>
   <button [matMenuTriggerFor]="menu" type="button" mat-icon-button>
-    <mat-icon>menu</mat-icon>
+    <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
     <button routerLink="/user-profile" mat-menu-item>
@@ -20,12 +20,12 @@
   </mat-menu>
 </mat-toolbar>
 <mat-sidenav-container class="sidenavContainer"
-                       ngClass.lt-md="sidenavContainer--mobile"
-                       ngClass.gt-sm="sidenavContainer--desktop">
+                       ngClass.lt-sm="sidenavContainer--mobile"
+                       ngClass.gt-xs="sidenavContainer--desktop">
   <mat-sidenav #drawer
                class="sidenavContainer__drawer"
-               ngClass.lt-md="sidenavContainer__drawer--mobile"
-               ngClass.gt-sm="sidenavContainer__drawer--desktop"
+               ngClass.lt-sm="sidenavContainer__drawer--mobile"
+               ngClass.gt-xs="sidenavContainer__drawer--desktop"
                fixedInViewport="true"
                [mode]="(isHandset$ | async) ? 'over' : 'side'"
                [opened]="!(isHandset$ | async)"

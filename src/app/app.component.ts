@@ -12,8 +12,10 @@ import { UserIdentityService } from './shared/user-identity.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
-    .pipe(map(result => result.matches));
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe([
+    Breakpoints.HandsetPortrait,
+    Breakpoints.TabletPortrait
+  ]).pipe(map(result => result.matches));
   userIdentity$: Observable<UserIdentity> = this.userIdentityService.getUserIdentity();
   @ViewChild('drawer')
   drawer: MatSidenav;
