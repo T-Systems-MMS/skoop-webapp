@@ -1,22 +1,21 @@
-import { Component, OnInit, ChangeDetectorRef, Inject, ElementRef, ViewChild } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { SkillsService } from './skills.service';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { switchMap } from 'rxjs/operators';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Skill } from './skill';
-import { ENTER, COMMA } from '@angular/cdk/keycodes';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatBottomSheetRef, MatChipInputEvent, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';
+import { Skill } from './skill';
+import { SkillsService } from './skills.service';
 
 @Component({
   selector: 'app-skills-edit',
   templateUrl: './skills-edit.component.html',
   styleUrls: ['./skills-edit.component.scss']
 })
-export class SkillsEditComponent implements OnInit {
-
+export class SkillsEditComponent implements OnInit, AfterViewInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
@@ -35,6 +34,7 @@ export class SkillsEditComponent implements OnInit {
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl(this.skill.description);
+  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public skill: Skill,
     private skillsService: SkillsService,
@@ -66,6 +66,10 @@ export class SkillsEditComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.skillNameInput.nativeElement.focus(), 0);
   }
 
   editSkill(): void {

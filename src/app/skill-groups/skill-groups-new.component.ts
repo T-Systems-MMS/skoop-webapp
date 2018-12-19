@@ -1,22 +1,23 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { switchMap } from 'rxjs/operators';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroupsService } from './skill-groups.service';
+
 @Component({
   selector: 'app-skill-groups-new',
   templateUrl: './skill-groups-new.component.html',
   styleUrls: ['./skill-groups-new.component.scss']
 })
-export class SkillGroupsNewComponent implements OnInit, OnDestroy {
-
+export class SkillGroupsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   groupName: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(3),
   ]);
   groupDescription: FormControl = new FormControl('');
+  @ViewChild('skillGroupNameInput') skillGroupNameInput: ElementRef<HTMLInputElement>;
 
   addedGroupsCount = 0;
   operationInProgress = false;
@@ -46,6 +47,10 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.skillGroupNameInput.nativeElement.focus(), 0);
   }
 
   ngOnDestroy(): void {
@@ -79,6 +84,4 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy {
       this.addGroup();
     }
   }
-
 }
-

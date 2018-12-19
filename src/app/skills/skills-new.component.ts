@@ -1,20 +1,20 @@
-import { Component, OnInit, ChangeDetectorRef, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { SkillsService } from './skills.service';
-import { MatBottomSheetRef, MatChipInputEvent, MatAutocompleteSelectedEvent } from '@angular/material';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { HttpErrorResponse } from '@angular/common/http';
-import { switchMap } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatBottomSheetRef, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';
+import { SkillsService } from './skills.service';
 
 @Component({
   selector: 'app-skills-new',
   templateUrl: './skills-new.component.html',
   styleUrls: ['./skills-new.component.scss']
 })
-export class SkillsNewComponent implements OnInit, OnDestroy {
+export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   selectable = true;
   removable = true;
   addOnBlur = true;
@@ -32,6 +32,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy {
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl('');
+  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(private skillsService: SkillsService,
     private skillGroupsService: SkillGroupsService,
@@ -61,6 +62,10 @@ export class SkillsNewComponent implements OnInit, OnDestroy {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => this.skillNameInput.nativeElement.focus(), 0);
   }
 
   ngOnDestroy(): void {

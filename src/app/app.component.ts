@@ -17,8 +17,7 @@ export class AppComponent implements OnInit {
     Breakpoints.TabletPortrait
   ]).pipe(map(result => result.matches));
   userIdentity$: Observable<UserIdentity> = this.userIdentityService.getUserIdentity();
-  @ViewChild('drawer')
-  drawer: MatSidenav;
+  @ViewChild('drawer') drawer: MatSidenav;
 
   constructor(private breakpointObserver: BreakpointObserver, private userIdentityService: UserIdentityService) { }
 

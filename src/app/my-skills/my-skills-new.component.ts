@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
@@ -12,19 +12,18 @@ import { MySkillsService } from './my-skills.service';
   templateUrl: './my-skills-new.component.html',
   styleUrls: ['./my-skills-new.component.scss']
 })
-export class MySkillsNewComponent implements OnInit, OnDestroy {
+export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   skillName: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(3),
   ]);
-  @ViewChild('skillNameInput')
-  skillNameInput: ElementRef<HTMLInputElement>;
   currentLevel: FormControl = new FormControl(0);
   desiredLevel: FormControl = new FormControl(0);
   priority: FormControl = new FormControl(0);
   addedSkillsCount = 0;
   errorMessage: string = null;
   skillSuggestions$: Observable<string[]>;
+  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(private mySkillsService: MySkillsService,
     private bottomSheet: MatBottomSheetRef,
@@ -34,15 +33,10 @@ export class MySkillsNewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.skillSuggestions$ = this.skillName.valueChanges
       .pipe(switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
-    this.skillSuggestions$
-      .subscribe(
-        () => { },
-        (errorResponse: HttpErrorResponse) => {
-          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-          // Dirty fix because of: https://github.com/angular/angular/issues/17772
-          this.changeDetector.markForCheck();
-        });
-    // Defer focusing the input to avoid error of accessing uninitialized mat-autocomplete directive.
+  }
+
+  ngAfterViewInit(): void {
+    // Defer focusing because mat-autocomplete is still uninitialized in this lifecycle hook.
     setTimeout(() => this.skillNameInput.nativeElement.focus(), 0);
   }
 

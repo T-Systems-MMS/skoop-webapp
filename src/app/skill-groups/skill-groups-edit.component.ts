@@ -1,9 +1,9 @@
-import { Component, OnInit, ChangeDetectorRef, Inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { switchMap } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroup } from './skill-group';
 import { SkillGroupsService } from './skill-groups.service';
 
@@ -12,13 +12,13 @@ import { SkillGroupsService } from './skill-groups.service';
   templateUrl: './skill-groups-edit.component.html',
   styleUrls: ['./skill-groups-edit.component.scss']
 })
-export class SkillGroupsEditComponent implements OnInit {
-
+export class SkillGroupsEditComponent implements OnInit, AfterViewInit {
   groupName: FormControl = new FormControl(this.skillGroup.name, [
     Validators.required,
     Validators.minLength(3),
   ]);
   groupDescription: FormControl = new FormControl(this.skillGroup.description);
+  @ViewChild('skillGroupNameInput') skillGroupNameInput: ElementRef<HTMLInputElement>;
 
   addedGroupsCount = 0;
   operationInProgress = false;
@@ -53,6 +53,10 @@ export class SkillGroupsEditComponent implements OnInit {
       });
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => this.skillGroupNameInput.nativeElement.focus(), 0);
+  }
+
   editGroup(): void {
     this.operationInProgress = true;
     this.errorMessage = '';
@@ -78,5 +82,4 @@ export class SkillGroupsEditComponent implements OnInit {
       this.editGroup();
     }
   }
-
 }
