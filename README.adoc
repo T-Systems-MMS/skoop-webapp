@@ -1,6 +1,6 @@
 = MySkills WebApp
 Georg Wittberger <georg.wittberger@gmail.com>
-v0.0.1, 2018-12-18
+v0.0.1, 2018-12-23
 
 image:https://travis-ci.org/KnowledgeAssets/myskills-webapp.svg?branch=master["Build Status", link="https://travis-ci.org/KnowledgeAssets/myskills-webapp"]
 image:https://img.shields.io/github/issues-raw/KnowledgeAssets/myskills-webapp.svg["GitHub issues",link="https://github.com/KnowledgeAssets/myskills-webapp/issues"]
@@ -24,14 +24,14 @@ For hosting the pre-built distribution:
 
 * Web server of your choice (e.g. Nginx, Apache HTTP Server)
 
-For running the application as a Docker container (coming soon):
+For running the application as a Docker container:
 
 * Docker 18.06 (or higher)
 * _Optional:_ Docker Compose
 
 For development:
 
-* Node.js 10.7.x (or higher)
+* Node.js 10.5.x (or higher)
 * NPM 6.2.x (or higher)
 
 === Building the application from source
@@ -132,7 +132,7 @@ The server proxies all requests starting with the path `/api/` to http://localho
 
 In order to set up the OpenID Connect login you need to install a local https://www.keycloak.org/[KeyCloak] server and configure an appropriate realm.
 
-In the development configuration the MySkills WebApp expects the KeyCloak server to be available on `docker.local:9000`. We recommend to map the IP address of the host running KeyCloak to this custom host name.
+In the development configuration the MySkills WebApp assumes that the KeyCloak server is available at `localhost:9000`. Currently, there is no option for external configuration. If you have to use a different host or port please temporarily adjust the configuration in `src/environments/environment.ts`.
 
 There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
 
@@ -144,7 +144,7 @@ The automated tests can be executed by running the following command in the proj
 
     npm test
 
-_Note: At the moment the Karma configuration relies on Chrome as the browser to run the tests. If it cannot find Chrome on your system it will complain. Then you should open a browser of your choice and navigate to http://localhost:9876/. Then simply save your test case one more time and Karma will run the tests again in your browser._
+_Note: The Karma configuration relies on Chrome as the browser to run the tests._
 
 === Architecture overview
 
@@ -183,8 +183,6 @@ The main HTML page for production contains the supported `meta` elements with se
 There are some general design principles to follow in the project.
 
 Components should never make use of the `HttpClient` directly. Calling the API of the MySkills Server is the responsibility of services. These services should return the `Observable` of the HTTP response directly to their calling code without subscribing on their own (except there is some reason to do so).
-
-Reusable components should define interfaces of their own view model for the dynamic data they need for presentation. Instead of using the responses from services (API-driven data models) directly the parent component should map this data to the view model of the child component. This can pretty well include only a subset of properties if not all the data is required for rendering.
 
 Reusable styles should be written as Sass mixins in the file `src/styles/_mixins.scss`. Common values for sizes and colors should be written as variables in the file `src/styles/_variables.scss` and then the variable should be used for the specific style property.
 
