@@ -7,8 +7,8 @@ import { AppMaterialModule } from './app-material.module';
 import { AppComponent } from './app.component';
 import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
-import {OAuthModule} from 'angular-oauth2-oidc';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import { LoginOptions, OAuthModule, OAuthService} from 'angular-oauth2-oidc';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -34,7 +34,11 @@ describe('AppComponent', () => {
         BrowserAnimationsModule,
         AppMaterialModule,
         HttpClientTestingModule,
-        OAuthModule.forRoot()
+        OAuthModule.forRoot({
+          resourceServer: {
+            sendAccessToken: true
+          }
+        })
       ],
       declarations: [
         AppComponent
@@ -72,5 +76,26 @@ describe('AppComponent', () => {
   it('should render the user name in the toolbar', () => {
     const username = fixture.debugElement.query(By.css('.toolbar__username'));
     expect(username.nativeElement.textContent).toBe('tester');
+  });
+
+  it('should logout if user was logged in', (done: DoneFn) => {
+    const loginConfiguration = require('./login-configuration.spec.json');
+    const authService: OAuthService = TestBed.get(OAuthService) as OAuthService;
+    authService.configure(loginConfiguration.options);
+    const loginOptions: LoginOptions = new LoginOptions();
+    loginOptions.customHashFragment = loginConfiguration.customHashFragment;
+    loginOptions.disableOAuth2StateCheck = true;
+    authService.tryLogin(loginOptions).then((res) => {
+        expect(res).toBe(true);
+        expect(authService.getAccessToken()).toBeTruthy();
+        expect(authService.getIdentityClaims()).toBeTruthy();
+        component.onLogout();
+        expect(authService.getAccessToken()).toBeNull();
+        expect(authService.getIdentityClaims()).toBeNull();
+        done();
+      },
+      (err) => {
+        done.fail(err);
+      });
   });
 });
