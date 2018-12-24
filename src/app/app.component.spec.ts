@@ -7,6 +7,8 @@ import { AppMaterialModule } from './app-material.module';
 import { AppComponent } from './app.component';
 import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
+import {OAuthModule} from 'angular-oauth2-oidc';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -30,7 +32,9 @@ describe('AppComponent', () => {
       imports: [
         RouterTestingModule,
         BrowserAnimationsModule,
-        AppMaterialModule
+        AppMaterialModule,
+        HttpClientTestingModule,
+        OAuthModule.forRoot()
       ],
       declarations: [
         AppComponent

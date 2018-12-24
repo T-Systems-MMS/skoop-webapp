@@ -12,10 +12,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DebugElement } from '@angular/core';
 import { By, BrowserModule } from '@angular/platform-browser';
 import { click, advance, expectPathToBe, expectPathToNotBe } from './app-routing.helper';
-import { HttpClientModule } from '@angular/common/http';
 import { UserIdentityService } from './shared/user-identity.service';
 import { UserIdentity } from './shared/user-identity';
 import { Observable, of } from 'rxjs';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {OAuthModule} from 'angular-oauth2-oidc';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -50,7 +51,8 @@ describe('Router: App', () => {
         ReactiveFormsModule,
         BrowserModule,
         AppMaterialModule,
-        HttpClientModule
+        HttpClientTestingModule,
+        OAuthModule.forRoot()
       ],
       declarations: [
         AppComponent,
