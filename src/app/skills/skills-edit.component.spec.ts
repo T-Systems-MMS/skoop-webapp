@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { SkillsEditComponent } from './skills-edit.component';
 import { Skill } from './skill';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { SkillsService } from './skills.service';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -36,10 +36,11 @@ const userSkillTestData: Skill = {
 describe('SkillsEditComponent', () => {
   let component: SkillsEditComponent;
   let fixture: ComponentFixture<SkillsEditComponent>;
+  let skillGroupsServiceSpy;
 
   beforeEach(async(() => {
     spyOn(skillsServiceStub, 'updateSkill');
-    spyOn(skillGroupsServiceStub, 'getSkillGroupSuggestions');
+    skillGroupsServiceSpy = spyOn(skillGroupsServiceStub, 'getSkillGroupSuggestions');
     spyOn(bottomSheetStub, 'dismiss');
     TestBed.configureTestingModule({
       imports: [
@@ -70,4 +71,21 @@ describe('SkillsEditComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should send getSkillGroupSuggestions request in 500 ms', fakeAsync(() => {
+    const skillGroupsService = TestBed.get(SkillGroupsService) as SkillGroupsService;
+    skillGroupsServiceSpy.and.returnValue(of([]));
+
+    component.groupCtrl.setValue('test');
+    tick(200);
+    fixture.detectChanges();
+
+    expect(skillGroupsService.getSkillGroupSuggestions).not.toHaveBeenCalled();
+
+    tick(300);
+    fixture.detectChanges();
+    expect(skillGroupsService.getSkillGroupSuggestions).toHaveBeenCalled();
+
+    discardPeriodicTasks();
+  }));
 });

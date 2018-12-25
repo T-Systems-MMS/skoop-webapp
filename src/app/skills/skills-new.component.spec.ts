@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import { SkillsNewComponent } from './skills-new.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -8,7 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { SkillsService } from './skills.service';
-import { Observable } from 'rxjs';
+import {Observable, of} from 'rxjs';
 import { Skill } from './skill';
 import { MatBottomSheetRef } from '@angular/material';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';
@@ -30,10 +30,11 @@ const bottomSheetStub: Partial<MatBottomSheetRef> = {
 describe('SkillsNewComponent', () => {
   let component: SkillsNewComponent;
   let fixture: ComponentFixture<SkillsNewComponent>;
+  let skillGroupsServiceSpy;
 
   beforeEach(async(() => {
     spyOn(skillsServiceStub, 'createSkill');
-    spyOn(skillGroupsServiceStub, 'getSkillGroupSuggestions');
+    skillGroupsServiceSpy = spyOn(skillGroupsServiceStub, 'getSkillGroupSuggestions');
     spyOn(bottomSheetStub, 'dismiss');
     TestBed.configureTestingModule({
       imports: [
@@ -63,4 +64,21 @@ describe('SkillsNewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should send getSkillGroupSuggestions request in 500 ms', fakeAsync(() => {
+    const skillGroupsService = TestBed.get(SkillGroupsService) as SkillGroupsService;
+    skillGroupsServiceSpy.and.returnValue(of([]));
+
+    component.groupCtrl.setValue('test');
+    tick(200);
+    fixture.detectChanges();
+
+    expect(skillGroupsService.getSkillGroupSuggestions).not.toHaveBeenCalled();
+
+    tick(300);
+    fixture.detectChanges();
+    expect(skillGroupsService.getSkillGroupSuggestions).toHaveBeenCalled();
+
+    discardPeriodicTasks();
+  }));
 });

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
 import { DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +19,7 @@ const usersServiceStub: Partial<UsersService> = {
   updateUser(userName: string, coach: boolean): Observable<User> { return null; },
   getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
   updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
+  getUserSuggestions(search: string): Observable<User[]> { return null;}
 };
 
 describe('UserProfileComponent', () => {
@@ -226,4 +227,22 @@ describe('UserProfileComponent', () => {
       );
     });
   }));
+
+  it('should send getUserSuggestions request in 500 ms', fakeAsync(() => {
+    const usersService = TestBed.get(UsersService) as UsersService;
+    spyOn(usersService, 'getUserSuggestions').and.returnValue(of([]));
+
+    component.authorizedUsersControl.setValue('test');
+    tick(200);
+    fixture.detectChanges();
+
+    expect(usersService.getUserSuggestions).not.toHaveBeenCalled();
+
+    tick(300);
+    fixture.detectChanges();
+    expect(usersService.getUserSuggestions).toHaveBeenCalled();
+
+    discardPeriodicTasks();
+  }));
+
 });

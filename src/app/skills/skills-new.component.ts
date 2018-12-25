@@ -4,7 +4,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnI
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatBottomSheetRef, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 import { SkillsService } from './skills.service';
@@ -42,7 +42,9 @@ export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.groupSuggestions$ = this.groupCtrl.valueChanges
-      .pipe(switchMap(search => this.skillGroupsService.getSkillGroupSuggestions(search)));
+      .pipe(debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(search => this.skillGroupsService.getSkillGroupSuggestions(search)));
 
     this.skillName.valueChanges
       .pipe(switchMap(search => this.skillsService.isSkillExist(search)))

@@ -3,7 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, 
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MySkillsService } from './my-skills.service';
 
@@ -32,7 +32,9 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.skillSuggestions$ = this.skillName.valueChanges
-      .pipe(switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
+      .pipe(debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
   }
 
   ngAfterViewInit(): void {
