@@ -15,8 +15,8 @@ import { click, advance, expectPathToBe, expectPathToNotBe } from './app-routing
 import { UserIdentityService } from './shared/user-identity.service';
 import { UserIdentity } from './shared/user-identity';
 import { Observable, of } from 'rxjs';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
-import {OAuthModule} from 'angular-oauth2-oidc';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
-import {OAuthService} from 'angular-oauth2-oidc';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-root',

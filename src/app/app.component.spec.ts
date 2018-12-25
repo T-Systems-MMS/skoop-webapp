@@ -85,7 +85,7 @@ describe('AppComponent', () => {
     const loginOptions: LoginOptions = new LoginOptions();
     loginOptions.customHashFragment = loginConfiguration.customHashFragment;
     loginOptions.disableOAuth2StateCheck = true;
-    authService.tryLogin(loginOptions).then((res) => {
+    authService.tryLogin(loginOptions).then((res: boolean) => {
         expect(res).toBe(true);
         expect(authService.getAccessToken()).toBeTruthy();
         expect(authService.getIdentityClaims()).toBeTruthy();
