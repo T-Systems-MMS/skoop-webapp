@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
+import { OAuthService } from 'angular-oauth2-oidc';
 
 @Component({
   selector: 'app-root',
@@ -19,11 +20,17 @@ export class AppComponent implements OnInit {
   userIdentity$: Observable<UserIdentity> = this.userIdentityService.getUserIdentity();
   @ViewChild('drawer') drawer: MatSidenav;
 
-  constructor(private breakpointObserver: BreakpointObserver, private userIdentityService: UserIdentityService) { }
+  constructor(private breakpointObserver: BreakpointObserver,
+              private userIdentityService: UserIdentityService,
+              private authService: OAuthService) { }
 
   ngOnInit(): void { }
 
   onNavItemClick(): void {
     if (this.drawer.mode === 'over') { this.drawer.close(); }
+  }
+
+  public onLogout(): void {
+    this.authService.logOut();
   }
 }
