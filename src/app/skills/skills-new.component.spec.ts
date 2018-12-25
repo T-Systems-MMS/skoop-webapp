@@ -1,4 +1,4 @@
-import {async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick} from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { SkillsNewComponent } from './skills-new.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -8,7 +8,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { SkillsService } from './skills.service';
-import {Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Skill } from './skill';
 import { MatBottomSheetRef } from '@angular/material';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';

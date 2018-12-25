@@ -3,7 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
 import { Observable } from 'rxjs';
-import {switchMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import { switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';

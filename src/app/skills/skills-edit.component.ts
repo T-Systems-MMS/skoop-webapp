@@ -4,7 +4,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, Inject, OnInit
 import { FormControl, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatBottomSheetRef, MatChipInputEvent, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
-import {debounceTime, distinctUntilChanged, switchMap} from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 import { Skill } from './skill';
