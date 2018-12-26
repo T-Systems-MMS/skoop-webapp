@@ -1,5 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
@@ -67,8 +67,8 @@ describe('MySkillsNewComponent', () => {
     skillNameInput.focus();
     skillNameInput.value = 'spr';
     skillNameInput.dispatchEvent(new Event('input'));
+    tick(500);
     fixture.detectChanges();
-    tick();
 
     // Verify service call and rendering of autocomplete options.
     expect(mySkillsService.getCurrentUserSkillSuggestions).toHaveBeenCalledWith('spr');
@@ -76,6 +76,8 @@ describe('MySkillsNewComponent', () => {
     expect(autocompleteOptions.length).toBe(2);
     expect((autocompleteOptions[0].nativeElement as HTMLElement).textContent.trim()).toBe('Spring Boot');
     expect((autocompleteOptions[1].nativeElement as HTMLElement).textContent.trim()).toBe('Spring Security');
+
+    discardPeriodicTasks();
   }));
 
   it('should pass the input to the service when submitting the form', fakeAsync(() => {
@@ -100,8 +102,8 @@ describe('MySkillsNewComponent', () => {
     skillNameInput.focus();
     skillNameInput.value = 'Angular';
     skillNameInput.dispatchEvent(new Event('input'));
+    tick(500);
     fixture.detectChanges();
-    tick();
 
     // Set the levels and priority on form control because there is no native way to interact with a Material slider.
     component.currentLevel.setValue(2);
@@ -112,6 +114,8 @@ describe('MySkillsNewComponent', () => {
     const addButton: HTMLButtonElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__addButton')).nativeElement;
     addButton.click();
     expect(mySkillsService.createCurrentUserSkill).toHaveBeenCalledWith('Angular', 2, 3, 4);
+
+    discardPeriodicTasks();
   }));
 
   it('should reset the form after successfully saving the user skill', fakeAsync(() => {
@@ -139,11 +143,32 @@ describe('MySkillsNewComponent', () => {
 
     // Simulate clicking the add button and verify form control values.
     component.addUserSkill();
-    tick();
+    tick(500);
+    fixture.detectChanges();
 
     expect(component.skillName.value).toBe('');
     expect(component.currentLevel.value).toBe(0);
     expect(component.desiredLevel.value).toBe(0);
     expect(component.priority.value).toBe(0);
+
+    discardPeriodicTasks();
   }));
+
+  it('should send getCurrentUserSkillSuggestions request in 500 ms', fakeAsync(() => {
+    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
+    spyOn(mySkillsService, 'getCurrentUserSkillSuggestions').and.returnValue(of([]));
+
+    component.skillName.setValue('test');
+    tick(200);
+    fixture.detectChanges();
+
+    expect(mySkillsService.getCurrentUserSkillSuggestions).not.toHaveBeenCalled();
+
+    tick(300);
+    fixture.detectChanges();
+    expect(mySkillsService.getCurrentUserSkillSuggestions).toHaveBeenCalled();
+
+    discardPeriodicTasks();
+  }));
+
 });
