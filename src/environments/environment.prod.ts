@@ -9,7 +9,7 @@ export const environment: EnvironmentConfig = {
     clientId: 'myskills',
     scope: 'openid profile email',
     redirectUri: null,
-    silentRefreshRedirectUri: null,
+    silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
     requireHttps: document
       .querySelector('meta[name="myskills-config-authentication-insecure"]')
       .getAttribute('content') !== 'true'
