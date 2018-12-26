@@ -15,7 +15,8 @@ import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 
 const skillsServiceStub: Partial<SkillsService> = {
   createSkill(name: string, description: string):
-    Observable<Skill> { return null; }
+    Observable<Skill> { return null; },
+  isSkillExist(search: string): Observable<boolean> { return null; }
 };
 
 const skillGroupsServiceStub: Partial<SkillGroupsService> = {
@@ -78,6 +79,23 @@ describe('SkillsNewComponent', () => {
     tick(300);
     fixture.detectChanges();
     expect(skillGroupsService.getSkillGroupSuggestions).toHaveBeenCalled();
+
+    discardPeriodicTasks();
+  }));
+
+  it('should send isSkillExist request in 500 ms', fakeAsync(() => {
+    const skillsService = TestBed.get(SkillsService) as SkillsService;
+    spyOn(skillsService, 'isSkillExist').and.returnValue(of([]));
+
+    component.skillName.setValue('test');
+    tick(200);
+    fixture.detectChanges();
+
+    expect(skillsService.isSkillExist).not.toHaveBeenCalled();
+
+    tick(300);
+    fixture.detectChanges();
+    expect(skillsService.isSkillExist).toHaveBeenCalled();
 
     discardPeriodicTasks();
   }));

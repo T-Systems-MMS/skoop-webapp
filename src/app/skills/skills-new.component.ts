@@ -47,7 +47,9 @@ export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
         switchMap(search => this.skillGroupsService.getSkillGroupSuggestions(search)));
 
     this.skillName.valueChanges
-      .pipe(switchMap(search => this.skillsService.isSkillExist(search)))
+      .pipe(debounceTime(500),
+        distinctUntilChanged(),
+        switchMap(search => this.skillsService.isSkillExist(search)))
       .subscribe(isSkillExist => {
         if (isSkillExist) {
           this.errorMessage = 'Skill with this name has already existed!';
