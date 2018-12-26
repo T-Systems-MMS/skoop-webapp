@@ -92,10 +92,12 @@ export function initAuthentication(moduleConfig: OAuthModuleConfig, oauthService
       clientId: environment.authentication.clientId,
       scope: environment.authentication.scope,
       redirectUri: environment.authentication.redirectUri ? environment.authentication.redirectUri : window.location.origin + '/',
+      silentRefreshRedirectUri: environment.authentication.silentRefreshRedirectUri,
       oidc: true,
       requireHttps: environment.authentication.requireHttps
     });
     oauthService.tokenValidationHandler = new JwksValidationHandler();
+    oauthService.setupAutomaticSilentRefresh();
     return oauthService.loadDiscoveryDocumentAndLogin();
   };
 }

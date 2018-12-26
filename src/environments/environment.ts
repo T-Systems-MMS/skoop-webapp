@@ -11,7 +11,7 @@ export const environment: EnvironmentConfig = {
     clientId: 'myskills',
     scope: 'openid profile email',
     redirectUri: null,
-    silentRefreshRedirectUri: null,
+    silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
     requireHttps: false
   },
   serverApiUrl: 'http://localhost:4200/api'
