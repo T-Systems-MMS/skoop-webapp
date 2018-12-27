@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
-
 import { StatisticsService } from './statistics.service';
+import { UserSkillPriorityAggregationView } from './user-skill-priority-aggregation-view';
 
 @Component({
   selector: 'app-skill-priority-statistics',
@@ -9,7 +9,7 @@ import { StatisticsService } from './statistics.service';
   styleUrls: ['./skill-priority-statistics.component.scss']
 })
 export class SkillPriorityStatisticsComponent implements OnInit {
-  skillStatistics: UserSkillPriorityAggregationView[] = [];
+  aggregations: UserSkillPriorityAggregationView[] = [];
 
   constructor(private statisticsService: StatisticsService) { }
 
@@ -19,27 +19,16 @@ export class SkillPriorityStatisticsComponent implements OnInit {
 
   private loadSkillStatistics(): void {
     this.statisticsService.getTopPrioritizedSkills()
-      .pipe(map(skillStatistics => skillStatistics.map<UserSkillPriorityAggregationView>(skillStatistic => ({
+      .pipe(map(aggregations => aggregations.map<UserSkillPriorityAggregationView>(aggregation => ({
         skill: {
-          id: skillStatistic.skill.id,
-          name: skillStatistic.skill.name
+          id: aggregation.skill.id,
+          name: aggregation.skill.name
         },
-        averagePriority: skillStatistic.averagePriority,
-        maximumPriority: skillStatistic.maximumPriority,
-        userCount: skillStatistic.userCount
+        averagePriority: aggregation.averagePriority,
+        maximumPriority: aggregation.maximumPriority,
+        userCount: aggregation.userCount
       }))))
-      .subscribe(skillStatistics => this.skillStatistics = skillStatistics);
+      .subscribe(aggregations => this.aggregations = aggregations);
+      // TODO: Add error handling to display error message in case of failure.
   }
-}
-
-export interface UserSkillPriorityAggregationView {
-  skill: SkillView;
-  averagePriority: number;
-  maximumPriority: number;
-  userCount: number;
-}
-
-export interface SkillView {
-  id: string;
-  name: string;
 }

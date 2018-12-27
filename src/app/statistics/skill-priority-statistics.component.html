@@ -1,6 +1,6 @@
-<div class="skill-priority-statistics mat-typography">
-  <h1>Skill priority statistics</h1>
-  <mat-card *ngFor="let skillStat of skillStatistics; index as rank" class="skill-priority-statistics-card">
-    <app-skill-priority-statistic [skillStatistic]="skillStat" [rank]="rank" ></app-skill-priority-statistic>
-  </mat-card>
+<div class="skillPriorityStatistics mat-typography">
+  <h1>Skill Priority Statistics</h1>
+  <div *ngFor="let aggregation of aggregations; index as rank">
+    <app-skill-priority-statistic-card [aggregation]="aggregation" [rank]="rank + 1"></app-skill-priority-statistic-card>
+  </div>
 </div>

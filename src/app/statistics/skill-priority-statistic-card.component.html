@@ -1,0 +1,45 @@
+<mat-card class="skillPriorityStatisticCard">
+  <mat-card-content class="skillPriorityStatisticCard__content">
+    <div fxLayout="row">
+      <div fxFlex>
+        <h2 class="skillPriorityStatisticCard__skillName">{{ rank }}. {{ aggregation.skill.name }}</h2>
+      </div>
+      <div fxFlex="none">
+        <a [routerLink]="['/skills', aggregation.skill.id, 'users']"
+          mat-icon-button title="Show users" aria-label="Show users">
+          <mat-icon>people</mat-icon>
+        </a>
+      </div>
+    </div>
+    <div fxLayout="row">
+      <div fxFlex="33%" class="skillPriorityStatisticCard__averagePriority">
+        <div class="skillPriorityStatisticCard__levelLabel">Average:</div>
+        <div>
+          <mat-icon fxHide.lt-md="true" *ngFor="let threshold of [0.5,1.5,2.5,3.5]" aria-hidden="true">{{
+            (aggregation.averagePriority >= threshold)? 'star' : 'star_border'
+          }}</mat-icon>
+          <span fxHide.gt-sm="true" class="skillPriorityStatisticCard__levelValue">{{
+            aggregation.averagePriority | number:'1.1-1'
+          }}</span>
+        </div>
+      </div>
+      <div fxFlex="33%" class="skillPriorityStatisticCard__maximumPriority">
+        <div class="skillPriorityStatisticCard__levelLabel">Maximum:</div>
+        <div>
+          <mat-icon fxHide.lt-md="true" *ngFor="let threshold of [0.5,1.5,2.5,3.5]" aria-hidden="true">{{
+            (aggregation.maximumPriority >= threshold)? 'star' : 'star_border'
+          }}</mat-icon>
+          <span fxHide.gt-sm="true" class="skillPriorityStatisticCard__levelValue">{{
+            aggregation.maximumPriority | number:'1.1-1'
+          }}</span>
+        </div>
+      </div>
+      <div fxFlex="33%" class="skillPriorityStatisticCard__userCount">
+        <div class="skillPriorityStatisticCard__levelLabel">User count:</div>
+        <div>
+          <span class="skillPriorityStatisticCard__levelValue">{{ aggregation.userCount }}</span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
