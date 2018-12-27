@@ -13,10 +13,11 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UsersService } from './users.service';
 import { User } from './user';
 import { UserPermissionScope } from './user-permission-scope';
+import { UserRequest } from "./user-request";
 
 const usersServiceStub: Partial<UsersService> = {
   getUser(): Observable<User> { return null; },
-  updateUser(userName: string, coach: boolean): Observable<User> { return null; },
+  updateUser(userData: UserRequest): Observable<User> { return null; },
   getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
   updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
   getUserSuggestions(search: string): Observable<User[]> { return null;}
@@ -173,7 +174,19 @@ describe('UserProfileComponent', () => {
       expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
       expect(component.userForm.get('coach').value).toBeTruthy();
 
-      expect(usersServiceStub.updateUser).toHaveBeenCalledWith('tester', true);
+      const expectedRequestData: UserRequest = {
+        userName: 'tester',
+        academicDegree: null,
+        positionProfile: null,
+        summary: null,
+        industrySectors: [],
+        specializations: [],
+        certificates: [],
+        languages: [],
+        coach: true
+      };
+
+      expect(usersServiceStub.updateUser).toHaveBeenCalledWith(expectedRequestData);
     });
   }));
 

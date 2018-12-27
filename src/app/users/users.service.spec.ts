@@ -8,6 +8,7 @@ import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
+import { UserRequest } from "./user-request";
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -20,6 +21,18 @@ const authenticatedUser: UserIdentity = {
   lastName: 'Tester',
   email: 'toni.tester@myskills.io',
   roles: ['ROLE_USER']
+};
+
+const userRequestData: UserRequest = {
+  userName: 'tester',
+  academicDegree: '',
+  positionProfile: '',
+  summary: '',
+  industrySectors: [],
+  specializations: [],
+  certificates: [],
+  languages: [],
+  coach: true
 };
 
 describe('UsersService', () => {
@@ -82,7 +95,7 @@ describe('UsersService', () => {
       coach: true,
     };
 
-    service.updateUser('tester', true).subscribe(user => {
+    service.updateUser(userRequestData).subscribe(user => {
       expect(user).toEqual(testUser);
     });
 
@@ -93,10 +106,7 @@ describe('UsersService', () => {
 
     expect(request.request.responseType).toEqual('json');
     expect(request.request.headers.get('Content-Type')).toEqual('application/json');
-    expect(request.request.body).toEqual({
-      userName: 'tester',
-      coach: true,
-    });
+    expect(request.request.body).toEqual(userRequestData);
 
     request.flush(testUser);
   }));

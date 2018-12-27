@@ -1,9 +1,5 @@
-export interface User {
-  id: string;
+export interface UserRequest {
   userName: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
   academicDegree?: string,
   positionProfile?: string,
   summary?: string,

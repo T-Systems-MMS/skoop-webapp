@@ -1,13 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { FormControl, FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
 import { switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserPermissionScope } from './user-permission-scope';
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { UserRequest } from "./user-request";
 
 @Component({
   selector: 'app-user-profile',
@@ -22,6 +24,11 @@ export class UserProfileComponent implements OnInit {
   errorMessage: string = null;
   dataAvailable = false;
 
+  elemSelectable = false;
+  elemRemovable = true;
+  elemAddOnBlur = false;
+  elemSeparatorKeysCodes = [ENTER, COMMA];
+
   @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
   @ViewChild('authorizedUsersAutocomplete') matAutocomplete: MatAutocomplete;
 
@@ -34,6 +41,13 @@ export class UserProfileComponent implements OnInit {
       firstName: new FormControl(),
       lastName: new FormControl(),
       email: new FormControl(),
+      academicDegree: new FormControl(),
+      positionProfile: new FormControl(),
+      summary: new FormControl(),
+      industrySectors: new FormArray([]),
+      specializations: new FormArray([]),
+      certificates: new FormArray([]),
+      languages: new FormArray([]),
       coach: new FormControl(),
     });
     this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
@@ -78,6 +92,14 @@ export class UserProfileComponent implements OnInit {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      // TODO: academicDegree: user.academicDegree
+      academicDegree: null,
+      positionProfile: null,
+      summary: null,
+      industrySectors: [],
+      specializations: [],
+      certificates: [],
+      languages: [],
       coach: user.coach,
     });
   }
@@ -96,10 +118,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    this.usersService.updateUser(
-      this.userForm.get('userName').value,
-      this.userForm.get('coach').value
-    ).subscribe(
+    this.usersService.updateUser(this.buildUserRequestData()).subscribe(
       user => {
         this.updateUserForm(user);
       },
@@ -117,5 +136,53 @@ export class UserProfileComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  addElem(event: MatChipInputEvent, control: FormArray) {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim()) {
+      control.push(this.formBuilder.control(value.trim()));
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  removeElem(index: number, control: FormArray) {
+    control.removeAt(index);
+  }
+
+  private buildUserRequestData(): UserRequest {
+    return {
+      userName: this.userForm.get('userName').value,
+      academicDegree: this.userForm.get('academicDegree').value,
+      positionProfile: this.userForm.get('positionProfile').value,
+      summary: this.userForm.get('summary').value,
+      industrySectors: this.industrySectorsControl.value,
+      specializations: this.specializationsControl.value,
+      certificates: this.certificatesControl.value,
+      languages: this.languagesControl.value,
+      coach: this.userForm.get('coach').value
+    } as UserRequest;
+  }
+
+  get industrySectorsControl(): FormArray {
+    return this.userForm.get('industrySectors') as FormArray;
+  }
+
+  get specializationsControl(): FormArray {
+    return this.userForm.get('specializations') as FormArray;
+  }
+
+  get certificatesControl(): FormArray {
+    return this.userForm.get('certificates') as FormArray;
+  }
+
+  get languagesControl(): FormArray {
+    return this.userForm.get('languages') as FormArray;
   }
 }
