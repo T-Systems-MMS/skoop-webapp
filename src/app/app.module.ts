@@ -22,7 +22,7 @@ import { OAuthModule, OAuthModuleConfig, OAuthService, JwksValidationHandler } f
 import { AppComponent } from './app.component';
 import { MySkillsNewComponent } from './my-skills/my-skills-new.component';
 import { MySkillsEditComponent } from './my-skills/my-skills-edit.component';
-import { SkillPriorityStatisticComponent } from './statistics/statistic/skill-priority-statistic.component';
+import { SkillPriorityStatisticCardComponent } from './statistics/skill-priority-statistic-card.component';
 import { GlobalErrorHandlerService } from './error/global-error-handler.service';
 import { SkillsNewComponent } from './skills/skills-new.component';
 import { SkillsEditComponent } from './skills/skills-edit.component';
@@ -38,7 +38,7 @@ import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.compone
     SkillUserComponent,
     MySkillsNewComponent,
     MySkillsEditComponent,
-    SkillPriorityStatisticComponent,
+    SkillPriorityStatisticCardComponent,
     SkillsNewComponent,
     SkillsEditComponent,
     DeleteConfirmationDialogComponent,
