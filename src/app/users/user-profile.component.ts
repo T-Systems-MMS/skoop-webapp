@@ -87,19 +87,18 @@ export class UserProfileComponent implements OnInit {
   }
 
   private updateUserForm(user: User): void {
-    this.userForm.setValue({
+    this.userForm.setControl('industrySectors', this.formBuilder.array(user.industrySectors || []));
+    this.userForm.setControl('specializations', this.formBuilder.array(user.specializations || []));
+    this.userForm.setControl('certificates', this.formBuilder.array(user.certificates || []));
+    this.userForm.setControl('languages', this.formBuilder.array(user.languages || []));
+    this.userForm.patchValue({
       userName: user.userName,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-      // TODO: academicDegree: user.academicDegree
-      academicDegree: null,
-      positionProfile: null,
-      summary: null,
-      industrySectors: [],
-      specializations: [],
-      certificates: [],
-      languages: [],
+      academicDegree: user.academicDegree,
+      positionProfile: user.positionProfile,
+      summary: user.summary,
       coach: user.coach,
     });
   }
@@ -142,7 +141,7 @@ export class UserProfileComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    if ((value || '').trim()) {
+    if ((value || '').trim() && control.value.indexOf(value.trim()) == -1) {
       control.push(this.formBuilder.control(value.trim()));
     }
 

@@ -36,6 +36,13 @@ describe('UserProfileComponent', () => {
           firstName: 'Toni',
           lastName: 'Tester',
           email: 'toni.tester@myskills.io',
+          academicDegree: 'academic degree',
+          positionProfile: 'position profile',
+          summary: 'summary',
+          industrySectors: ['sector1', 'sector2', 'sector3'],
+          specializations: ['specialization1, specialization2, specialization3'],
+          certificates: ['certificate1', 'certificate2', 'certificate3'],
+          languages: ['language1', 'language2', 'language2'],
           coach: false,
         }
       ));
@@ -176,13 +183,13 @@ describe('UserProfileComponent', () => {
 
       const expectedRequestData: UserRequest = {
         userName: 'tester',
-        academicDegree: null,
-        positionProfile: null,
-        summary: null,
-        industrySectors: [],
-        specializations: [],
-        certificates: [],
-        languages: [],
+        academicDegree: 'academic degree',
+        positionProfile: 'position profile',
+        summary: 'summary',
+        industrySectors: ['sector1', 'sector2', 'sector3'],
+        specializations: ['specialization1, specialization2, specialization3'],
+        certificates: ['certificate1', 'certificate2', 'certificate3'],
+        languages: ['language1', 'language2', 'language2'],
         coach: true
       };
 
