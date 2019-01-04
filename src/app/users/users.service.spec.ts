@@ -96,7 +96,7 @@ describe('UsersService', () => {
       positionProfile: 'position profile',
       summary: 'summary',
       industrySectors: ['sector1', 'sector2', 'sector3'],
-      specializations: ['specialization1, specialization2, specialization3'],
+      specializations: ['specialization1', 'specialization2', 'specialization3'],
       certificates: ['certificate1', 'certificate2', 'certificate3'],
       languages: ['language1', 'language2', 'language2'],
       coach: true,

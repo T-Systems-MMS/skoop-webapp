@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { ReactiveFormsModule} from '@angular/forms';
 import { Observable, of } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
@@ -14,6 +14,8 @@ import { UsersService } from './users.service';
 import { User } from './user';
 import { UserPermissionScope } from './user-permission-scope';
 import { UserRequest } from "./user-request";
+import { MatChipInput } from "@angular/material";
+import { ENTER } from "@angular/cdk/keycodes";
 
 const usersServiceStub: Partial<UsersService> = {
   getUser(): Observable<User> { return null; },
@@ -40,7 +42,7 @@ describe('UserProfileComponent', () => {
           positionProfile: 'position profile',
           summary: 'summary',
           industrySectors: ['sector1', 'sector2', 'sector3'],
-          specializations: ['specialization1, specialization2, specialization3'],
+          specializations: ['specialization1', 'specialization2', 'specialization3'],
           certificates: ['certificate1', 'certificate2', 'certificate3'],
           languages: ['language1', 'language2', 'language2'],
           coach: false,
@@ -128,6 +130,13 @@ describe('UserProfileComponent', () => {
     expect(component.userForm.get('lastName').value).toBe('Tester');
     expect(component.userForm.get('userName').value).toBe('tester');
     expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
+    expect(component.userForm.get('academicDegree').value).toBe('academic degree');
+    expect(component.userForm.get('positionProfile').value).toBe('position profile');
+    expect(component.userForm.get('summary').value).toBe('summary');
+    expect(component.userForm.get('industrySectors').value).toEqual(['sector1', 'sector2', 'sector3']);
+    expect(component.userForm.get('specializations').value).toEqual(['specialization1', 'specialization2', 'specialization3']);
+    expect(component.userForm.get('certificates').value).toEqual(['certificate1', 'certificate2', 'certificate3']);
+    expect(component.userForm.get('languages').value).toEqual(['language1', 'language2', 'language2']);
     expect(component.userForm.get('coach').value).toBeFalsy();
   });
 
@@ -187,7 +196,7 @@ describe('UserProfileComponent', () => {
         positionProfile: 'position profile',
         summary: 'summary',
         industrySectors: ['sector1', 'sector2', 'sector3'],
-        specializations: ['specialization1, specialization2, specialization3'],
+        specializations: ['specialization1', 'specialization2', 'specialization3'],
         certificates: ['certificate1', 'certificate2', 'certificate3'],
         languages: ['language1', 'language2', 'language2'],
         coach: true
@@ -264,5 +273,58 @@ describe('UserProfileComponent', () => {
 
     discardPeriodicTasks();
   }));
+
+  it('should add new elem to the language array', () => {
+    const value = 'new language';
+    expect(component.languagesControl.value.indexOf(value)).toBe(-1);
+
+    const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
+    const chipInputDirective = languageDebugElement.injector.get<MatChipInput>(MatChipInput);
+    const inputNativeElement = languageDebugElement.nativeElement;
+
+    inputNativeElement.value = value;
+
+    // enter event for a chip-input
+    const event = document.createEvent('KeyboardEvent') as KeyboardEvent;
+    Object.defineProperties(event, {
+      keyCode: { get: () => ENTER },
+      key: { get: () => '' },
+      target: { get: () => inputNativeElement }
+    });
+    chipInputDirective._keydown(event);
+
+    expect(component.languagesControl.value.indexOf(value)).not.toBe(-1);
+  });
+
+  it('should not add a duplicate elem to the language array', () => {
+    const expectedSize = component.languagesControl.value.length;
+    const value = component.languagesControl.value[0];
+    const pushSpy = spyOn(component.languagesControl, 'push');
+
+    const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
+    const chipInputDirective = languageDebugElement.injector.get<MatChipInput>(MatChipInput);
+    const inputNativeElement = languageDebugElement.nativeElement;
+
+    inputNativeElement.value = value;
+
+    // enter event for a chip-input
+    const event = document.createEvent('KeyboardEvent') as KeyboardEvent;
+    Object.defineProperties(event, {
+      keyCode: { get: () => ENTER },
+      key: { get: () => '' },
+      target: { get: () => inputNativeElement }
+    });
+    chipInputDirective._keydown(event);
+
+    expect(pushSpy).not.toHaveBeenCalled();
+    // size wasn't changed
+    expect(component.languagesControl.value.length).toBe(expectedSize);
+  });
+
+  it('should remove elem from the language array', () => {
+    const valueForRemoving = component.languagesControl.value[0];
+    component.removeElem(0, component.languagesControl);
+    expect(component.languagesControl.value.indexOf(valueForRemoving)).toBe(-1);
+  });
 
 });
