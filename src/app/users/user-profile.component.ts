@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
@@ -120,13 +121,18 @@ export class UserProfileComponent implements OnInit {
 
   saveUserDetails() {
     this.savingInProgress = true;
-    this.usersService.updateUser(this.buildUserRequestData()).subscribe(
+    this.usersService.updateUser(this.buildUserRequestData())
+      .pipe(
+        finalize( () => {
+          this.savingInProgress = false;
+          }
+        )
+      )
+      .subscribe(
       user => {
-        this.savingInProgress = false;
         this.updateUserForm(user);
       },
       (errorResponse: HttpErrorResponse) => {
-        this.savingInProgress = false;
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
@@ -137,11 +143,15 @@ export class UserProfileComponent implements OnInit {
   savePermissions() {
     this.savingInProgress = true;
     this.usersService.updateAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, this.authorizedUsers)
+      .pipe(
+        finalize( () => {
+            this.savingInProgress = false;
+          }
+        )
+      )
       .subscribe(authorizedUsers => {
-        this.savingInProgress = false;
         this.authorizedUsers = authorizedUsers;
       }, (errorResponse: HttpErrorResponse) => {
-        this.savingInProgress = false;
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
