@@ -44,10 +44,10 @@ export class UserProfileComponent implements OnInit {
       academicDegree: new FormControl(),
       positionProfile: new FormControl(),
       summary: new FormControl(),
-      industrySectors: new FormArray([]),
-      specializations: new FormArray([]),
-      certificates: new FormArray([]),
-      languages: new FormArray([]),
+      industrySectors: new FormControl([]),
+      specializations: new FormControl([]),
+      certificates: new FormControl([]),
+      languages: new FormControl([]),
       coach: new FormControl(),
     });
     this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
@@ -87,10 +87,6 @@ export class UserProfileComponent implements OnInit {
   }
 
   private updateUserForm(user: User): void {
-    this.userForm.setControl('industrySectors', this.formBuilder.array(user.industrySectors || []));
-    this.userForm.setControl('specializations', this.formBuilder.array(user.specializations || []));
-    this.userForm.setControl('certificates', this.formBuilder.array(user.certificates || []));
-    this.userForm.setControl('languages', this.formBuilder.array(user.languages || []));
     this.userForm.patchValue({
       userName: user.userName,
       firstName: user.firstName,
@@ -99,6 +95,10 @@ export class UserProfileComponent implements OnInit {
       academicDegree: user.academicDegree,
       positionProfile: user.positionProfile,
       summary: user.summary,
+      industrySectors: user.industrySectors,
+      specializations: user.specializations,
+      certificates: user.certificates,
+      languages: user.languages,
       coach: user.coach,
     });
   }
@@ -137,12 +137,12 @@ export class UserProfileComponent implements OnInit {
       });
   }
 
-  addElem(event: MatChipInputEvent, control: FormArray) {
+  addElem(event: MatChipInputEvent, arr: string[]) {
     const input = event.input;
     const value = event.value;
 
-    if ((value || '').trim() && control.value.indexOf(value.trim()) == -1) {
-      control.push(this.formBuilder.control(value.trim()));
+    if ((value || '').trim() && arr.indexOf(value.trim()) == -1) {
+      arr.push(value.trim());
     }
 
     // Reset the input value
@@ -151,8 +151,8 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  removeElem(index: number, control: FormArray) {
-    control.removeAt(index);
+  removeElem(index: number, array: string[]) {
+    array.splice(index, 1);
   }
 
   private buildUserRequestData(): UserRequest {
@@ -161,27 +161,27 @@ export class UserProfileComponent implements OnInit {
       academicDegree: this.userForm.get('academicDegree').value,
       positionProfile: this.userForm.get('positionProfile').value,
       summary: this.userForm.get('summary').value,
-      industrySectors: this.industrySectorsControl.value,
-      specializations: this.specializationsControl.value,
-      certificates: this.certificatesControl.value,
-      languages: this.languagesControl.value,
+      industrySectors: this.industrySectorsArray,
+      specializations: this.specializationsArray,
+      certificates: this.certificatesArray,
+      languages: this.languagesArray,
       coach: this.userForm.get('coach').value
     } as UserRequest;
   }
 
-  get industrySectorsControl(): FormArray {
-    return this.userForm.get('industrySectors') as FormArray;
+  get industrySectorsArray(): string[] {
+    return this.userForm.get('industrySectors').value;
   }
 
-  get specializationsControl(): FormArray {
-    return this.userForm.get('specializations') as FormArray;
+  get specializationsArray(): string[] {
+    return this.userForm.get('specializations').value;
   }
 
-  get certificatesControl(): FormArray {
-    return this.userForm.get('certificates') as FormArray;
+  get certificatesArray(): string[] {
+    return this.userForm.get('certificates').value;
   }
 
-  get languagesControl(): FormArray {
-    return this.userForm.get('languages') as FormArray;
+  get languagesArray(): string[] {
+    return this.userForm.get('languages').value;
   }
 }

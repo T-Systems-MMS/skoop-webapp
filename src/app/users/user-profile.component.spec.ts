@@ -276,7 +276,7 @@ describe('UserProfileComponent', () => {
 
   it('should add new elem to the language array', () => {
     const value = 'new language';
-    expect(component.languagesControl.value.indexOf(value)).toBe(-1);
+    expect(component.languagesArray.indexOf(value)).toBe(-1);
 
     const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
     const chipInputDirective = languageDebugElement.injector.get<MatChipInput>(MatChipInput);
@@ -293,13 +293,13 @@ describe('UserProfileComponent', () => {
     });
     chipInputDirective._keydown(event);
 
-    expect(component.languagesControl.value.indexOf(value)).not.toBe(-1);
+    expect(component.languagesArray.indexOf(value)).not.toBe(-1);
   });
 
   it('should not add a duplicate elem to the language array', () => {
-    const expectedSize = component.languagesControl.value.length;
-    const value = component.languagesControl.value[0];
-    const pushSpy = spyOn(component.languagesControl, 'push');
+    const expectedSize = component.languagesArray.length;
+    const value = component.languagesArray[0];
+    const pushSpy = spyOn(component.languagesArray, 'push');
 
     const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
     const chipInputDirective = languageDebugElement.injector.get<MatChipInput>(MatChipInput);
@@ -318,13 +318,13 @@ describe('UserProfileComponent', () => {
 
     expect(pushSpy).not.toHaveBeenCalled();
     // size wasn't changed
-    expect(component.languagesControl.value.length).toBe(expectedSize);
+    expect(component.languagesArray.length).toBe(expectedSize);
   });
 
   it('should remove elem from the language array', () => {
-    const valueForRemoving = component.languagesControl.value[0];
-    component.removeElem(0, component.languagesControl);
-    expect(component.languagesControl.value.indexOf(valueForRemoving)).toBe(-1);
+    const valueForRemoving = component.languagesArray[0];
+    component.removeElem(0, component.languagesArray);
+    expect(component.languagesArray.indexOf(valueForRemoving)).toBe(-1);
   });
 
 });
