@@ -1,13 +1,15 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
+import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
 import { switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserPermissionScope } from './user-permission-scope';
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import { UserRequest } from "./user-request";
 
 @Component({
   selector: 'app-user-profile',
@@ -22,6 +24,11 @@ export class UserProfileComponent implements OnInit {
   errorMessage: string = null;
   dataAvailable = false;
 
+  elemSelectable = false;
+  elemRemovable = true;
+  elemAddOnBlur = false;
+  elemSeparatorKeysCodes = [ENTER, COMMA];
+
   @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
   @ViewChild('authorizedUsersAutocomplete') matAutocomplete: MatAutocomplete;
 
@@ -34,6 +41,13 @@ export class UserProfileComponent implements OnInit {
       firstName: new FormControl(),
       lastName: new FormControl(),
       email: new FormControl(),
+      academicDegree: new FormControl(),
+      positionProfile: new FormControl(),
+      summary: new FormControl(),
+      industrySectors: new FormControl([]),
+      specializations: new FormControl([]),
+      certificates: new FormControl([]),
+      languages: new FormControl([]),
       coach: new FormControl(),
     });
     this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
@@ -73,11 +87,18 @@ export class UserProfileComponent implements OnInit {
   }
 
   private updateUserForm(user: User): void {
-    this.userForm.setValue({
+    this.userForm.patchValue({
       userName: user.userName,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
+      academicDegree: user.academicDegree,
+      positionProfile: user.positionProfile,
+      summary: user.summary,
+      industrySectors: user.industrySectors,
+      specializations: user.specializations,
+      certificates: user.certificates,
+      languages: user.languages,
       coach: user.coach,
     });
   }
@@ -96,10 +117,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit() {
-    this.usersService.updateUser(
-      this.userForm.get('userName').value,
-      this.userForm.get('coach').value
-    ).subscribe(
+    this.usersService.updateUser(this.buildUserRequestData()).subscribe(
       user => {
         this.updateUserForm(user);
       },
@@ -117,5 +135,53 @@ export class UserProfileComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  addElem(event: MatChipInputEvent, arr: string[]) {
+    const input = event.input;
+    const value = event.value;
+
+    if ((value || '').trim() && arr.indexOf(value.trim()) == -1) {
+      arr.push(value.trim());
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+  }
+
+  removeElem(index: number, array: string[]) {
+    array.splice(index, 1);
+  }
+
+  private buildUserRequestData(): UserRequest {
+    return {
+      userName: this.userForm.get('userName').value,
+      academicDegree: this.userForm.get('academicDegree').value,
+      positionProfile: this.userForm.get('positionProfile').value,
+      summary: this.userForm.get('summary').value,
+      industrySectors: this.industrySectorsArray,
+      specializations: this.specializationsArray,
+      certificates: this.certificatesArray,
+      languages: this.languagesArray,
+      coach: this.userForm.get('coach').value
+    } as UserRequest;
+  }
+
+  get industrySectorsArray(): string[] {
+    return this.userForm.get('industrySectors').value;
+  }
+
+  get specializationsArray(): string[] {
+    return this.userForm.get('specializations').value;
+  }
+
+  get certificatesArray(): string[] {
+    return this.userForm.get('certificates').value;
+  }
+
+  get languagesArray(): string[] {
+    return this.userForm.get('languages').value;
   }
 }

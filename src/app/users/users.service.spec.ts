@@ -8,6 +8,7 @@ import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
+import { UserRequest } from "./user-request";
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -20,6 +21,18 @@ const authenticatedUser: UserIdentity = {
   lastName: 'Tester',
   email: 'toni.tester@myskills.io',
   roles: ['ROLE_USER']
+};
+
+const userRequestData: UserRequest = {
+  userName: 'tester',
+  academicDegree: 'academic degree',
+  positionProfile: 'position profile',
+  summary: 'summary',
+  industrySectors: ['sector1', 'sector2', 'sector3'],
+  specializations: ['specialization1, specialization2, specialization3'],
+  certificates: ['certificate1', 'certificate2', 'certificate3'],
+  languages: ['language1', 'language2', 'language2'],
+  coach: true
 };
 
 describe('UsersService', () => {
@@ -79,10 +92,17 @@ describe('UsersService', () => {
       firstName: 'Toni',
       lastName: 'Tester',
       email: 'toni.tester@myskills.io',
+      academicDegree: 'academic degree',
+      positionProfile: 'position profile',
+      summary: 'summary',
+      industrySectors: ['sector1', 'sector2', 'sector3'],
+      specializations: ['specialization1', 'specialization2', 'specialization3'],
+      certificates: ['certificate1', 'certificate2', 'certificate3'],
+      languages: ['language1', 'language2', 'language2'],
       coach: true,
     };
 
-    service.updateUser('tester', true).subscribe(user => {
+    service.updateUser(userRequestData).subscribe(user => {
       expect(user).toEqual(testUser);
     });
 
@@ -93,10 +113,7 @@ describe('UsersService', () => {
 
     expect(request.request.responseType).toEqual('json');
     expect(request.request.headers.get('Content-Type')).toEqual('application/json');
-    expect(request.request.body).toEqual({
-      userName: 'tester',
-      coach: true,
-    });
+    expect(request.request.body).toEqual(userRequestData);
 
     request.flush(testUser);
   }));

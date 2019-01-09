@@ -7,6 +7,7 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
+import { UserRequest } from "./user-request";
 
 @Injectable({
   providedIn: 'root'
@@ -26,14 +27,10 @@ export class UsersService {
       ));
   }
 
-  updateUser(userName: string, coach: boolean): Observable<User> {
+  updateUser(userData: UserRequest): Observable<User> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
-        this.httpClient.put<User>(this.userUrlPattern.replace('{userId}', userIdentity.userId),
-          {
-            userName,
-            coach,
-          },
+        this.httpClient.put<User>(this.userUrlPattern.replace('{userId}', userIdentity.userId), userData,
           {
             headers: new HttpHeaders({
               'Content-Type': 'application/json'

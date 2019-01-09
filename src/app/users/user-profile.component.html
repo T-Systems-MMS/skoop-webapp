@@ -24,6 +24,89 @@
             <input matInput placeholder="E-mail address" formControlName="email" [readonly]="true">
           </mat-form-field>
         </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <input matInput placeholder="Academic degree" formControlName="academicDegree">
+          </mat-form-field>
+        </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <input matInput placeholder="Position profile" formControlName="positionProfile">
+          </mat-form-field>
+        </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <textarea matInput placeholder="Summary" formControlName="summary" rows="3"></textarea>
+          </mat-form-field>
+        </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <mat-chip-list #industryChipList>
+              <mat-chip *ngFor="let sector of industrySectorsArray; let i = index;" [selectable]="elemSelectable"
+                        [removable]="elemRemovable" (removed)="removeElem(i, industrySectorsArray)">
+                {{sector}}
+                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Industry sectors"
+                     id="industryChipList"
+                     [matChipInputFor]="industryChipList"
+                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                     [matChipInputAddOnBlur]="elemAddOnBlur"
+                     (matChipInputTokenEnd)="addElem($event, industrySectorsArray)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <mat-chip-list #specializationChipList>
+              <mat-chip *ngFor="let specialization of specializationsArray; let i = index;" [selectable]="elemSelectable"
+                        [removable]="elemRemovable" (removed)="removeElem(i, specializationsArray)">
+                {{specialization}}
+                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Specializations"
+                     id="specializationChipList"
+                     [matChipInputFor]="specializationChipList"
+                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                     [matChipInputAddOnBlur]="elemAddOnBlur"
+                     (matChipInputTokenEnd)="addElem($event, specializationsArray)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <mat-chip-list #certificateChipList>
+              <mat-chip *ngFor="let certificate of certificatesArray; let i = index;" [selectable]="elemSelectable"
+                        [removable]="elemRemovable" (removed)="removeElem(i, certificatesArray)">
+                {{certificate}}
+                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Certificates"
+                     id="certificateChipList"
+                     [matChipInputFor]="certificateChipList"
+                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                     [matChipInputAddOnBlur]="elemAddOnBlur"
+                     (matChipInputTokenEnd)="addElem($event, certificatesArray)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
+        <div fxFlex>
+          <mat-form-field class="user-profile-form-field">
+            <mat-chip-list #languageChipList>
+              <mat-chip *ngFor="let language of languagesArray; let i = index;" [selectable]="elemSelectable"
+                        [removable]="elemRemovable" (removed)="removeElem(i, languagesArray)">
+                {{language}}
+                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+              </mat-chip>
+              <input placeholder="Languages"
+                     id="languageChipList"
+                     [matChipInputFor]="languageChipList"
+                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                     [matChipInputAddOnBlur]="elemAddOnBlur"
+                     (matChipInputTokenEnd)="addElem($event, languagesArray)">
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
       </div>
       <mat-divider></mat-divider>
       <div class="user-profile-settings-section">

@@ -4,7 +4,7 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { ReactiveFormsModule} from '@angular/forms';
 import { Observable, of } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
@@ -13,10 +13,12 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UsersService } from './users.service';
 import { User } from './user';
 import { UserPermissionScope } from './user-permission-scope';
+import { UserRequest } from "./user-request";
+import { ENTER } from "@angular/cdk/keycodes";
 
 const usersServiceStub: Partial<UsersService> = {
   getUser(): Observable<User> { return null; },
-  updateUser(userName: string, coach: boolean): Observable<User> { return null; },
+  updateUser(userData: UserRequest): Observable<User> { return null; },
   getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
   updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
   getUserSuggestions(search: string): Observable<User[]> { return null;}
@@ -35,6 +37,13 @@ describe('UserProfileComponent', () => {
           firstName: 'Toni',
           lastName: 'Tester',
           email: 'toni.tester@myskills.io',
+          academicDegree: 'academic degree',
+          positionProfile: 'position profile',
+          summary: 'summary',
+          industrySectors: ['sector1', 'sector2', 'sector3'],
+          specializations: ['specialization1', 'specialization2', 'specialization3'],
+          certificates: ['certificate1', 'certificate2', 'certificate3'],
+          languages: ['language1', 'language2', 'language2'],
           coach: false,
         }
       ));
@@ -120,6 +129,13 @@ describe('UserProfileComponent', () => {
     expect(component.userForm.get('lastName').value).toBe('Tester');
     expect(component.userForm.get('userName').value).toBe('tester');
     expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
+    expect(component.userForm.get('academicDegree').value).toBe('academic degree');
+    expect(component.userForm.get('positionProfile').value).toBe('position profile');
+    expect(component.userForm.get('summary').value).toBe('summary');
+    expect(component.userForm.get('industrySectors').value).toEqual(['sector1', 'sector2', 'sector3']);
+    expect(component.userForm.get('specializations').value).toEqual(['specialization1', 'specialization2', 'specialization3']);
+    expect(component.userForm.get('certificates').value).toEqual(['certificate1', 'certificate2', 'certificate3']);
+    expect(component.userForm.get('languages').value).toEqual(['language1', 'language2', 'language2']);
     expect(component.userForm.get('coach').value).toBeFalsy();
   });
 
@@ -173,7 +189,19 @@ describe('UserProfileComponent', () => {
       expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
       expect(component.userForm.get('coach').value).toBeTruthy();
 
-      expect(usersServiceStub.updateUser).toHaveBeenCalledWith('tester', true);
+      const expectedRequestData: UserRequest = {
+        userName: 'tester',
+        academicDegree: 'academic degree',
+        positionProfile: 'position profile',
+        summary: 'summary',
+        industrySectors: ['sector1', 'sector2', 'sector3'],
+        specializations: ['specialization1', 'specialization2', 'specialization3'],
+        certificates: ['certificate1', 'certificate2', 'certificate3'],
+        languages: ['language1', 'language2', 'language2'],
+        coach: true
+      };
+
+      expect(usersServiceStub.updateUser).toHaveBeenCalledWith(expectedRequestData);
     });
   }));
 
@@ -244,5 +272,48 @@ describe('UserProfileComponent', () => {
 
     discardPeriodicTasks();
   }));
+
+  it('should add new elem to the language array', () => {
+    const value = 'new language';
+    expect(component.languagesArray.indexOf(value)).toBe(-1);
+
+    const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
+    const inputNativeElement = languageDebugElement.nativeElement;
+
+    inputNativeElement.value = value;
+
+    const event = new KeyboardEvent('keydown', {
+      keyCode: ENTER
+    } as KeyboardEventInit);
+    inputNativeElement.dispatchEvent(event);
+
+    expect(component.languagesArray.indexOf(value)).not.toBe(-1);
+  });
+
+  it('should not add a duplicate elem to the language array', () => {
+    const expectedSize = component.languagesArray.length;
+    const value = component.languagesArray[0];
+    const pushSpy = spyOn(component.languagesArray, 'push');
+
+    const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
+    const inputNativeElement = languageDebugElement.nativeElement;
+
+    inputNativeElement.value = value;
+
+    const event = new KeyboardEvent('keydown', {
+      keyCode: ENTER
+    } as KeyboardEventInit);
+    inputNativeElement.dispatchEvent(event);
+
+    expect(pushSpy).not.toHaveBeenCalled();
+    // size wasn't changed
+    expect(component.languagesArray.length).toBe(expectedSize);
+  });
+
+  it('should remove elem from the language array', () => {
+    const valueForRemoving = component.languagesArray[0];
+    component.removeElem(0, component.languagesArray);
+    expect(component.languagesArray.indexOf(valueForRemoving)).toBe(-1);
+  });
 
 });
