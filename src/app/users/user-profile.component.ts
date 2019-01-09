@@ -24,6 +24,8 @@ export class UserProfileComponent implements OnInit {
   errorMessage: string = null;
   dataAvailable = false;
 
+  savingInProgress = false;
+
   elemSelectable = false;
   elemRemovable = true;
   elemAddOnBlur = false;
@@ -116,21 +118,30 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  saveUserDetails() {
+    this.savingInProgress = true;
     this.usersService.updateUser(this.buildUserRequestData()).subscribe(
       user => {
+        this.savingInProgress = false;
         this.updateUserForm(user);
       },
       (errorResponse: HttpErrorResponse) => {
+        this.savingInProgress = false;
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       }
     );
+  }
+
+  savePermissions() {
+    this.savingInProgress = true;
     this.usersService.updateAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, this.authorizedUsers)
       .subscribe(authorizedUsers => {
+        this.savingInProgress = false;
         this.authorizedUsers = authorizedUsers;
       }, (errorResponse: HttpErrorResponse) => {
+        this.savingInProgress = false;
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();

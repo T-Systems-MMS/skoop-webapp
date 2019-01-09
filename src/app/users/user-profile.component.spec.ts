@@ -178,9 +178,9 @@ describe('UserProfileComponent', () => {
     }]);
   });
 
-  it('should submit and update the user profile form', async(() => {
+  it('should update the user profile form', async(() => {
     component.userForm.get('coach').setValue(true);
-    component.onSubmit();
+    component.saveUserDetails();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(component.userForm.get('firstName').value).toBe('Toni');
@@ -205,7 +205,7 @@ describe('UserProfileComponent', () => {
     });
   }));
 
-  it('should submit and update the list of authorized users', async(() => {
+  it('should update the list of authorized users', async(() => {
     component.authorizedUsers.push({
       id: '251c2a3b-b737-4622-8060-196d5e297ebc',
       userName: 'testbed',
@@ -214,7 +214,7 @@ describe('UserProfileComponent', () => {
       email: 'tabia.testbed@myskills.io',
       coach: false,
     });
-    component.onSubmit();
+    component.savePermissions();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
       expect(component.authorizedUsers).toEqual([{
