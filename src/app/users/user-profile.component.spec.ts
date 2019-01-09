@@ -14,7 +14,6 @@ import { UsersService } from './users.service';
 import { User } from './user';
 import { UserPermissionScope } from './user-permission-scope';
 import { UserRequest } from "./user-request";
-import { MatChipInput } from "@angular/material";
 import { ENTER } from "@angular/cdk/keycodes";
 
 const usersServiceStub: Partial<UsersService> = {
@@ -279,19 +278,14 @@ describe('UserProfileComponent', () => {
     expect(component.languagesArray.indexOf(value)).toBe(-1);
 
     const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
-    const chipInputDirective = languageDebugElement.injector.get<MatChipInput>(MatChipInput);
     const inputNativeElement = languageDebugElement.nativeElement;
 
     inputNativeElement.value = value;
 
-    // enter event for a chip-input
-    const event = document.createEvent('KeyboardEvent') as KeyboardEvent;
-    Object.defineProperties(event, {
-      keyCode: { get: () => ENTER },
-      key: { get: () => '' },
-      target: { get: () => inputNativeElement }
-    });
-    chipInputDirective._keydown(event);
+    const event = new KeyboardEvent('keydown', {
+      keyCode: ENTER
+    } as KeyboardEventInit);
+    inputNativeElement.dispatchEvent(event);
 
     expect(component.languagesArray.indexOf(value)).not.toBe(-1);
   });
@@ -302,19 +296,14 @@ describe('UserProfileComponent', () => {
     const pushSpy = spyOn(component.languagesArray, 'push');
 
     const languageDebugElement = fixture.debugElement.query(By.css('#languageChipList'));
-    const chipInputDirective = languageDebugElement.injector.get<MatChipInput>(MatChipInput);
     const inputNativeElement = languageDebugElement.nativeElement;
 
     inputNativeElement.value = value;
 
-    // enter event for a chip-input
-    const event = document.createEvent('KeyboardEvent') as KeyboardEvent;
-    Object.defineProperties(event, {
-      keyCode: { get: () => ENTER },
-      key: { get: () => '' },
-      target: { get: () => inputNativeElement }
-    });
-    chipInputDirective._keydown(event);
+    const event = new KeyboardEvent('keydown', {
+      keyCode: ENTER
+    } as KeyboardEventInit);
+    inputNativeElement.dispatchEvent(event);
 
     expect(pushSpy).not.toHaveBeenCalled();
     // size wasn't changed
