@@ -2,7 +2,7 @@
   <h1>User profile</h1>
   <div *ngIf="errorMessage" class="user-profile-error">{{ errorMessage }}</div>
   <div *ngIf="dataAvailable" fxLayoutAlign="center center">
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="user-profile-form">
+    <form [formGroup]="userForm" class="user-profile-form">
       <div fxLayout="column">
         <div fxFlex>
           <mat-form-field class="user-profile-form-field">
@@ -114,6 +114,9 @@
         <mat-checkbox formControlName="coach">I agree to be shown as coach to other users</mat-checkbox>
       </div>
       <mat-divider></mat-divider>
+      <div class="user-profile-actions">
+        <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="saveUserDetails()">Save user details</button>
+      </div>
       <div class="user-profile-settings-section">
         <p class="user-profile-settings-explanation">All users listed in the following field will be able to view your relationships to skills including the corresponding levels and priorities.</p>
         <mat-form-field class="user-profile-form-field">
@@ -140,7 +143,7 @@
       </div>
       <mat-divider></mat-divider>
       <div class="user-profile-actions">
-        <button mat-raised-button color="primary" type="submit">Save settings</button>
+        <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save permissions</button>
       </div>
     </form>
   </div>

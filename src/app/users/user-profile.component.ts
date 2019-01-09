@@ -3,6 +3,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 import { switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
@@ -23,6 +24,8 @@ export class UserProfileComponent implements OnInit {
   authorizedUserSuggestions$: Observable<User[]>;
   errorMessage: string = null;
   dataAvailable = false;
+
+  savingInProgress = false;
 
   elemSelectable = false;
   elemRemovable = true;
@@ -116,8 +119,16 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  onSubmit() {
-    this.usersService.updateUser(this.buildUserRequestData()).subscribe(
+  saveUserDetails() {
+    this.savingInProgress = true;
+    this.usersService.updateUser(this.buildUserRequestData())
+      .pipe(
+        finalize( () => {
+          this.savingInProgress = false;
+          }
+        )
+      )
+      .subscribe(
       user => {
         this.updateUserForm(user);
       },
@@ -127,7 +138,17 @@ export class UserProfileComponent implements OnInit {
         this.changeDetector.markForCheck();
       }
     );
+  }
+
+  savePermissions() {
+    this.savingInProgress = true;
     this.usersService.updateAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, this.authorizedUsers)
+      .pipe(
+        finalize( () => {
+            this.savingInProgress = false;
+          }
+        )
+      )
       .subscribe(authorizedUsers => {
         this.authorizedUsers = authorizedUsers;
       }, (errorResponse: HttpErrorResponse) => {
