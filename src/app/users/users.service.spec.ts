@@ -8,7 +8,7 @@ import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
-import { UserRequest } from "./user-request";
+import { UserRequest } from './user-request';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }

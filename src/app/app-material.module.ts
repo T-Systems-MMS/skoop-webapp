@@ -19,6 +19,7 @@ import {
   MatGridListModule,
   MatTooltipModule,
   MatDividerModule,
+  MatDatepickerModule,
 } from '@angular/material';
 
 @NgModule({
@@ -42,6 +43,7 @@ import {
     MatGridListModule,
     MatTooltipModule,
     MatDividerModule,
+    MatDatepickerModule
   ],
   exports: [
     MatSidenavModule,
@@ -63,6 +65,7 @@ import {
     MatGridListModule,
     MatTooltipModule,
     MatDividerModule,
+    MatDatepickerModule
   ]
 })
 export class AppMaterialModule { }

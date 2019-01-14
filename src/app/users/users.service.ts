@@ -7,7 +7,7 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
-import { UserRequest } from "./user-request";
+import { UserRequest } from './user-request';
 
 @Injectable({
   providedIn: 'root'

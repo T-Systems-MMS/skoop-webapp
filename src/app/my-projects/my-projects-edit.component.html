@@ -1,0 +1,45 @@
+<div *ngIf="errorMessage" class="my-project-new-dialog__error-message">{{errorMessage}}</div>
+<form fxLayout="column" fxLayoutGap="10px" [formGroup]="formGroup">
+  <mat-form-field>
+    <input formControlName="projectName"
+           type="text"
+           matInput
+           placeholder="Project name">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Role" formControlName="role">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Tasks" formControlName="tasks">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+    <mat-error *ngIf="formGroup.controls.startDate.hasError('required')">Start date is mandatory.</mat-error>
+    <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #startDatePicker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput [matDatepicker]="endDatePicker" placeholder="End date" formControlName="endDate">
+    <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+    <mat-datepicker #endDatePicker></mat-datepicker>
+  </mat-form-field>
+  <mat-error *ngIf="formGroup.hasError('inconsistent dates')">
+    Start and end date of the project are inconsistent.
+  </mat-error>
+  <div fxLayout="row" fxLayoutGap="20px">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="updateUserProject()"
+      [disabled]="formGroup.invalid || formGroup.pristine"
+      aria-label="Update user project">
+      Update user project
+    </button>
+    <button
+      mat-raised-button
+      (click)="close()"
+      aria-label="Close">
+      Close
+    </button>
+  </div>
+</form>

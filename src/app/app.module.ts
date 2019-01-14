@@ -30,6 +30,23 @@ import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-
 import { SkillUserComponent } from './skill-users/skill-user.component';
 import { SkillGroupsEditComponent } from './skill-groups/skill-groups-edit.component';
 import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.component';
+import { MyProjectsComponent } from './my-projects/my-projects.component';
+import { MyProjectsNewComponent } from './my-projects/my-projects-new.component';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MyProjectsEditComponent } from './my-projects/my-projects-edit.component';
+
+export const CUSTOM_FORMATS = {
+  parse: {
+    dateInput: 'L',
+  },
+  display: {
+    dateInput: 'DD.MM.YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -44,6 +61,9 @@ import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.compone
     DeleteConfirmationDialogComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
+    MyProjectsComponent,
+    MyProjectsNewComponent,
+    MyProjectsEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,7 +88,9 @@ import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.compone
       useFactory: initAuthentication,
       deps: [OAuthModuleConfig, OAuthService],
       multi: true
-    }
+    },
+    {provide: DateAdapter, useClass: MomentDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS}
   ],
   entryComponents: [
     DeleteConfirmationDialogComponent,
@@ -78,6 +100,8 @@ import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.compone
     SkillsEditComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
+    MyProjectsNewComponent,
+    MyProjectsEditComponent
   ],
   bootstrap: [AppComponent]
 })
