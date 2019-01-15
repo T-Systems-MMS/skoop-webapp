@@ -1,0 +1,28 @@
+<form [formGroup]="projectForm" class="edit-project-form">
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="edit-project-form-field">
+        <input matInput placeholder="Name" formControlName="name" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="edit-project-form-field">
+        <input matInput placeholder="Customer" formControlName="customer">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="edit-project-form-field">
+        <input matInput placeholder="Industry sector" formControlName="industrySector">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="edit-project-form-field">
+        <input matInput placeholder="Description" formControlName="description">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="edit-project-actions">
+    <button mat-raised-button color="primary" (click)="editProject()" [disabled]="!projectForm.valid">Edit project</button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="edit-project-button">Close</button>
+  </div>
+</form>

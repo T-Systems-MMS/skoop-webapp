@@ -15,7 +15,7 @@ export class NewProjectComponent implements OnInit {
 
   constructor(private projectService: ProjectsService,
               private formBuilder: FormBuilder,
-              private bottomSheet: MatBottomSheetRef,) {
+              private bottomSheet: MatBottomSheetRef) {
     this.projectForm = formBuilder.group({
       name: new FormControl(),
       customer: new FormControl(),

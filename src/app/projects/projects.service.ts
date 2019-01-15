@@ -28,6 +28,16 @@ export class ProjectsService {
       });
   }
 
+  updateProject(data: Project): Observable<Project> {
+    return this.httpClient.put<Project>(this.projectUrlPattern.replace('{projectId}', data.id),
+      data,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      });
+  }
+
   deleteProject(projectId: string): Observable<void> {
     return this.httpClient.delete<void>(this.projectUrlPattern.replace('{projectId}', projectId));
   }
