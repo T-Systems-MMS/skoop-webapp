@@ -10,6 +10,7 @@ import { Project } from './project';
 export class ProjectsService {
 
   private projectsUrlPattern = `${environment.serverApiUrl}/projects`;
+  private projectUrlPattern = `${environment.serverApiUrl}/projects/{projectId}`;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -25,6 +26,10 @@ export class ProjectsService {
           'Content-Type': 'application/json'
         })
       });
+  }
+
+  deleteProject(projectId: string): Observable<void> {
+    return this.httpClient.delete<void>(this.projectUrlPattern.replace('{projectId}', projectId));
   }
 
 }
