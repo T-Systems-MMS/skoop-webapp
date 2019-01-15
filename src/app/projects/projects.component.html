@@ -1,5 +1,7 @@
 <div>
-  <button mat-raised-button (click)="openProjectDialog()" aria-label="Add project">Add project</button>
+  <div class="projects-toolbar">
+    <button mat-raised-button (click)="openProjectDialog()" aria-label="Add project">Add project</button>
+  </div>
   <div *ngIf="errorMessage" class="project-error">{{errorMessage}}</div>
   <mat-card *ngFor="let project of projects" class="projects-card">
     <mat-card-content>
@@ -17,11 +19,11 @@
         </div>
       </div>
       <div fxLayout="row">
-        <div class="projects-customer-label">Customer:</div>
+        <div class="projects-description-label">Customer:</div>
         <div>{{ project.customer }}</div>
       </div>
       <div fxLayout="row">
-        <div class="projects-industry-sector-label">Industry sector:</div>
+        <div class="projects-description-label">Industry sector:</div>
         <div>{{ project.industrySector }}</div>
       </div>
       <div fxLayout="row">
