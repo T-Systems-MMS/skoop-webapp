@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Project } from './project';
@@ -15,6 +15,16 @@ export class ProjectsService {
 
   getProjects(): Observable<Project[]> {
     return this.httpClient.get<Project[]>(this.projectsUrlPattern);
+  }
+
+  createProject(data: Project): Observable<Project> {
+    return this.httpClient.post<Project>(this.projectsUrlPattern,
+      data,
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      });
   }
 
 }

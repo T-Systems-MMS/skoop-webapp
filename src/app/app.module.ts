@@ -31,6 +31,7 @@ import { SkillUserComponent } from './skill-users/skill-user.component';
 import { SkillGroupsEditComponent } from './skill-groups/skill-groups-edit.component';
 import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.component';
 import { ProjectsComponent } from './projects/projects.component';
+import { NewProjectComponent } from './projects/new-project/new-project.component';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { ProjectsComponent } from './projects/projects.component';
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
     ProjectsComponent,
+    NewProjectComponent,
   ],
   imports: [
     BrowserModule,
@@ -80,6 +82,7 @@ import { ProjectsComponent } from './projects/projects.component';
     SkillsEditComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
+    NewProjectComponent,
   ],
   bootstrap: [AppComponent]
 })
