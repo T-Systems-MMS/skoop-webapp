@@ -30,6 +30,7 @@ import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-
 import { SkillUserComponent } from './skill-users/skill-user.component';
 import { SkillGroupsEditComponent } from './skill-groups/skill-groups-edit.component';
 import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.component';
+import { ProjectsComponent } from './projects/projects.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.compone
     DeleteConfirmationDialogComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule,

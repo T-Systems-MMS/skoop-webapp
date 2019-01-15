@@ -12,6 +12,7 @@ import { SkillUsersReportComponent } from './reports/skill-users-report/skill-us
 import { SkillsComponent } from './skills/skills.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { SkillGroupsComponent } from './skill-groups/skill-groups.component';
+import { ProjectsComponent } from "./projects/projects.component";
 
 export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
@@ -36,6 +37,7 @@ export const routes: Routes = [
   { path: 'groups', component: SkillGroupsComponent },
   { path: 'skills/:skillId/users', component: SkillUsersComponent },
   { path: 'user-profile', component: UserProfileComponent },
+  { path: 'projects', component: ProjectsComponent },
   { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
