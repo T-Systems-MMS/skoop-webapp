@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ProjectsService } from "./projects.service";
 import { MatBottomSheet, MatDialog } from "@angular/material";
 import { NewProjectComponent } from "./new-project/new-project.component";
@@ -7,6 +7,7 @@ import { DeleteConfirmationDialogComponent } from "../shared/delete-confirmation
 import { HttpErrorResponse } from "@angular/common/http";
 import { filter } from "rxjs/operators";
 import { EditProjectComponent } from "./edit-project/edit-project.component";
+import { GlobalErrorHandlerService } from "../error/global-error-handler.service";
 
 @Component({
   selector: 'app-projects',
@@ -16,10 +17,13 @@ import { EditProjectComponent } from "./edit-project/edit-project.component";
 export class ProjectsComponent implements OnInit {
 
   projects: Project[] = [];
+  errorMessage: string = null;
 
   constructor(private projectService: ProjectsService,
               private bottomSheet: MatBottomSheet,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private globalErrorHandlerService: GlobalErrorHandlerService,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -31,9 +35,11 @@ export class ProjectsComponent implements OnInit {
       .subscribe(projects => {
           this.projects = projects;
         },
-        err => {
-
-        })
+        (errorResponse: HttpErrorResponse) => {
+          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+          // Dirty fix because of: https://github.com/angular/angular/issues/17772
+          this.changeDetector.markForCheck();
+        });
   }
 
   openProjectDialog() {
@@ -64,9 +70,9 @@ export class ProjectsComponent implements OnInit {
           .subscribe(() => {
             this.loadProjects();
           }, (errorResponse: HttpErrorResponse) => {
-            // this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-            // // Dirty fix because of: https://github.com/angular/angular/issues/17772
-            // this.changeDetector.markForCheck();
+            this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+            // Dirty fix because of: https://github.com/angular/angular/issues/17772
+            this.changeDetector.markForCheck();
           });
       }
     });

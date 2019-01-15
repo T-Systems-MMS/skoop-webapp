@@ -1,4 +1,5 @@
 <form [formGroup]="projectForm" class="new-project-form">
+  <div *ngIf="errorMessage" class="new-project-error">{{errorMessage}}</div>
   <div fxLayout="column">
     <div fxFlex>
       <mat-form-field class="new-project-form-field">

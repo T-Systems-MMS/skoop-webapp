@@ -1,8 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { ProjectsService } from "../projects.service";
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from "@angular/material";
 import { Project } from "../project";
+import { HttpErrorResponse } from "@angular/common/http";
+import { GlobalErrorHandlerService } from "../../error/global-error-handler.service";
 
 @Component({
   selector: 'app-edit-project',
@@ -12,11 +14,14 @@ import { Project } from "../project";
 export class EditProjectComponent implements OnInit {
 
   projectForm: FormGroup;
+  errorMessage: string = null;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public project: Project,
               private projectService: ProjectsService,
               private formBuilder: FormBuilder,
-              private bottomSheet: MatBottomSheetRef) {
+              private bottomSheet: MatBottomSheetRef,
+              private changeDetector: ChangeDetectorRef,
+              private globalErrorHandlerService: GlobalErrorHandlerService) {
     this.projectForm = formBuilder.group({
       name: new FormControl(project.name),
       customer: new FormControl(project.customer),
@@ -32,7 +37,10 @@ export class EditProjectComponent implements OnInit {
     this.projectService.updateProject(this.getProjectData())
       .subscribe(data => {
         this.bottomSheet.dismiss(true);
-      }, err => {
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
 
       });
   }

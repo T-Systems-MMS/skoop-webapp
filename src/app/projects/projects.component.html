@@ -1,5 +1,6 @@
 <div>
   <button mat-raised-button (click)="openProjectDialog()" aria-label="Add project">Add project</button>
+  <div *ngIf="errorMessage" class="project-error">{{errorMessage}}</div>
   <mat-card *ngFor="let project of projects" class="projects-card">
     <mat-card-content>
       <div fxLayout="row">

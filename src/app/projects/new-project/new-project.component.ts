@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { ProjectsService } from "../projects.service";
 import { Project } from "../project";
 import { MatBottomSheetRef } from "@angular/material";
+import { HttpErrorResponse } from "@angular/common/http";
+import { GlobalErrorHandlerService } from "../../error/global-error-handler.service";
 
 @Component({
   selector: 'app-new-project',
@@ -12,10 +14,13 @@ import { MatBottomSheetRef } from "@angular/material";
 export class NewProjectComponent implements OnInit {
 
   projectForm: FormGroup;
+  errorMessage: string = null;
 
   constructor(private projectService: ProjectsService,
               private formBuilder: FormBuilder,
-              private bottomSheet: MatBottomSheetRef) {
+              private bottomSheet: MatBottomSheetRef,
+              private changeDetector: ChangeDetectorRef,
+              private globalErrorHandlerService: GlobalErrorHandlerService) {
     this.projectForm = formBuilder.group({
       name: new FormControl(),
       customer: new FormControl(),
@@ -35,8 +40,13 @@ export class NewProjectComponent implements OnInit {
 
     this.projectService.createProject(this.getProjectData())
       .subscribe(data=> {
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
 
-      }, err => {
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
 
       });
   }
