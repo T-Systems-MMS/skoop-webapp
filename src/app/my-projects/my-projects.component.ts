@@ -1,21 +1,25 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatBottomSheet, MatDialog } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
+import { catchError, filter } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { MyProjectsService } from './my-projects.service';
 import { UserProject } from '../user-projects/user-project';
 import { MyProjectsNewComponent } from './my-projects-new.component';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MyProjectsEditComponent } from './my-projects-edit.component';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-my-projects',
   templateUrl: './my-projects.component.html',
-  styleUrls: ['./my-projects.component.scss']
+  styleUrls: ['./my-projects.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MyProjectsComponent implements OnInit {
 
-  userProjects: UserProject[] = [];
+  userProjects$: Observable<UserProject[]> = of([]);
   errorMessage: string = null;
 
   constructor(private bottomSheet: MatBottomSheet,
@@ -30,14 +34,20 @@ export class MyProjectsComponent implements OnInit {
 
   openNewDialog(): void {
     this.bottomSheet.open(MyProjectsNewComponent)
-      .afterDismissed().subscribe(() => this.loadUserProjects());
+      .afterDismissed().subscribe((result) => {
+      if (result) {
+        this.loadUserProjects();
+      }
+    });
   }
 
   openEditDialog(userProject: UserProject): void {
     this.bottomSheet.open(MyProjectsEditComponent, {
       data: userProject
-    }).afterDismissed().subscribe(() => {
-      this.loadUserProjects();
+    }).afterDismissed().subscribe((result) => {
+      if (result) {
+        this.loadUserProjects();
+      }
     });
   }
 
@@ -61,15 +71,15 @@ export class MyProjectsComponent implements OnInit {
   }
 
   private loadUserProjects(): void {
-    this.myProjectService.getCurrentUserProjects()
-      .subscribe((userProjects: UserProject[]) => {
-          this.userProjects = userProjects;
-        },
-        (errorResponse: HttpErrorResponse) => {
-          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-          // Dirty fix because of: https://github.com/angular/angular/issues/17772
-          this.changeDetector.markForCheck();
-        });
+    this.userProjects$ = this.myProjectService.getCurrentUserProjects()
+      .pipe(
+        catchError((err: HttpErrorResponse, caught: Observable<UserProject[]>) => {
+          this.errorMessage = this.globalErrorHandlerService.createFullMessage(err);
+          return of([]);
+        })
+      );
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 
 }

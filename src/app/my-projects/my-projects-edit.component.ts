@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { MyProjectsService } from './my-projects.service';
@@ -13,7 +13,8 @@ import { FormsService } from '../shared/forms.service';
 @Component({
   selector: 'app-my-projects-edit',
   templateUrl: './my-projects-edit.component.html',
-  styleUrls: ['./my-projects-edit.component.scss']
+  styleUrls: ['./my-projects-edit.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MyProjectsEditComponent implements OnInit {
 

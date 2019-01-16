@@ -6,7 +6,7 @@
 
   <div *ngIf="errorMessage" class="my-projects-error-message">{{errorMessage}}</div>
 
-  <mat-card *ngFor="let userProject of userProjects" class="my-projects-card">
+  <mat-card *ngFor="let userProject of userProjects$ | async" class="my-projects-card">
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex>

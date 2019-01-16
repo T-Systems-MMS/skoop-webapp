@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatAutocompleteTrigger, MatBottomSheetRef } from '@angular/material';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
@@ -11,11 +11,13 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { HttpErrorResponse } from '@angular/common/http';
 import { Util } from '../util/util';
 import { FormsService } from '../shared/forms.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-my-projects-new',
   templateUrl: './my-projects-new.component.html',
-  styleUrls: ['./my-projects-new.component.scss']
+  styleUrls: ['./my-projects-new.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MyProjectsNewComponent implements OnInit, AfterViewInit {
 
@@ -24,7 +26,7 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatAutocompleteTrigger) trigger;
 
-  projects: Project[];
+  projects$: Observable<Project[]>;
 
   constructor(private bottomSheet: MatBottomSheetRef,
               private projectsService: ProjectsService,
@@ -49,9 +51,9 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
         ]
       });
 
-    this.projectsService.getProjects().subscribe((projects: Project[]) => {
-      this.projects = projects;
-    });
+    this.projects$ = this.projectsService.getProjects();
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 
   ngAfterViewInit() {
