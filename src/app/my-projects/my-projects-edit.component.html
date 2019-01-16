@@ -13,7 +13,7 @@
     <input matInput type="text" placeholder="Tasks" formControlName="tasks">
   </mat-form-field>
   <mat-form-field>
-    <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate">
+    <input matInput [matDatepicker]="startDatePicker" placeholder="Start date" formControlName="startDate" [required]="true">
     <mat-error *ngIf="formGroup.controls.startDate.hasError('required')">Start date is mandatory.</mat-error>
     <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
     <mat-datepicker #startDatePicker></mat-datepicker>
