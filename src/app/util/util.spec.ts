@@ -86,5 +86,5 @@ describe('Util', () => {
       expect(Util.datesAreConsistent(userProject)).toBe(true);
     });
   });
-  
+
 });

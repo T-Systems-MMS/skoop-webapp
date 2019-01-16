@@ -1,10 +1,9 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Observable } from 'rxjs';
 import { MatAutocompleteTrigger, MatBottomSheetRef } from '@angular/material';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, switchMap, finalize } from 'rxjs/operators';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { finalize } from 'rxjs/operators';
 import { MyProjectsService } from './my-projects.service';
 import { AssignUserProjectRequest } from '../user-projects/assign-user-project-request';
 import { UserProject } from '../user-projects/user-project';
