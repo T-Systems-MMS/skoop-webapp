@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { ProjectsService } from "../projects.service";
 import { Project } from "../project";
@@ -11,10 +11,11 @@ import { GlobalErrorHandlerService } from "../../error/global-error-handler.serv
   templateUrl: './new-project.component.html',
   styleUrls: ['./new-project.component.scss']
 })
-export class NewProjectComponent implements OnInit {
+export class NewProjectComponent implements OnInit, OnDestroy {
 
   projectForm: FormGroup;
   errorMessage: string = null;
+  addedProjectsCount = 0;
 
   constructor(private projectService: ProjectsService,
               private formBuilder: FormBuilder,
@@ -33,15 +34,20 @@ export class NewProjectComponent implements OnInit {
 
   }
 
+  ngOnDestroy(): void {
+    this.bottomSheet.dismiss(this.addedProjectsCount > 0);
+  }
+
   createProject() {
     if (!this.projectForm.valid) {
       return;
     }
 
     this.projectService.createProject(this.getProjectData())
-      .subscribe(data=> {
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+      .subscribe(() => {
+        this.addedProjectsCount++;
+        this.projectForm.reset();
+        document.querySelector<HTMLElement>('#new-project-name').focus();
 
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
@@ -52,7 +58,7 @@ export class NewProjectComponent implements OnInit {
   }
 
   close() {
-    this.bottomSheet.dismiss(true);
+    this.bottomSheet.dismiss(this.addedProjectsCount > 0);
   }
 
   private getProjectData(): Project {

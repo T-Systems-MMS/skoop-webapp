@@ -34,6 +34,10 @@ export class EditProjectComponent implements OnInit {
   }
 
   editProject() {
+    if (!this.projectForm.valid) {
+      return;
+    }
+
     this.projectService.updateProject(this.getProjectData())
       .subscribe(data => {
         this.bottomSheet.dismiss(true);
@@ -41,7 +45,6 @@ export class EditProjectComponent implements OnInit {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
-
       });
   }
 
