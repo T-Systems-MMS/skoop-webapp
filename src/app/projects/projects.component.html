@@ -1,9 +1,12 @@
 <div>
   <div class="projects-toolbar">
     <button mat-raised-button (click)="openProjectDialog()" aria-label="Add project">Add project</button>
+    <mat-form-field class="projects-filter">
+      <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+    </mat-form-field>
   </div>
   <div *ngIf="errorMessage" class="project-error">{{errorMessage}}</div>
-  <mat-card *ngFor="let project of projects" class="projects-card">
+  <mat-card *ngFor="let project of (projectsFiltered ? projectsFiltered : projects)" class="projects-card">
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex>

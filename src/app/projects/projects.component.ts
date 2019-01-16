@@ -17,6 +17,7 @@ import { GlobalErrorHandlerService } from "../error/global-error-handler.service
 export class ProjectsComponent implements OnInit {
 
   projects: Project[] = [];
+  projectsFiltered: Project[] = [];
   errorMessage: string = null;
 
   constructor(private projectService: ProjectsService,
@@ -34,6 +35,7 @@ export class ProjectsComponent implements OnInit {
     this.projectService.getProjects()
       .subscribe(projects => {
           this.projects = projects;
+          this.projectsFiltered = projects;
         },
         (errorResponse: HttpErrorResponse) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
@@ -75,6 +77,13 @@ export class ProjectsComponent implements OnInit {
             this.changeDetector.markForCheck();
           });
       }
+    });
+  }
+
+  applyFilter(filterValue: string) {
+    const search: string = filterValue.trim().toLowerCase();
+    this.projectsFiltered = this.projects.filter((project) => {
+      return project.name.toLowerCase().indexOf(search.toLowerCase()) > -1;
     });
   }
 
