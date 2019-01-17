@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 
-export class UpdateUserProjectRequest {
+export interface UpdateUserProjectRequest {
   role: string;
   tasks: string;
   startDate: Moment;

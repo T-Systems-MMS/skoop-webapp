@@ -68,6 +68,14 @@ describe('MyProjectsEditComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should fill in the form with expected values', () => {
+    expect(component.formGroup.get('projectName').value).toBe('Project');
+    expect(component.formGroup.get('role').value).toBe('developer');
+    expect(component.formGroup.get('tasks').value).toBe('development');
+    expect(component.formGroup.get('startDate').value).toEqual(Util.ignoreTimezone(moment('2019-01-10')));
+    expect(component.formGroup.get('endDate').value).toEqual(Util.ignoreTimezone(moment('2019-05-10')));
+  });
+
   it('should send a request to update user project', () => {
     component.updateUserProject();
     const myProjectService: MyProjectsService = TestBed.get(MyProjectsService);

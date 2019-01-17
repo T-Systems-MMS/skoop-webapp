@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 
-export class AssignUserProjectRequest {
+export interface AssignUserProjectRequest {
   projectId: string;
   role: string;
   tasks: string;

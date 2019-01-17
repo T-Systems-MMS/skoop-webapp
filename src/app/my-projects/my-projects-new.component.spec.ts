@@ -13,6 +13,10 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import * as moment from 'moment';
+import { Util } from '../util/util';
+import { AssignUserProjectRequest } from '../user-projects/assign-user-project-request';
+
 describe('MyProjectsNewComponent', () => {
   let component: MyProjectsNewComponent;
   let fixture: ComponentFixture<MyProjectsNewComponent>;
@@ -46,9 +50,25 @@ describe('MyProjectsNewComponent', () => {
   });
 
   it('should send a request to assign a project to a user', () => {
+    component.formGroup.setValue({
+      projectName: {
+        id: '123',
+        name: 'Project'
+      } as Project,
+      role: 'developer',
+      tasks: 'development',
+      startDate: Util.ignoreTimezone(moment('2019-01-10')),
+      endDate: Util.ignoreTimezone(moment('2019-05-10'))
+    });
     component.assignUserProject();
     const myProjectService: MyProjectsService = TestBed.get(MyProjectsService);
-    expect(myProjectService.assignProjectToCurrentUser).toHaveBeenCalled();
+    expect(myProjectService.assignProjectToCurrentUser).toHaveBeenCalledWith({
+      projectId: '123',
+      role: 'developer',
+      tasks: 'development',
+      startDate: Util.ignoreTimezone(moment('2019-01-10')),
+      endDate: Util.ignoreTimezone(moment('2019-05-10'))
+    } as AssignUserProjectRequest);
   });
 
 });
