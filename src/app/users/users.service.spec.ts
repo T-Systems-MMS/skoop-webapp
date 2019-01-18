@@ -193,7 +193,7 @@ describe('UsersService', () => {
 
     const request = httpTestingController.expectOne({
       method: 'GET',
-      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/permissions`
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/outbound-permissions`
     });
 
     expect(request.request.responseType).toEqual('json');

@@ -14,7 +14,7 @@ import { UserRequest } from './user-request';
 })
 export class UsersService {
   private userUrlPattern = `${environment.serverApiUrl}/users/{userId}`;
-  private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/permissions`;
+  private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
   constructor(private httpClient: HttpClient,
