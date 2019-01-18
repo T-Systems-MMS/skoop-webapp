@@ -1,17 +1,17 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProjectsService } from '../projects.service';
-import { Project } from '../project';
+import { ProjectsService } from './projects.service';
+import { Project } from './project';
 import { MatBottomSheetRef } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({
-  selector: 'app-new-project',
-  templateUrl: './new-project.component.html',
-  styleUrls: ['./new-project.component.scss']
+  selector: 'app-projects-new',
+  templateUrl: './projects-new.component.html',
+  styleUrls: ['./projects-new.component.scss']
 })
-export class NewProjectComponent implements OnInit, OnDestroy {
+export class ProjectsNewComponent implements OnInit, OnDestroy {
 
   projectForm: FormGroup;
   errorMessage: string = null;

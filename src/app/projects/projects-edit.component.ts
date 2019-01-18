@@ -1,18 +1,18 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProjectsService } from '../projects.service';
+import { ProjectsService } from './projects.service';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
-import { Project } from '../project';
+import { Project } from './project';
 import { HttpErrorResponse } from '@angular/common/http';
-import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { finalize } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-edit-project',
-  templateUrl: './edit-project.component.html',
-  styleUrls: ['./edit-project.component.scss']
+  selector: 'app-projects-edit',
+  templateUrl: './projects-edit.component.html',
+  styleUrls: ['./projects-edit.component.scss']
 })
-export class EditProjectComponent implements OnInit {
+export class ProjectsEditComponent implements OnInit {
 
   projectForm: FormGroup;
   errorMessage: string = null;

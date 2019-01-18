@@ -1,16 +1,16 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditProjectComponent } from './edit-project.component';
+import { ProjectsEditComponent } from './projects-edit.component';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AppMaterialModule } from '../../app-material.module';
-import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
+import { AppMaterialModule } from '../app-material.module';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { of } from 'rxjs';
-import { ProjectsService } from '../projects.service';
-import { Project } from '../project';
+import { ProjectsService } from './projects.service';
+import { Project } from './project';
 import { By } from '@angular/platform-browser';
 
 const projectTestData: Project = {
@@ -21,9 +21,9 @@ const projectTestData: Project = {
   description: 'Description',
 } as Project;
 
-describe('EditProjectComponent', () => {
-  let component: EditProjectComponent;
-  let fixture: ComponentFixture<EditProjectComponent>;
+describe('ProjectsEditComponent', () => {
+  let component: ProjectsEditComponent;
+  let fixture: ComponentFixture<ProjectsEditComponent>;
   let projectService: ProjectsService;
 
   beforeEach(async(() => {
@@ -35,7 +35,7 @@ describe('EditProjectComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ EditProjectComponent ],
+      declarations: [ ProjectsEditComponent ],
       providers: [
         GlobalErrorHandlerService,
         { provide: ProjectsService, useValue: jasmine.createSpyObj('projectsService', {'updateProject': of<Project>() } ) },
@@ -49,7 +49,7 @@ describe('EditProjectComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EditProjectComponent);
+    fixture = TestBed.createComponent(ProjectsEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -58,14 +58,14 @@ describe('EditProjectComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize the edit-project form', () => {
+  it('should initialize the projects-edit form', () => {
     expect(component.projectForm.get('name').value).toBe(projectTestData.name);
     expect(component.projectForm.get('customer').value).toBe(projectTestData.customer);
     expect(component.projectForm.get('industrySector').value).toBe(projectTestData.industrySector);
     expect(component.projectForm.get('description').value).toBe(projectTestData.description);
   });
 
-  it('should update the edit-project form', async(() => {
+  it('should update the projects-edit form', async(() => {
     component.projectForm.get('name').setValue('Changed name');
     component.projectForm.get('customer').setValue('Changed customer');
     component.projectForm.get('industrySector').setValue('Changed industrySector');

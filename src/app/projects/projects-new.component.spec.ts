@@ -1,22 +1,22 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewProjectComponent } from './new-project.component';
+import { ProjectsNewComponent } from './projects-new.component';
 import { MatBottomSheetRef } from '@angular/material';
-import { ProjectsService } from '../projects.service';
-import { Project } from '../project';
+import { ProjectsService } from './projects.service';
+import { Project } from './project';
 import { of } from 'rxjs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AppMaterialModule } from '../../app-material.module';
-import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
+import { AppMaterialModule } from '../app-material.module';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
 
 
-describe('NewProjectComponent', () => {
-  let component: NewProjectComponent;
-  let fixture: ComponentFixture<NewProjectComponent>;
+describe('ProjectsNewComponent', () => {
+  let component: ProjectsNewComponent;
+  let fixture: ComponentFixture<ProjectsNewComponent>;
   let projectService: ProjectsService;
 
   beforeEach(async(() => {
@@ -28,7 +28,7 @@ describe('NewProjectComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ NewProjectComponent ],
+      declarations: [ ProjectsNewComponent ],
       providers: [
         GlobalErrorHandlerService,
         { provide: ProjectsService, useValue: jasmine.createSpyObj('projectsService', {'createProject': of<Project>() } ) },
@@ -41,7 +41,7 @@ describe('NewProjectComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(NewProjectComponent);
+    fixture = TestBed.createComponent(ProjectsNewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

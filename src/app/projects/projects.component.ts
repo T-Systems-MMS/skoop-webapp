@@ -1,12 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ProjectsService } from './projects.service';
 import { MatBottomSheet, MatDialog } from '@angular/material';
-import { NewProjectComponent } from './new-project/new-project.component';
+import { ProjectsNewComponent } from './projects-new.component';
 import { Project } from './project';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { filter} from 'rxjs/operators';
-import { EditProjectComponent } from './edit-project/edit-project.component';
+import { filter } from 'rxjs/operators';
+import { ProjectsEditComponent } from './projects-edit.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { FormControl } from '@angular/forms';
 
@@ -45,12 +45,12 @@ export class ProjectsComponent implements OnInit {
   }
 
   openProjectDialog() {
-    this.bottomSheet.open(NewProjectComponent)
+    this.bottomSheet.open(ProjectsNewComponent)
       .afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadProjects());
   }
 
   openEditDialog(project: Project) {
-    this.bottomSheet.open(EditProjectComponent, {
+    this.bottomSheet.open(ProjectsEditComponent, {
       data: <Project>{
         id: project.id,
         name: project.name,

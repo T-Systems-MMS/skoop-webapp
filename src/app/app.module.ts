@@ -31,8 +31,8 @@ import { SkillUserComponent } from './skill-users/skill-user.component';
 import { SkillGroupsEditComponent } from './skill-groups/skill-groups-edit.component';
 import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { NewProjectComponent } from './projects/new-project/new-project.component';
-import { EditProjectComponent } from './projects/edit-project/edit-project.component';
+import { ProjectsNewComponent } from './projects/projects-new.component';
+import { ProjectsEditComponent } from './projects/projects-edit.component';
 import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
 
 @NgModule({
@@ -49,8 +49,8 @@ import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
     ProjectsComponent,
-    NewProjectComponent,
-    EditProjectComponent,
+    ProjectsNewComponent,
+    ProjectsEditComponent,
     ProjectsFilterPipe,
   ],
   imports: [
@@ -86,8 +86,8 @@ import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
     SkillsEditComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
-    NewProjectComponent,
-    EditProjectComponent,
+    ProjectsNewComponent,
+    ProjectsEditComponent,
   ],
   bootstrap: [AppComponent]
 })

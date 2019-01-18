@@ -1,23 +1,23 @@
-<form [formGroup]="projectForm" class="new-project-form">
-  <div *ngIf="errorMessage" class="new-project-error">{{errorMessage}}</div>
+<form [formGroup]="projectForm" class="projects-new-form">
+  <div *ngIf="errorMessage" class="projects-new-error">{{errorMessage}}</div>
   <div fxLayout="column">
     <div fxFlex>
-      <mat-form-field class="new-project-form-field">
-        <input matInput id="new-project-name" placeholder="Name" formControlName="name" [required]="true">
+      <mat-form-field class="projects-new-form-field">
+        <input matInput id="projects-new-name" placeholder="Name" formControlName="name" [required]="true">
       </mat-form-field>
     </div>
     <div fxFlex>
-      <mat-form-field class="new-project-form-field">
+      <mat-form-field class="projects-new-form-field">
         <input matInput placeholder="Customer" formControlName="customer">
       </mat-form-field>
     </div>
     <div fxFlex>
-      <mat-form-field class="new-project-form-field">
+      <mat-form-field class="projects-new-form-field">
         <input matInput placeholder="Industry sector" formControlName="industrySector">
       </mat-form-field>
     </div>
     <div fxFlex>
-      <mat-form-field class="new-project-form-field">
+      <mat-form-field class="projects-new-form-field">
         <input matInput placeholder="Description" formControlName="description">
       </mat-form-field>
     </div>
