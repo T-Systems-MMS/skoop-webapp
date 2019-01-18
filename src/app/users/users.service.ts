@@ -7,14 +7,14 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
-import { UserRequest } from "./user-request";
+import { UserRequest } from './user-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
   private userUrlPattern = `${environment.serverApiUrl}/users/{userId}`;
-  private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/permissions`;
+  private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
   constructor(private httpClient: HttpClient,

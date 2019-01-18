@@ -34,6 +34,23 @@ import { ProjectsComponent } from './projects/projects.component';
 import { ProjectsNewComponent } from './projects/projects-new.component';
 import { ProjectsEditComponent } from './projects/projects-edit.component';
 import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
+import { MyProjectsComponent } from './my-projects/my-projects.component';
+import { MyProjectsNewComponent } from './my-projects/my-projects-new.component';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { MyProjectsEditComponent } from './my-projects/my-projects-edit.component';
+
+export const CUSTOM_FORMATS = {
+  parse: {
+    dateInput: 'L',
+  },
+  display: {
+    dateInput: 'DD.MM.YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @NgModule({
   declarations: [
@@ -52,6 +69,9 @@ import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
     ProjectsNewComponent,
     ProjectsEditComponent,
     ProjectsFilterPipe,
+    MyProjectsComponent,
+    MyProjectsNewComponent,
+    MyProjectsEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,7 +96,9 @@ import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
       useFactory: initAuthentication,
       deps: [OAuthModuleConfig, OAuthService],
       multi: true
-    }
+    },
+    {provide: DateAdapter, useClass: MomentDateAdapter},
+    {provide: MAT_DATE_FORMATS, useValue: CUSTOM_FORMATS}
   ],
   entryComponents: [
     DeleteConfirmationDialogComponent,
@@ -88,6 +110,8 @@ import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
     SkillGroupsEditComponent,
     ProjectsNewComponent,
     ProjectsEditComponent,
+    MyProjectsNewComponent,
+    MyProjectsEditComponent
   ],
   bootstrap: [AppComponent]
 })

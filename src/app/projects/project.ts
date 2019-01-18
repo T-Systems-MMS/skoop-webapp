@@ -1,4 +1,4 @@
-export class Project {
+export interface Project {
   id: string;
   name: string;
   customer: string;

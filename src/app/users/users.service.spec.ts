@@ -8,7 +8,7 @@ import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
-import { UserRequest } from "./user-request";
+import { UserRequest } from './user-request';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -193,7 +193,7 @@ describe('UsersService', () => {
 
     const request = httpTestingController.expectOne({
       method: 'GET',
-      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/permissions`
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/outbound-permissions`
     });
 
     expect(request.request.responseType).toEqual('json');
