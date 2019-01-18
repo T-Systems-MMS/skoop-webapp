@@ -1,0 +1,16 @@
+@import 'variables';
+
+.projects-new-form-field {
+  width: 100%;
+}
+
+.projects-new-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+.project-new-actions {
+  margin-right: 16px;
+}

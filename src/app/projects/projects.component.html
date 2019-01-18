@@ -1,0 +1,39 @@
+<div>
+  <div class="projects-toolbar">
+    <button mat-raised-button (click)="openProjectDialog()" aria-label="Add project">Add project</button>
+    <mat-form-field class="projects-filter">
+      <input matInput [formControl]="filter" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  <div *ngIf="errorMessage" class="project-error">{{errorMessage}}</div>
+  <mat-card *ngFor="let project of projects | projectsFilter : filter.value " class="projects-card">
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex>
+          <h2 class="projects-name">{{ project.name }}</h2>
+        </div>
+        <div fxFlex="none">
+          <button mat-icon-button (click)="openEditDialog(project)" title="Edit" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="delete(project)" title="Delete" aria-label="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div class="projects-description-label">Customer:</div>
+        <div>{{ project.customer }}</div>
+      </div>
+      <div fxLayout="row">
+        <div class="projects-description-label">Industry sector:</div>
+        <div>{{ project.industrySector }}</div>
+      </div>
+      <div fxLayout="row">
+        <div class="projects-description-label">Description:</div>
+        <div>{{ project.description }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

@@ -30,6 +30,10 @@ import { DeleteConfirmationDialogComponent } from './shared/delete-confirmation-
 import { SkillUserComponent } from './skill-users/skill-user.component';
 import { SkillGroupsEditComponent } from './skill-groups/skill-groups-edit.component';
 import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.component';
+import { ProjectsComponent } from './projects/projects.component';
+import { ProjectsNewComponent } from './projects/projects-new.component';
+import { ProjectsEditComponent } from './projects/projects-edit.component';
+import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
 import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { MyProjectsNewComponent } from './my-projects/my-projects-new.component';
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
@@ -61,6 +65,10 @@ export const CUSTOM_FORMATS = {
     DeleteConfirmationDialogComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
+    ProjectsComponent,
+    ProjectsNewComponent,
+    ProjectsEditComponent,
+    ProjectsFilterPipe,
     MyProjectsComponent,
     MyProjectsNewComponent,
     MyProjectsEditComponent,
@@ -100,6 +108,8 @@ export const CUSTOM_FORMATS = {
     SkillsEditComponent,
     SkillGroupsNewComponent,
     SkillGroupsEditComponent,
+    ProjectsNewComponent,
+    ProjectsEditComponent,
     MyProjectsNewComponent,
     MyProjectsEditComponent
   ],

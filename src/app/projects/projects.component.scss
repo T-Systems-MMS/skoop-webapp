@@ -1,0 +1,31 @@
+@import 'variables';
+
+.project-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+.projects-card {
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.projects-name {
+  margin: 0;
+  line-height: 40px;
+}
+
+.projects-description-label {
+  font-weight: 550;
+  margin-right: 0.5em;
+}
+
+.projects-toolbar {
+  margin-bottom: 16px;
+}
+
+.projects-filter {
+  margin-left: 15px;
+}
