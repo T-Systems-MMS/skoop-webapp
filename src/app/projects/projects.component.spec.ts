@@ -8,16 +8,9 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { ProjectsService } from './projects.service';
 import { Project } from './project';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-
-const projectsServiceStub: Partial<ProjectsService> = {
-  getProjects():
-    Observable<Project[]> { return null; },
-  deleteProject(projectId: string):
-    Observable<void> { return null; }
-
-};
+import { ProjectsFilterPipe } from './projects-filter.pipe';
 
 const projects = [
   {
@@ -43,12 +36,9 @@ const projects = [
 describe('ProjectsComponent', () => {
   let component: ProjectsComponent;
   let fixture: ComponentFixture<ProjectsComponent>;
+  let projectService: ProjectsService;
 
   beforeEach(async(() => {
-    spyOn(projectsServiceStub, 'getProjects')
-      .and.returnValue(of<Project[]>(projects));
-    spyOn(projectsServiceStub, 'deleteProject')
-      .and.returnValue(of<void>());
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -57,13 +47,20 @@ describe('ProjectsComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ ProjectsComponent ],
+      declarations: [ProjectsComponent, ProjectsFilterPipe],
       providers: [
         GlobalErrorHandlerService,
-        { provide: ProjectsService, useValue: projectsServiceStub }
+        {
+          provide: ProjectsService, useValue: jasmine.createSpyObj('projectsService', {
+            'getProjects': of<Project[]>(projects),
+            'deleteProject': of<void>()
+          })
+        }
       ]
     })
-    .compileComponents();
+      .compileComponents();
+
+    projectService = TestBed.get(ProjectsService);
   }));
 
   beforeEach(() => {
@@ -78,11 +75,6 @@ describe('ProjectsComponent', () => {
 
   it('should initialize the list of projects', () => {
     expect(component.projects).toEqual(projects);
-  });
-
-  it('should filter the list of projects', () => {
-    component.applyFilter('test1');
-    expect(component.projectsFiltered).toEqual([projects[0]]);
   });
 
 });

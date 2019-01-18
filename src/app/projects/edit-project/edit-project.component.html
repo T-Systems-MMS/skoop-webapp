@@ -22,8 +22,8 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="edit-project-actions">
-    <button mat-raised-button color="primary" (click)="editProject()" [disabled]="!projectForm.valid" class="edit-project-button">Edit project</button>
-    <button mat-raised-button (click)="close()" aria-label="Close" class="edit-project-button">Close</button>
+  <div>
+    <button mat-raised-button id="project-edit-button" color="primary" (click)="editProject()" [disabled]="!projectForm.valid || projectForm.pristine" class="edit-project-actions">Edit project</button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="edit-project-actions">Close</button>
   </div>
 </form>

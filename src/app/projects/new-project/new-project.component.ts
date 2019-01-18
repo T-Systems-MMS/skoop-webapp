@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { ProjectsService } from "../projects.service";
-import { Project } from "../project";
-import { MatBottomSheetRef } from "@angular/material";
-import { HttpErrorResponse } from "@angular/common/http";
-import { GlobalErrorHandlerService } from "../../error/global-error-handler.service";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ProjectsService } from '../projects.service';
+import { Project } from '../project';
+import { MatBottomSheetRef } from '@angular/material';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
 
 @Component({
   selector: 'app-new-project',
@@ -22,16 +22,16 @@ export class NewProjectComponent implements OnInit, OnDestroy {
               private bottomSheet: MatBottomSheetRef,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
-    this.projectForm = formBuilder.group({
-      name: new FormControl(),
+
+  }
+
+  ngOnInit() {
+    this.projectForm = this.formBuilder.group({
+      name: new FormControl('', Validators.required),
       customer: new FormControl(),
       industrySector: new FormControl(),
       description: new FormControl()
     });
-  }
-
-  ngOnInit() {
-
   }
 
   ngOnDestroy(): void {
@@ -39,16 +39,10 @@ export class NewProjectComponent implements OnInit, OnDestroy {
   }
 
   createProject() {
-    if (!this.projectForm.valid) {
-      return;
-    }
-
     this.projectService.createProject(this.getProjectData())
       .subscribe(() => {
         this.addedProjectsCount++;
         this.projectForm.reset();
-        document.querySelector<HTMLElement>('#new-project-name').focus();
-
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772

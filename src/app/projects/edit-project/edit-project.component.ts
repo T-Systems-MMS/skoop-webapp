@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
-import { ProjectsService } from "../projects.service";
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from "@angular/material";
-import { Project } from "../project";
-import { HttpErrorResponse } from "@angular/common/http";
-import { GlobalErrorHandlerService } from "../../error/global-error-handler.service";
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ProjectsService } from '../projects.service';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { Project } from '../project';
+import { HttpErrorResponse } from '@angular/common/http';
+import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-project',
@@ -23,7 +24,7 @@ export class EditProjectComponent implements OnInit {
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
     this.projectForm = formBuilder.group({
-      name: new FormControl(project.name),
+      name: new FormControl(project.name, Validators.required),
       customer: new FormControl(project.customer),
       industrySector: new FormControl(project.industrySector),
       description: new FormControl(project.description)
@@ -34,13 +35,15 @@ export class EditProjectComponent implements OnInit {
   }
 
   editProject() {
-    if (!this.projectForm.valid) {
-      return;
-    }
-
     this.projectService.updateProject(this.getProjectData())
+      .pipe(
+        finalize(() => {
+            this.projectForm.markAsPristine();
+          }
+        )
+      )
       .subscribe(data => {
-        this.bottomSheet.dismiss(true);
+        this.bottomSheet.dismiss(data);
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
@@ -49,7 +52,7 @@ export class EditProjectComponent implements OnInit {
   }
 
   close() {
-    this.bottomSheet.dismiss(true);
+    this.bottomSheet.dismiss();
   }
 
   private getProjectData(): Project {

@@ -8,18 +8,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../../app-material.module';
 import { GlobalErrorHandlerService } from '../../error/global-error-handler.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { ProjectsService } from '../projects.service';
 import { Project } from '../project';
-
-const bottomSheetStub: Partial<MatBottomSheetRef> = {
-  dismiss(result?: any): void { }
-};
-
-const projectsServiceStub: Partial<ProjectsService> = {
-  updateProject(project: Project):
-    Observable<Project> { return null; }
-};
+import { By } from '@angular/platform-browser';
 
 const projectTestData: Project = {
   id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -32,19 +24,9 @@ const projectTestData: Project = {
 describe('EditProjectComponent', () => {
   let component: EditProjectComponent;
   let fixture: ComponentFixture<EditProjectComponent>;
+  let projectService: ProjectsService;
 
   beforeEach(async(() => {
-    spyOn(projectsServiceStub, 'updateProject')
-      .and.returnValue(of<Project>(
-      {
-        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-        name: 'Changed name',
-        customer: 'Changed customer',
-        industrySector: 'Changed industrySector',
-        description: 'Changed description',
-        creationDate: new Date(),
-        lastModifiedDate: new Date()
-      }));
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -56,12 +38,14 @@ describe('EditProjectComponent', () => {
       declarations: [ EditProjectComponent ],
       providers: [
         GlobalErrorHandlerService,
-        { provide: ProjectsService, useValue: projectsServiceStub },
-        { provide: MatBottomSheetRef, useValue: bottomSheetStub },
+        { provide: ProjectsService, useValue: jasmine.createSpyObj('projectsService', {'updateProject': of<Project>() } ) },
+        { provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'] ) },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: projectTestData }
       ]
     })
     .compileComponents();
+
+    projectService = TestBed.get(ProjectsService);
   }));
 
   beforeEach(() => {
@@ -103,22 +87,17 @@ describe('EditProjectComponent', () => {
         description: 'Changed description',
       } as Project;
 
-      expect(projectsServiceStub.updateProject).toHaveBeenCalledWith(expectedRequestData);
+      expect(projectService.updateProject).toHaveBeenCalledWith(expectedRequestData);
     });
   }));
 
-  it('should not call the createProject method when name is empty', async(() => {
+  it('should disable editButton when name is empty', async(() => {
     component.projectForm.get('name').setValue('');
     component.projectForm.get('customer').setValue('customer');
     component.projectForm.get('industrySector').setValue('industrySector');
     component.projectForm.get('description').setValue('description');
-    component.editProject();
 
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-
-      expect(component.projectForm.valid).toBeFalsy();
-      expect(projectsServiceStub.updateProject).not.toHaveBeenCalled();
-    });
+    const editButton = fixture.debugElement.query(By.css('#project-edit-button'));
+    expect(editButton.nativeElement.disabled).toBeTruthy();
   }));
 });

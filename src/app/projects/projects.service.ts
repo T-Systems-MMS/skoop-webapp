@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Project } from './project';
@@ -19,23 +19,11 @@ export class ProjectsService {
   }
 
   createProject(data: Project): Observable<Project> {
-    return this.httpClient.post<Project>(this.projectsUrlPattern,
-      data,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      });
+    return this.httpClient.post<Project>(this.projectsUrlPattern, data);
   }
 
   updateProject(data: Project): Observable<Project> {
-    return this.httpClient.put<Project>(this.projectUrlPattern.replace('{projectId}', data.id),
-      data,
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      });
+    return this.httpClient.put<Project>(this.projectUrlPattern.replace('{projectId}', data.id), data);
   }
 
   deleteProject(projectId: string): Observable<void> {

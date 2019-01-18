@@ -33,6 +33,7 @@ import { SkillGroupsNewComponent } from './skill-groups/skill-groups-new.compone
 import { ProjectsComponent } from './projects/projects.component';
 import { NewProjectComponent } from './projects/new-project/new-project.component';
 import { EditProjectComponent } from './projects/edit-project/edit-project.component';
+import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { EditProjectComponent } from './projects/edit-project/edit-project.compo
     ProjectsComponent,
     NewProjectComponent,
     EditProjectComponent,
+    ProjectsFilterPipe,
   ],
   imports: [
     BrowserModule,

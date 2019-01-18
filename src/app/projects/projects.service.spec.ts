@@ -2,8 +2,8 @@ import { async, TestBed } from '@angular/core/testing';
 
 import { ProjectsService } from './projects.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from "../../environments/environment";
-import { Project } from "./project";
+import { environment } from '../../environments/environment';
+import { Project } from './project';
 
 describe('ProjectsService', () => {
   let httpTestingController: HttpTestingController;
@@ -83,7 +83,6 @@ describe('ProjectsService', () => {
     });
 
     expect(request.request.responseType).toEqual('json');
-    expect(request.request.headers.get('Content-Type')).toEqual('application/json');
     expect(request.request.body).toEqual(testProject);
 
     request.flush(testProject);
@@ -107,7 +106,6 @@ describe('ProjectsService', () => {
     });
 
     expect(request.request.responseType).toEqual('json');
-    expect(request.request.headers.get('Content-Type')).toEqual('application/json');
     expect(request.request.body).toEqual(testProject);
 
     request.flush(testProject);

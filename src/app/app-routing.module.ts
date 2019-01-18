@@ -12,7 +12,7 @@ import { SkillUsersReportComponent } from './reports/skill-users-report/skill-us
 import { SkillsComponent } from './skills/skills.component';
 import { UserProfileComponent } from './users/user-profile.component';
 import { SkillGroupsComponent } from './skill-groups/skill-groups.component';
-import { ProjectsComponent } from "./projects/projects.component";
+import { ProjectsComponent } from './projects/projects.component';
 
 export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
