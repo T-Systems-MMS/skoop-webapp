@@ -39,6 +39,7 @@ import { MyProjectsNewComponent } from './my-projects/my-projects-new.component'
 import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MyProjectsEditComponent } from './my-projects/my-projects-edit.component';
+import { OtherUserProfilesComponent } from './other-user-profiles/other-user-profiles.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -72,6 +73,7 @@ export const CUSTOM_FORMATS = {
     MyProjectsComponent,
     MyProjectsNewComponent,
     MyProjectsEditComponent,
+    OtherUserProfilesComponent,
   ],
   imports: [
     BrowserModule,

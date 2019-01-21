@@ -1,0 +1,21 @@
+<div class="other-user-profiles mat-typography ">
+  <h1>Other user skill profiles</h1>
+  <div *ngIf="errorMessage" class="other-user-profiles-error">{{errorMessage}}</div>
+  <mat-card *ngFor="let user of permissionOwners" class="other-user-profiles-card">
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex>
+          <h2 class="other-user-profiles-name">{{ user.userName }}</h2>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div class="other-user-profiles-description-label">First Name:</div>
+        <div>{{ user.firstName }}</div>
+      </div>
+      <div fxLayout="row">
+        <div class="other-user-profiles-description-label">Last Name:</div>
+        <div>{{ user.lastName }}</div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
