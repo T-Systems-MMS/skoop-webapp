@@ -1,6 +1,9 @@
 <div class="other-user-profiles mat-typography ">
   <h1>Other user skill profiles</h1>
   <div *ngIf="errorMessage" class="other-user-profiles-error">{{errorMessage}}</div>
+  <div *ngIf="permissionOwners.length === 0">
+    There are no users who granted permissions to you
+  </div>
   <mat-card *ngFor="let user of permissionOwners" class="other-user-profiles-card">
     <mat-card-content>
       <div fxLayout="row">
