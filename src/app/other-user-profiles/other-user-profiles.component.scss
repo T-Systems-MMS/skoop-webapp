@@ -1,0 +1,23 @@
+@import 'variables';
+
+.other-user-profiles-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+.other-user-profiles-card {
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+.other-user-profiles-name {
+  margin: 0;
+  line-height: 40px;
+}
+
+.other-user-profiles-description-label {
+  font-weight: 550;
+  margin-right: 0.5em;
+}

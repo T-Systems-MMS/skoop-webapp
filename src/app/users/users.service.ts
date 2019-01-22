@@ -15,6 +15,7 @@ import { UserRequest } from './user-request';
 export class UsersService {
   private userUrlPattern = `${environment.serverApiUrl}/users/{userId}`;
   private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
+  private userInboundPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
   constructor(private httpClient: HttpClient,
@@ -82,6 +83,23 @@ export class UsersService {
         map(userPermissions => {
           const permission = userPermissions.find(userPermission => userPermission.scope === scope);
           return permission ? permission.authorizedUsers : [];
+        })
+      );
+  }
+
+  getPermissionOwners(scope: UserPermissionScope): Observable<User[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(
+        switchMap(userIdentity => this.httpClient.get<UserPermission[]>(
+          // TODO: Request permissions for given scope via specific API call, e.g.
+          // GET /users/{userId}/permissions/{scope}
+          this.userInboundPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
+        ),
+        map(userPermissions => {
+          const inboundUserPermissions = userPermissions.filter(userPermission => userPermission.scope === scope);
+          const permissionOwners = [];
+          inboundUserPermissions.forEach(item => permissionOwners.push(item.owner));
+          return permissionOwners;
         })
       );
   }
