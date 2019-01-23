@@ -1,5 +1,8 @@
 <div class="mat-typography">
   <h1>Search users by skills</h1>
+  <div class="search-users-toolbar">
+    <button mat-raised-button (click)="search()" [disabled]="!form.valid" aria-label="Search">Search</button>
+  </div>
   <div [formGroup]="form">
     <div formArrayName="criteriaList">
       <mat-card *ngFor="let criteria of criteriaList.controls; let i = index;">
@@ -7,7 +10,7 @@
           <div fxLayout="row">
             <div fxFlex="33%">
               <mat-form-field>
-                <mat-select placeholder="Please select a skill">
+                <mat-select placeholder="Please select a skill" formControlName="skill">
                   <mat-option *ngFor="let skill of skills$ | async" [value]="skill.id">
                     {{skill.name}}
                   </mat-option>
@@ -20,17 +23,16 @@
                 min="0"
                 max="4"
                 step="1"
-                value="0"
                 thumbLabel
                 tickInterval="1"
-                [formControlName]="level"
+                formControlName="level"
                 class="skillLevel__formField">
               </mat-slider>
             </div>
             <div fxFlex="33%">
               <button mat-icon-button type="button" (click)="removeCriteria(i)"
                       [disabled]="criteriaList.controls.length === 1" aria-label="Remove">
-                <mat-icon>delete</mat-icon>
+                <mat-icon>clear</mat-icon>
               </button>
             </div>
           </div>

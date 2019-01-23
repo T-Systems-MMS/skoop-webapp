@@ -9,6 +9,8 @@ import { AppMaterialModule } from '../app-material.module';
 import { of } from 'rxjs';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
+import { SearchUsersService } from './search-users.service';
+import { AnonymousUserSkill } from './anonymous-user-skill';
 
 const skills = [
   {
@@ -36,25 +38,30 @@ describe('SearchUsersComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ SearchUsersComponent ],
+      declarations: [SearchUsersComponent],
       providers: [
         {
           provide: SkillsService, useValue: jasmine.createSpyObj('skillService', {
             'getAllSkills': of<Skill[]>(skills)
           })
+        },
+        {
+          provide: SearchUsersService, useValue: jasmine.createSpyObj('searchService', {
+            'search': of<AnonymousUserSkill[]>([])
+          })
         }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
-    // fixture = TestBed.createComponent(SearchUsersComponent);
-    // component = fixture.componentInstance;
-    // fixture.detectChanges();
+    fixture = TestBed.createComponent(SearchUsersComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
-    // expect(component).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 });

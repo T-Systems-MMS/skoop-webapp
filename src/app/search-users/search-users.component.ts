@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
+import { SearchUsersService } from './search-users.service';
 
 @Component({
   selector: 'app-search-users',
@@ -16,29 +17,41 @@ export class SearchUsersComponent implements OnInit {
   public form: FormGroup;
 
   constructor(private skillsService: SkillsService,
-              private fb: FormBuilder) { }
+              private searchService: SearchUsersService,
+              private fb: FormBuilder) {
+  }
 
   ngOnInit() {
     this.skills$ = this.skillsService.getAllSkills();
     this.buildForm();
   }
 
-  createCriteria() : FormGroup {
-    return new FormGroup({
-      skill: new FormControl(),
-      level: new FormControl()
+  createCriteria(): FormGroup {
+    return this.fb.group({
+      skill: ['', Validators.required],
+      level: 0 // default skill level
     });
   }
 
-  // add a contact form group
   addCriteria() {
     this.criteriaList.push(this.createCriteria());
   }
 
-  // remove contact from group
   removeCriteria(index) {
-    // this.contactList = this.form.get('contacts') as FormArray;
     this.criteriaList.removeAt(index);
+  }
+
+  search() {
+    const criteriaList: string[] = this.criteriaList.value.map(item => {
+      return `${item.skill}+${item.level}`;
+    });
+
+    this.searchService.search(criteriaList)
+      .subscribe(data => {
+        console.log(data);
+      }, err => {
+
+      });
   }
 
   private buildForm() {
