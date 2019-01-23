@@ -11,6 +11,7 @@ import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { SearchUsersService } from './search-users.service';
 import { AnonymousUserSkill } from './anonymous-user-skill';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 const skills = [
   {
@@ -40,6 +41,7 @@ describe('SearchUsersComponent', () => {
       ],
       declarations: [SearchUsersComponent],
       providers: [
+        GlobalErrorHandlerService,
         {
           provide: SkillsService, useValue: jasmine.createSpyObj('skillService', {
             'getAllSkills': of<Skill[]>(skills)

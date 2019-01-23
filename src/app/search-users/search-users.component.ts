@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SearchUsersService } from './search-users.service';
+import { AnonymousUserSkill } from './anonymous-user-skill';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({
   selector: 'app-search-users',
@@ -12,13 +14,18 @@ import { SearchUsersService } from './search-users.service';
 })
 export class SearchUsersComponent implements OnInit {
 
-  skills$: Observable<Skill[]>;
+  skills$: Observable<Skill[]> = of([]);
+  users: AnonymousUserSkill[] = [];
+  showSearchResult = false;
+  errorMessage: string = null;
 
   public form: FormGroup;
 
   constructor(private skillsService: SkillsService,
               private searchService: SearchUsersService,
-              private fb: FormBuilder) {
+              private fb: FormBuilder,
+              private changeDetector: ChangeDetectorRef,
+              private globalErrorHandlerService: GlobalErrorHandlerService) {
   }
 
   ngOnInit() {
@@ -47,16 +54,24 @@ export class SearchUsersComponent implements OnInit {
     });
 
     this.searchService.search(criteriaList)
-      .subscribe(data => {
-        console.log(data);
+      .subscribe(users => {
+        this.users = users;
+        this.showSearchResult = true;
       }, err => {
-
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(err);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
       });
   }
 
   private buildForm() {
     this.form = this.fb.group({
       criteriaList: this.fb.array([this.createCriteria()])
+    });
+
+    // hide results on change
+    this.form.valueChanges.subscribe(() => {
+      this.showSearchResult = false;
     });
   }
 
