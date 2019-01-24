@@ -11,9 +11,11 @@ export class SearchUsersService {
 
   private searchUrlPattern = `${environment.serverApiUrl}/search/users?params={searchParams}`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+  }
 
   public search(criteriaList: string[]): Observable<AnonymousUserSkill[]> {
-    return this.httpClient.get<AnonymousUserSkill[]>(this.searchUrlPattern.replace('{searchParams}', encodeURIComponent(criteriaList.join(','))));
+    return this.httpClient.get<AnonymousUserSkill[]>(this.searchUrlPattern.replace('{searchParams}',
+      encodeURIComponent(criteriaList.join(','))));
   }
 }

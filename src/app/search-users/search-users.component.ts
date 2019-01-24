@@ -15,7 +15,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 export class SearchUsersComponent implements OnInit {
 
   skills$: Observable<Skill[]> = of([]);
-  users: AnonymousUserSkill[] = [];
+  userSkills: AnonymousUserSkill[] = [];
   showSearchResult = false;
   errorMessage: string = null;
 
@@ -35,7 +35,7 @@ export class SearchUsersComponent implements OnInit {
 
   createCriteria(): FormGroup {
     return this.fb.group({
-      skill: ['', Validators.required],
+      skill: [null, Validators.required],
       level: 0 // default skill level
     });
   }
@@ -46,6 +46,27 @@ export class SearchUsersComponent implements OnInit {
 
   removeCriteria(index) {
     this.criteriaList.removeAt(index);
+    this.checkDuplicates();
+  }
+
+  checkDuplicates() {
+    const counts = [];
+
+    this.criteriaList.controls.forEach(item => {
+      if (item.value.skill === null || counts[item.value.skill] === undefined) {
+        counts[item.value.skill] = 1;
+      } else {
+        counts[item.value.skill]++;
+      }
+    });
+
+    this.criteriaList.controls.forEach(item => {
+      if (counts[item.value.skill] > 1) {
+        item.setErrors({isDuplicated: true});
+      } else {
+        item.setErrors(null);
+      }
+    });
   }
 
   search() {
@@ -54,8 +75,8 @@ export class SearchUsersComponent implements OnInit {
     });
 
     this.searchService.search(criteriaList)
-      .subscribe(users => {
-        this.users = users;
+      .subscribe(userSkills => {
+        this.userSkills = userSkills;
         this.showSearchResult = true;
       }, err => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(err);

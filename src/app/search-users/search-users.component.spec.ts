@@ -26,6 +26,35 @@ const skills = [
   }
 ];
 
+const anonymousUserSkills: AnonymousUserSkill[] = [
+  {
+    userReferenceId: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+    skills: [
+      {
+        skillName: 'Spring',
+        currentLevel: 2
+      },
+      {
+        skillName: 'Angular',
+        currentLevel: 2
+      }
+    ]
+  },
+  {
+    userReferenceId: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
+    skills: [
+      {
+        skillName: 'Spring',
+        currentLevel: 4
+      },
+      {
+        skillName: 'Angular',
+        currentLevel: 3
+      }
+    ]
+  }
+];
+
 describe('SearchUsersComponent', () => {
   let component: SearchUsersComponent;
   let fixture: ComponentFixture<SearchUsersComponent>;
@@ -49,7 +78,7 @@ describe('SearchUsersComponent', () => {
         },
         {
           provide: SearchUsersService, useValue: jasmine.createSpyObj('searchService', {
-            'search': of<AnonymousUserSkill[]>([])
+            'search': of<AnonymousUserSkill[]>(anonymousUserSkills)
           })
         }
       ]
@@ -65,5 +94,72 @@ describe('SearchUsersComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should send a search request', async(() => {
+    component.addCriteria(); // add control for second criteria
+    component.form.setValue({
+      criteriaList: [
+        {
+          skill: skills[0].id,
+          level: 2
+        },
+        {
+          skill: skills[1].id,
+          level: 2
+        }
+      ]
+    });
+    component.search();
+    const searchService: SearchUsersService = TestBed.get(SearchUsersService);
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+
+      expect(searchService.search).toHaveBeenCalledWith([`${skills[0].id}+2`, `${skills[1].id}+2`]);
+      expect(component.userSkills).toEqual(anonymousUserSkills);
+      expect(component.showSearchResult).toBeTruthy();
+    });
+  }));
+
+  it('should mark duplicated controls', () => {
+    // add additional fields for test
+    component.addCriteria();
+    component.addCriteria();
+    component.addCriteria();
+    component.addCriteria();
+
+    // 1 and 3 are duplicated
+    component.form.setValue({
+      criteriaList: [
+        {
+          skill: null,
+          level: 0
+        },
+        {
+          skill: skills[0].id,
+          level: 2
+        },
+        {
+          skill: skills[1].id,
+          level: 2
+        },
+        {
+          skill: skills[0].id,
+          level: 2
+        },
+        {
+          skill: null,
+          level: 0
+        }
+      ]
+    });
+
+    component.checkDuplicates();
+    expect(component.criteriaList.at(0).hasError('isDuplicated')).toBeFalsy();
+    expect(component.criteriaList.at(1).hasError('isDuplicated')).toBeTruthy();
+    expect(component.criteriaList.at(2).hasError('isDuplicated')).toBeFalsy();
+    expect(component.criteriaList.at(3).hasError('isDuplicated')).toBeTruthy();
+    expect(component.criteriaList.at(4).hasError('isDuplicated')).toBeFalsy();
   });
 });
