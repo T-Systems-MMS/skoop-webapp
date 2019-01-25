@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable } from 'rxjs';
 
@@ -12,8 +12,8 @@ export class DownloadService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public downloadAnonymousUserProfile(userReferenceId: string): Observable<Blob> {
+  public downloadAnonymousUserProfile(userReferenceId: string): Observable<HttpResponse<Blob>> {
     return this.httpClient.get<Blob>(this.downloadUserProfileUrlPattern
-      .replace('{userReferenceId}', userReferenceId), {responseType: 'blob' as 'json'});
+      .replace('{userReferenceId}', userReferenceId), { observe: 'response', responseType: 'blob' as 'json'});
   }
 }

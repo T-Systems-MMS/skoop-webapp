@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -7,7 +7,8 @@ import { SearchUsersService } from './search-users.service';
 import { AnonymousUserSkill } from './anonymous-user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DownloadService } from './download.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import saveAs from 'file-saver';
 
 @Component({
   selector: 'app-search-users',
@@ -20,8 +21,6 @@ export class SearchUsersComponent implements OnInit {
   userSkills: AnonymousUserSkill[] = [];
   showSearchResult = false;
   errorMessage: string = null;
-
-  @ViewChild('downloadZipLink') private downloadZipLink: ElementRef;
 
   public form: FormGroup;
 
@@ -100,16 +99,13 @@ export class SearchUsersComponent implements OnInit {
   }
 
   downloadAnonymousUserProfile(userReference: string): void {
-    this.downloadService.downloadAnonymousUserProfile(userReference).subscribe((data: Blob) => {
-
-      const url: string = URL.createObjectURL(data);
-      const link = this.downloadZipLink.nativeElement;
-
-      link.href = url;
-      link.download = 'user-profile.docx';
-      link.click();
-
-      URL.revokeObjectURL(url);
+    this.downloadService.downloadAnonymousUserProfile(userReference).subscribe((response: HttpResponse<Blob>) => {
+      const contentDispositionHeader: string = response.headers.get('Content-Disposition');
+      if (!contentDispositionHeader) {
+        throw new Error('The header "Content-Disposition" is not defined');
+      }
+      const filename: string = contentDispositionHeader.substring('attachment; filename='.length, contentDispositionHeader.length);
+      saveAs(response.body, filename);
     }, (errorResponse: HttpErrorResponse) => {
       this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     });
