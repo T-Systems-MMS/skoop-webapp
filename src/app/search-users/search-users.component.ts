@@ -8,7 +8,7 @@ import { AnonymousUserSkill } from './anonymous-user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DownloadService } from './download.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import saveAs from 'file-saver';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-search-users',
