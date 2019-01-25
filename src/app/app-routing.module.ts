@@ -15,6 +15,7 @@ import { SkillGroupsComponent } from './skill-groups/skill-groups.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { OtherUserProfilesComponent } from './other-user-profiles/other-user-profiles.component';
+import { SearchUsersComponent } from './search-users/search-users.component';
 
 export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
@@ -42,6 +43,7 @@ export const routes: Routes = [
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'projects', component: ProjectsComponent },
   { path: 'other-users', component: OtherUserProfilesComponent },
+  { path: 'search-users', component: SearchUsersComponent },
   { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
