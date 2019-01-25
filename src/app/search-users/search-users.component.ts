@@ -70,9 +70,7 @@ export class SearchUsersComponent implements OnInit {
   }
 
   search() {
-    const criteriaList: string[] = this.criteriaList.value.map(item => {
-      return `${item.skill}+${item.level}`;
-    });
+    const criteriaList: string[] = this.criteriaList.value.map(item => `${item.skill}+${item.level}`);
 
     this.searchService.search(criteriaList)
       .subscribe(userSkills => {
