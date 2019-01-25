@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { DownloadService } from './download.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../environments/environment';
+import { HttpResponse } from '@angular/common/http';
 
 describe('DownloadService', () => {
 
@@ -25,8 +26,8 @@ describe('DownloadService', () => {
 
   it('should return user profile document as blob', () => {
 
-    service.downloadAnonymousUserProfile('5acc24df-792a-4458-8d01-0c67033eceff').subscribe((data: Blob) => {
-      expect(data).toEqual(new Blob(['some data']));
+    service.downloadAnonymousUserProfile('5acc24df-792a-4458-8d01-0c67033eceff').subscribe((response: HttpResponse<Blob>) => {
+      expect(response.body).toEqual(new Blob(['some data']));
     });
 
     const request = httpTestingController.expectOne({
