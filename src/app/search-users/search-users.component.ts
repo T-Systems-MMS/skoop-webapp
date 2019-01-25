@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -6,6 +6,8 @@ import { Observable, of } from 'rxjs';
 import { SearchUsersService } from './search-users.service';
 import { AnonymousUserSkill } from './anonymous-user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { DownloadService } from './download.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-search-users',
@@ -19,13 +21,16 @@ export class SearchUsersComponent implements OnInit {
   showSearchResult = false;
   errorMessage: string = null;
 
+  @ViewChild('downloadZipLink') private downloadZipLink: ElementRef;
+
   public form: FormGroup;
 
   constructor(private skillsService: SkillsService,
               private searchService: SearchUsersService,
               private fb: FormBuilder,
               private changeDetector: ChangeDetectorRef,
-              private globalErrorHandlerService: GlobalErrorHandlerService) {
+              private globalErrorHandlerService: GlobalErrorHandlerService,
+              private downloadService: DownloadService) {
   }
 
   ngOnInit() {
@@ -91,6 +96,22 @@ export class SearchUsersComponent implements OnInit {
     // hide results on change
     this.form.valueChanges.subscribe(() => {
       this.showSearchResult = false;
+    });
+  }
+
+  downloadAnonymousUserProfile(userReference: string): void {
+    this.downloadService.downloadAnonymousUserProfile(userReference).subscribe((data: Blob) => {
+
+      const url: string = URL.createObjectURL(data);
+      const link = this.downloadZipLink.nativeElement;
+
+      link.href = url;
+      link.download = 'user-profile.docx';
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }, (errorResponse: HttpErrorResponse) => {
+      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     });
   }
 

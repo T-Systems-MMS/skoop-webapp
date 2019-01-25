@@ -57,17 +57,26 @@
     </div>
     <mat-card *ngFor="let user of userSkills" class="search-users-card">
       <mat-card-content>
-        <div *ngFor="let skill of user.skills">
-          <div>{{skill.skillName}}</div>
+        <div fxLayout="row" fxLayoutAlign="center center">
+          <div fxFlex>
+            <div *ngFor="let skill of user.skills">
+              <div>{{skill.skillName}}</div>
+              <div>
+                <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">
+                  {{ (skill.currentLevel >= level) ? 'star' : 'star_border' }}
+                </mat-icon>
+                <span fxHide.gt-sm="true">{{ skill.currentLevel }}</span>
+              </div>
+            </div>
+          </div>
           <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">
-              {{ (skill.currentLevel >= level) ? 'star' : 'star_border' }}
-            </mat-icon>
-            <span fxHide.gt-sm="true">{{ skill.currentLevel }}</span>
+            <button mat-icon-button (click)="downloadAnonymousUserProfile(user.userReferenceId)" title="Download Anonymous User Profile" aria-label="Download Anonymous User Profile">
+              <mat-icon class="search-users-download-user-profile-icon">vertical_align_bottom</mat-icon>
+            </button>
+            <a class="download-zip-link" #downloadZipLink></a>
           </div>
         </div>
       </mat-card-content>
     </mat-card>
   </div>
 </div>
-
