@@ -20,7 +20,6 @@ import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.
 
 export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
-  { path: 'users/:userId/skills', component: MySkillsComponent },
   { path: 'my-projects', component: MyProjectsComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },
   {
@@ -44,16 +43,8 @@ export const routes: Routes = [
   { path: 'skills/:skillId/users', component: SkillUsersComponent },
   { path: 'user-profile', component: UserProfileComponent },
   { path: 'projects', component: ProjectsComponent },
-  {
-    path: 'users',
-    component: OtherUserProfilesComponent,
-    children: [
-      {
-        path: ':userId/skills',
-        component: OtherUserSkillsComponent
-      }
-    ]
-  },
+  { path: 'users', component: OtherUserProfilesComponent },
+  { path: 'users/:userId/skills', component: OtherUserSkillsComponent },
   { path: 'search-users', component: SearchUsersComponent },
   { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }

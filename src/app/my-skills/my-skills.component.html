@@ -6,57 +6,18 @@
   </div>
   <div *ngIf="errorMessage" class="mySkillsErrorMessage">{{errorMessage}}</div>
 
-  <mat-card *ngFor="let userSkill of userSkills" class="mySkillsCard">
-    <mat-card-content>
-      <div fxLayout="row">
-        <div fxFlex>
-          <h2 class="mySkillsCard__heading">{{ userSkill.skill.name }}</h2>
-        </div>
-        <div fxFlex="none">
-          <button mat-icon-button (click)="getCoaches(userSkill)" title="Find coaches" aria-label="Find coaches" class="mySkillsCard__findCoachesButton">
-            <mat-icon>school</mat-icon>
-          </button>
-          <button mat-icon-button (click)="openEditDialog(userSkill)" title="Edit" aria-label="Edit">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button (click)="delete(userSkill)" title="Delete" aria-label="Delete">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </div>
-      </div>
-      <div fxLayout="row">
-        <div fxFlex="33%">
-          <div class="mySkillsCard__levelLabel">Current level:</div>
-          <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.currentLevel
-              >= level)? 'star' : 'star_border' }}</mat-icon>
-            <span fxHide.gt-sm="true" class="mySkillsCard__levelValue mySkillsCard__currentLevelValue">{{ userSkill.currentLevel }}</span>
-          </div>
-        </div>
-        <div fxFlex="33%">
-          <div class="mySkillsCard__levelLabel">Desired level:</div>
-          <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.desiredLevel
-              >= level)? 'star' : 'star_border' }}</mat-icon>
-            <span fxHide.gt-sm="true" class="mySkillsCard__levelValue mySkillsCard__desiredLevelValue">{{ userSkill.desiredLevel }}</span>
-          </div>
-        </div>
-        <div fxFlex="33%">
-          <div class="mySkillsCard__levelLabel">Priority:</div>
-          <div>
-            <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.priority >=
-              level)? 'star' : 'star_border' }}</mat-icon>
-            <span fxHide.gt-sm="true" class="mySkillsCard__levelValue mySkillsCard__priorityValue">{{ userSkill.priority }}</span>
-          </div>
-        </div>
-      </div>
-      <div fxLayout="row" *ngIf="userSkill.coaches" class="mySkillsCard__coaches">
-        <mat-icon fxFlex="none" aria-label="Coaches" class="mySkillsCard__coachesIcon">school</mat-icon>
-        <div fxFlex *ngIf="userSkill.coaches.length === 0">No coaches found.</div>
-        <div fxFlex="none" *ngFor="let coach of userSkill.coaches; last as isLast">
-          {{ coach.firstName }} {{ coach.lastName }} ({{ coach.userName }})<span *ngIf="!isLast">,&nbsp;</span>
-        </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
+  <app-skill-card *ngFor="let userSkill of userSkills" [userSkill]="userSkill">
+    <div fxFlex="none" buttonContent>
+      <button mat-icon-button (click)="getCoaches(userSkill)" title="Find coaches" aria-label="Find coaches"
+              class="mySkillsCard__findCoachesButton">
+        <mat-icon>school</mat-icon>
+      </button>
+      <button mat-icon-button (click)="openEditDialog(userSkill)" title="Edit" aria-label="Edit">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="delete(userSkill)" title="Delete" aria-label="Delete">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </app-skill-card>
 </div>

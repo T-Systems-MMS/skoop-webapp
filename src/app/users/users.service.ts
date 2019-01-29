@@ -28,6 +28,11 @@ export class UsersService {
       ));
   }
 
+  getUserById(userId: string): Observable<User> {
+    return this.httpClient.get<User>(this.userUrlPattern.replace('{userId}', userId))
+
+  }
+
   updateUser(userData: UserRequest): Observable<User> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
