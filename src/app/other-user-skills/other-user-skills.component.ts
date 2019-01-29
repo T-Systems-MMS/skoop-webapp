@@ -62,7 +62,7 @@ export class OtherUserSkillsComponent implements OnInit {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
-      })
+      });
   }
 
 }

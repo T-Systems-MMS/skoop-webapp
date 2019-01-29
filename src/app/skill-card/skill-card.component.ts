@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { UserSkillView } from '../my-skills/my-skills-edit.component';
+import { UserSkillView } from './user-skill-view';
 
 @Component({
   selector: 'app-skill-card',

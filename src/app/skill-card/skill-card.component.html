@@ -35,13 +35,7 @@
         </div>
       </div>
     </div>
-    <div fxLayout="row" *ngIf="userSkill.coaches" class="mySkillsCard__coaches">
-      <mat-icon fxFlex="none" aria-label="Coaches" class="mySkillsCard__coachesIcon">school</mat-icon>
-      <div fxFlex *ngIf="userSkill.coaches.length === 0">No coaches found.</div>
-      <div fxFlex="none" *ngFor="let coach of userSkill.coaches; last as isLast">
-        {{ coach.firstName }} {{ coach.lastName }} ({{ coach.userName }})<span *ngIf="!isLast">,&nbsp;</span>
-      </div>
-    </div>
+    <ng-content select="[coachContent]"></ng-content>
   </mat-card-content>
 </mat-card>
 
