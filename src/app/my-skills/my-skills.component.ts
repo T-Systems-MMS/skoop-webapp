@@ -4,7 +4,8 @@ import { filter, map } from 'rxjs/operators';
 
 import { MySkillsService } from './my-skills.service';
 import { MySkillsNewComponent } from './my-skills-new.component';
-import { MySkillsEditComponent, UserSkillView as EditUserSkillView } from './my-skills-edit.component';
+import { MySkillsEditComponent} from './my-skills-edit.component';
+import { UserSkillView as EditUserSkillView} from '../skill-card/user-skill-view';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';

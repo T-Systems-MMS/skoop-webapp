@@ -1,7 +1,6 @@
 <div class="user-skills mat-typography">
   <h1>Skill profile of {{user?.firstName}} {{user?.lastName}}</h1>
-  <!--<div *ngIf="errorMessage" class="mySkillsErrorMessage">{{errorMessage}}</div>-->
+  <div *ngIf="errorMessage" class="other-user-skills-error">{{errorMessage}}</div>
 
-  <app-skill-card *ngFor="let userSkill of userSkills" [userSkill]="userSkill">
-  </app-skill-card>
+  <app-skill-card *ngFor="let userSkill of userSkills" [userSkill]="userSkill"></app-skill-card>
 </div>
