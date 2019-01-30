@@ -7,10 +7,10 @@
   <mat-card *ngFor="let user of permissionOwners" class="other-user-profiles-card">
     <mat-card-content>
       <div fxLayout="row">
-        <div fxFlex="90%">
+        <div fxFlex>
           <h2 class="other-user-profiles-name">{{ user.userName }}</h2>
         </div>
-        <div fxFlex="10%">
+        <div>
           <a [routerLink]="[user.id, 'skills']">View skill profile</a>
         </div>
       </div>
