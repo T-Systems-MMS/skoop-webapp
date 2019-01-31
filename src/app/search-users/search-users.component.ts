@@ -6,6 +6,9 @@ import { Observable, of } from 'rxjs';
 import { SearchUsersService } from './search-users.service';
 import { AnonymousUserSkill } from './anonymous-user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { DownloadService } from './download.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-search-users',
@@ -25,7 +28,8 @@ export class SearchUsersComponent implements OnInit {
               private searchService: SearchUsersService,
               private fb: FormBuilder,
               private changeDetector: ChangeDetectorRef,
-              private globalErrorHandlerService: GlobalErrorHandlerService) {
+              private globalErrorHandlerService: GlobalErrorHandlerService,
+              private downloadService: DownloadService) {
   }
 
   ngOnInit() {
@@ -91,6 +95,19 @@ export class SearchUsersComponent implements OnInit {
     // hide results on change
     this.form.valueChanges.subscribe(() => {
       this.showSearchResult = false;
+    });
+  }
+
+  downloadAnonymousUserProfile(userReference: string): void {
+    this.downloadService.downloadAnonymousUserProfile(userReference).subscribe((response: HttpResponse<Blob>) => {
+      const contentDispositionHeader: string = response.headers.get('Content-Disposition');
+      if (!contentDispositionHeader) {
+        throw new Error('The header "Content-Disposition" is not defined');
+      }
+      const filename: string = contentDispositionHeader.substring('attachment; filename='.length, contentDispositionHeader.length);
+      saveAs(response.body, filename);
+    }, (errorResponse: HttpErrorResponse) => {
+      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     });
   }
 

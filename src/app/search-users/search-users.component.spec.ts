@@ -12,6 +12,7 @@ import { Skill } from '../skills/skill';
 import { SearchUsersService } from './search-users.service';
 import { AnonymousUserSkill } from './anonymous-user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { DownloadService } from './download.service';
 
 const skills = [
   {
@@ -79,6 +80,11 @@ describe('SearchUsersComponent', () => {
         {
           provide: SearchUsersService, useValue: jasmine.createSpyObj('searchService', {
             'search': of<AnonymousUserSkill[]>(anonymousUserSkills)
+          })
+        },
+        {
+          provide: DownloadService, useValue: jasmine.createSpyObj('downloadService', {
+            'downloadUserProfile': of<Blob>()
           })
         }
       ]
