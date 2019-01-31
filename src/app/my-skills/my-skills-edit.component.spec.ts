@@ -7,12 +7,13 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
-import { MySkillsEditComponent, UserSkillView } from './my-skills-edit.component';
+import { MySkillsEditComponent } from './my-skills-edit.component';
 import { MySkillsService } from './my-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
+import { UserSkillView } from '../skill-card/user-skill-view';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):

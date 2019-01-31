@@ -10,6 +10,9 @@
         <div fxFlex>
           <h2 class="other-user-profiles-name">{{ user.userName }}</h2>
         </div>
+        <div>
+          <a [routerLink]="[user.id, 'skills']">View skill profile</a>
+        </div>
       </div>
       <div fxLayout="row">
         <div class="other-user-profiles-description-label">First Name:</div>

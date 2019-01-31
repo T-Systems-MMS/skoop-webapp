@@ -85,6 +85,29 @@ describe('UsersService', () => {
     request.flush(testUser);
   }));
 
+  it('should provide the user profile for the given userId', async(() => {
+    const testUser: User = {
+      id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@myskills.io',
+      coach: true,
+    };
+
+    service.getUserById('e6b808eb-b6bd-447d-8dce-3e0d66b17759').subscribe(user => {
+      expect(user).toEqual(testUser);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+    request.flush(testUser);
+  }));
+
   it('should update the user profile for the currently authenticated user with the given data', async(() => {
     const testUser: User = {
       id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',

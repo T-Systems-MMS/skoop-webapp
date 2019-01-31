@@ -1,0 +1,41 @@
+<mat-card class="mySkillsCard">
+  <mat-card-content>
+    <div fxLayout="row">
+      <div fxFlex>
+        <h2 class="mySkillsCard__heading">{{ userSkill.skill.name }}</h2>
+      </div>
+      <ng-content fxFlex="none" select="[buttonContent]"></ng-content>
+    </div>
+    <div fxLayout="row">
+      <div fxFlex="33%">
+        <div class="mySkillsCard__levelLabel">Current level:</div>
+        <div>
+          <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.currentLevel
+            >= level) ? 'star' : 'star_border' }}</mat-icon>
+          <span fxHide.gt-sm="true"
+                class="mySkillsCard__levelValue mySkillsCard__currentLevelValue">{{ userSkill.currentLevel }}</span>
+        </div>
+      </div>
+      <div fxFlex="33%">
+        <div class="mySkillsCard__levelLabel">Desired level:</div>
+        <div>
+          <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.desiredLevel
+            >= level) ? 'star' : 'star_border' }}</mat-icon>
+          <span fxHide.gt-sm="true"
+                class="mySkillsCard__levelValue mySkillsCard__desiredLevelValue">{{ userSkill.desiredLevel }}</span>
+        </div>
+      </div>
+      <div fxFlex="33%">
+        <div class="mySkillsCard__levelLabel">Priority:</div>
+        <div>
+          <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">{{ (userSkill.priority >=
+            level) ? 'star' : 'star_border' }}</mat-icon>
+          <span fxHide.gt-sm="true"
+                class="mySkillsCard__levelValue mySkillsCard__priorityValue">{{ userSkill.priority }}</span>
+        </div>
+      </div>
+    </div>
+    <ng-content select="[coachContent]"></ng-content>
+  </mat-card-content>
+</mat-card>
+

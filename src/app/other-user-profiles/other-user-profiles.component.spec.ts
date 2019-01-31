@@ -10,6 +10,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { of } from 'rxjs';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const permissionOwners: User[] = [
   {
@@ -41,7 +42,8 @@ describe('OtherUserProfilesComponent', () => {
         LayoutModule,
         FlexLayoutModule,
         ReactiveFormsModule,
-        AppMaterialModule
+        AppMaterialModule,
+        RouterTestingModule
       ],
       declarations: [OtherUserProfilesComponent],
       providers: [

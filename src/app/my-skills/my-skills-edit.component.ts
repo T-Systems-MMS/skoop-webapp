@@ -3,9 +3,9 @@ import { FormControl } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
 import { MySkillsService } from './my-skills.service';
-import { ResponseError } from '../error/response-error';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { UserSkillView } from '../skill-card/user-skill-view';
 
 @Component({
   selector: 'app-my-skills-edit',
@@ -55,14 +55,3 @@ export class MySkillsEditComponent implements OnInit {
   }
 }
 
-export interface UserSkillView {
-  skill: SkillView;
-  currentLevel: number;
-  desiredLevel: number;
-  priority: number;
-}
-
-export interface SkillView {
-  id: string;
-  name: string;
-}
