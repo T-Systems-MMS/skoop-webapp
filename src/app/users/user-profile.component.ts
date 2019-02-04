@@ -98,10 +98,10 @@ export class UserProfileComponent implements OnInit {
       academicDegree: user.academicDegree,
       positionProfile: user.positionProfile,
       summary: user.summary,
-      industrySectors: user.industrySectors,
-      specializations: user.specializations,
-      certificates: user.certificates,
-      languages: user.languages,
+      industrySectors: user.industrySectors || [],
+      specializations: user.specializations || [],
+      certificates: user.certificates || [],
+      languages: user.languages || [],
       coach: user.coach,
     });
   }
