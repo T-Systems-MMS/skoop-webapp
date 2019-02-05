@@ -45,6 +45,7 @@ import { SkillCardComponent } from './skill-card/skill-card.component';
 import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { CommunitiesNewComponent } from './communities/communities-new.component';
+import { CommunitiesEditComponent } from './communities/communities-edit.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -84,6 +85,7 @@ export const CUSTOM_FORMATS = {
     OtherUserSkillsComponent,
     CommunitiesComponent,
     CommunitiesNewComponent,
+    CommunitiesEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -124,7 +126,8 @@ export const CUSTOM_FORMATS = {
     ProjectsEditComponent,
     MyProjectsNewComponent,
     MyProjectsEditComponent,
-    CommunitiesNewComponent
+    CommunitiesNewComponent,
+    CommunitiesEditComponent
   ],
   bootstrap: [AppComponent]
 })

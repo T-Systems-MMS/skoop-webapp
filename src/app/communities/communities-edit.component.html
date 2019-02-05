@@ -1,0 +1,21 @@
+<form [formGroup]="communityForm" class="communities-edit-form">
+  <div *ngIf="errorMessage" class="communities-edit-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="communities-edit-form-field">
+        <input matInput id="communities-edit-title" placeholder="Title" formControlName="title" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="communities-edit-form-field">
+        <textarea matInput placeholder="Description" formControlName="description" [required]="true" rows="8"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button id="communities-edit-button" color="primary" (click)="editCommunity()"
+            [disabled]="!communityForm.valid || communityForm.pristine" class="communities-edit-actions">Edit community
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="communities-edit-actions">Close</button>
+  </div>
+</form>

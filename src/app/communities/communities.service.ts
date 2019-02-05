@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Community } from './community';
 import { environment } from '../../environments/environment';
 
@@ -16,16 +16,7 @@ export class CommunitiesService {
   }
 
   getCommunities(): Observable<Community[]> {
-    return of([{
-      id: '123',
-      title: 'abcd',
-      description: 'ewqe'
-    },
-      {
-        id: '123456',
-        title: 'abcdefg',
-        description: 'ewqe'
-      }]);//this.httpClient.get<Community[]>(this.communitiesUrlPattern);
+    return this.httpClient.get<Community[]>(this.communitiesUrlPattern);
   }
 
   getCommunity(communityId: string): Observable<Community> {

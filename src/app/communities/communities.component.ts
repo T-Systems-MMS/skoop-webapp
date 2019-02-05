@@ -2,12 +2,15 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommunitiesService } from './communities.service';
 import { Observable, of } from 'rxjs';
 import { Community } from './community';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheet, MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { CommunitiesNewComponent } from './communities-new.component';
+import { Project } from '../projects/project';
+import { ProjectsEditComponent } from '../projects/projects-edit.component';
+import { CommunitiesEditComponent } from './communities-edit.component';
 
 @Component({
   selector: 'app-communities',
@@ -37,6 +40,16 @@ export class CommunitiesComponent implements OnInit {
         this.loadCommunities();
       }
     });
+  }
+
+  openEditDialog(community: Community) {
+    this.bottomSheet.open(CommunitiesEditComponent, {
+      data: <Community>{
+        id: community.id,
+        title: community.title,
+        description: community.description
+      }
+    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
   }
 
   delete(community: Community): void {
