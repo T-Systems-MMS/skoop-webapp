@@ -1,0 +1,16 @@
+@import 'variables';
+
+.communities-new-form-field {
+  width: 100%;
+}
+
+.communities-new-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+.communities-new-actions {
+  margin-right: 16px;
+}
