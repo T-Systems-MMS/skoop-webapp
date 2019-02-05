@@ -43,6 +43,7 @@ import { OtherUserProfilesComponent } from './other-user-profiles/other-user-pro
 import { SearchUsersComponent } from './search-users/search-users.component';
 import { SkillCardComponent } from './skill-card/skill-card.component';
 import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.component';
+import { CommunitiesComponent } from './communities/communities.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -80,6 +81,7 @@ export const CUSTOM_FORMATS = {
     SearchUsersComponent,
     SkillCardComponent,
     OtherUserSkillsComponent,
+    CommunitiesComponent,
   ],
   imports: [
     BrowserModule,
