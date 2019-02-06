@@ -8,8 +8,6 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { MatBottomSheet, MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { CommunitiesNewComponent } from './communities-new.component';
-import { Project } from '../projects/project';
-import { ProjectsEditComponent } from '../projects/projects-edit.component';
 import { CommunitiesEditComponent } from './communities-edit.component';
 
 @Component({
@@ -26,7 +24,7 @@ export class CommunitiesComponent implements OnInit {
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               private bottomSheet: MatBottomSheet,
-              public dialog: MatDialog,) {
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -47,9 +45,14 @@ export class CommunitiesComponent implements OnInit {
       data: <Community>{
         id: community.id,
         title: community.title,
-        description: community.description
+        description: community.description,
+        links: community.links
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
+  }
+
+  openViewPage(community: Community) {
+
   }
 
   delete(community: Community): void {

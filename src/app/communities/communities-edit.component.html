@@ -8,9 +8,38 @@
     </div>
     <div fxFlex>
       <mat-form-field class="communities-edit-form-field">
-        <textarea matInput placeholder="Description" formControlName="description" [required]="true" rows="8"></textarea>
+        <textarea matInput placeholder="Description" formControlName="description" rows="8"></textarea>
       </mat-form-field>
     </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div>
+    <button mat-raised-button class="communities-link-toolbar" (click)="addLink()">Add link</button>
+  </div>
+  <div formArrayName="links">
+    <mat-card *ngFor="let link of linkList.controls; let i = index;" class="communities-link-card">
+      <mat-card-content [formGroupName]="i">
+        <div fxLayout="row">
+          <div fxFlex="25%">
+            <mat-form-field class="communities-edit-form-field">
+              <input matInput  placeholder="Name" formControlName="name" [required]="true">
+            </mat-form-field>
+          </div>
+          <div fxFlex="70%">
+            <mat-form-field class="communities-edit-form-field communities-edit-href">
+              <input matInput  placeholder="Href" formControlName="href" [required]="true">
+            </mat-form-field>
+          </div>
+          <div fxFlex="5%">
+            <div class="communities-edit-remove-link">
+              <button mat-icon-button type="button" (click)="removeLink(i)" aria-label="Remove">
+                <mat-icon>clear</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
   <div>
     <button mat-raised-button id="communities-edit-button" color="primary" (click)="editCommunity()"

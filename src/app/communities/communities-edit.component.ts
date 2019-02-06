@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { finalize } from 'rxjs/operators';
@@ -25,11 +25,29 @@ export class CommunitiesEditComponent implements OnInit {
               private globalErrorHandlerService: GlobalErrorHandlerService) {
     this.communityForm = formBuilder.group({
       title: new FormControl(community.title, Validators.required),
-      description: new FormControl(community.description, Validators.required),
+      description: new FormControl(community.description),
+      links: new FormArray([])
+    });
+
+    (this.community.links || []).forEach(link => {
+      this.linkList.push(this.formBuilder.group(
+        {
+          name: new FormControl(link.name, Validators.required),
+          href: new FormControl(link.href, Validators.required)
+        }));
     });
   }
 
   ngOnInit() {
+  }
+
+  addLink() {
+    this.linkList.push(this.createLink());
+  }
+
+  removeLink(index) {
+    this.linkList.removeAt(index);
+    this.linkList.markAsDirty();
   }
 
   editCommunity() {
@@ -53,12 +71,24 @@ export class CommunitiesEditComponent implements OnInit {
     this.bottomSheet.dismiss();
   }
 
+  private createLink(): FormGroup {
+    return this.formBuilder.group({
+      name: [null, Validators.required],
+      href: [null, Validators.required]
+    });
+  }
+
   private getCommunityData(): Community {
     return {
       id: this.community.id,
       title: this.communityForm.get('title').value,
       description: this.communityForm.get('description').value,
+      links: this.communityForm.get('links').value
     } as Community;
+  }
+
+  get linkList() {
+    return this.communityForm.get('links') as FormArray;
   }
 
 }

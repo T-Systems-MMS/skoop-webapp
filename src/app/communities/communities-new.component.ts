@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { CommunitiesService } from './communities.service';
@@ -20,19 +20,30 @@ export class CommunitiesNewComponent implements OnInit {
               private formBuilder: FormBuilder,
               private bottomSheet: MatBottomSheetRef,
               private changeDetector: ChangeDetectorRef,
-              private globalErrorHandlerService: GlobalErrorHandlerService) { }
+              private globalErrorHandlerService: GlobalErrorHandlerService) {
+  }
 
   ngOnInit() {
     this.communityForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required)
+      description: new FormControl(''),
+      links: new FormArray([])
     });
+  }
+
+  addLink() {
+    this.linkList.push(this.createLink());
+  }
+
+  removeLink(index) {
+    this.linkList.removeAt(index);
   }
 
   createCommunity() {
     this.communityService.createCommunity(this.getCommunityData())
-      .subscribe(() => {
+      .subscribe((data) => {
         this.communityForm.reset();
+        this.bottomSheet.dismiss(data);
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
@@ -45,11 +56,23 @@ export class CommunitiesNewComponent implements OnInit {
     this.bottomSheet.dismiss();
   }
 
+  private createLink(): FormGroup {
+    return this.formBuilder.group({
+      name: [null, Validators.required],
+      href: [null, Validators.required]
+    });
+  }
+
   private getCommunityData(): Community {
     return {
       title: this.communityForm.get('title').value,
-      description: this.communityForm.get('description').value
+      description: this.communityForm.get('description').value,
+      links: this.communityForm.get('links').value
     } as Community;
+  }
+
+  get linkList() {
+    return this.communityForm.get('links') as FormArray;
   }
 
 }
