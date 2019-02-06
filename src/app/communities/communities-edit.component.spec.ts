@@ -11,11 +11,18 @@ import { CommunitiesService } from './communities.service';
 import { of } from 'rxjs';
 import { Community } from './community';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { By } from '@angular/platform-browser';
 
 const communityEditData = {
   id: '2134-5679-235235',
   title: 'community',
-  description: 'community description'
+  description: 'community description',
+  links: [
+    {
+      name: 'google',
+      href: 'https://www.google.com'
+    }
+  ]
 };
 
 describe('CommunitiesEditComponent', () => {
@@ -34,7 +41,7 @@ describe('CommunitiesEditComponent', () => {
       declarations: [ CommunitiesEditComponent ],
       providers: [
         GlobalErrorHandlerService,
-        { provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {'editCommunity': of<Community>() } ) },
+        { provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {'updateCommunity': of<Community>() } ) },
         { provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'] ) },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: communityEditData }
       ]
@@ -51,4 +58,25 @@ describe('CommunitiesEditComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should fill in the form with expected values', () => {
+    expect(component.communityForm.get('title').value).toBe(communityEditData.title);
+    expect(component.communityForm.get('description').value).toBe(communityEditData.description);
+    expect(component.communityForm.get('links').value).toEqual(communityEditData.links);
+  });
+
+  it('should send a request to update community', () => {
+    component.editCommunity();
+    const communityService: CommunitiesService = TestBed.get(CommunitiesService);
+
+    expect(communityService.updateCommunity).toHaveBeenCalledWith(communityEditData);
+  });
+
+  it('should disable createButton when an added link is not filled', async(() => {
+    component.communityForm.reset();
+    component.addLink();
+
+    const createButton = fixture.debugElement.query(By.css('#communities-edit-button'));
+    expect(createButton.nativeElement.disabled).toBeTruthy();
+  }));
 });

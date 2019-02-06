@@ -32,7 +32,7 @@ export class CommunitiesNewComponent implements OnInit {
   }
 
   addLink() {
-    this.linkList.push(this.createLink());
+    this.linkList.push(this.createLinkFormGroup());
   }
 
   removeLink(index) {
@@ -56,7 +56,7 @@ export class CommunitiesNewComponent implements OnInit {
     this.bottomSheet.dismiss();
   }
 
-  private createLink(): FormGroup {
+  private createLinkFormGroup(): FormGroup {
     return this.formBuilder.group({
       name: [null, Validators.required],
       href: [null, Validators.required]

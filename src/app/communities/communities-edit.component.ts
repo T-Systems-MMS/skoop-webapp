@@ -23,26 +23,28 @@ export class CommunitiesEditComponent implements OnInit {
               private bottomSheet: MatBottomSheetRef,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
-    this.communityForm = formBuilder.group({
-      title: new FormControl(community.title, Validators.required),
-      description: new FormControl(community.description),
-      links: new FormArray([])
-    });
-
-    (this.community.links || []).forEach(link => {
-      this.linkList.push(this.formBuilder.group(
-        {
-          name: new FormControl(link.name, Validators.required),
-          href: new FormControl(link.href, Validators.required)
-        }));
-    });
   }
 
   ngOnInit() {
+    this.communityForm = this.formBuilder.group({
+      title: new FormControl(this.community.title, Validators.required),
+      description: new FormControl(this.community.description),
+      links: new FormArray([])
+    });
+
+    if (this.community.links) {
+      this.community.links.forEach(link => {
+        this.linkList.push(this.formBuilder.group(
+          {
+            name: new FormControl(link.name, Validators.required),
+            href: new FormControl(link.href, Validators.required)
+          }));
+      });
+    }
   }
 
   addLink() {
-    this.linkList.push(this.createLink());
+    this.linkList.push(this.createLinkFormGroup());
   }
 
   removeLink(index) {
@@ -71,7 +73,7 @@ export class CommunitiesEditComponent implements OnInit {
     this.bottomSheet.dismiss();
   }
 
-  private createLink(): FormGroup {
+  private createLinkFormGroup(): FormGroup {
     return this.formBuilder.group({
       name: [null, Validators.required],
       href: [null, Validators.required]
