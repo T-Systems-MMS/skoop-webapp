@@ -28,6 +28,7 @@ export class CommunitiesEditComponent implements OnInit {
   ngOnInit() {
     this.communityForm = this.formBuilder.group({
       title: new FormControl(this.community.title, Validators.required),
+      type: new FormControl(this.community.type),
       description: new FormControl(this.community.description),
       links: new FormArray([])
     });
@@ -84,6 +85,7 @@ export class CommunitiesEditComponent implements OnInit {
     return {
       id: this.community.id,
       title: this.communityForm.get('title').value,
+      type: this.communityForm.get('type').value,
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value
     } as Community;

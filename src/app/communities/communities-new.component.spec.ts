@@ -12,6 +12,7 @@ import { MatBottomSheetRef } from '@angular/material';
 import { CommunitiesService } from './communities.service';
 import { Community } from './community';
 import { By } from '@angular/platform-browser';
+import { CommunityType } from './community-type.enum';
 
 describe('CommunitiesNewComponent', () => {
   let component: CommunitiesNewComponent;
@@ -66,6 +67,7 @@ describe('CommunitiesNewComponent', () => {
       const expectedRequestData: Community = {
         title: 'title',
         description: 'description',
+        type: CommunityType.OPENED,
         links: [
           {
             name: 'google',

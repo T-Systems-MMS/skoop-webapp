@@ -5,6 +5,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { CommunitiesService } from './communities.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Community } from './community';
+import { CommunityType } from './community-type.enum';
 
 @Component({
   selector: 'app-communities-new',
@@ -26,6 +27,7 @@ export class CommunitiesNewComponent implements OnInit {
   ngOnInit() {
     this.communityForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
+      type: new FormControl(CommunityType.OPENED),
       description: new FormControl(''),
       links: new FormArray([])
     });
@@ -66,6 +68,7 @@ export class CommunitiesNewComponent implements OnInit {
   private getCommunityData(): Community {
     return {
       title: this.communityForm.get('title').value,
+      type: this.communityForm.get('type').value,
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value
     } as Community;

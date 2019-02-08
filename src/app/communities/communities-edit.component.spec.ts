@@ -12,11 +12,13 @@ import { of } from 'rxjs';
 import { Community } from './community';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { By } from '@angular/platform-browser';
+import { CommunityType } from './community-type.enum';
 
 const communityEditData = {
   id: '2134-5679-235235',
   title: 'community',
   description: 'community description',
+  type: CommunityType.OPENED,
   links: [
     {
       name: 'google',

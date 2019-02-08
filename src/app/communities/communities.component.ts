@@ -10,6 +10,7 @@ import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation
 import { CommunitiesNewComponent } from './communities-new.component';
 import { CommunitiesEditComponent } from './communities-edit.component';
 import { FormControl } from '@angular/forms';
+import { CommunityType } from './community-type.enum';
 
 @Component({
   selector: 'app-communities',
@@ -47,6 +48,7 @@ export class CommunitiesComponent implements OnInit {
       data: <Community>{
         id: community.id,
         title: community.title,
+        type: community.type || CommunityType.OPENED,
         description: community.description,
         links: community.links
       }
