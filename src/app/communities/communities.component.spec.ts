@@ -9,6 +9,8 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { CommunitiesService } from './communities.service';
 import { Community } from './community';
 import { By } from '@angular/platform-browser';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CommunitiesFilterPipe } from './communities-filter.pipe';
 
 const communities = [
   {
@@ -41,9 +43,10 @@ describe('CommunitiesComponent', () => {
       imports: [
         AppMaterialModule,
         BrowserAnimationsModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        ReactiveFormsModule
       ],
-      declarations: [CommunitiesComponent],
+      declarations: [CommunitiesComponent, CommunitiesFilterPipe],
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
