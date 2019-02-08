@@ -11,12 +11,14 @@ import { Community } from './community';
 import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommunitiesFilterPipe } from './communities-filter.pipe';
+import { CommunityType } from './community-type.enum';
 
 const communities = [
   {
     id: '123',
     title: 'group1',
     description: 'super group description',
+    type: CommunityType.OPENED,
     links: [
       {
         name: 'google',
@@ -30,7 +32,8 @@ const communities = [
   {
     id: '123456',
     title: 'group2',
-    description: 'other group'
+    description: 'other group',
+    type: CommunityType.OPENED,
   }
 ];
 

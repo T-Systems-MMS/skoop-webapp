@@ -1,11 +1,13 @@
 import { CommunitiesFilterPipe } from './communities-filter.pipe';
 import { Community } from './community';
+import { CommunityType } from './community-type.enum';
 
 const communities: Community[] = [
   {
     id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
     title: 'test1',
     description: 'description1',
+    type: CommunityType.OPENED,
     links: [{
       name: 'google',
       href: 'https://www.google.com'
@@ -18,7 +20,8 @@ const communities: Community[] = [
   {
     id: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
     title: 'test2',
-    description: 'description2'
+    description: 'description2',
+    type: CommunityType.OPENED,
   }
 ];
 
