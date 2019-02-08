@@ -2,11 +2,14 @@
   <h1>Communities management</h1>
   <div class="communities-toolbar">
     <button mat-raised-button (click)="openNewDialog()" aria-label="Create community">Create community</button>
+    <mat-form-field class="communities-filter">
+      <input matInput [formControl]="filter" placeholder="Filter">
+    </mat-form-field>
   </div>
 
   <div *ngIf="errorMessage" class="communities-error-message">{{errorMessage}}</div>
 
-  <mat-card *ngFor="let community of communities$ | async" class="communities-card">
+  <mat-card *ngFor="let community of communities$ | async | communitiesFilter : filter.value" class="communities-card">
     <div fxLayout="row">
       <div fxFlex>
         <h2 class="communities-card__heading">{{ community.title }}</h2>

@@ -46,6 +46,7 @@ import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.
 import { CommunitiesComponent } from './communities/communities.component';
 import { CommunitiesNewComponent } from './communities/communities-new.component';
 import { CommunitiesEditComponent } from './communities/communities-edit.component';
+import { CommunitiesFilterPipe } from './communities/communities-filter.pipe';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -86,6 +87,7 @@ export const CUSTOM_FORMATS = {
     CommunitiesComponent,
     CommunitiesNewComponent,
     CommunitiesEditComponent,
+    CommunitiesFilterPipe,
   ],
   imports: [
     BrowserModule,

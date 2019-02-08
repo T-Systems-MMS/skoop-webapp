@@ -9,6 +9,7 @@ import { MatBottomSheet, MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { CommunitiesNewComponent } from './communities-new.component';
 import { CommunitiesEditComponent } from './communities-edit.component';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-communities',
@@ -19,6 +20,7 @@ export class CommunitiesComponent implements OnInit {
 
   communities$: Observable<Community[]> = of([]);
   errorMessage: string = null;
+  filter: FormControl = new FormControl('');
 
   constructor(private communityService: CommunitiesService,
               private changeDetector: ChangeDetectorRef,
