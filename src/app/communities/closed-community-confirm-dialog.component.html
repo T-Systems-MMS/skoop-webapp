@@ -1,0 +1,18 @@
+<div fxLayout="row">
+  <div fxFlex fxLayoutAlign="center center" mat-dialog-content>
+    <div>
+      You have chosen a closed community. Since you are the community-manager of this community, you will have the
+      following responsibilities:
+      <ul>
+        <li>Accepting/declining community members</li>
+      </ul>
+      Do you want to continue?
+    </div>
+  </div>
+</div>
+<div fxLayout="row">
+  <div fxFlex fxLayoutAlign="center center" mat-dialog-actions>
+    <button mat-button (click)="onNoClick()" cdkFocusInitial>No</button>
+    <button mat-button (click)="onYesClick()">Yes</button>
+  </div>
+</div>

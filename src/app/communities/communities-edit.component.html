@@ -12,15 +12,6 @@
         <mat-button-toggle value="OPENED" class="communities-edit-type-option">Opened</mat-button-toggle>
         <mat-button-toggle value="CLOSED" class="communities-edit-type-option">Closed</mat-button-toggle>
       </mat-button-toggle-group>
-      <div *ngIf="communityForm.get('type').value === 'CLOSED'" class="communities-edit-type-hint">
-        <mat-hint>
-          You have chosen a closed community. Since you are the community-manager of this community, you will have the
-          following responsibilities:
-          <ul>
-            <li>Accepting/declining community members</li>
-          </ul>
-        </mat-hint>
-      </div>
     </div>
     <div fxFlex>
       <mat-form-field class="communities-edit-form-field">
