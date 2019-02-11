@@ -10,13 +10,17 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { CommunitiesService } from './communities.service';
 import { of } from 'rxjs';
 import { Community } from './community';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
 import { By } from '@angular/platform-browser';
+import { CommunityType } from './community-type.enum';
+import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 const communityEditData = {
   id: '2134-5679-235235',
   title: 'community',
   description: 'community description',
+  type: CommunityType.OPENED,
   links: [
     {
       name: 'google',
@@ -38,7 +42,7 @@ describe('CommunitiesEditComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ CommunitiesEditComponent ],
+      declarations: [ CommunitiesEditComponent, ClosedCommunityConfirmDialogComponent ],
       providers: [
         GlobalErrorHandlerService,
         { provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {'updateCommunity': of<Community>() } ) },
@@ -46,6 +50,11 @@ describe('CommunitiesEditComponent', () => {
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: communityEditData }
       ]
     })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [ClosedCommunityConfirmDialogComponent]
+        }
+      })
     .compileComponents();
   }));
 
@@ -79,4 +88,13 @@ describe('CommunitiesEditComponent', () => {
     const createButton = fixture.debugElement.query(By.css('#communities-edit-button'));
     expect(createButton.nativeElement.disabled).toBeTruthy();
   }));
+
+  it('should open a confirm dialog when community type was changed to CLOSED', () => {
+    const matDialog: MatDialog = TestBed.get(MatDialog);
+    component.communityForm.get('type').setValue('CLOSED');
+    component.editCommunity();
+
+    expect(matDialog.openDialogs.length).toBe(1);
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityConfirmDialogComponent));
+  });
 });

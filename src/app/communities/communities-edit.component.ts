@@ -1,11 +1,13 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef, MatDialog } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { finalize } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Community } from './community';
 import { CommunitiesService } from './communities.service';
+import { CommunityType } from './community-type.enum';
+import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
 
 @Component({
   selector: 'app-communities-edit',
@@ -22,12 +24,14 @@ export class CommunitiesEditComponent implements OnInit {
               private formBuilder: FormBuilder,
               private bottomSheet: MatBottomSheetRef,
               private changeDetector: ChangeDetectorRef,
-              private globalErrorHandlerService: GlobalErrorHandlerService) {
+              private globalErrorHandlerService: GlobalErrorHandlerService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
     this.communityForm = this.formBuilder.group({
       title: new FormControl(this.community.title, Validators.required),
+      type: new FormControl(this.community.type),
       description: new FormControl(this.community.description),
       links: new FormArray([])
     });
@@ -53,20 +57,20 @@ export class CommunitiesEditComponent implements OnInit {
   }
 
   editCommunity() {
-    this.communityService.updateCommunity(this.getCommunityData())
-      .pipe(
-        finalize(() => {
-            this.communityForm.markAsPristine();
-          }
-        )
-      )
-      .subscribe(data => {
-        this.bottomSheet.dismiss(data);
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+    const communityData = this.getCommunityData();
+    if (communityData.type === CommunityType.OPENED || communityData.type === this.community.type) {
+      this.innerEditCommunity(communityData);
+    } else {
+      const dialogRef = this.dialog.open(ClosedCommunityConfirmDialogComponent, {
+        width: '350px',
+        data: {}
       });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.innerEditCommunity(communityData);
+        }
+      });
+    }
   }
 
   close() {
@@ -84,9 +88,27 @@ export class CommunitiesEditComponent implements OnInit {
     return {
       id: this.community.id,
       title: this.communityForm.get('title').value,
+      type: this.communityForm.get('type').value,
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value
     } as Community;
+  }
+
+  private innerEditCommunity(community: Community) {
+    this.communityService.updateCommunity(community)
+      .pipe(
+        finalize(() => {
+            this.communityForm.markAsPristine();
+          }
+        )
+      )
+      .subscribe(data => {
+        this.bottomSheet.dismiss(data);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+        // Dirty fix because of: https://github.com/angular/angular/issues/17772
+        this.changeDetector.markForCheck();
+      });
   }
 
   get linkList() {

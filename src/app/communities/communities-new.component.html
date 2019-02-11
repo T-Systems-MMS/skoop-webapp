@@ -7,6 +7,13 @@
       </mat-form-field>
     </div>
     <div fxFlex>
+      <span>Community type:</span>
+      <mat-button-toggle-group formControlName="type" class="communities-new-type">
+        <mat-button-toggle value="OPENED" class="communities-new-type-option">Opened</mat-button-toggle>
+        <mat-button-toggle value="CLOSED" class="communities-new-type-option">Closed</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div fxFlex>
       <mat-form-field class="communities-new-form-field">
         <textarea matInput placeholder="Description" formControlName="description" rows="8"></textarea>
       </mat-form-field>
@@ -22,12 +29,12 @@
         <div fxLayout="row">
           <div fxFlex="25%">
             <mat-form-field class="communities-new-form-field">
-              <input matInput  placeholder="Name" formControlName="name" [required]="true">
+              <input matInput placeholder="Name" formControlName="name" [required]="true">
             </mat-form-field>
           </div>
           <div fxFlex="70%">
             <mat-form-field class="communities-new-form-field communities-new-href">
-              <input matInput  placeholder="Link" formControlName="href" [required]="true">
+              <input matInput placeholder="Link" formControlName="href" [required]="true">
             </mat-form-field>
           </div>
           <div fxFlex="5%">
