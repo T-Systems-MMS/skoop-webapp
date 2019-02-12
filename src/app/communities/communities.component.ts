@@ -51,7 +51,9 @@ export class CommunitiesComponent implements OnInit {
         type: community.type || CommunityType.OPENED,
         skills: community.skills,
         description: community.description,
-        links: community.links
+        links: community.links,
+        managers: community.managers,
+        members: community.members
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
   }

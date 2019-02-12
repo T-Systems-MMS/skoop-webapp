@@ -23,13 +23,26 @@ const communityEditData = {
   title: 'community',
   description: 'community description',
   type: CommunityType.OPENED,
-  skillIds: [],
+  skills: [],
   links: [
     {
       name: 'google',
       href: 'https://www.google.com'
     }
-  ]
+  ],
+  managers: [{id: '123sdfsdferwe'}],
+  members: [{id: 'jd934kjsdi823'}]
+};
+
+const communityEditRequest = {
+  id: communityEditData.id,
+  title: communityEditData.title,
+  description: communityEditData.description,
+  type: communityEditData.type,
+  skillIds: [],
+  links: communityEditData.links,
+  managerIds: [communityEditData.managers[0].id],
+  memberIds: [communityEditData.members[0].id]
 };
 
 describe('CommunitiesEditComponent', () => {
@@ -85,7 +98,7 @@ describe('CommunitiesEditComponent', () => {
     component.editCommunity();
     const communityService: CommunitiesService = TestBed.get(CommunitiesService);
 
-    expect(communityService.updateCommunity).toHaveBeenCalledWith(communityEditData);
+    expect(communityService.updateCommunity).toHaveBeenCalledWith(communityEditRequest);
   });
 
   it('should disable createButton when an added link is not filled', async(() => {

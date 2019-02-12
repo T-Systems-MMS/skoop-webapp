@@ -59,7 +59,7 @@ export class CommunitiesEditComponent implements OnInit {
     this.communityForm = this.formBuilder.group({
       title: new FormControl(this.community.title, Validators.required),
       type: new FormControl(this.community.type),
-      skills: new FormControl(this.community.skills),
+      skills: new FormControl(this.community.skills || []),
       description: new FormControl(this.community.description),
       links: new FormArray([])
     });
@@ -137,7 +137,9 @@ export class CommunitiesEditComponent implements OnInit {
       type: this.communityForm.get('type').value,
       skillIds: (this.skillsArray || []).map(item => item.id),
       description: this.communityForm.get('description').value,
-      links: this.communityForm.get('links').value
+      links: this.communityForm.get('links').value,
+      managerIds: (this.community.managers || []).map(item => item.id),
+      memberIds: (this.community.members || []).map(item => item.id)
     } as CommunityRequest;
   }
 

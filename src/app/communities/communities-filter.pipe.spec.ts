@@ -15,7 +15,9 @@ const communities: CommunityResponse[] = [
       {
         name: 'stackoveflow',
         href: 'https://stackoverflow.com/'
-      }]
+      }],
+    managers: [],
+    members: []
   },
   {
     id: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
@@ -25,7 +27,9 @@ const communities: CommunityResponse[] = [
     skills: [{
       id: '12343534536',
       name: 'java'
-    }]
+    }],
+    managers: [],
+    members: []
   }
 ];
 

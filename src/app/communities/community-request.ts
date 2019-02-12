@@ -1,5 +1,7 @@
 import { Community } from './community';
 
 export interface CommunityRequest extends Community {
-  skillIds?: string[]
+  skillIds?: string[];
+  managerIds: string[];
+  memberIds: string[];
 }
