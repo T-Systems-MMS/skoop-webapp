@@ -22,6 +22,10 @@ const communities: CommunityResponse[] = [
     title: 'test2',
     description: 'description2',
     type: CommunityType.OPENED,
+    skills: [{
+      id: '12343534536',
+      name: 'java'
+    }]
   }
 ];
 
@@ -36,7 +40,11 @@ describe('CommunitiesFilterPipe', () => {
     expect(pipe.transform(communities, '')).toEqual(communities);
   });
 
-  it('should filter the list of projects', () => {
+  it('should filter the list of communities by name', () => {
     expect(pipe.transform(communities, 'test1')).toEqual([communities[0]]);
+  });
+
+  it('should filter the list of communities by skill', () => {
+    expect(pipe.transform(communities, 'ja')).toEqual([communities[1]]);
   });
 });
