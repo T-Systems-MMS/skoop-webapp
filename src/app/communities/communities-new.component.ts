@@ -99,7 +99,7 @@ export class CommunitiesNewComponent implements OnInit {
 
   selectSkill(event: MatAutocompleteSelectedEvent): void {
     const selectedSkill = event.option.value;
-    if (this.skillsArray.indexOf(selectedSkill) === -1) {
+    if (!this.skillsArray.find(skill => skill.id === selectedSkill.id)) {
       this.skillsArray.push(selectedSkill);
     }
 
@@ -118,7 +118,7 @@ export class CommunitiesNewComponent implements OnInit {
     return {
       title: this.communityForm.get('title').value,
       type: this.communityForm.get('type').value,
-      skillIds: this.skillsArray.map(item => item.id),
+      skillIds: (this.skillsArray || []).map(item => item.id),
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value
     } as CommunityRequest;

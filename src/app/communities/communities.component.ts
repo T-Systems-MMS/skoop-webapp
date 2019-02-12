@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommunitiesService } from './communities.service';
 import { Observable, of } from 'rxjs';
-import { Community } from './community';
 import { catchError, filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -44,23 +43,24 @@ export class CommunitiesComponent implements OnInit {
     });
   }
 
-  openEditDialog(community: Community) {
+  openEditDialog(community: CommunityResponse) {
     this.bottomSheet.open(CommunitiesEditComponent, {
-      data: <Community>{
+      data: <CommunityResponse>{
         id: community.id,
         title: community.title,
         type: community.type || CommunityType.OPENED,
+        skills: community.skills,
         description: community.description,
         links: community.links
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
   }
 
-  openViewPage(community: Community) {
+  openViewPage(community: CommunityResponse) {
 
   }
 
-  delete(community: Community): void {
+  delete(community: CommunityResponse): void {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
       data: {}

@@ -10,13 +10,14 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { of } from 'rxjs';
 import { MatBottomSheetRef, MatDialog } from '@angular/material';
 import { CommunitiesService } from './communities.service';
-import { Community } from './community';
 import { By } from '@angular/platform-browser';
 import { CommunityType } from './community-type.enum';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
 import { SkillsService } from '../skills/skills.service';
 import { CommunityRequest } from './community-request';
+import { Skill } from '../skills/skill';
+import { CommunityResponse } from './community-response';
 
 describe('CommunitiesNewComponent', () => {
   let component: CommunitiesNewComponent;
@@ -37,11 +38,11 @@ describe('CommunitiesNewComponent', () => {
         GlobalErrorHandlerService,
         {
           provide: CommunitiesService,
-          useValue: jasmine.createSpyObj('communityService', {'createCommunity': of<Community>()})
+          useValue: jasmine.createSpyObj('communityService', {'createCommunity': of<CommunityResponse>()})
         },
         {
           provide: SkillsService,
-          useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Community[]>([])})
+          useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Skill[]>([])})
         },
         {provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'])}
       ]
