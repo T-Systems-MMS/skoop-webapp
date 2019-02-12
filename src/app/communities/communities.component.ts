@@ -11,6 +11,7 @@ import { CommunitiesNewComponent } from './communities-new.component';
 import { CommunitiesEditComponent } from './communities-edit.component';
 import { FormControl } from '@angular/forms';
 import { CommunityType } from './community-type.enum';
+import { CommunityResponse } from './community-response';
 
 @Component({
   selector: 'app-communities',
@@ -19,7 +20,7 @@ import { CommunityType } from './community-type.enum';
 })
 export class CommunitiesComponent implements OnInit {
 
-  communities$: Observable<Community[]> = of([]);
+  communities$: Observable<CommunityResponse[]> = of([]);
   errorMessage: string = null;
   filter: FormControl = new FormControl('');
 
@@ -81,7 +82,7 @@ export class CommunitiesComponent implements OnInit {
   private loadCommunities() {
     this.communities$ = this.communityService.getCommunities()
       .pipe(
-        catchError((err: HttpErrorResponse, caught: Observable<Community[]>) => {
+        catchError((err: HttpErrorResponse, caught: Observable<CommunityResponse[]>) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(err);
           return of([]);
         })

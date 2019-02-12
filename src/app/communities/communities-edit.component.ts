@@ -8,6 +8,7 @@ import { Community } from './community';
 import { CommunitiesService } from './communities.service';
 import { CommunityType } from './community-type.enum';
 import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
+import { CommunityRequest } from './community-request';
 
 @Component({
   selector: 'app-communities-edit',
@@ -84,17 +85,18 @@ export class CommunitiesEditComponent implements OnInit {
     });
   }
 
-  private getCommunityData(): Community {
+  private getCommunityData(): CommunityRequest {
     return {
       id: this.community.id,
       title: this.communityForm.get('title').value,
       type: this.communityForm.get('type').value,
+      skillIds: [], // todo
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value
-    } as Community;
+    } as CommunityRequest;
   }
 
-  private innerEditCommunity(community: Community) {
+  private innerEditCommunity(community: CommunityRequest) {
     this.communityService.updateCommunity(community)
       .pipe(
         finalize(() => {

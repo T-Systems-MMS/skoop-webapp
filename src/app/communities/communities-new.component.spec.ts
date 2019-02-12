@@ -15,6 +15,8 @@ import { By } from '@angular/platform-browser';
 import { CommunityType } from './community-type.enum';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
+import { SkillsService } from '../skills/skills.service';
+import { CommunityRequest } from './community-request';
 
 describe('CommunitiesNewComponent', () => {
   let component: CommunitiesNewComponent;
@@ -36,6 +38,10 @@ describe('CommunitiesNewComponent', () => {
         {
           provide: CommunitiesService,
           useValue: jasmine.createSpyObj('communityService', {'createCommunity': of<Community>()})
+        },
+        {
+          provide: SkillsService,
+          useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Community[]>([])})
         },
         {provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'])}
       ]
@@ -71,17 +77,18 @@ describe('CommunitiesNewComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
 
-      const expectedRequestData: Community = {
+      const expectedRequestData: CommunityRequest = {
         title: 'title',
         description: 'description',
         type: CommunityType.OPENED,
+        skillIds: [],
         links: [
           {
             name: 'google',
             href: 'https://www.google.com'
           }
         ]
-      } as Community;
+      } as CommunityRequest;
 
       expect(communityService.createCommunity).toHaveBeenCalledWith(expectedRequestData);
     });

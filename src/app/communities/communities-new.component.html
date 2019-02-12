@@ -15,6 +15,33 @@
     </div>
     <div fxFlex>
       <mat-form-field class="communities-new-form-field">
+        <mat-chip-list #skillsChipList>
+          <mat-chip
+            *ngFor="let skill of skillsArray; let i = index;"
+            [selectable]="elemSelectable"
+            [removable]="elemRemovable"
+            (removed)="removeSkill(i)">
+            {{skill.name}}
+            <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Skills"
+            #skillInput
+            [formControl]="skillAutocompleteCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="skillsChipList"
+            [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+            [matChipInputAddOnBlur]="elemAddOnBlur">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectSkill($event)">
+          <mat-option *ngFor="let skill of skills$ | async" [value]="skill">
+            {{skill.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="communities-new-form-field">
         <textarea matInput placeholder="Description" formControlName="description" rows="8"></textarea>
       </mat-form-field>
     </div>

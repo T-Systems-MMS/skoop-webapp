@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Community } from './community';
 import { environment } from '../../environments/environment';
+import { CommunityRequest } from './community-request';
+import { CommunityResponse } from './community-response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,20 +16,20 @@ export class CommunitiesService {
   constructor(private httpClient: HttpClient) {
   }
 
-  getCommunities(): Observable<Community[]> {
-    return this.httpClient.get<Community[]>(this.communitiesUrlPattern);
+  getCommunities(): Observable<CommunityResponse[]> {
+    return this.httpClient.get<CommunityResponse[]>(this.communitiesUrlPattern);
   }
 
-  getCommunity(communityId: string): Observable<Community> {
-    return this.httpClient.get<Community>(this.communityUrlPattern.replace('{communityId}', communityId));
+  getCommunity(communityId: string): Observable<CommunityResponse> {
+    return this.httpClient.get<CommunityResponse>(this.communityUrlPattern.replace('{communityId}', communityId));
   }
 
-  createCommunity(data: Community): Observable<Community> {
-    return this.httpClient.post<Community>(this.communitiesUrlPattern, data);
+  createCommunity(data: CommunityRequest): Observable<CommunityResponse> {
+    return this.httpClient.post<CommunityResponse>(this.communitiesUrlPattern, data);
   }
 
-  updateCommunity(data: Community): Observable<Community> {
-    return this.httpClient.put<Community>(this.communityUrlPattern.replace('{communityId}', data.id), data);
+  updateCommunity(data: CommunityRequest): Observable<CommunityResponse> {
+    return this.httpClient.put<CommunityResponse>(this.communityUrlPattern.replace('{communityId}', data.id), data);
   }
 
   deleteCommunity(communityId: string): Observable<void> {
