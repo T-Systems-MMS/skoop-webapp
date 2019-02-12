@@ -154,7 +154,7 @@ export class CommunitiesNewComponent implements OnInit {
     }
 
     const filterValue = value.toLowerCase();
-    return this.allAvailableSkills.filter(skill => skill.name.indexOf(filterValue) === 0);
+    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   get linkList() {
