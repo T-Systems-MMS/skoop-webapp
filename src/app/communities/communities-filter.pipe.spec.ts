@@ -1,8 +1,8 @@
 import { CommunitiesFilterPipe } from './communities-filter.pipe';
-import { Community } from './community';
 import { CommunityType } from './community-type.enum';
+import { CommunityResponse } from './community-response';
 
-const communities: Community[] = [
+const communities: CommunityResponse[] = [
   {
     id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
     title: 'test1',

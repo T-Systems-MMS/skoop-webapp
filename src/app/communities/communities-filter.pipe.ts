@@ -1,12 +1,12 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Community } from './community';
+import { CommunityResponse } from './community-response';
 
 @Pipe({
   name: 'communitiesFilter'
 })
 export class CommunitiesFilterPipe implements PipeTransform {
 
-  transform(communities: Community[], searchTerm: string): Community[] {
+  transform(communities: CommunityResponse[], searchTerm: string): CommunityResponse[] {
     if (searchTerm == null || searchTerm === '') {
       return communities;
     }
