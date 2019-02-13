@@ -15,16 +15,16 @@
         <h2 class="communities-card__heading">{{ community.title }}</h2>
       </div>
       <div fxFlex="none">
-        <button mat-icon-button [disabled]="isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join" aria-label="Join">
+        <button mat-icon-button *ngIf="!isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join" aria-label="Join">
           <mat-icon>group</mat-icon>
         </button>
         <button mat-icon-button (click)="openViewPage(community)" title="View" aria-label="View">
           <mat-icon>visibility</mat-icon>
         </button>
-        <button mat-icon-button (click)="openEditDialog(community)" title="Edit" aria-label="Edit">
+        <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="openEditDialog(community)" title="Edit" aria-label="Edit">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button (click)="delete(community)" title="Delete" aria-label="Delete">
+        <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="delete(community)" title="Delete" aria-label="Delete">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
