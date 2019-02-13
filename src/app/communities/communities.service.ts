@@ -12,6 +12,7 @@ export class CommunitiesService {
 
   private communitiesUrlPattern = `${environment.serverApiUrl}/communities`;
   private communityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}`;
+  private joinCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/members`;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -35,4 +36,9 @@ export class CommunitiesService {
   deleteCommunity(communityId: string): Observable<void> {
     return this.httpClient.delete<void>(this.communityUrlPattern.replace('{communityId}', communityId));
   }
+
+  joinCommunity(communityId: string): Observable<CommunityResponse> {
+    return this.httpClient.post<CommunityResponse>(this.joinCommunityUrlPattern.replace('{communityId}', communityId), null);
+  }
+
 }
