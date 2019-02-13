@@ -48,6 +48,7 @@ import { CommunitiesNewComponent } from './communities/communities-new.component
 import { CommunitiesEditComponent } from './communities/communities-edit.component';
 import { CommunitiesFilterPipe } from './communities/communities-filter.pipe';
 import { ClosedCommunityConfirmDialogComponent } from './communities/closed-community-confirm-dialog.component';
+import { CommunityViewComponent } from './community-view/community-view.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -90,6 +91,7 @@ export const CUSTOM_FORMATS = {
     CommunitiesEditComponent,
     CommunitiesFilterPipe,
     ClosedCommunityConfirmDialogComponent,
+    CommunityViewComponent,
   ],
   imports: [
     BrowserModule,
