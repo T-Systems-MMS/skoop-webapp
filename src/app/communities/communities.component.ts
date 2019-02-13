@@ -14,6 +14,7 @@ import { CommunityResponse } from './community-response';
 import { User } from '../users/user';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
+import { Community } from './community';
 
 @Component({
   selector: 'app-communities',
@@ -26,6 +27,7 @@ export class CommunitiesComponent implements OnInit {
   errorMessage: string = null;
   filter: FormControl = new FormControl('');
   private joinedCommunityIds: string[] = [];
+  private managedCommunityIds: string[] = [];
 
   constructor(private communityService: CommunitiesService,
               private userIdentityService: UserIdentityService,
@@ -105,6 +107,7 @@ export class CommunitiesComponent implements OnInit {
         }),
         tap((communities: CommunityResponse[]) => {
           const joinedCommunityIds: string[] = [];
+          const managedCommunityIds: string[] = [];
           if (communities && communities.length) {
             this.userIdentityService.getUserIdentity()
               .subscribe((userIdentity: UserIdentity) => {
@@ -112,6 +115,11 @@ export class CommunitiesComponent implements OnInit {
                   if (community.members) {
                     if (community.members.map((member: User) => member.id).indexOf(userIdentity.userId) !== -1) {
                       joinedCommunityIds.push(community.id);
+                    }
+                  }
+                  if (community.managers) {
+                    if (community.managers.map((manager: User) => manager.id).indexOf(userIdentity.userId) !== -1) {
+                      managedCommunityIds.push(community.id);
                     }
                   }
                 });
@@ -122,14 +130,19 @@ export class CommunitiesComponent implements OnInit {
               });
           }
           this.joinedCommunityIds = joinedCommunityIds;
+          this.managedCommunityIds = managedCommunityIds;
         })
       );
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
   }
 
-  isCommunityJoined(community: CommunityResponse): boolean {
+  isCommunityJoined(community: Community): boolean {
     return this.joinedCommunityIds.indexOf(community.id) !== -1;
+  }
+
+  isCommunityManager(community: Community): boolean {
+    return this.managedCommunityIds.indexOf(community.id) !== -1;
   }
 
 }
