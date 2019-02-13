@@ -1,8 +1,8 @@
 import { CommunitiesFilterPipe } from './communities-filter.pipe';
-import { Community } from './community';
 import { CommunityType } from './community-type.enum';
+import { CommunityResponse } from './community-response';
 
-const communities: Community[] = [
+const communities: CommunityResponse[] = [
   {
     id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
     title: 'test1',
@@ -15,13 +15,21 @@ const communities: Community[] = [
       {
         name: 'stackoveflow',
         href: 'https://stackoverflow.com/'
-      }]
+      }],
+    managers: [],
+    members: []
   },
   {
     id: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
     title: 'test2',
     description: 'description2',
     type: CommunityType.OPENED,
+    skills: [{
+      id: '12343534536',
+      name: 'java'
+    }],
+    managers: [],
+    members: []
   }
 ];
 
@@ -36,7 +44,11 @@ describe('CommunitiesFilterPipe', () => {
     expect(pipe.transform(communities, '')).toEqual(communities);
   });
 
-  it('should filter the list of projects', () => {
+  it('should filter the list of communities by name', () => {
     expect(pipe.transform(communities, 'test1')).toEqual([communities[0]]);
+  });
+
+  it('should filter the list of communities by skill', () => {
+    expect(pipe.transform(communities, 'ja')).toEqual([communities[1]]);
   });
 });

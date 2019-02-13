@@ -3,8 +3,9 @@ import { async, TestBed } from '@angular/core/testing';
 import { CommunitiesService } from './communities.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../environments/environment';
-import { Community } from './community';
 import { CommunityType } from './community-type.enum';
+import { CommunityResponse } from './community-response';
+import { CommunityRequest } from './community-request';
 
 describe('CommunitiesService', () => {
   let httpTestingController: HttpTestingController;
@@ -30,10 +31,11 @@ describe('CommunitiesService', () => {
   });
 
   it('should provide list of communities', async(() => {
-    const testCommunities: Community[] = [
+    const testCommunities: CommunityResponse[] = [
       {
         id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
         title: 'test1',
+        skills: [],
         description: 'description1',
         type: CommunityType.OPENED,
         links: [{
@@ -43,13 +45,18 @@ describe('CommunitiesService', () => {
           {
             name: 'stackoveflow',
             href: 'https://stackoverflow.com/'
-          }]
+          }],
+        managers: [],
+        members: []
       },
       {
         id: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
         title: 'test2',
+        skills: [],
         description: 'description2',
         type: CommunityType.OPENED,
+        managers: [],
+        members: []
       }
     ];
 
@@ -68,9 +75,10 @@ describe('CommunitiesService', () => {
   }));
 
   it('should provide a community', async(() => {
-    const testCommunity: Community = {
+    const testCommunity: CommunityResponse = {
       id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
       title: 'test1',
+      skills: [],
       description: 'description1',
       links: [{
         name: 'google',
@@ -80,7 +88,7 @@ describe('CommunitiesService', () => {
           name: 'stackoveflow',
           href: 'https://stackoverflow.com/'
         }]
-    } as Community;
+    } as CommunityResponse;
 
     service.getCommunity(testCommunity.id).subscribe((community) => {
       expect(community).toEqual(testCommunity);
@@ -97,7 +105,7 @@ describe('CommunitiesService', () => {
   }));
 
   it('should update the community with the given data', async(() => {
-    const testCommunity: Community = {
+    const testCommunity: CommunityRequest = {
       id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
       title: 'test1',
       description: 'description1',
@@ -108,11 +116,22 @@ describe('CommunitiesService', () => {
         {
           name: 'stackoveflow',
           href: 'https://stackoverflow.com/'
-        }]
-    } as Community;
+        }],
+      managerIds: ['asdasd34234234'],
+      memberIds: ['dsf324df324']
+    } as CommunityRequest;
+
+    const testCommunityResponse: CommunityResponse = {
+      id: testCommunity.id,
+      title: testCommunity.title,
+      description: testCommunity.description,
+      links: testCommunity.links,
+      managers: [{id: testCommunity.managerIds[0]}],
+      members: [{id: testCommunity.memberIds[0]}]
+    } as CommunityResponse;
 
     service.updateCommunity(testCommunity).subscribe(community => {
-      expect(community).toEqual(testCommunity);
+      expect(community).toEqual(testCommunityResponse);
     });
 
     const request = httpTestingController.expectOne({
@@ -123,11 +142,11 @@ describe('CommunitiesService', () => {
     expect(request.request.responseType).toEqual('json');
     expect(request.request.body).toEqual(testCommunity);
 
-    request.flush(testCommunity);
+    request.flush(testCommunityResponse);
   }));
 
   it('should create the community with the given data', async(() => {
-    const testCommunity: Community = {
+    const testCommunityRequest: CommunityRequest = {
       id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
       title: 'test1',
       description: 'description1',
@@ -138,11 +157,22 @@ describe('CommunitiesService', () => {
         {
           name: 'stackoveflow',
           href: 'https://stackoverflow.com/'
-        }]
-    } as Community;
+        }],
+      managerIds: ['asdasd34234234'],
+      memberIds: ['dsf324df324']
+    } as CommunityRequest;
 
-    service.createCommunity(testCommunity).subscribe(community => {
-      expect(community).toEqual(testCommunity);
+    const testCommunityResponse: CommunityResponse = {
+      id: testCommunityRequest.id,
+      title: testCommunityRequest.title,
+      description: testCommunityRequest.description,
+      links: testCommunityRequest.links,
+      managers: [{id: testCommunityRequest.managerIds[0]}],
+      members: [{id: testCommunityRequest.memberIds[0]}]
+    } as CommunityResponse;
+
+    service.createCommunity(testCommunityRequest).subscribe(community => {
+      expect(community).toEqual(testCommunityResponse);
     });
 
     const request = httpTestingController.expectOne({
@@ -151,9 +181,9 @@ describe('CommunitiesService', () => {
     });
 
     expect(request.request.responseType).toEqual('json');
-    expect(request.request.body).toEqual(testCommunity);
+    expect(request.request.body).toEqual(testCommunityRequest);
 
-    request.flush(testCommunity);
+    request.flush(testCommunityResponse);
   }));
 
   it('should delete the community', async(() => {

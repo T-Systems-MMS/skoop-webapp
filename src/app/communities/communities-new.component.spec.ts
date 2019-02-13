@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 
 import { CommunitiesNewComponent } from './communities-new.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,16 +10,36 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { of } from 'rxjs';
 import { MatBottomSheetRef, MatDialog } from '@angular/material';
 import { CommunitiesService } from './communities.service';
-import { Community } from './community';
 import { By } from '@angular/platform-browser';
 import { CommunityType } from './community-type.enum';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
+import { SkillsService } from '../skills/skills.service';
+import { CommunityRequest } from './community-request';
+import { Skill } from '../skills/skill';
+import { CommunityResponse } from './community-response';
+import { OverlayContainer } from '@angular/cdk/overlay';
+
+const skills = [
+  {
+    id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+    name: 'Angular',
+    description: 'JavaScript Framework'
+  },
+  {
+    id: 'c9b80869-c6bd-327d-u9ce-ye0d66b17129',
+    name: 'Spring Boot',
+    description: 'A Java Framework'
+  }
+];
 
 describe('CommunitiesNewComponent', () => {
   let component: CommunitiesNewComponent;
   let fixture: ComponentFixture<CommunitiesNewComponent>;
   let communityService: CommunitiesService;
+  // to test autocomplete features
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +55,11 @@ describe('CommunitiesNewComponent', () => {
         GlobalErrorHandlerService,
         {
           provide: CommunitiesService,
-          useValue: jasmine.createSpyObj('communityService', {'createCommunity': of<Community>()})
+          useValue: jasmine.createSpyObj('communityService', {'createCommunity': of<CommunityResponse>()})
+        },
+        {
+          provide: SkillsService,
+          useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Skill[]>(skills)})
         },
         {provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'])}
       ]
@@ -46,6 +70,11 @@ describe('CommunitiesNewComponent', () => {
         }
       })
       .compileComponents();
+
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
 
     communityService = TestBed.get(CommunitiesService);
   }));
@@ -71,17 +100,18 @@ describe('CommunitiesNewComponent', () => {
     fixture.whenStable().then(() => {
       fixture.detectChanges();
 
-      const expectedRequestData: Community = {
+      const expectedRequestData: CommunityRequest = {
         title: 'title',
         description: 'description',
         type: CommunityType.OPENED,
+        skillIds: [],
         links: [
           {
             name: 'google',
             href: 'https://www.google.com'
           }
         ]
-      } as Community;
+      } as CommunityRequest;
 
       expect(communityService.createCommunity).toHaveBeenCalledWith(expectedRequestData);
     });
@@ -114,4 +144,59 @@ describe('CommunitiesNewComponent', () => {
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityConfirmDialogComponent));
   });
+
+  it('should filter skills based on input', fakeAsync(() => {
+    sendInput('Angular');
+
+    const options = overlayContainerElement.querySelectorAll('mat-option');
+    expect(options.length).toBe(1);
+    expect(options[0].innerHTML).toContain('Angular');
+
+    discardPeriodicTasks();
+  }));
+
+  it('should add skill to the skills list', fakeAsync(() => {
+    sendInput('Angular');
+
+    const option = overlayContainerElement.querySelector('mat-option') as HTMLElement;
+    tick(10);
+
+    option.click();
+    fixture.whenStable().then( () => {
+      expect(component.skillsArray.length).toBe(1);
+      expect(component.skillsArray[0]).toEqual(skills[0]);
+    });
+
+    discardPeriodicTasks();
+  }));
+
+  it('should not add duplicated skills to the skills list', fakeAsync(() => {
+    sendInput('Angular');
+
+    let option = overlayContainerElement.querySelector('mat-option') as HTMLElement;
+    tick(10);
+    option.click();
+    sendInput('Angular');
+    option = overlayContainerElement.querySelector('mat-option') as HTMLElement;
+    tick(10);
+    option.click();
+
+    fixture.whenStable().then( () => {
+      expect(component.skillsArray.length).toBe(1);
+      expect(component.skillsArray[0]).toEqual(skills[0]);
+    });
+
+    discardPeriodicTasks();
+  }));
+
+  function sendInput(text: string) {
+    let inputElement: HTMLInputElement;
+
+    inputElement = component.skillAutocompleteInput.nativeElement;
+    inputElement.value = text;
+    component.skillAutocompleteCtrl.setValue(text);
+    inputElement.dispatchEvent(new Event('focusin'));
+
+    fixture.detectChanges();
+  }
 });

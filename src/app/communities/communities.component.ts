@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommunitiesService } from './communities.service';
 import { Observable, of } from 'rxjs';
-import { Community } from './community';
 import { catchError, filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -11,6 +10,7 @@ import { CommunitiesNewComponent } from './communities-new.component';
 import { CommunitiesEditComponent } from './communities-edit.component';
 import { FormControl } from '@angular/forms';
 import { CommunityType } from './community-type.enum';
+import { CommunityResponse } from './community-response';
 
 @Component({
   selector: 'app-communities',
@@ -19,7 +19,7 @@ import { CommunityType } from './community-type.enum';
 })
 export class CommunitiesComponent implements OnInit {
 
-  communities$: Observable<Community[]> = of([]);
+  communities$: Observable<CommunityResponse[]> = of([]);
   errorMessage: string = null;
   filter: FormControl = new FormControl('');
 
@@ -43,23 +43,26 @@ export class CommunitiesComponent implements OnInit {
     });
   }
 
-  openEditDialog(community: Community) {
+  openEditDialog(community: CommunityResponse) {
     this.bottomSheet.open(CommunitiesEditComponent, {
-      data: <Community>{
+      data: <CommunityResponse>{
         id: community.id,
         title: community.title,
         type: community.type || CommunityType.OPENED,
+        skills: community.skills,
         description: community.description,
-        links: community.links
+        links: community.links,
+        managers: community.managers,
+        members: community.members
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
   }
 
-  openViewPage(community: Community) {
+  openViewPage(community: CommunityResponse) {
 
   }
 
-  delete(community: Community): void {
+  delete(community: CommunityResponse): void {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
       data: {}
@@ -81,7 +84,7 @@ export class CommunitiesComponent implements OnInit {
   private loadCommunities() {
     this.communities$ = this.communityService.getCommunities()
       .pipe(
-        catchError((err: HttpErrorResponse, caught: Observable<Community[]>) => {
+        catchError((err: HttpErrorResponse, caught: Observable<CommunityResponse[]>) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(err);
           return of([]);
         })

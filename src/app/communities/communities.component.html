@@ -30,5 +30,11 @@
       <div class="communities-description-label">Community type:</div>
       <div>{{ community.type }}</div>
     </div>
+    <div fxLayout="row">
+      <div class="communities-description-label communities-skill-label">Skills:</div>
+      <mat-chip-list>
+        <mat-chip *ngFor="let skill of community.skills">{{ skill.name }}</mat-chip>
+      </mat-chip-list>
+    </div>
   </mat-card>
 </div>
