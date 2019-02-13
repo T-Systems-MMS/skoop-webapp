@@ -200,4 +200,38 @@ describe('CommunitiesService', () => {
 
     req.flush(communityId);
   }));
+
+  it('should make user join a community', async(() => {
+
+    const communityId = 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f';
+
+    const testCommunityResponse: CommunityResponse = {
+      id: communityId,
+      title: 'test1',
+      description: 'description1',
+      links: [{
+        name: 'google',
+        href: 'https://www.google.com'
+      },
+        {
+          name: 'stackoveflow',
+          href: 'https://stackoverflow.com/'
+        }],
+      managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}],
+      members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
+    } as CommunityResponse;
+
+    service.joinCommunity(communityId).subscribe((response: CommunityResponse) => {
+      expect(response).toEqual(testCommunityResponse);
+    });
+
+    const req = httpTestingController.expectOne({
+      method: 'POST',
+      url: `${environment.serverApiUrl}/communities/${communityId}/members`
+    });
+    expect(req.request.method).toBe('POST');
+
+    req.flush(testCommunityResponse);
+  }));
+
 });

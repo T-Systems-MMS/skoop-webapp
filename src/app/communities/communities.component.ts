@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommunitiesService } from './communities.service';
 import { Observable, of } from 'rxjs';
-import { catchError, filter } from 'rxjs/operators';
+import { catchError, filter, tap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheet, MatDialog } from '@angular/material';
@@ -11,6 +11,9 @@ import { CommunitiesEditComponent } from './communities-edit.component';
 import { FormControl } from '@angular/forms';
 import { CommunityType } from './community-type.enum';
 import { CommunityResponse } from './community-response';
+import { User } from '../users/user';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { UserIdentity } from '../shared/user-identity';
 
 @Component({
   selector: 'app-communities',
@@ -22,8 +25,10 @@ export class CommunitiesComponent implements OnInit {
   communities$: Observable<CommunityResponse[]> = of([]);
   errorMessage: string = null;
   filter: FormControl = new FormControl('');
+  private joinedCommunityIds: string[] = [];
 
   constructor(private communityService: CommunitiesService,
+              private userIdentityService: UserIdentityService,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               private bottomSheet: MatBottomSheet,
@@ -62,6 +67,16 @@ export class CommunitiesComponent implements OnInit {
 
   }
 
+  joinCommunity(community: CommunityResponse) {
+    this.communityService.joinCommunity(community.id).subscribe((response: CommunityResponse) => {
+      this.joinedCommunityIds.push(response.id);
+    }, (errorResponse: HttpErrorResponse) => {
+      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+      // Dirty fix because of: https://github.com/angular/angular/issues/17772
+      this.changeDetector.markForCheck();
+    });
+  }
+
   delete(community: CommunityResponse): void {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
@@ -87,10 +102,34 @@ export class CommunitiesComponent implements OnInit {
         catchError((err: HttpErrorResponse, caught: Observable<CommunityResponse[]>) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(err);
           return of([]);
+        }),
+        tap((communities: CommunityResponse[]) => {
+          const joinedCommunityIds: string[] = [];
+          if (communities && communities.length) {
+            this.userIdentityService.getUserIdentity()
+              .subscribe((userIdentity: UserIdentity) => {
+                communities.forEach((community: CommunityResponse) => {
+                  if (community.members) {
+                    if (community.members.map((member: User) => member.id).indexOf(userIdentity.userId) !== -1) {
+                      joinedCommunityIds.push(community.id);
+                    }
+                  }
+                });
+              }, (errorResponse: HttpErrorResponse) => {
+                this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+                // Dirty fix because of: https://github.com/angular/angular/issues/17772
+                this.changeDetector.markForCheck();
+              });
+          }
+          this.joinedCommunityIds = joinedCommunityIds;
         })
       );
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
+  }
+
+  isCommunityJoined(community: CommunityResponse): boolean {
+    return this.joinedCommunityIds.indexOf(community.id) !== -1;
   }
 
 }

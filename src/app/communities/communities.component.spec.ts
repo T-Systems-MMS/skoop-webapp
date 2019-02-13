@@ -12,6 +12,9 @@ import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommunitiesFilterPipe } from './communities-filter.pipe';
 import { CommunityType } from './community-type.enum';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { UserIdentity } from '../shared/user-identity';
+import { CommunityResponse } from './community-response';
 
 const communities = [
   {
@@ -41,6 +44,15 @@ describe('CommunitiesComponent', () => {
   let component: CommunitiesComponent;
   let fixture: ComponentFixture<CommunitiesComponent>;
 
+  const authenticatedUser: UserIdentity = {
+    userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+    userName: 'tester',
+    firstName: 'Toni',
+    lastName: 'Tester',
+    email: 'toni.tester@myskills.io',
+    roles: ['ROLE_USER']
+  };
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
@@ -54,7 +66,27 @@ describe('CommunitiesComponent', () => {
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
             'getCommunities': of<Community[]>(communities),
-            'deleteCommunity': of<void>()
+            'deleteCommunity': of<void>(),
+            'joinCommunity': of<CommunityResponse>({
+              id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+              title: 'test1',
+              description: 'description1',
+              links: [{
+                name: 'google',
+                href: 'https://www.google.com'
+              },
+                {
+                  name: 'stackoveflow',
+                  href: 'https://stackoverflow.com/'
+                }],
+              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}],
+              members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
+            } as CommunityResponse)
+          })
+        },
+        {
+          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
+            'getUserIdentity': of(authenticatedUser)
           })
         },
         GlobalErrorHandlerService
@@ -81,4 +113,11 @@ describe('CommunitiesComponent', () => {
     expect(communitiesCards[0].query(By.css('.communities-card__heading')).nativeElement.textContent).toBe(communities[0].title);
     expect(communitiesCards[1].query(By.css('.communities-card__heading')).nativeElement.textContent).toBe(communities[1].title);
   }));
+
+  it('should make user join a community', fakeAsync(() => {
+    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse);
+    fixture.detectChanges();
+    expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBe(true);
+  }));
+
 });

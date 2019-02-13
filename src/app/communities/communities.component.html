@@ -15,6 +15,9 @@
         <h2 class="communities-card__heading">{{ community.title }}</h2>
       </div>
       <div fxFlex="none">
+        <button mat-icon-button [disabled]="isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join" aria-label="Join">
+          <mat-icon>group</mat-icon>
+        </button>
         <button mat-icon-button (click)="openViewPage(community)" title="View" aria-label="View">
           <mat-icon>visibility</mat-icon>
         </button>
