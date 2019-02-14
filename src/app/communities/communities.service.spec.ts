@@ -234,4 +234,21 @@ describe('CommunitiesService', () => {
     req.flush(testCommunityResponse);
   }));
 
+  it('should make user leave a community', async(() => {
+
+    const communityId = 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f';
+
+    service.leaveCommunity(communityId).subscribe((data: any) => {
+      expect(data).toEqual(null);
+    });
+
+    const req = httpTestingController.expectOne({
+      method: 'DELETE',
+      url: `${environment.serverApiUrl}/communities/${communityId}/members`
+    });
+    expect(req.request.method).toBe('DELETE');
+
+    req.flush(null);
+  }));
+
 });

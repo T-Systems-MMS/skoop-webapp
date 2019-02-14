@@ -19,6 +19,7 @@ export class CommunityViewComponent implements OnInit {
   community: CommunityResponse;
   errorMessage: string = null;
   isCommunityMember: boolean;
+  isCommunityManager: boolean;
 
   constructor(private communityService: CommunitiesService,
               private userIdentityService: UserIdentityService,
@@ -67,8 +68,12 @@ export class CommunityViewComponent implements OnInit {
     });
   }
 
+  /**
+   * User can leave a community when he/she is not the only member or is not the only manager
+   */
   canLeaveCommunity() {
-    return this.isCommunityMember && this.community.members && this.community.members.length > 1;
+    return !this.isCommunityManager && this.isCommunityMember && this.community.members && this.community.members.length > 1
+      || this.isCommunityManager && this.community.managers && this.community.managers.length > 1;
   }
 
   private loadCommunity(communityId: string) {
@@ -86,6 +91,7 @@ export class CommunityViewComponent implements OnInit {
   private detectMembership(community: CommunityResponse) {
     this.userIdentityService.getUserIdentity().subscribe(userIdentity => {
       this.isCommunityMember = community.members && community.members.find(item => item.id === userIdentity.userId) != null;
+      this.isCommunityManager = community.managers && community.managers.find(item => item.id === userIdentity.userId) != null;
     }, errorResponse => {
       this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
       // Dirty fix because of: https://github.com/angular/angular/issues/17772
