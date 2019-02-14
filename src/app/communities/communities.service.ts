@@ -41,4 +41,8 @@ export class CommunitiesService {
     return this.httpClient.post<CommunityResponse>(this.joinCommunityUrlPattern.replace('{communityId}', communityId), null);
   }
 
+  leaveCommunity(communityId: string): Observable<void> {
+    return this.httpClient.delete<void>(this.joinCommunityUrlPattern.replace('{communityId}', communityId));
+  }
+
 }

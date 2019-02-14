@@ -21,8 +21,11 @@
       </div>
     </div>
     <div class="community-column-members">
-      <div class="community-toolbar">
-        <button mat-raised-button color="primary" (click)="joinToCommunity()" aria-label="Join">Join</button>
+      <div class="community-toolbar" *ngIf="!isCommunityMember">
+        <button mat-raised-button color="primary" (click)="joinCommunity()" aria-label="Join">Join</button>
+      </div>
+      <div class="community-toolbar" *ngIf="canLeaveCommunity()">
+        <button mat-raised-button (click)="leaveCommunity()" aria-label="Leave">Leave</button>
       </div>
       <div>
         <div class="community-label">Community managers</div>
@@ -30,7 +33,7 @@
           <mat-chip *ngFor="let manager of community?.managers">{{ manager.firstName }} {{manager.lastName}}</mat-chip>
         </mat-chip-list>
       </div>
-      <div>
+      <div *ngIf="isCommunityMember">
         <div class="community-label">Members</div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
           <mat-chip *ngFor="let user of community?.members">{{ user.firstName }} {{user.lastName}}</mat-chip>
