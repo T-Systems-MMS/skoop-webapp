@@ -4,6 +4,10 @@ node_js:
   - "10"
 
 addons:
+  sonarcloud:
+    organization: "knowledgeassets"
+    token:
+      secure: $SONAR_TOKEN
   apt:
     sources:
       - google-chrome
@@ -19,6 +23,6 @@ install:
   - npm install codecov
 
 script:
-  - npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage
+  - npm run test -- --watch=false --progress=false --browsers=ChromeHeadlessCI --code-coverage && sonar-scanner
   - codecov
   #- npm run e2e -- --protractor-config=./e2e/protractor-ci.conf.js
