@@ -72,7 +72,21 @@ describe('CommunityViewComponent', () => {
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
             'getCommunity': of(community),
-            'leaveCommunity': of<void>(),
+            'leaveCommunity': of<CommunityResponse>({
+              id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+              title: 'test1',
+              description: 'description1',
+              links: [{
+                name: 'google',
+                href: 'https://www.google.com'
+              },
+                {
+                  name: 'stackoveflow',
+                  href: 'https://stackoverflow.com/'
+                }],
+              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}],
+              members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
+            } as CommunityResponse),
             'joinCommunity': of<CommunityResponse>({
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
               title: 'test1',

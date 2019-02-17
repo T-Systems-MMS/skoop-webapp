@@ -57,8 +57,9 @@ export class CommunityViewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.communityService.leaveCommunity(this.community.id).subscribe(() => {
+        this.communityService.leaveCommunity(this.community.id).subscribe((community: CommunityResponse) => {
           this.isCommunityMember = false;
+          this.community = community;
         }, (errorResponse: HttpErrorResponse) => {
           this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
           // Dirty fix because of: https://github.com/angular/angular/issues/17772
