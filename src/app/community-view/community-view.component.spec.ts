@@ -1,0 +1,150 @@
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+
+import { CommunityViewComponent } from './community-view.component';
+import { AppMaterialModule } from '../app-material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { ReactiveFormsModule } from '@angular/forms';
+import { UserIdentity } from '../shared/user-identity';
+import { CommunityResponse } from '../communities/community-response';
+import { CommunityType } from '../communities/community-type.enum';
+import { User } from '../users/user';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { of } from 'rxjs';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { CommunitiesService } from '../communities/communities.service';
+import { RouterTestingModule } from '@angular/router/testing';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+
+const authenticatedUser: UserIdentity = {
+  userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+  userName: 'tester',
+  firstName: 'Toni',
+  lastName: 'Tester',
+  email: 'toni.tester@myskills.io',
+  roles: ['ROLE_USER']
+};
+
+const community: CommunityResponse = {
+  id: '123',
+  title: 'group1',
+  description: 'super group description',
+  type: CommunityType.OPENED,
+  links: [
+    {
+      name: 'google',
+      href: 'https://www.google.com'
+    },
+    {
+      name: 'stackoveflow',
+      href: 'https://stackoverflow.com/'
+    }],
+  members: [
+    {
+      id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
+      userName: 'tester'
+    } as User
+  ],
+  managers: [
+    {
+      id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
+      userName: 'tester'
+    } as User
+  ]
+};
+
+describe('CommunityViewComponent', () => {
+  let component: CommunityViewComponent;
+  let fixture: ComponentFixture<CommunityViewComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [
+        AppMaterialModule,
+        BrowserAnimationsModule,
+        MatMomentDateModule,
+        ReactiveFormsModule,
+        RouterTestingModule
+      ],
+      declarations: [CommunityViewComponent, DeleteConfirmationDialogComponent],
+      providers: [
+        {
+          provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
+            'getCommunity': of(community),
+            'leaveCommunity': of<CommunityResponse>({
+              id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+              title: 'test1',
+              description: 'description1',
+              links: [{
+                name: 'google',
+                href: 'https://www.google.com'
+              },
+                {
+                  name: 'stackoveflow',
+                  href: 'https://stackoverflow.com/'
+                }],
+              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}],
+              members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
+            } as CommunityResponse),
+            'joinCommunity': of<CommunityResponse>({
+              id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+              title: 'test1',
+              description: 'description1',
+              links: [{
+                name: 'google',
+                href: 'https://www.google.com'
+              },
+                {
+                  name: 'stackoveflow',
+                  href: 'https://stackoverflow.com/'
+                }],
+              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}],
+              members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
+            } as CommunityResponse)
+          })
+        },
+        {
+          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
+            'getUserIdentity': of(authenticatedUser)
+          })
+        },
+        GlobalErrorHandlerService
+      ]
+    })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [DeleteConfirmationDialogComponent]
+        }
+      })
+      .compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(CommunityViewComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+
+  it('should check if the user is not a member of community', fakeAsync(() => {
+    fixture.detectChanges();
+    expect(component.isCommunityMember).toBeFalsy();
+  }));
+
+  it('should make user join a community', fakeAsync(() => {
+    component.joinCommunity();
+    fixture.detectChanges();
+    expect(component.isCommunityMember).toBeTruthy();
+  }));
+
+  it('should make user leave a community', fakeAsync(() => {
+    expect(component.canLeaveCommunity).toBeTruthy();
+    component.leaveCommunity();
+    fixture.detectChanges();
+    expect(component.isCommunityMember).toBeFalsy();
+  }));
+});

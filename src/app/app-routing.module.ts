@@ -17,8 +17,8 @@ import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { OtherUserProfilesComponent } from './other-user-profiles/other-user-profiles.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
 import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.component';
-import { Community } from './communities/community';
 import { CommunitiesComponent } from './communities/communities.component';
+import { CommunityViewComponent } from './community-view/community-view.component';
 
 export const routes: Routes = [
   { path: 'my-skills', component: MySkillsComponent },
@@ -49,6 +49,7 @@ export const routes: Routes = [
   { path: 'users/:userId/skills', component: OtherUserSkillsComponent },
   { path: 'search-users', component: SearchUsersComponent },
   { path: 'communities', component: CommunitiesComponent },
+  { path: 'communities/:communityId', component: CommunityViewComponent },
   { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];

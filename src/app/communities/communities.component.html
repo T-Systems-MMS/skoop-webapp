@@ -18,9 +18,10 @@
         <button mat-icon-button *ngIf="!isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join" aria-label="Join">
           <mat-icon>group</mat-icon>
         </button>
-        <button mat-icon-button (click)="openViewPage(community)" title="View" aria-label="View">
+        <a [routerLink]="[community.id]"
+           mat-icon-button title="View community" aria-label="View community">
           <mat-icon>visibility</mat-icon>
-        </button>
+        </a>
         <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="openEditDialog(community)" title="Edit" aria-label="Edit">
           <mat-icon>edit</mat-icon>
         </button>

@@ -16,6 +16,7 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
 import { CommunityResponse } from './community-response';
 import { User } from '../users/user';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const communities: CommunityResponse[] = [
   {
@@ -84,7 +85,8 @@ describe('CommunitiesComponent', () => {
         AppMaterialModule,
         BrowserAnimationsModule,
         MatMomentDateModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterTestingModule
       ],
       declarations: [CommunitiesComponent, CommunitiesFilterPipe],
       providers: [

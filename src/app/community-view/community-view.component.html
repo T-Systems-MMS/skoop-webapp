@@ -1,0 +1,44 @@
+<div class="community mat-typography">
+  <h1>{{community?.title}}</h1>
+  <div *ngIf="errorMessage" class="community-error">{{errorMessage}}</div>
+
+  <div fxLayout="row">
+    <div fxFlex="75%">
+      <div fxLayout="row">
+        <div class="community-label community-skill-label">Skills:</div>
+        <mat-chip-list>
+          <mat-chip *ngFor="let skill of community?.skills">{{ skill.name }}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div class="community-description">
+        {{community?.description}}
+      </div>
+      <div class="community-links">
+        <div class="community-label">Links:</div>
+        <ul>
+          <li *ngFor="let link of community?.links"><a [href]="link.href">{{link.name}}</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="community-column-members">
+      <div class="community-toolbar" *ngIf="!isCommunityMember">
+        <button mat-raised-button color="primary" (click)="joinCommunity()" aria-label="Join">Join</button>
+      </div>
+      <div class="community-toolbar" *ngIf="canLeaveCommunity()">
+        <button mat-raised-button (click)="leaveCommunity()" aria-label="Leave">Leave</button>
+      </div>
+      <div>
+        <div class="community-label">Community managers</div>
+        <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
+          <mat-chip *ngFor="let manager of community?.managers">{{ manager.firstName }} {{manager.lastName}}</mat-chip>
+        </mat-chip-list>
+      </div>
+      <div *ngIf="isCommunityMember">
+        <div class="community-label">Members</div>
+        <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
+          <mat-chip *ngFor="let user of community?.members">{{ user.firstName }} {{user.lastName}}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
+  </div>
+</div>

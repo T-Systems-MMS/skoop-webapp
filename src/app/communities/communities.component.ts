@@ -65,10 +65,6 @@ export class CommunitiesComponent implements OnInit {
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
   }
 
-  openViewPage(community: CommunityResponse) {
-
-  }
-
   joinCommunity(community: CommunityResponse) {
     this.communityService.joinCommunity(community.id).subscribe((response: CommunityResponse) => {
       this.joinedCommunityIds.push(response.id);
