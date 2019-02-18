@@ -61,9 +61,7 @@ export class CommunityViewComponent implements OnInit {
           this.isCommunityMember = false;
           this.community = community;
         }, (errorResponse: HttpErrorResponse) => {
-          this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-          // Dirty fix because of: https://github.com/angular/angular/issues/17772
-          this.changeDetector.markForCheck();
+          this.handleErrorResponse(errorResponse);
         });
       }
     });
@@ -83,9 +81,7 @@ export class CommunityViewComponent implements OnInit {
         this.community = community;
         this.detectMembership(community);
       }, errorResponse => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
   }
 
@@ -94,9 +90,13 @@ export class CommunityViewComponent implements OnInit {
       this.isCommunityMember = community.members && community.members.find(item => item.id === userIdentity.userId) != null;
       this.isCommunityManager = community.managers && community.managers.find(item => item.id === userIdentity.userId) != null;
     }, errorResponse => {
-      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-      // Dirty fix because of: https://github.com/angular/angular/issues/17772
-      this.changeDetector.markForCheck();
+      this.handleErrorResponse(errorResponse);
     });
+  }
+
+  private handleErrorResponse(errorResponse: HttpErrorResponse) {
+    this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 }
