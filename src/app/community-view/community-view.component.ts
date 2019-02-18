@@ -42,9 +42,7 @@ export class CommunityViewComponent implements OnInit {
       this.isCommunityMember = true;
       this.community = community;
     }, (errorResponse: HttpErrorResponse) => {
-      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-      // Dirty fix because of: https://github.com/angular/angular/issues/17772
-      this.changeDetector.markForCheck();
+      this.handleErrorResponse(errorResponse);
     });
   }
 
