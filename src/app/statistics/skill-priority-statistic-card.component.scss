@@ -1,6 +1,7 @@
+@import 'variables';
+
 .skillPriorityStatisticCard {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .skillPriorityStatisticCard__content {

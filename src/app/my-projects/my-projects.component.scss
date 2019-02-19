@@ -1,19 +1,15 @@
 @import "variables";
 
 .my-projects-toolbar {
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .my-projects-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .my-projects-error-message {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .my-projects-description-label {

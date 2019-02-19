@@ -1,8 +1,7 @@
 @import 'variables';
 
 .skill-priority-report-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .skill-priority-report-skill-name {
@@ -15,12 +14,9 @@
 }
 
 .my-skills-toolbar {
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .my-skills-new-error {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }

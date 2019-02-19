@@ -5,12 +5,11 @@
 }
 
 .search-users-toolbar {
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .search-users-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .search-users-select-skill {
@@ -24,10 +23,7 @@
 }
 
 .search-users-error-message {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .search-users-result {

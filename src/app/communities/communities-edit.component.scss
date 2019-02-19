@@ -5,10 +5,7 @@
 }
 
 .communities-edit-error {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .communities-edit-actions {
@@ -22,12 +19,11 @@
 
 .communities-link-toolbar {
   margin-top: 16px;
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .communities-link-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .communities-edit-remove-link {

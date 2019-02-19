@@ -1,19 +1,15 @@
 @import "variables";
 
 .communities-toolbar {
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .communities-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .communities-error-message {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .communities-filter {
@@ -21,8 +17,7 @@
 }
 
 .communities-description-label {
-  font-weight: 550;
-  margin-right: 0.5em;
+  @extend %base-description-label;
 }
 
 .communities-skill-label {
