@@ -13,7 +13,7 @@ import { UserSkill } from '../user-skills/user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
-import { UserSkillView } from '../skill-card/user-skill-view';
+import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):

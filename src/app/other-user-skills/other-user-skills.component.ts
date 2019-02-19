@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { UserSkillView } from '../skill-card/user-skill-view';
+import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
 @Component({
   selector: 'app-other-user-skills',

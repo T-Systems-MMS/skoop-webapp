@@ -10,7 +10,7 @@ import { UserSkill } from '../user-skills/user-skill';
 import { User } from '../users/user';
 import { MySkillsComponent } from './my-skills.component';
 import { MySkillsService } from './my-skills.service';
-import { SkillCardComponent } from '../skill-card/skill-card.component';
+import { SkillCardComponent } from '../shared/skill-card/skill-card.component';
 
 // Stub only those methods of the service which are used by the component.
 const mySkillsServiceStub: Partial<MySkillsService> = {

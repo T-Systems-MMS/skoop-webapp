@@ -5,7 +5,7 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { MySkillsService } from './my-skills.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { UserSkillView } from '../skill-card/user-skill-view';
+import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
 @Component({
   selector: 'app-my-skills-edit',

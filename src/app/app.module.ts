@@ -41,7 +41,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MyProjectsEditComponent } from './my-projects/my-projects-edit.component';
 import { OtherUserProfilesComponent } from './other-user-profiles/other-user-profiles.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
-import { SkillCardComponent } from './skill-card/skill-card.component';
+import { SkillCardComponent } from './shared/skill-card/skill-card.component';
 import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { CommunitiesNewComponent } from './communities/communities-new.component';
