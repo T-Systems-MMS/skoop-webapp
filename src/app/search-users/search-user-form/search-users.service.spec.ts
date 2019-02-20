@@ -2,8 +2,8 @@ import { async, TestBed } from '@angular/core/testing';
 
 import { SearchUsersService } from './search-users.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
-import { AnonymousUserSkill } from './anonymous-user-skill';
+import { environment } from '../../../environments/environment';
+import { AnonymousUserSkill } from '../anonymous-user-skill';
 
 describe('SearchUsersService', () => {
   let httpTestingController: HttpTestingController;

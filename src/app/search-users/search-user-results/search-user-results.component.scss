@@ -1,0 +1,14 @@
+@import 'variables';
+
+.search-users-card {
+  @extend %base-card;
+}
+
+.search-users-result-count {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.search-users-download-user-profile-icon {
+  font-size: 32px;
+}

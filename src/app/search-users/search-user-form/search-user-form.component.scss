@@ -1,0 +1,23 @@
+@import 'variables';
+
+.search-users-toolbar {
+  margin-bottom: $myskills-toolbar-margin-bottom;
+}
+
+.skillLevel__formField {
+  width: 100%;
+}
+
+.search-users-card {
+  @extend %base-card;
+}
+
+.search-users-select-skill {
+  width: 90%;
+  padding-top: 6px;
+}
+
+.search-users-remove-criteria {
+  padding-left: 50%;
+  padding-top: 20px;
+}

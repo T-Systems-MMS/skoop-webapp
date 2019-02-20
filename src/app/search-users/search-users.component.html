@@ -1,81 +1,10 @@
 <div class="mat-typography">
   <h1>Search users by skills</h1>
-  <div class="search-users-toolbar">
-    <button mat-raised-button color="primary" (click)="search()" id="search-users-btn" [disabled]="!form.valid" aria-label="Search">Search
-    </button>
-  </div>
   <div *ngIf="errorMessage" class="search-users-error-message">{{errorMessage}}</div>
-  <div [formGroup]="form">
-    <div formArrayName="criteriaList">
-      <mat-card *ngFor="let criteria of criteriaList.controls; let i = index;" class="search-users-card">
-        <mat-card-content [formGroupName]="i">
-          <div fxLayout="row">
-            <div fxFlex="45%">
-              <mat-form-field class="search-users-select-skill">
-                <mat-select placeholder="Please select a skill" formControlName="skill" (selectionChange)="checkDuplicates()">
-                  <mat-option *ngFor="let skill of skills$ | async" [value]="skill.id">
-                    {{skill.name}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-error *ngIf="criteria.hasError('isDuplicated')">
-                Skill is duplicated
-              </mat-error>
-            </div>
-            <div fxFlex="35%">
-              <label>Minimum skill level</label>
-              <mat-slider
-                min="0"
-                max="4"
-                step="1"
-                thumbLabel
-                tickInterval="1"
-                formControlName="level"
-                class="skillLevel__formField">
-              </mat-slider>
-            </div>
-            <div fxFlex="20%">
-              <div class="search-users-remove-criteria">
-                <button mat-icon-button type="button" (click)="removeCriteria(i)"
-                        [disabled]="criteriaList.controls.length === 1" aria-label="Remove">
-                  <mat-icon>clear</mat-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div>
-      <button mat-raised-button id="add-criteria-btn" (click)="addCriteria()">Add criteria</button>
-    </div>
-  </div>
+  <app-search-user-form (criteriaChangedEvent)="onCriteriaChanged()" (errorOccurredEvent)="onError($event)"
+                        (usersFoundEvent)="onUsersFound($event)"></app-search-user-form>
   <div class="search-users-result" *ngIf="showSearchResult">
     <mat-divider></mat-divider>
-    <div class="search-users-result-count">
-      Found {{userSkills.length}} users matching these criteria
-    </div>
-    <mat-card *ngFor="let user of userSkills" class="search-users-card">
-      <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="center center">
-          <div fxFlex>
-            <div *ngFor="let skill of user.skills">
-              <div>{{skill.skillName}}</div>
-              <div>
-                <mat-icon fxHide.lt-md="true" *ngFor="let level of [1,2,3,4]" aria-hidden="true">
-                  {{ (skill.currentLevel >= level) ? 'star' : 'star_border' }}
-                </mat-icon>
-                <span fxHide.gt-sm="true">{{ skill.currentLevel }}</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <button mat-icon-button (click)="downloadAnonymousUserProfile(user.userReferenceId)" title="Download Anonymous User Profile" aria-label="Download Anonymous User Profile">
-              <mat-icon class="search-users-download-user-profile-icon">vertical_align_bottom</mat-icon>
-            </button>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <app-search-user-results [userSkills]="userSkills" (errorOccurredEvent)="onError($event)"></app-search-user-results>
   </div>
 </div>
