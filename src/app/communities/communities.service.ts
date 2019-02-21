@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { CommunityRequest } from './community-request';
 import { CommunityResponse } from './community-response';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { switchMap } from 'rxjs/operators';
+import { CommunityUserRequest } from './community-user-request';
 
 @Injectable({
   providedIn: 'root'
@@ -12,9 +15,11 @@ export class CommunitiesService {
 
   private communitiesUrlPattern = `${environment.serverApiUrl}/communities`;
   private communityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}`;
-  private joinCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/members`;
+  private joinCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users`;
+  private leaveCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users/{userId}`;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private userIdentityService: UserIdentityService) {
   }
 
   getCommunities(): Observable<CommunityResponse[]> {
@@ -38,11 +43,17 @@ export class CommunitiesService {
   }
 
   joinCommunity(communityId: string): Observable<CommunityResponse> {
-    return this.httpClient.post<CommunityResponse>(this.joinCommunityUrlPattern.replace('{communityId}', communityId), null);
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.post<CommunityResponse>(
+          this.joinCommunityUrlPattern.replace('{communityId}', communityId), { userId: userIdentity.userId } as CommunityUserRequest)));
   }
 
   leaveCommunity(communityId: string): Observable<CommunityResponse> {
-    return this.httpClient.delete<CommunityResponse>(this.joinCommunityUrlPattern.replace('{communityId}', communityId));
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.delete<CommunityResponse>(
+          this.leaveCommunityUrlPattern.replace('{communityId}', communityId).replace('{userId}', userIdentity.userId))));
   }
 
 }

@@ -9,7 +9,7 @@ import { AnonymousUserSkill } from '../anonymous-user-skill';
 })
 export class SearchUsersService {
 
-  private searchUrlPattern = `${environment.serverApiUrl}/search/users?params={searchParams}`;
+  private searchUrlPattern = `${environment.serverApiUrl}/search/anonymous-user-profiles?params={searchParams}`;
 
   constructor(private httpClient: HttpClient) {
   }

@@ -69,7 +69,7 @@ describe('SearchUsersService', () => {
 
     const request = httpTestingController.expectOne((req) =>
       req.method === 'GET'
-      && req.url === `${environment.serverApiUrl}/search/users?params=123456789abcde%2B1%2C987654321edcba%2B2`
+      && req.url === `${environment.serverApiUrl}/search/anonymous-user-profiles?params=123456789abcde%2B1%2C987654321edcba%2B2`
     );
 
     expect(request.request.responseType).toEqual('json');
