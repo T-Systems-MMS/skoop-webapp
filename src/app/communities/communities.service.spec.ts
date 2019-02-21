@@ -6,15 +6,32 @@ import { environment } from '../../environments/environment';
 import { CommunityType } from './community-type.enum';
 import { CommunityResponse } from './community-response';
 import { CommunityRequest } from './community-request';
+import { UserIdentity } from '../shared/user-identity';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { of } from 'rxjs';
+import { CommunityUserRequest } from './community-user-request';
 
 describe('CommunitiesService', () => {
   let httpTestingController: HttpTestingController;
   let service: CommunitiesService;
 
+  const authenticatedUser: UserIdentity = {
+    userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+    userName: 'tester',
+    firstName: 'Toni',
+    lastName: 'Tester',
+    email: 'toni.tester@myskills.io',
+    roles: ['ROLE_USER']
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CommunitiesService]
+      providers: [CommunitiesService,
+        { provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
+            'getUserIdentity': of(authenticatedUser)
+          })}
+      ]
     });
 
     httpTestingController = TestBed.get(HttpTestingController);
@@ -221,15 +238,20 @@ describe('CommunitiesService', () => {
       members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
     } as CommunityResponse;
 
+    const communityUserRequest: CommunityUserRequest = {
+      userId: authenticatedUser.userId
+    } as CommunityUserRequest;
+
     service.joinCommunity(communityId).subscribe((response: CommunityResponse) => {
       expect(response).toEqual(testCommunityResponse);
     });
 
     const req = httpTestingController.expectOne({
       method: 'POST',
-      url: `${environment.serverApiUrl}/communities/${communityId}/members`
+      url: `${environment.serverApiUrl}/communities/${communityId}/users`
     });
     expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(communityUserRequest);
 
     req.flush(testCommunityResponse);
   }));
@@ -258,7 +280,7 @@ describe('CommunitiesService', () => {
 
     const req = httpTestingController.expectOne({
       method: 'DELETE',
-      url: `${environment.serverApiUrl}/communities/${communityId}/members`
+      url: `${environment.serverApiUrl}/communities/${communityId}/users/${authenticatedUser.userId}`
     });
     expect(req.request.method).toBe('DELETE');
 
