@@ -104,7 +104,7 @@ describe('CommunitiesNewComponent', () => {
         title: 'title',
         description: 'description',
         type: CommunityType.OPENED,
-        skillIds: [],
+        skillNames: [],
         links: [
           {
             name: 'google',
@@ -164,7 +164,7 @@ describe('CommunitiesNewComponent', () => {
     option.click();
     fixture.whenStable().then( () => {
       expect(component.skillsArray.length).toBe(1);
-      expect(component.skillsArray[0]).toEqual(skills[0]);
+      expect(component.skillsArray[0]).toEqual(skills[0].name);
     });
 
     discardPeriodicTasks();
@@ -183,7 +183,7 @@ describe('CommunitiesNewComponent', () => {
 
     fixture.whenStable().then( () => {
       expect(component.skillsArray.length).toBe(1);
-      expect(component.skillsArray[0]).toEqual(skills[0]);
+      expect(component.skillsArray[0]).toEqual(skills[0].name);
     });
 
     discardPeriodicTasks();

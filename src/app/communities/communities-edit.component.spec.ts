@@ -40,7 +40,7 @@ const communityEditRequest = {
   title: communityEditData.title,
   description: communityEditData.description,
   type: communityEditData.type,
-  skillIds: [],
+  skillNames: [],
   links: communityEditData.links,
   managerIds: [communityEditData.managers[0].id],
   memberIds: [communityEditData.members[0].id]
@@ -158,7 +158,7 @@ describe('CommunitiesEditComponent', () => {
     option.click();
     fixture.whenStable().then( () => {
       expect(component.skillsArray.length).toBe(1);
-      expect(component.skillsArray[0]).toEqual(skills[0]);
+      expect(component.skillsArray[0]).toEqual(skills[0].name);
     });
 
     discardPeriodicTasks();
@@ -177,7 +177,7 @@ describe('CommunitiesEditComponent', () => {
 
     fixture.whenStable().then( () => {
       expect(component.skillsArray.length).toBe(1);
-      expect(component.skillsArray[0]).toEqual(skills[0]);
+      expect(component.skillsArray[0]).toEqual(skills[0].name);
     });
 
     discardPeriodicTasks();
