@@ -18,6 +18,7 @@ import { CommunityResponse } from './community-response';
 import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { OverlayContainer } from '@angular/cdk/overlay';
+import { ENTER } from '@angular/cdk/keycodes';
 
 const communityEditData = {
   id: '2134-5679-235235',
@@ -40,7 +41,7 @@ const communityEditRequest = {
   title: communityEditData.title,
   description: communityEditData.description,
   type: communityEditData.type,
-  skillIds: [],
+  skillNames: [],
   links: communityEditData.links,
   managerIds: [communityEditData.managers[0].id],
   memberIds: [communityEditData.members[0].id]
@@ -158,7 +159,7 @@ describe('CommunitiesEditComponent', () => {
     option.click();
     fixture.whenStable().then( () => {
       expect(component.skillsArray.length).toBe(1);
-      expect(component.skillsArray[0]).toEqual(skills[0]);
+      expect(component.skillsArray[0]).toEqual(skills[0].name);
     });
 
     discardPeriodicTasks();
@@ -177,11 +178,28 @@ describe('CommunitiesEditComponent', () => {
 
     fixture.whenStable().then( () => {
       expect(component.skillsArray.length).toBe(1);
-      expect(component.skillsArray[0]).toEqual(skills[0]);
+      expect(component.skillsArray[0]).toEqual(skills[0].name);
     });
 
     discardPeriodicTasks();
   }));
+
+  it('should add new elem to the skills array on enter click', () => {
+    const value = 'new skill';
+    expect(component.skillsArray.indexOf(value)).toBe(-1);
+
+    const skillDebugElement = fixture.debugElement.query(By.css('#skillsChipList'));
+    const inputNativeElement = skillDebugElement.nativeElement;
+
+    inputNativeElement.value = value;
+
+    const event = new KeyboardEvent('keydown', {
+      keyCode: ENTER
+    } as KeyboardEventInit);
+    inputNativeElement.dispatchEvent(event);
+
+    expect(component.skillsArray.indexOf(value)).not.toBe(-1);
+  });
 
   function sendInput(text: string) {
     let inputElement: HTMLInputElement;

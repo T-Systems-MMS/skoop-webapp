@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@ang
 import {
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
-  MatBottomSheetRef,
+  MatBottomSheetRef, MatChipInputEvent,
   MatDialog
 } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -99,12 +99,32 @@ export class CommunitiesNewComponent implements OnInit {
 
   selectSkill(event: MatAutocompleteSelectedEvent): void {
     const selectedSkill = event.option.value;
-    if (!this.skillsArray.find(skill => skill.id === selectedSkill.id)) {
-      this.skillsArray.push(selectedSkill);
+    if (!this.isSkillExist(selectedSkill.name)) {
+      this.skillsArray.push(selectedSkill.name);
     }
 
     this.skillAutocompleteInput.nativeElement.value = '';
     this.skillAutocompleteCtrl.setValue(null);
+  }
+
+  addNewSkill(event: MatChipInputEvent) {
+    // Add skill only when MatAutocomplete is not open
+    // To make sure this does not conflict with OptionSelected Event
+    if (!this.matAutocomplete.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      if (!this.isSkillExist(value)) {
+        this.skillsArray.push(value.trim());
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+
+      this.skillAutocompleteCtrl.setValue(null);
+    }
   }
 
   private createLinkFormGroup(): FormGroup {
@@ -118,7 +138,7 @@ export class CommunitiesNewComponent implements OnInit {
     return {
       title: this.communityForm.get('title').value,
       type: this.communityForm.get('type').value,
-      skillIds: (this.skillsArray || []).map(item => item.id),
+      skillNames: this.skillsArray || [],
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value
     } as CommunityRequest;
@@ -154,14 +174,19 @@ export class CommunitiesNewComponent implements OnInit {
     }
 
     const filterValue = value.toLowerCase();
-    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) != -1);
+  }
+
+  private isSkillExist(skillName: string) {
+    const skillNameLowerCase = (skillName || '').trim().toLowerCase();
+    return this.skillsArray.find(item => item.toLowerCase() === skillNameLowerCase) != null;
   }
 
   get linkList() {
     return this.communityForm.get('links') as FormArray;
   }
 
-  get skillsArray(): Skill[] {
+  get skillsArray(): string[] {
     return this.communityForm.get('skills').value;
   }
 

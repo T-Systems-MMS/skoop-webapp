@@ -4,7 +4,7 @@ import {
   MAT_BOTTOM_SHEET_DATA,
   MatAutocomplete,
   MatAutocompleteSelectedEvent,
-  MatBottomSheetRef,
+  MatBottomSheetRef, MatChipInputEvent,
   MatDialog
 } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -59,7 +59,7 @@ export class CommunitiesEditComponent implements OnInit {
     this.communityForm = this.formBuilder.group({
       title: new FormControl(this.community.title, Validators.required),
       type: new FormControl(this.community.type),
-      skills: new FormControl(this.community.skills || []),
+      skills: new FormControl((this.community.skills || []).map(item => item.name)),
       description: new FormControl(this.community.description),
       links: new FormArray([])
     });
@@ -114,13 +114,34 @@ export class CommunitiesEditComponent implements OnInit {
 
   selectSkill(event: MatAutocompleteSelectedEvent): void {
     const selectedSkill = event.option.value;
-    if (!this.skillsArray.find(skill => skill.id === selectedSkill.id)) {
-      this.skillsArray.push(selectedSkill);
+    if (!this.isSkillExist(selectedSkill.name)) {
+      this.skillsArray.push(selectedSkill.name);
       this.communityForm.markAsDirty();
     }
 
     this.skillAutocompleteInput.nativeElement.value = '';
     this.skillAutocompleteCtrl.setValue(null);
+  }
+
+  addNewSkill(event: MatChipInputEvent) {
+    // Add skill only when MatAutocomplete is not open
+    // To make sure this does not conflict with OptionSelected Event
+    if (!this.matAutocomplete.isOpen) {
+      const input = event.input;
+      const value = event.value;
+
+      if (!this.isSkillExist(value)) {
+        this.skillsArray.push(value.trim());
+        this.communityForm.markAsDirty();
+      }
+
+      // Reset the input value
+      if (input) {
+        input.value = '';
+      }
+
+      this.skillAutocompleteCtrl.setValue(null);
+    }
   }
 
   private createLinkFormGroup(): FormGroup {
@@ -135,7 +156,7 @@ export class CommunitiesEditComponent implements OnInit {
       id: this.community.id,
       title: this.communityForm.get('title').value,
       type: this.communityForm.get('type').value,
-      skillIds: (this.skillsArray || []).map(item => item.id),
+      skillNames: this.skillsArray || [],
       description: this.communityForm.get('description').value,
       links: this.communityForm.get('links').value,
       managerIds: (this.community.managers || []).map(item => item.id),
@@ -177,14 +198,19 @@ export class CommunitiesEditComponent implements OnInit {
     }
 
     const filterValue = value.toLowerCase();
-    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) != -1);
+  }
+
+  private isSkillExist(skillName: string) {
+    const skillNameLowerCase = (skillName || '').trim().toLowerCase();
+    return this.skillsArray.find(item => item.toLowerCase() === skillNameLowerCase) != null;
   }
 
   get linkList() {
     return this.communityForm.get('links') as FormArray;
   }
 
-  get skillsArray(): Skill[] {
+  get skillsArray(): string[] {
     return this.communityForm.get('skills').value;
   }
 
