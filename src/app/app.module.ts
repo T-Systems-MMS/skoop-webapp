@@ -41,7 +41,7 @@ import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MyProjectsEditComponent } from './my-projects/my-projects-edit.component';
 import { OtherUserProfilesComponent } from './other-user-profiles/other-user-profiles.component';
 import { SearchUsersComponent } from './search-users/search-users.component';
-import { SkillCardComponent } from './skill-card/skill-card.component';
+import { SkillCardComponent } from './shared/skill-card/skill-card.component';
 import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { CommunitiesNewComponent } from './communities/communities-new.component';
@@ -49,6 +49,8 @@ import { CommunitiesEditComponent } from './communities/communities-edit.compone
 import { CommunitiesFilterPipe } from './communities/communities-filter.pipe';
 import { ClosedCommunityConfirmDialogComponent } from './communities/closed-community-confirm-dialog.component';
 import { CommunityViewComponent } from './community-view/community-view.component';
+import { SearchUserFormComponent } from './search-users/search-user-form/search-user-form.component';
+import { SearchUserResultsComponent } from './search-users/search-user-results/search-user-results.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -92,6 +94,8 @@ export const CUSTOM_FORMATS = {
     CommunitiesFilterPipe,
     ClosedCommunityConfirmDialogComponent,
     CommunityViewComponent,
+    SearchUserFormComponent,
+    SearchUserResultsComponent,
   ],
   imports: [
     BrowserModule,

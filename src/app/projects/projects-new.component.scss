@@ -5,10 +5,7 @@
 }
 
 .projects-new-error {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .project-new-actions {

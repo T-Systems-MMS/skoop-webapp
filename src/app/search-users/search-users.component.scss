@@ -1,44 +1,9 @@
 @import 'variables';
 
-.skillLevel__formField {
-  width: 100%;
-}
-
-.search-users-toolbar {
-  margin-bottom: 16px;
-}
-
-.search-users-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
-}
-
-.search-users-select-skill {
-  width: 90%;
-  padding-top: 6px;
-}
-
-.search-users-remove-criteria {
-  padding-left: 50%;
-  padding-top: 20px;
-}
-
 .search-users-error-message {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .search-users-result {
   margin-top: 16px;
-}
-
-.search-users-result-count {
-  margin-bottom: 10px;
-  margin-top: 10px;
-}
-
-.search-users-download-user-profile-icon {
-  font-size: 32px;
 }

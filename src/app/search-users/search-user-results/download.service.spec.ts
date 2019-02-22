@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { DownloadService } from './download.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpResponse } from '@angular/common/http';
 
 describe('DownloadService', () => {

@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { UserSkillView } from '../skill-card/user-skill-view';
+import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
 @Component({
   selector: 'app-other-user-skills',
@@ -30,6 +30,7 @@ export class OtherUserSkillsComponent implements OnInit {
       .pipe(map(params => params.get('userId')))
       .subscribe(userId => {
         this.loadUser(userId);
+        this.loadUserSkills(userId);
       });
   }
 
@@ -37,11 +38,8 @@ export class OtherUserSkillsComponent implements OnInit {
     this.userService.getUserById(userId)
       .subscribe(user => {
         this.user = user;
-        this.loadUserSkills(userId);
       }, errorResponse => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
   }
 
@@ -59,10 +57,14 @@ export class OtherUserSkillsComponent implements OnInit {
       .subscribe(userSkills => {
         this.userSkills = userSkills;
       }, errorResponse => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
+  }
+
+  private handleErrorResponse(errorResponse) {
+    this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 
 }

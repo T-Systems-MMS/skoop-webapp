@@ -9,7 +9,5 @@
 }
 
 .my-skills-edit-error {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
+  @extend %base-error;
 }

@@ -4,7 +4,7 @@ import { SkillCardComponent } from './skill-card.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppMaterialModule } from '../app-material.module';
+import { AppMaterialModule } from '../../app-material.module';
 import { UserSkillView } from './user-skill-view';
 import { By } from '@angular/platform-browser';
 

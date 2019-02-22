@@ -6,7 +6,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from '../app-material.module';
 import { Component, Input } from '@angular/core';
-import { UserSkillView } from '../skill-card/user-skill-view';
+import { UserSkillView } from '../shared/skill-card/user-skill-view';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { of } from 'rxjs';
 import { UserSkillsService } from '../user-skills/user-skills.service';

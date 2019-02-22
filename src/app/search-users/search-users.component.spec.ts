@@ -6,26 +6,24 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
-import { of } from 'rxjs';
-import { SkillsService } from '../skills/skills.service';
-import { Skill } from '../skills/skill';
-import { SearchUsersService } from './search-users.service';
 import { AnonymousUserSkill } from './anonymous-user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { DownloadService } from './download.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
-const skills = [
-  {
-    id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-    name: 'Angular',
-    description: 'JavaScript Framework'
-  },
-  {
-    id: 'c9b80869-c6bd-327d-u9ce-ye0d66b17129',
-    name: 'Spring Boot',
-    description: 'A Java Framework'
-  }
-];
+@Component({selector: 'app-search-user-form', template: ''})
+class SearchUserFormStubComponent {
+  @Output() criteriaChangedEvent = new EventEmitter<void>();
+  @Output() errorOccurredEvent = new EventEmitter<HttpErrorResponse>();
+  @Output() usersFoundEvent = new EventEmitter<AnonymousUserSkill[]>();
+}
+
+@Component({selector: 'app-search-user-results', template: ''})
+class SearchUserResultsStubComponent {
+  @Input() userSkills: AnonymousUserSkill[];
+  @Output() errorOccurredEvent = new EventEmitter<HttpErrorResponse>();
+}
 
 const anonymousUserSkills: AnonymousUserSkill[] = [
   {
@@ -59,6 +57,7 @@ const anonymousUserSkills: AnonymousUserSkill[] = [
 describe('SearchUsersComponent', () => {
   let component: SearchUsersComponent;
   let fixture: ComponentFixture<SearchUsersComponent>;
+  let searchForm;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -69,24 +68,9 @@ describe('SearchUsersComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [SearchUsersComponent],
+      declarations: [SearchUsersComponent, SearchUserFormStubComponent, SearchUserResultsStubComponent],
       providers: [
-        GlobalErrorHandlerService,
-        {
-          provide: SkillsService, useValue: jasmine.createSpyObj('skillService', {
-            'getAllSkills': of<Skill[]>(skills)
-          })
-        },
-        {
-          provide: SearchUsersService, useValue: jasmine.createSpyObj('searchService', {
-            'search': of<AnonymousUserSkill[]>(anonymousUserSkills)
-          })
-        },
-        {
-          provide: DownloadService, useValue: jasmine.createSpyObj('downloadService', {
-            'downloadUserProfile': of<Blob>()
-          })
-        }
+        GlobalErrorHandlerService
       ]
     })
       .compileComponents();
@@ -96,76 +80,27 @@ describe('SearchUsersComponent', () => {
     fixture = TestBed.createComponent(SearchUsersComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+
+    const searchFormElement = fixture.debugElement.query(By.directive(SearchUserFormStubComponent));
+    searchForm = searchFormElement.componentInstance;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should send a search request', async(() => {
-    component.addCriteria(); // add control for second criteria
-    component.form.setValue({
-      criteriaList: [
-        {
-          skill: skills[0].id,
-          level: 2
-        },
-        {
-          skill: skills[1].id,
-          level: 2
-        }
-      ]
-    });
-    component.search();
-    const searchService: SearchUsersService = TestBed.get(SearchUsersService);
-
-    fixture.whenStable().then(() => {
-      fixture.detectChanges();
-
-      expect(searchService.search).toHaveBeenCalledWith([`${skills[0].id}+2`, `${skills[1].id}+2`]);
-      expect(component.userSkills).toEqual(anonymousUserSkills);
-      expect(component.showSearchResult).toBeTruthy();
-    });
-  }));
-
-  it('should mark duplicated controls', () => {
-    // add additional fields for test
-    component.addCriteria();
-    component.addCriteria();
-    component.addCriteria();
-    component.addCriteria();
-
-    // 1 and 3 are duplicated
-    component.form.setValue({
-      criteriaList: [
-        {
-          skill: null,
-          level: 0
-        },
-        {
-          skill: skills[0].id,
-          level: 2
-        },
-        {
-          skill: skills[1].id,
-          level: 2
-        },
-        {
-          skill: skills[0].id,
-          level: 2
-        },
-        {
-          skill: null,
-          level: 0
-        }
-      ]
-    });
-
-    component.checkDuplicates();
-    expect(component.criteriaList.at(0).hasError('isDuplicated')).toBeFalsy();
-    expect(component.criteriaList.at(1).hasError('isDuplicated')).toBeTruthy();
-    expect(component.criteriaList.at(2).hasError('isDuplicated')).toBeFalsy();
-    expect(component.criteriaList.at(3).hasError('isDuplicated')).toBeTruthy();
-    expect(component.criteriaList.at(4).hasError('isDuplicated')).toBeFalsy();
+  it('should hide results on criteriaChangedEvent', () => {
+    component.showSearchResult = true;
+    searchForm.criteriaChangedEvent.emit();
+    fixture.detectChanges();
+    expect(component.showSearchResult).toBeFalsy();
   });
+
+  it('should save search result into inner variable', () => {
+    searchForm.usersFoundEvent.emit(anonymousUserSkills);
+    fixture.detectChanges();
+    expect(component.userSkills).toEqual(anonymousUserSkills);
+    expect(component.showSearchResult).toBeTruthy();
+  });
+
 });

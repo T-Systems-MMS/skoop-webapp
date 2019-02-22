@@ -1,1 +1,19 @@
 $myskills-error-message-text-color: red;
+$myskills-toolbar-margin-bottom: 16px;
+
+%base-error {
+  color: $myskills-error-message-text-color;
+  font-size: 14px;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+%base-card {
+  margin-bottom: 8px;
+  padding: 8px 16px;
+}
+
+%base-description-label {
+  font-weight: 550;
+  margin-right: 0.5em;
+}

@@ -4,11 +4,9 @@
   margin-bottom: 8px;
 }
 .my-skills-toolbar {
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .my-skills-edit-error {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
+  @extend %base-error;
 }

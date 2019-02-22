@@ -1,12 +1,11 @@
 @import 'variables';
 
 .my-skills-toolbar {
-  margin-bottom: 16px;
+  margin-bottom: $myskills-toolbar-margin-bottom;
 }
 
 .my-skills-card {
-  margin-bottom: 8px;
-  padding: 8px 16px;
+  @extend %base-card;
 }
 
 .my-skills-skill-name {
@@ -27,13 +26,9 @@
 }
 
 .my-skills-new-error {
-  color: $myskills-error-message-text-color;
-  font-size: 14px;
-  margin-bottom: 16px;
-  white-space: pre-wrap;
+  @extend %base-error;
 }
 
 .my-skills-description-label {
-  font-weight: 550;
-  margin-right: 0.5em;
+  @extend %base-description-label;
 }
