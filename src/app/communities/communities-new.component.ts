@@ -35,7 +35,7 @@ export class CommunitiesNewComponent implements OnInit {
 
   elemSelectable = true;
   elemRemovable = true;
-  elemAddOnBlur = true;
+  elemAddOnBlur = false;
   elemSeparatorKeysCodes = [COMMA, ENTER];
   skillAutocompleteCtrl = new FormControl();
 
@@ -174,7 +174,7 @@ export class CommunitiesNewComponent implements OnInit {
     }
 
     const filterValue = value.toLowerCase();
-    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) != -1);
   }
 
   private isSkillExist(skillName: string) {
