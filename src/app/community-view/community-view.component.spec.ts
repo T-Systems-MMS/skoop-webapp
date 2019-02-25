@@ -16,6 +16,7 @@ import { CommunitiesService } from '../communities/communities.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -25,6 +26,13 @@ const authenticatedUser: UserIdentity = {
   email: 'toni.tester@myskills.io',
   roles: ['ROLE_USER']
 };
+
+const userForKicking = {
+  id: 'e6b808eb-b6bd-447d-8dce-3e0d66b11234',
+  userName: 'mustBeKickedOut',
+  firstName: 'kick',
+  lastName: 'me'
+} as User;
 
 const community: CommunityResponse = {
   id: '123',
@@ -44,7 +52,8 @@ const community: CommunityResponse = {
     {
       id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
       userName: 'tester'
-    } as User
+    } as User,
+    userForKicking
   ],
   managers: [
     {
@@ -101,6 +110,21 @@ describe('CommunityViewComponent', () => {
                 }],
               managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}],
               members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
+            } as CommunityResponse),
+            'removeMember': of<CommunityResponse>({
+              id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+              title: 'test1',
+              description: 'description1',
+              links: [{
+                name: 'google',
+                href: 'https://www.google.com'
+              },
+                {
+                  name: 'stackoveflow',
+                  href: 'https://stackoverflow.com/'
+                }],
+              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}],
+              members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
             } as CommunityResponse)
           })
         },
@@ -139,6 +163,23 @@ describe('CommunityViewComponent', () => {
     component.joinCommunity();
     fixture.detectChanges();
     expect(component.isCommunityMember).toBeTruthy();
+  }));
+
+  it('should hide a remove button when current user is not a manager', () => {
+    component.isCommunityManager = false;
+    expect(component.canRemoveMember(userForKicking)).toBeFalsy();
+  });
+
+  it('should kick out a community member ', fakeAsync(() => {
+    component.isCommunityManager = true;
+    const matDialog: MatDialog = TestBed.get(MatDialog);
+
+    expect(component.canRemoveMember(userForKicking)).toBeTruthy();
+    component.removeMember(userForKicking);
+    fixture.detectChanges();
+
+    expect(matDialog.openDialogs.length).toBe(1);
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
   }));
 
   it('should make user leave a community', fakeAsync(() => {

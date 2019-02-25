@@ -36,7 +36,9 @@
       <div *ngIf="isCommunityMember">
         <div class="community-label">Members</div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
-          <mat-chip *ngFor="let user of community?.members">{{ user.firstName }} {{user.lastName}}</mat-chip>
+          <mat-chip *ngFor="let user of community?.members" (removed)="removeMember(user)">{{ user.firstName }} {{user.lastName}}
+            <mat-icon matChipRemove *ngIf="canRemoveMember(user)" class="community-remove-member">cancel</mat-icon>
+          </mat-chip>
         </mat-chip-list>
       </div>
     </div>

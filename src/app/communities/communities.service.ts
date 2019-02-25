@@ -56,4 +56,9 @@ export class CommunitiesService {
           this.leaveCommunityUrlPattern.replace('{communityId}', communityId).replace('{userId}', userIdentity.userId))));
   }
 
+  removeMember(communityId: string, userId: string): Observable<CommunityResponse> {
+    return this.httpClient.delete<CommunityResponse>(
+          this.leaveCommunityUrlPattern.replace('{communityId}', communityId).replace('{userId}', userId));
+  }
+
 }
