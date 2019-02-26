@@ -8,6 +8,7 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { User } from '../users/user';
 
 @Component({
   selector: 'app-community-view',
@@ -15,6 +16,8 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./community-view.component.scss']
 })
 export class CommunityViewComponent implements OnInit {
+
+  private currentUserId: string;
 
   community: CommunityResponse;
   errorMessage: string = null;
@@ -73,6 +76,28 @@ export class CommunityViewComponent implements OnInit {
       || this.isCommunityManager && this.community.managers && this.community.managers.length > 1;
   }
 
+  canRemoveMember(user: User) {
+    return this.isCommunityManager && this.currentUserId !== user.id;
+  }
+
+  removeMember(member: User) {
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        message: `Are you sure you want to kick out ${member.firstName} ${member.lastName}?`
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.communityService.removeMember(this.community.id, member.id).subscribe((community: CommunityResponse) => {
+          this.community = community;
+        }, (errorResponse: HttpErrorResponse) => {
+          this.handleErrorResponse(errorResponse);
+        });
+      }
+    });
+  }
+
   private loadCommunity(communityId: string) {
     this.communityService.getCommunity(communityId)
       .subscribe(community => {
@@ -85,6 +110,7 @@ export class CommunityViewComponent implements OnInit {
 
   private detectMembership(community: CommunityResponse) {
     this.userIdentityService.getUserIdentity().subscribe(userIdentity => {
+      this.currentUserId = userIdentity.userId;
       this.isCommunityMember = community.members && community.members.find(item => item.id === userIdentity.userId) != null;
       this.isCommunityManager = community.managers && community.managers.find(item => item.id === userIdentity.userId) != null;
     }, errorResponse => {
