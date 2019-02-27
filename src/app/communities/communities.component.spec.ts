@@ -24,6 +24,7 @@ const communities: CommunityResponse[] = [
     title: 'group1',
     description: 'super group description',
     type: CommunityType.OPENED,
+    recommended: true,
     links: [
       {
         name: 'google',
@@ -137,8 +138,17 @@ describe('CommunitiesComponent', () => {
     const communitiesCards = fixture.debugElement.queryAll(By.css(('.communities-card')));
 
     expect(communitiesCards.length).toBe(2);
-    expect(communitiesCards[0].query(By.css('.communities-card__heading')).nativeElement.textContent).toBe(communities[0].title);
-    expect(communitiesCards[1].query(By.css('.communities-card__heading')).nativeElement.textContent).toBe(communities[1].title);
+    expect(communitiesCards[0].query(By.css('.communities-card__heading')).nativeElement.textContent).toContain(communities[0].title);
+    expect(communitiesCards[1].query(By.css('.communities-card__heading')).nativeElement.textContent).toContain(communities[1].title);
+  }));
+
+  it('should display a special label for recommended communities', fakeAsync(() => {
+    fixture.detectChanges();
+    const communitiesCards = fixture.debugElement.queryAll(By.css(('.communities-card')));
+
+    expect(communitiesCards.length).toBe(2);
+    expect(communitiesCards[0].query(By.css('.communities-recommended-label'))).toBeDefined();
+    expect(communitiesCards[1].query(By.css('.communities-recommended-label'))).toBeNull();
   }));
 
   it('should make user join a community', fakeAsync(() => {

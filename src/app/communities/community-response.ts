@@ -6,4 +6,5 @@ export interface CommunityResponse extends Community {
   skills?: Skill[];
   managers: User[];
   members: User[];
+  recommended?: boolean;
 }

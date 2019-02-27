@@ -12,7 +12,9 @@
   <mat-card *ngFor="let community of communities$ | async | communitiesFilter : filter.value" class="communities-card">
     <div fxLayout="row">
       <div fxFlex>
-        <h2 class="communities-card__heading">{{ community.title }}</h2>
+        <h2 class="communities-card__heading">{{ community.title }}
+          <span *ngIf="!community.recommended" class="communities-recommended-label">recommended</span>
+        </h2>
       </div>
       <div fxFlex="none">
         <button mat-icon-button *ngIf="!isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join" aria-label="Join">
