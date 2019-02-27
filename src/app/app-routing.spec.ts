@@ -17,6 +17,7 @@ import { UserIdentity } from './shared/user-identity';
 import { Observable, of } from 'rxjs';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { FormatCounterPipe } from './format-counter.pipe';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -55,7 +56,7 @@ describe('Router: App', () => {
         OAuthModule.forRoot()
       ],
       declarations: [
-        AppComponent,
+        AppComponent, FormatCounterPipe,
       ],
       providers: [
         { provide: UserIdentityService, useValue: userIdentityServiceStub }

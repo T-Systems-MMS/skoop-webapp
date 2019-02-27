@@ -9,6 +9,7 @@ import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
 import { LoginOptions, OAuthModule, OAuthService} from 'angular-oauth2-oidc';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormatCounterPipe } from './format-counter.pipe';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -20,7 +21,8 @@ const testUserIdentity: UserIdentity = {
   firstName: 'Toni',
   lastName: 'Tester',
   email: 'toni.tester@myskills.io',
-  roles: ['ROLE_USER']
+  roles: ['ROLE_USER'],
+  notificationCount: 0
 };
 
 describe('AppComponent', () => {
@@ -41,7 +43,7 @@ describe('AppComponent', () => {
         })
       ],
       declarations: [
-        AppComponent
+        AppComponent, FormatCounterPipe
       ],
       providers: [
         { provide: UserIdentityService, useValue: userIdentityServiceStub }
@@ -76,6 +78,11 @@ describe('AppComponent', () => {
   it('should render the user name in the toolbar', () => {
     const username = fixture.debugElement.query(By.css('.toolbar__username'));
     expect(username.nativeElement.textContent).toBe('tester');
+  });
+
+  it('should hide badge-counter when amount of notifications is 0', () => {
+    const counter = fixture.debugElement.query(By.css('.toolbar__counter'));
+    expect(counter.query(By.css('.mat-badge-content'))).toBeNull();
   });
 
   it('should logout if user was logged in', (done: DoneFn) => {

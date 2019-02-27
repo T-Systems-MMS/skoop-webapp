@@ -51,6 +51,7 @@ import { ClosedCommunityConfirmDialogComponent } from './communities/closed-comm
 import { CommunityViewComponent } from './community-view/community-view.component';
 import { SearchUserFormComponent } from './search-users/search-user-form/search-user-form.component';
 import { SearchUserResultsComponent } from './search-users/search-user-results/search-user-results.component';
+import { FormatCounterPipe } from './format-counter.pipe';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -96,6 +97,7 @@ export const CUSTOM_FORMATS = {
     CommunityViewComponent,
     SearchUserFormComponent,
     SearchUserResultsComponent,
+    FormatCounterPipe,
   ],
   imports: [
     BrowserModule,
