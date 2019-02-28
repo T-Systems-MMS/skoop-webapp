@@ -20,6 +20,8 @@ import { Skill } from '../skills/skill';
 import { CommunityResponse } from './community-response';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ENTER } from '@angular/cdk/keycodes';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/user';
 
 const skills = [
   {
@@ -33,6 +35,15 @@ const skills = [
     description: 'A Java Framework'
   }
 ];
+
+const user: User = {
+  id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+  userName: 'testing',
+  firstName: 'Tina',
+  lastName: 'Testing',
+  email: 'tina.testing@myskills.io',
+  coach: false,
+};
 
 describe('CommunitiesNewComponent', () => {
   let component: CommunitiesNewComponent;
@@ -61,6 +72,12 @@ describe('CommunitiesNewComponent', () => {
         {
           provide: SkillsService,
           useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Skill[]>(skills)})
+        },
+        {
+          provide: UsersService,
+          useValue: jasmine.createSpyObj('userService', {'getUserSuggestions': of<User[]>(
+              [user]
+            )})
         },
         {provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'])}
       ]
@@ -95,6 +112,7 @@ describe('CommunitiesNewComponent', () => {
     component.communityForm.get('description').setValue('description');
     component.addLink();
     component.communityForm.get('links').setValue([{name: 'google', href: 'https://www.google.com'}]);
+    component.communityForm.get('invitedUsers').setValue([user]);
 
     component.createCommunity();
 
@@ -111,7 +129,8 @@ describe('CommunitiesNewComponent', () => {
             name: 'google',
             href: 'https://www.google.com'
           }
-        ]
+        ],
+        invitedUserIds: [user.id]
       } as CommunityRequest;
 
       expect(communityService.createCommunity).toHaveBeenCalledWith(expectedRequestData);

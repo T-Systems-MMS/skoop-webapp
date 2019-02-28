@@ -134,8 +134,7 @@ describe('CommunitiesService', () => {
           name: 'stackoveflow',
           href: 'https://stackoverflow.com/'
         }],
-      managerIds: ['asdasd34234234'],
-      memberIds: ['dsf324df324']
+      invitedUserIds: ['asdasd34234234']
     } as CommunityRequest;
 
     const testCommunityResponse: CommunityResponse = {
@@ -143,8 +142,8 @@ describe('CommunitiesService', () => {
       title: testCommunity.title,
       description: testCommunity.description,
       links: testCommunity.links,
-      managers: [{id: testCommunity.managerIds[0]}],
-      members: [{id: testCommunity.memberIds[0]}]
+      managers: [],
+      members: []
     } as CommunityResponse;
 
     service.updateCommunity(testCommunity).subscribe(community => {
@@ -175,8 +174,7 @@ describe('CommunitiesService', () => {
           name: 'stackoveflow',
           href: 'https://stackoverflow.com/'
         }],
-      managerIds: ['asdasd34234234'],
-      memberIds: ['dsf324df324']
+      invitedUserIds: ['asdasd34234234']
     } as CommunityRequest;
 
     const testCommunityResponse: CommunityResponse = {
@@ -184,8 +182,8 @@ describe('CommunitiesService', () => {
       title: testCommunityRequest.title,
       description: testCommunityRequest.description,
       links: testCommunityRequest.links,
-      managers: [{id: testCommunityRequest.managerIds[0]}],
-      members: [{id: testCommunityRequest.memberIds[0]}]
+      managers: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}],
+      members: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}]
     } as CommunityResponse;
 
     service.createCommunity(testCommunityRequest).subscribe(community => {

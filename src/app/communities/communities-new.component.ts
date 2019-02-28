@@ -16,7 +16,9 @@ import { SkillsService } from '../skills/skills.service';
 import { Observable, of } from 'rxjs';
 import { Skill } from '../skills/skill';
 import { CommunityRequest } from './community-request';
-import { map, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs/operators';
+import { User } from '../users/user';
+import { UsersService } from '../users/users.service';
 
 @Component({
   selector: 'app-communities-new',
@@ -25,12 +27,15 @@ import { map, startWith } from 'rxjs/operators';
 })
 export class CommunitiesNewComponent implements OnInit {
 
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('skillsAutoComplete') skillsMatAutocomplete: MatAutocomplete;
   @ViewChild('skillInput') skillAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('usersInput') usersAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('usersAutocomplete') usersMatAutocomplete: MatAutocomplete;
 
   communityForm: FormGroup;
   errorMessage: string = null;
   skills$: Observable<Skill[]> = of([]);
+  userSuggestions$: Observable<User[]>;
   allAvailableSkills: Skill[];
 
   elemSelectable = true;
@@ -38,8 +43,10 @@ export class CommunitiesNewComponent implements OnInit {
   elemAddOnBlur = false;
   elemSeparatorKeysCodes = [COMMA, ENTER];
   skillAutocompleteCtrl = new FormControl();
+  usersControl = new FormControl();
 
   constructor(private communityService: CommunitiesService,
+              private usersService: UsersService,
               private skillsService: SkillsService,
               private formBuilder: FormBuilder,
               private bottomSheet: MatBottomSheetRef,
@@ -53,12 +60,14 @@ export class CommunitiesNewComponent implements OnInit {
 
   ngOnInit() {
     this.loadSkills();
+    this.loadUsers();
     this.communityForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
       type: new FormControl(CommunityType.OPENED),
       skills: new FormControl([]),
       description: new FormControl(''),
-      links: new FormArray([])
+      links: new FormArray([]),
+      invitedUsers: new FormControl([])
     });
   }
 
@@ -110,7 +119,7 @@ export class CommunitiesNewComponent implements OnInit {
   addNewSkill(event: MatChipInputEvent) {
     // Add skill only when MatAutocomplete is not open
     // To make sure this does not conflict with OptionSelected Event
-    if (!this.matAutocomplete.isOpen) {
+    if (!this.skillsMatAutocomplete.isOpen) {
       const input = event.input;
       const value = event.value;
 
@@ -127,6 +136,23 @@ export class CommunitiesNewComponent implements OnInit {
     }
   }
 
+  addSelectedUser(event: MatAutocompleteSelectedEvent): void {
+    const value = event.option.value;
+    if (value && this.usersArray.indexOf(value) === -1) {
+      this.usersArray.push(value);
+    }
+
+    this.usersAutocompleteInput.nativeElement.value = '';
+    this.usersControl.setValue(null);
+  }
+
+  removeUser(user: User): void {
+    const index = this.usersArray.indexOf(user);
+    if (index >= 0) {
+      this.usersArray.splice(index, 1);
+    }
+  }
+
   private createLinkFormGroup(): FormGroup {
     return this.formBuilder.group({
       name: [null, Validators.required],
@@ -140,7 +166,8 @@ export class CommunitiesNewComponent implements OnInit {
       type: this.communityForm.get('type').value,
       skillNames: this.skillsArray || [],
       description: this.communityForm.get('description').value,
-      links: this.communityForm.get('links').value
+      links: this.communityForm.get('links').value,
+      invitedUserIds: (this.usersArray || []).map(item => item.id)
     } as CommunityRequest;
   }
 
@@ -167,6 +194,15 @@ export class CommunitiesNewComponent implements OnInit {
     });
   }
 
+  private loadUsers() {
+    this.userSuggestions$ = this.usersControl.valueChanges.pipe(
+      filter(search => typeof search === 'string'),
+      debounceTime(500),
+      distinctUntilChanged(),
+      switchMap(search => this.usersService.getUserSuggestions(search))
+    );
+  }
+
   private _filter(value: any): Skill[] {
     // the FormControl valueChanges event isn't reliably returning a String
     if (typeof value === 'object') {
@@ -188,6 +224,10 @@ export class CommunitiesNewComponent implements OnInit {
 
   get skillsArray(): string[] {
     return this.communityForm.get('skills').value;
+  }
+
+  get usersArray(): User[] {
+    return this.communityForm.get('invitedUsers').value;
   }
 
 }
