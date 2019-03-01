@@ -19,6 +19,9 @@ import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ENTER } from '@angular/cdk/keycodes';
+import { UsersService } from '../users/users.service';
+import { User } from '../users/user';
+import { CommunityRequest } from './community-request';
 
 const communityEditData = {
   id: '2134-5679-235235',
@@ -32,8 +35,8 @@ const communityEditData = {
       href: 'https://www.google.com'
     }
   ],
-  managers: [{id: '123sdfsdferwe'}],
-  members: [{id: 'jd934kjsdi823'}]
+  managers: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}],
+  members: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}]
 };
 
 const communityEditRequest = {
@@ -43,9 +46,8 @@ const communityEditRequest = {
   type: communityEditData.type,
   skillNames: [],
   links: communityEditData.links,
-  managerIds: [communityEditData.managers[0].id],
-  memberIds: [communityEditData.members[0].id]
-};
+  invitedUserIds: []
+} as CommunityRequest;
 
 const skills = [
   {
@@ -84,6 +86,19 @@ describe('CommunitiesEditComponent', () => {
           useValue: jasmine.createSpyObj('communityService', {'updateCommunity': of<CommunityResponse>()})
         },
         {provide: SkillsService, useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Skill[]>(skills)})},
+        {
+          provide: UsersService,
+          useValue: jasmine.createSpyObj('userService', {'getUserSuggestions': of<User[]>(
+              [{
+                id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+                userName: 'testing',
+                firstName: 'Tina',
+                lastName: 'Testing',
+                email: 'tina.testing@myskills.io',
+                coach: false,
+              }]
+            )})
+        },
         {provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'])},
         {provide: MAT_BOTTOM_SHEET_DATA, useValue: communityEditData}
       ]
@@ -140,6 +155,7 @@ describe('CommunitiesEditComponent', () => {
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityConfirmDialogComponent));
   });
+
   it('should filter skills based on input', fakeAsync(() => {
     sendInput('Angular');
 
