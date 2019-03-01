@@ -4,10 +4,12 @@
   </button>
   <span class="toolbar__title">MySkills</span>
   <span class="toolbar__spacer"></span>
-  <span class="toolbar__counter"><mat-icon
-    [matBadge]="(userIdentity$ | async)?.notificationCount | formatCounter"
-    [matBadgeHidden]="(userIdentity$ | async)?.notificationCount == 0"
-    matBadgeColor="warn">mail_outline</mat-icon></span>
+  <a routerLink="/my-messages" class="toolbar__counter">
+    <mat-icon class="toolbar__counter-icon"
+      [matBadge]="(userIdentity$ | async)?.notificationCount | formatCounter"
+      [matBadgeHidden]="(userIdentity$ | async)?.notificationCount == 0"
+      matBadgeColor="warn">mail_outline</mat-icon>
+  </a>
   <span class="toolbar__username">{{ (userIdentity$ | async)?.userName }}</span>
   <button [matMenuTriggerFor]="menu" type="button" mat-icon-button>
     <mat-icon>more_vert</mat-icon>
@@ -35,6 +37,9 @@
                [opened]="!(isHandset$ | async)"
                [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'">
     <mat-nav-list>
+      <a routerLink="/my-messages" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
+        My messages
+      </a>
       <a routerLink="/my-skills" routerLinkActive="active" (click)="onNavItemClick()" mat-list-item>
         My skill profile
       </a>

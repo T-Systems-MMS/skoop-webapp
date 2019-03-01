@@ -19,8 +19,10 @@ import { SearchUsersComponent } from './search-users/search-users.component';
 import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.component';
 import { CommunitiesComponent } from './communities/communities.component';
 import { CommunityViewComponent } from './community-view/community-view.component';
+import { MyMessagesComponent } from './my-messages/my-messages.component';
 
 export const routes: Routes = [
+  { path: 'my-messages', component: MyMessagesComponent },
   { path: 'my-skills', component: MySkillsComponent },
   { path: 'my-projects', component: MyProjectsComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },

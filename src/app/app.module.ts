@@ -52,6 +52,7 @@ import { CommunityViewComponent } from './community-view/community-view.componen
 import { SearchUserFormComponent } from './search-users/search-user-form/search-user-form.component';
 import { SearchUserResultsComponent } from './search-users/search-user-results/search-user-results.component';
 import { FormatCounterPipe } from './format-counter.pipe';
+import { MyMessagesComponent } from './my-messages/my-messages.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -98,6 +99,7 @@ export const CUSTOM_FORMATS = {
     SearchUserFormComponent,
     SearchUserResultsComponent,
     FormatCounterPipe,
+    MyMessagesComponent,
   ],
   imports: [
     BrowserModule,

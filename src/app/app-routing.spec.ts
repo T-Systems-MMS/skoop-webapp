@@ -39,6 +39,7 @@ describe('Router: App', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule.withRoutes([
+          { path: 'my-messages', component: AppComponent },
           { path: 'my-skills', component: AppComponent },
           { path: 'skills', component: AppComponent },
           { path: 'skills/:skillId/users', component: AppComponent },
@@ -79,9 +80,9 @@ describe('Router: App', () => {
     expectPathToBe(location, '', 'link should not have navigated yet');
     click(allLinkDes[0]);
     advance(fixture);
-    expectPathToBe(location, '/my-skills');
+    expectPathToBe(location, '/my-messages');
     click(allLinkDes[3]);
     advance(fixture);
-    expectPathToNotBe(location, '/my-skills', 'link should have navigated yet');
+    expectPathToNotBe(location, '/my-messages', 'link should have navigated yet');
   }));
 });
