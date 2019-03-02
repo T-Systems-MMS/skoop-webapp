@@ -1,3 +1,42 @@
-<p>
-  my-messages works!
-</p>
+<div class="my-messages-table">
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="sender">
+      <th mat-header-cell *matHeaderCellDef>Sender</th>
+      <td mat-cell *matCellDef="let element"> {{element.initiator.firstName}} {{element.initiator.lastName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let element"> {{element.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="community">
+      <th mat-header-cell *matHeaderCellDef>Community</th>
+      <td mat-cell *matCellDef="let element"> {{element.community.title}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="status">
+      <th mat-header-cell *matHeaderCellDef>Status</th>
+      <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Type</th>
+      <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="operations">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <div *ngIf="showButtons(element)" class="my-messages-operations">
+          <button mat-raised-button color="primary" (click)="onAccept(element)">Accept</button>
+          <button mat-raised-button color="warn" (click)="onDecline(element)">Decline</button>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
