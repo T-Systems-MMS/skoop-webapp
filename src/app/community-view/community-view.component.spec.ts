@@ -17,6 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -76,7 +77,7 @@ describe('CommunityViewComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [CommunityViewComponent, DeleteConfirmationDialogComponent],
+      declarations: [CommunityViewComponent, DeleteConfirmationDialogComponent, ClosedCommunityInfoDialogComponent],
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
@@ -100,6 +101,7 @@ describe('CommunityViewComponent', () => {
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
               title: 'test1',
               description: 'description1',
+              type: CommunityType.OPENED,
               links: [{
                 name: 'google',
                 href: 'https://www.google.com'
@@ -138,7 +140,7 @@ describe('CommunityViewComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [DeleteConfirmationDialogComponent]
+          entryComponents: [DeleteConfirmationDialogComponent, ClosedCommunityInfoDialogComponent]
         }
       })
       .compileComponents();
@@ -187,5 +189,34 @@ describe('CommunityViewComponent', () => {
     component.leaveCommunity();
     fixture.detectChanges();
     expect(component.isCommunityMember).toBeFalsy();
+  }));
+
+  it('should not make user join a closed community', fakeAsync(() => {
+    const closedCommunity = {
+      id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+      title: 'test1',
+      type: CommunityType.CLOSED,
+      description: 'description1',
+      links: [{
+        name: 'google',
+        href: 'https://www.google.com'
+      },
+        {
+          name: 'stackoveflow',
+          href: 'https://stackoverflow.com/'
+        }],
+      managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}],
+      members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
+    };
+    const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
+    communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(closedCommunity));
+
+    component.joinCommunity();
+    fixture.detectChanges();
+    expect(component.isCommunityMember).toBeFalsy();
+
+    const matDialog: MatDialog = TestBed.get(MatDialog);
+    expect(matDialog.openDialogs.length).toBe(1);
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityInfoDialogComponent));
   }));
 });

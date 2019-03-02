@@ -9,6 +9,8 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
 import { User } from '../users/user';
+import { CommunityType } from '../communities/community-type.enum';
+import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
 
 @Component({
   selector: 'app-community-view',
@@ -42,8 +44,12 @@ export class CommunityViewComponent implements OnInit {
 
   joinCommunity() {
     this.communityService.joinCommunity(this.community.id).subscribe((community: CommunityResponse) => {
-      this.isCommunityMember = true;
-      this.community = community;
+      if (community.type === CommunityType.CLOSED) {
+        this.showInfoDialog(community);
+      } else {
+        this.isCommunityMember = true;
+        this.community = community;
+      }
     }, (errorResponse: HttpErrorResponse) => {
       this.handleErrorResponse(errorResponse);
     });
@@ -122,5 +128,21 @@ export class CommunityViewComponent implements OnInit {
     this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
+  }
+
+  private showInfoDialog(community: CommunityResponse) {
+    this.dialog.open(ClosedCommunityInfoDialogComponent, {
+      width: '350px',
+      data: <CommunityResponse>{
+        id: community.id,
+        title: community.title,
+        type: community.type,
+        skills: community.skills,
+        description: community.description,
+        links: community.links,
+        managers: community.managers,
+        members: community.members
+      }
+    });
   }
 }

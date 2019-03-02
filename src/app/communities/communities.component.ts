@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommunitiesService } from './communities.service';
 import { combineLatest, Observable, of } from 'rxjs';
-import { filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheet, MatDialog } from '@angular/material';
@@ -14,6 +14,7 @@ import { CommunityResponse } from './community-response';
 import { User } from '../users/user';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { Community } from './community';
+import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
 
 @Component({
   selector: 'app-communities',
@@ -65,8 +66,12 @@ export class CommunitiesComponent implements OnInit {
   }
 
   joinCommunity(community: CommunityResponse) {
-    this.communityService.joinCommunity(community.id).subscribe((response: CommunityResponse) => {
-      this.joinedCommunityIds.push(response.id);
+    this.communityService.joinCommunity(community.id).subscribe((community: CommunityResponse) => {
+      if (community.type === CommunityType.CLOSED) {
+        this.showInfoDialog(community);
+      } else {
+        this.joinedCommunityIds.push(community.id);
+      }
     }, (errorResponse: HttpErrorResponse) => {
       this.handleErrorResponse(errorResponse);
     });
@@ -135,4 +140,19 @@ export class CommunitiesComponent implements OnInit {
     this.changeDetector.markForCheck();
   }
 
+  private showInfoDialog(community: CommunityResponse) {
+    this.dialog.open(ClosedCommunityInfoDialogComponent, {
+      width: '350px',
+      data: <CommunityResponse>{
+        id: community.id,
+        title: community.title,
+        type: community.type,
+        skills: community.skills,
+        description: community.description,
+        links: community.links,
+        managers: community.managers,
+        members: community.members
+      }
+    });
+  }
 }
