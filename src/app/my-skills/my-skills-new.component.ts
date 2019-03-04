@@ -3,7 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, 
 import { FormControl, Validators } from '@angular/forms';
 import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MySkillsService } from './my-skills.service';
 
@@ -13,6 +13,9 @@ import { MySkillsService } from './my-skills.service';
   styleUrls: ['./my-skills-new.component.scss']
 })
 export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  private _savingInProgress: boolean = false;
+
   skillName: FormControl = new FormControl('', [
     Validators.required,
     Validators.minLength(3),
@@ -48,9 +51,17 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   addUserSkill(): void {
     this.errorMessage = '';
+    this.savingInProgress = true;
     this.mySkillsService.createCurrentUserSkill(
       this.skillName.value, this.currentLevel.value, this.desiredLevel.value, this.priority.value
-    ).subscribe(() => {
+    )
+      .pipe(
+        finalize( () => {
+            this.savingInProgress = false;
+          }
+        )
+      )
+      .subscribe(() => {
       this.addedSkillsCount++;
       this.skillName.reset('');
       this.currentLevel.reset(0);
@@ -73,5 +84,13 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addUserSkill();
     }
+  }
+
+  get savingInProgress(): boolean {
+    return this._savingInProgress;
+  }
+
+  set savingInProgress(value: boolean) {
+    this._savingInProgress = value;
   }
 }

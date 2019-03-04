@@ -81,4 +81,18 @@ describe('ProjectsNewComponent', () => {
     const createButton = fixture.debugElement.query(By.css('#project-new-button'));
     expect(createButton.nativeElement.disabled).toBeTruthy();
   }));
+
+  it('should disable save button while sending a request', async(() => {
+    const setSavingInProgress = spyOnProperty(component, 'savingInProgress', 'set');
+
+    component.projectForm.reset();
+    component.projectForm.get('name').setValue('Project');
+    component.projectForm.get('customer').setValue('customer');
+    component.projectForm.get('industrySector').setValue('industrySector');
+    component.projectForm.get('description').setValue('description');
+
+    expect(component.savingInProgress).toBeFalsy();
+    component.createProject();
+    expect(setSavingInProgress).toHaveBeenCalledWith(true);
+  }));
 });

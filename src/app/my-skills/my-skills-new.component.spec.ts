@@ -171,4 +171,27 @@ describe('MySkillsNewComponent', () => {
     discardPeriodicTasks();
   }));
 
+  it('should disable save button while sending a request', fakeAsync(() => {
+    const testUserSkill: UserSkill = {
+      skill: {
+        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+        name: 'Angular',
+        description: 'JavaScript Framework'
+      },
+      currentLevel: 2,
+      desiredLevel: 3,
+      priority: 4
+    };
+    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
+    spyOn(mySkillsService, 'createCurrentUserSkill')
+      .and.returnValue(of<UserSkill>(testUserSkill));
+    const setSavingInProgress = spyOnProperty(component, 'savingInProgress', 'set');
+
+    component.skillName.setValue('test');
+    expect(component.savingInProgress).toBeFalsy();
+    component.addUserSkill();
+    expect(setSavingInProgress).toHaveBeenCalledWith(true);
+    discardPeriodicTasks();
+  }));
+
 });
