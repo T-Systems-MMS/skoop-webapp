@@ -133,16 +133,7 @@ export class CommunityViewComponent implements OnInit {
   private showInfoDialog(community: CommunityResponse) {
     this.dialog.open(ClosedCommunityInfoDialogComponent, {
       width: '350px',
-      data: <CommunityResponse>{
-        id: community.id,
-        title: community.title,
-        type: community.type,
-        skills: community.skills,
-        description: community.description,
-        links: community.links,
-        managers: community.managers,
-        members: community.members
-      }
+      data: Object.assign({}, community)
     });
   }
 }

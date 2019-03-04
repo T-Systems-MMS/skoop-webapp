@@ -166,7 +166,7 @@ describe('CommunitiesComponent', () => {
     expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBeTruthy();
   }));
 
-  it('should not make user join a closed community', fakeAsync(() => {
+  it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
     const closedCommunity = {
       id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
       title: 'test1',
