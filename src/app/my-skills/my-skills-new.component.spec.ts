@@ -191,6 +191,9 @@ describe('MySkillsNewComponent', () => {
     expect(component.savingInProgress).toBeFalsy();
     component.addUserSkill();
     expect(setSavingInProgress).toHaveBeenCalledWith(true);
+    fixture.whenStable().then(() => {
+      expect(component.savingInProgress).toBeFalsy();
+    });
     discardPeriodicTasks();
   }));
 

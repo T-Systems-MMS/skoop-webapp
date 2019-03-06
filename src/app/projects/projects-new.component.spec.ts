@@ -94,5 +94,8 @@ describe('ProjectsNewComponent', () => {
     expect(component.savingInProgress).toBeFalsy();
     component.createProject();
     expect(setSavingInProgress).toHaveBeenCalledWith(true);
+    fixture.whenStable().then(() => {
+      expect(component.savingInProgress).toBeFalsy();
+    });
   }));
 });
