@@ -73,7 +73,7 @@
     <button
       mat-raised-button
       color="primary"
-      [disabled]="skillName.invalid"
+      [disabled]="skillName.invalid || savingInProgress"
       (click)="addUserSkill()"
       aria-label="Add skill"
       class="mySkillsNewDialog__button"
