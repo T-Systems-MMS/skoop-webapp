@@ -53,6 +53,8 @@ import { SearchUserFormComponent } from './search-users/search-user-form/search-
 import { SearchUserResultsComponent } from './search-users/search-user-results/search-user-results.component';
 import { FormatCounterPipe } from './format-counter.pipe';
 import { ClosedCommunityInfoDialogComponent } from './shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { RecommendedCommunitiesComponent } from './recommended-communities/recommended-communities.component';
+import { CommunityCardComponent } from './shared/community-card/community-card.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -100,6 +102,8 @@ export const CUSTOM_FORMATS = {
     SearchUserResultsComponent,
     FormatCounterPipe,
     ClosedCommunityInfoDialogComponent,
+    RecommendedCommunitiesComponent,
+    CommunityCardComponent,
   ],
   imports: [
     BrowserModule,

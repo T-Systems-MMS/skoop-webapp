@@ -1,0 +1,18 @@
+<mat-card class="community-card">
+  <div fxLayout="row">
+    <div fxFlex>
+      <h2 class="community-card__heading">{{ community.title }}</h2>
+    </div>
+    <ng-content fxFlex="none" select="[buttonContent]"></ng-content>
+  </div>
+  <div fxLayout="row">
+    <div class="community-card-description-label">Community type:</div>
+    <div>{{ community.type }}</div>
+  </div>
+  <div fxLayout="row">
+    <div class="community-card-description-label communities-card-skill-label">Skills:</div>
+    <mat-chip-list>
+      <mat-chip *ngFor="let skill of community.skills">{{ skill.name }}</mat-chip>
+    </mat-chip-list>
+  </div>
+</mat-card>

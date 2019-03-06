@@ -26,6 +26,10 @@ export class CommunitiesService {
     return this.httpClient.get<CommunityResponse[]>(this.communitiesUrlPattern);
   }
 
+  getRecommendedCommunities(): Observable<CommunityResponse[]> {
+    return this.httpClient.get<CommunityResponse[]>(this.communitiesUrlPattern);
+  }
+
   getCommunity(communityId: string): Observable<CommunityResponse> {
     return this.httpClient.get<CommunityResponse>(this.communityUrlPattern.replace('{communityId}', communityId));
   }
