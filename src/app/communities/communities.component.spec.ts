@@ -20,6 +20,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
 import { MatDialog } from '@angular/material';
+import { CommunityCardComponent } from '../shared/community-card/community-card.component';
+import { Component } from '@angular/core';
 
 const communities: CommunityResponse[] = [
   {
@@ -70,6 +72,13 @@ const communities: CommunityResponse[] = [
   }
 ];
 
+@Component({
+  selector: 'app-recommended-communities',
+  template: ''
+})
+class RecommendedCommunitiesStubComponent {
+}
+
 describe('CommunitiesComponent', () => {
   let component: CommunitiesComponent;
   let fixture: ComponentFixture<CommunitiesComponent>;
@@ -92,7 +101,12 @@ describe('CommunitiesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [CommunitiesComponent, CommunitiesFilterPipe, ClosedCommunityInfoDialogComponent],
+      declarations: [
+        CommunitiesComponent,
+        CommunitiesFilterPipe,
+        ClosedCommunityInfoDialogComponent,
+        CommunityCardComponent,
+        RecommendedCommunitiesStubComponent],
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
@@ -144,20 +158,11 @@ describe('CommunitiesComponent', () => {
 
   it('should initialize the list of communities', fakeAsync(() => {
     fixture.detectChanges();
-    const communitiesCards = fixture.debugElement.queryAll(By.css(('.communities-card')));
+    const communitiesCards = fixture.debugElement.queryAll(By.css(('.community-card')));
 
     expect(communitiesCards.length).toBe(2);
-    expect(communitiesCards[0].query(By.css('.communities-card__heading')).nativeElement.textContent).toContain(communities[0].title);
-    expect(communitiesCards[1].query(By.css('.communities-card__heading')).nativeElement.textContent).toContain(communities[1].title);
-  }));
-
-  it('should display a special label for recommended communities', fakeAsync(() => {
-    fixture.detectChanges();
-    const communitiesCards = fixture.debugElement.queryAll(By.css(('.communities-card')));
-
-    expect(communitiesCards.length).toBe(2);
-    expect(communitiesCards[0].query(By.css('.communities-recommended-label'))).toBeDefined();
-    expect(communitiesCards[1].query(By.css('.communities-recommended-label'))).toBeNull();
+    expect(communitiesCards[0].query(By.css('.community-card__heading')).nativeElement.textContent).toContain(communities[0].title);
+    expect(communitiesCards[1].query(By.css('.community-card__heading')).nativeElement.textContent).toContain(communities[1].title);
   }));
 
   it('should make user join a community', fakeAsync(() => {

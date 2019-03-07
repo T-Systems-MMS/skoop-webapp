@@ -27,7 +27,10 @@ export class CommunitiesService {
   }
 
   getRecommendedCommunities(): Observable<CommunityResponse[]> {
-    return this.httpClient.get<CommunityResponse[]>(this.communitiesUrlPattern);
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        // todo: /users/{userId}/community-recommendations
+        this.httpClient.get<CommunityResponse[]>(this.communitiesUrlPattern)));
   }
 
   getCommunity(communityId: string): Observable<CommunityResponse> {
