@@ -1,5 +1,5 @@
 <div class="recommended-communities">
-  <div *ngIf="errorMessage" class="communities-error-message">{{errorMessage}}</div>
+  <div *ngIf="errorMessage" class="recommended-communities-error-message">{{errorMessage}}</div>
   <h2>Recommended communities</h2>
   <div class="recommended-communities-wrapper">
     <span *ngFor="let community of communities$ | async">
