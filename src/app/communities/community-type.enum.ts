@@ -1,4 +1,4 @@
 export enum CommunityType {
-  OPENED = 'OPENED',
+  OPEN = 'OPEN',
   CLOSED = 'CLOSED'
 }

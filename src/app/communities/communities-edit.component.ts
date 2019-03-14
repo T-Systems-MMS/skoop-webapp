@@ -95,7 +95,7 @@ export class CommunitiesEditComponent implements OnInit {
 
   editCommunity() {
     const communityData = this.getCommunityData();
-    if (communityData.type === CommunityType.OPENED || communityData.type === this.community.type) {
+    if (communityData.type === CommunityType.OPEN || communityData.type === this.community.type) {
       this.innerEditCommunity(communityData);
     } else {
       const dialogRef = this.dialog.open(ClosedCommunityConfirmDialogComponent, {

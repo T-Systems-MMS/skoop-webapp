@@ -27,7 +27,7 @@ const communityEditData = {
   id: '2134-5679-235235',
   title: 'community',
   description: 'community description',
-  type: CommunityType.OPENED,
+  type: CommunityType.OPEN,
   skills: [],
   links: [
     {
@@ -35,9 +35,8 @@ const communityEditData = {
       href: 'https://www.google.com'
     }
   ],
-  managers: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}],
-  members: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}]
-};
+  managers: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}]
+} as CommunityResponse;
 
 const communityEditRequest = {
   id: communityEditData.id,

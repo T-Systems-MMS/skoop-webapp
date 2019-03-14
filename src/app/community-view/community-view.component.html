@@ -21,7 +21,7 @@
       </div>
     </div>
     <div class="community-column-members">
-      <div class="community-toolbar" *ngIf="!isCommunityMember">
+      <div class="community-toolbar" *ngIf="isCommunityMember === false">
         <button mat-raised-button color="primary" (click)="joinCommunity()" aria-label="Join">Join</button>
       </div>
       <div class="community-toolbar" *ngIf="canLeaveCommunity()">
@@ -33,13 +33,16 @@
           <mat-chip *ngFor="let manager of community?.managers">{{ manager.firstName }} {{manager.lastName}}</mat-chip>
         </mat-chip-list>
       </div>
-      <div *ngIf="isCommunityMember">
+      <div *ngIf="isCommunityMember || isCommunityManager">
         <div class="community-label">Members</div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
-          <mat-chip *ngFor="let user of community?.members" (removed)="removeMember(user)">{{ user.firstName }} {{user.lastName}}
-            <mat-icon matChipRemove *ngIf="canRemoveMember(user)" class="community-remove-member">cancel</mat-icon>
+          <mat-chip *ngFor="let cu of communityMembers" (removed)="removeMember(cu.user)">{{ cu.user.firstName }} {{cu.user.lastName}}
+            <mat-icon matChipRemove *ngIf="canRemoveMember(cu.user)" class="community-remove-member">cancel</mat-icon>
           </mat-chip>
         </mat-chip-list>
+      </div>
+      <div *ngIf="!isCommunityMember && !isCommunityManager" class="members-not-available-label">
+        Members are only visible to community members.
       </div>
     </div>
   </div>

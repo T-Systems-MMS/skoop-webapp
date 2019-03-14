@@ -13,7 +13,7 @@ import { By } from '@angular/platform-browser';
 const community = {
   id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
   title: 'test1',
-  type: CommunityType.OPENED,
+  type: CommunityType.OPEN,
   description: 'description1',
   links: [{
     name: 'google',

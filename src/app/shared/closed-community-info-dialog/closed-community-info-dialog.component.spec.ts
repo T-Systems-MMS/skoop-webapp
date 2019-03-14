@@ -8,7 +8,7 @@ const communityData = {
   id: '2134-5679-235235',
   title: 'community',
   description: 'community description',
-  type: CommunityType.OPENED,
+  type: CommunityType.OPEN,
   skills: [],
   links: [
     {
