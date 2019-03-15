@@ -91,6 +91,50 @@ describe('CommunitiesService', () => {
     request.flush(testCommunities);
   }));
 
+  it('should provide list of recommended communities', async(() => {
+    const testCommunities: CommunityResponse[] = [
+      {
+        id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+        title: 'test1',
+        skills: [],
+        description: 'description1',
+        type: CommunityType.OPENED,
+        links: [{
+          name: 'google',
+          href: 'https://www.google.com'
+        },
+          {
+            name: 'stackoveflow',
+            href: 'https://stackoverflow.com/'
+          }],
+        managers: [],
+        members: []
+      },
+      {
+        id: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
+        title: 'test2',
+        skills: [],
+        description: 'description2',
+        type: CommunityType.OPENED,
+        managers: [],
+        members: []
+      }
+    ];
+
+    service.getRecommendedCommunities().subscribe((communities) => {
+      expect(communities).toEqual(testCommunities);
+    });
+
+    const request = httpTestingController.expectOne((req) =>
+      req.method === 'GET'
+      && req.url === `${environment.serverApiUrl}/communities`
+    );
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(testCommunities);
+  }));
+
   it('should provide a community', async(() => {
     const testCommunity: CommunityResponse = {
       id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',

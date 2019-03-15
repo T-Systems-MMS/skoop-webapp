@@ -1,0 +1,18 @@
+@import "variables";
+
+.recommended-communities {
+  border: 2px solid #008b00;
+  border-radius: 13px;
+  padding: 20px;
+}
+
+.recommended-communities-wrapper {
+  overflow-x: scroll;
+  flex-direction: row;
+  box-sizing: border-box;
+  display: flex;
+}
+
+.recommended-communities-error-message {
+  @extend %base-error;
+}

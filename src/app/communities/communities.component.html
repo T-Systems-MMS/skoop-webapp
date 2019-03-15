@@ -8,39 +8,30 @@
   </div>
 
   <div *ngIf="errorMessage" class="communities-error-message">{{errorMessage}}</div>
-
-  <mat-card *ngFor="let community of communities$ | async | communitiesFilter : filter.value" class="communities-card">
-    <div fxLayout="row">
-      <div fxFlex>
-        <h2 class="communities-card__heading">{{ community.title }}
-          <span *ngIf="community.recommended" class="communities-recommended-label">recommended</span>
-        </h2>
-      </div>
-      <div fxFlex="none">
-        <button mat-icon-button *ngIf="!isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join" aria-label="Join">
+  <div class="communities-recommended-section">
+    <app-recommended-communities></app-recommended-communities>
+  </div>
+  <div fxLayout="column">
+    <app-community-card *ngFor="let community of communities$ | async | communitiesFilter : filter.value"
+                        [community]="community">
+      <div fxFlex="none" buttonContent>
+        <button mat-icon-button *ngIf="!isCommunityJoined(community)" (click)="joinCommunity(community)" title="Join"
+                aria-label="Join">
           <mat-icon>group</mat-icon>
         </button>
         <a [routerLink]="[community.id]"
            mat-icon-button title="View community" aria-label="View community">
           <mat-icon>visibility</mat-icon>
         </a>
-        <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="openEditDialog(community)" title="Edit" aria-label="Edit">
+        <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="openEditDialog(community)" title="Edit"
+                aria-label="Edit">
           <mat-icon>edit</mat-icon>
         </button>
-        <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="delete(community)" title="Delete" aria-label="Delete">
+        <button mat-icon-button *ngIf="isCommunityManager(community)" (click)="delete(community)" title="Delete"
+                aria-label="Delete">
           <mat-icon>delete</mat-icon>
         </button>
       </div>
-    </div>
-    <div fxLayout="row">
-      <div class="communities-description-label">Community type:</div>
-      <div>{{ community.type }}</div>
-    </div>
-    <div fxLayout="row">
-      <div class="communities-description-label communities-skill-label">Skills:</div>
-      <mat-chip-list>
-        <mat-chip *ngFor="let skill of community.skills">{{ skill.name }}</mat-chip>
-      </mat-chip-list>
-    </div>
-  </mat-card>
+    </app-community-card>
+  </div>
 </div>

@@ -1,27 +1,22 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
-import { CommunitiesComponent } from './communities.component';
+import { RecommendedCommunitiesComponent } from './recommended-communities.component';
 import { AppMaterialModule } from '../app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
-import { of } from 'rxjs';
-import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { CommunitiesService } from './communities.service';
-import { Community } from './community';
-import { By } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-import { CommunitiesFilterPipe } from './communities-filter.pipe';
-import { CommunityType } from './community-type.enum';
-import { UserIdentityService } from '../shared/user-identity.service';
-import { UserIdentity } from '../shared/user-identity';
-import { CommunityResponse } from './community-response';
-import { User } from '../users/user';
 import { RouterTestingModule } from '@angular/router/testing';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
-import { MatDialog } from '@angular/material';
 import { CommunityCardComponent } from '../shared/community-card/community-card.component';
-import { Component } from '@angular/core';
+import { CommunityResponse } from '../communities/community-response';
+import { CommunityType } from '../communities/community-type.enum';
+import { User } from '../users/user';
+import { CommunitiesService } from '../communities/communities.service';
+import { of } from 'rxjs';
+import { Community } from '../communities/community';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { MatDialog } from '@angular/material';
+import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 
 const communities: CommunityResponse[] = [
   {
@@ -72,25 +67,9 @@ const communities: CommunityResponse[] = [
   }
 ];
 
-@Component({
-  selector: 'app-recommended-communities',
-  template: ''
-})
-class RecommendedCommunitiesStubComponent {
-}
-
-describe('CommunitiesComponent', () => {
-  let component: CommunitiesComponent;
-  let fixture: ComponentFixture<CommunitiesComponent>;
-
-  const authenticatedUser: UserIdentity = {
-    userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-    userName: 'tester',
-    firstName: 'Toni',
-    lastName: 'Tester',
-    email: 'toni.tester@myskills.io',
-    roles: ['ROLE_USER']
-  };
+describe('RecommendedCommunitiesComponent', () => {
+  let component: RecommendedCommunitiesComponent;
+  let fixture: ComponentFixture<RecommendedCommunitiesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -101,17 +80,11 @@ describe('CommunitiesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [
-        CommunitiesComponent,
-        CommunitiesFilterPipe,
-        ClosedCommunityInfoDialogComponent,
-        CommunityCardComponent,
-        RecommendedCommunitiesStubComponent],
+      declarations: [ RecommendedCommunitiesComponent, CommunityCardComponent, ClosedCommunityInfoDialogComponent ],
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
-            'getCommunities': of<Community[]>(communities),
-            'deleteCommunity': of<void>(),
+            'getRecommendedCommunities': of<Community[]>(communities),
             'joinCommunity': of<CommunityResponse>({
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
               title: 'test1',
@@ -130,11 +103,6 @@ describe('CommunitiesComponent', () => {
             } as CommunityResponse)
           })
         },
-        {
-          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
-            'getUserIdentity': of(authenticatedUser)
-          })
-        },
         GlobalErrorHandlerService
       ]
     })
@@ -143,11 +111,11 @@ describe('CommunitiesComponent', () => {
           entryComponents: [ClosedCommunityInfoDialogComponent]
         }
       })
-      .compileComponents();
+    .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CommunitiesComponent);
+    fixture = TestBed.createComponent(RecommendedCommunitiesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -156,22 +124,8 @@ describe('CommunitiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should initialize the list of communities', fakeAsync(() => {
-    fixture.detectChanges();
-    const communitiesCards = fixture.debugElement.queryAll(By.css(('.community-card')));
 
-    expect(communitiesCards.length).toBe(2);
-    expect(communitiesCards[0].query(By.css('.community-card__heading')).nativeElement.textContent).toContain(communities[0].title);
-    expect(communitiesCards[1].query(By.css('.community-card__heading')).nativeElement.textContent).toContain(communities[1].title);
-  }));
-
-  it('should make user join a community', fakeAsync(() => {
-    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse);
-    fixture.detectChanges();
-    expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBeTruthy();
-  }));
-
-  it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
+  it('should display closed community info dialog', fakeAsync(() => {
     const closedCommunity = {
       id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
       title: 'test1',
@@ -193,21 +147,9 @@ describe('CommunitiesComponent', () => {
 
     component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse);
     fixture.detectChanges();
-    expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBeFalsy();
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityInfoDialogComponent));
   }));
-
-  it('should check if the user is manager of a community', fakeAsync(() => {
-    fixture.detectChanges();
-    expect(component.isCommunityManager(communities[0])).toBeTruthy();
-  }));
-
-  it('should check if the user is not manager of a community', fakeAsync(() => {
-    fixture.detectChanges();
-    expect(component.isCommunityManager(communities[1])).toBeFalsy();
-  }));
-
 });
