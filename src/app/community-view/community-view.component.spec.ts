@@ -201,18 +201,8 @@ describe('CommunityViewComponent', () => {
   it('should make user leave a community', fakeAsync(() => {
     expect(component.canLeaveCommunity).toBeTruthy();
     component.leaveCommunity();
-    tick();
-    fakeAsync(() => {
-      const matDialog: MatDialog = TestBed.get(MatDialog);
-      expect(matDialog.openDialogs.length).toBe(1);
-      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
-      matDialog.openDialogs[0].close(true);
-      tick();
-      fakeAsync(() => {
-        tick();
-        expect(component.isCommunityMember).toBeFalsy();
-      });
-    });
+    fixture.detectChanges();
+    expect(component.isCommunityMember).toBeFalsy();
   }));
 
   it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
@@ -230,7 +220,7 @@ describe('CommunityViewComponent', () => {
     communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(communityUserResponse));
 
     component.joinCommunity();
-    tick();
+    fixture.detectChanges();
     expect(component.isCommunityMember).toBeFalsy();
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
