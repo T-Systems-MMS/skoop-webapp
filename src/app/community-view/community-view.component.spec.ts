@@ -76,20 +76,20 @@ describe('CommunityViewComponent', () => {
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
-            'getUserCommunities': of<CommunityResponse[]>(),
-            'getCommunityUsers': of<CommunityUserResponse[]>([
-              {
-                user: {
-                  id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
-                  userName: 'tester'
-                } as User,
-                role: CommunityRole.MEMBER
-              } as CommunityUserResponse,
-              {
-                user: userForKicking,
-                role: CommunityRole.MEMBER
-              } as CommunityUserResponse
-            ]),
+            'getUserCommunities': of<CommunityResponse[]>(
+              [
+                {
+                  id: '123',
+                  title: 'Java User Group',
+                  type: CommunityType.OPEN
+                } as CommunityResponse,
+                {
+                  id: '456',
+                  title: 'Scala User Group'
+                } as CommunityResponse
+              ]
+            ),
+            'getCommunityUsers': of<CommunityUserResponse[]>(),
             'getCommunity': of(community),
             'leaveCommunity': of<CommunityResponse>({
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',

@@ -315,4 +315,28 @@ describe('CommunitiesService', () => {
     expect(req.request.method).toBe('DELETE');
   }));
 
+  it('should fetch user communities', async(() => {
+    const communities: CommunityResponse[] = [
+      {
+        id: '123',
+        title: 'Java User Group',
+        type: CommunityType.OPEN
+      } as CommunityResponse,
+      {
+        id: '456',
+        title: 'Scala User Group'
+      } as CommunityResponse
+    ];
+
+    service.getUserCommunities().subscribe((response) => {
+      expect(response).toBe(communities);
+    });
+
+    const req = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/communities`
+    });
+    expect(req.request.method).toBe('GET');
+  }));
+
 });

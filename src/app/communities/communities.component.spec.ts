@@ -101,7 +101,19 @@ describe('CommunitiesComponent', () => {
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
             'getCommunities': of<Community[]>(communities),
-            'getUserCommunities': of<CommunityUserResponse[]>(),
+            'getUserCommunities': of<CommunityResponse[]>(
+              [
+                {
+                  id: '123',
+                  title: 'Java User Group',
+                  type: CommunityType.OPEN
+                } as CommunityResponse,
+                {
+                  id: '456',
+                  title: 'Scala User Group'
+                } as CommunityResponse
+              ]
+            ),
             'deleteCommunity': of<void>(),
             'joinCommunity': of<CommunityResponse>({
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',

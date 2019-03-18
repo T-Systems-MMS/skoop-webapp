@@ -132,8 +132,8 @@ export class CommunityViewComponent implements OnInit {
     }
     this.userIdentityService.getUserIdentity().subscribe(userIdentity => {
       this.currentUserId = userIdentity.userId;
-      this.communityMembers = communityUsers.filter(cm => cm.role as CommunityRole === CommunityRole.MEMBER);
-      this.communityManagers = communityUsers.filter(cm => cm.role as CommunityRole === CommunityRole.MANAGER);
+      this.communityMembers = communityUsers.filter(cm => cm.role === CommunityRole.MEMBER);
+      this.communityManagers = communityUsers.filter(cm => cm.role === CommunityRole.MANAGER);
       this.isCommunityMember = this.communityMembers && this.communityMembers.find(item => item.user.id === userIdentity.userId) != null;
       this.isCommunityManager = this.communityManagers && this.communityManagers.find(item => item.user.id === userIdentity.userId) != null;
     }, errorResponse => {
