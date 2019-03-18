@@ -126,7 +126,7 @@ describe('CommunitiesService', () => {
 
     const request = httpTestingController.expectOne((req) =>
       req.method === 'GET'
-      && req.url === `${environment.serverApiUrl}/users/e6b808eb-b6bd-447d-8dce-3e0d66b17759/community-recommendations`
+      && req.url === `${environment.serverApiUrl}/users/${authenticatedUser.userId}/community-recommendations`
     );
 
     expect(request.request.responseType).toEqual('json');
