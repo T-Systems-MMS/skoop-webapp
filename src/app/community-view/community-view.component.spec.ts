@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { CommunityViewComponent } from './community-view.component';
 import { AppMaterialModule } from '../app-material.module';
@@ -89,22 +89,30 @@ describe('CommunityViewComponent', () => {
                 } as CommunityResponse
               ]
             ),
-            'getCommunityUsers': of<CommunityUserResponse[]>(),
-            'getCommunity': of(community),
-            'leaveCommunity': of<CommunityResponse>({
-              id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
-              title: 'test1',
-              description: 'description1',
-              links: [{
-                name: 'google',
-                href: 'https://www.google.com'
-              },
+            'getCommunityUsers': of<CommunityUserResponse[]>(
+              [
                 {
-                  name: 'stackoveflow',
-                  href: 'https://stackoverflow.com/'
-                }],
-              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
-            } as CommunityResponse),
+                  user: {
+                    id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
+                    userName: 'tester'
+                  } as User,
+                  role: CommunityRole.MEMBER
+                } as CommunityUserResponse,
+                {
+                  user: {
+                    id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
+                    userName: 'tester'
+                  } as User,
+                  role: CommunityRole.MANAGER
+                } as CommunityUserResponse,
+                {
+                  user: userForKicking,
+                  role: CommunityRole.MEMBER
+                } as CommunityUserResponse
+              ]
+            ),
+            'getCommunity': of(community),
+            'leaveCommunity': of<void>(),
             'joinCommunity': of<CommunityResponse>({
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
               title: 'test1',
@@ -193,8 +201,18 @@ describe('CommunityViewComponent', () => {
   it('should make user leave a community', fakeAsync(() => {
     expect(component.canLeaveCommunity).toBeTruthy();
     component.leaveCommunity();
-    fixture.detectChanges();
-    expect(component.isCommunityMember).toBeFalsy();
+    tick();
+    fakeAsync(() => {
+      const matDialog: MatDialog = TestBed.get(MatDialog);
+      expect(matDialog.openDialogs.length).toBe(1);
+      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+      matDialog.openDialogs[0].close(true);
+      tick();
+      fakeAsync(() => {
+        tick();
+        expect(component.isCommunityMember).toBeFalsy();
+      });
+    });
   }));
 
   it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
@@ -212,7 +230,7 @@ describe('CommunityViewComponent', () => {
     communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(communityUserResponse));
 
     component.joinCommunity();
-    fixture.detectChanges();
+    tick();
     expect(component.isCommunityMember).toBeFalsy();
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
