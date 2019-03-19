@@ -19,8 +19,6 @@ import { SkillsService } from '../skills/skills.service';
 import { Skill } from '../skills/skill';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ENTER } from '@angular/cdk/keycodes';
-import { UsersService } from '../users/users.service';
-import { User } from '../users/user';
 import { CommunityRequest } from './community-request';
 
 const communityEditData = {
@@ -44,8 +42,7 @@ const communityEditRequest = {
   description: communityEditData.description,
   type: communityEditData.type,
   skillNames: [],
-  links: communityEditData.links,
-  invitedUserIds: []
+  links: communityEditData.links
 } as CommunityRequest;
 
 const skills = [
@@ -85,19 +82,6 @@ describe('CommunitiesEditComponent', () => {
           useValue: jasmine.createSpyObj('communityService', {'updateCommunity': of<CommunityResponse>()})
         },
         {provide: SkillsService, useValue: jasmine.createSpyObj('skillsService', {'getAllSkills': of<Skill[]>(skills)})},
-        {
-          provide: UsersService,
-          useValue: jasmine.createSpyObj('userService', {'getUserSuggestions': of<User[]>(
-              [{
-                id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-                userName: 'testing',
-                firstName: 'Tina',
-                lastName: 'Testing',
-                email: 'tina.testing@myskills.io',
-                coach: false,
-              }]
-            )})
-        },
         {provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'])},
         {provide: MAT_BOTTOM_SHEET_DATA, useValue: communityEditData}
       ]
