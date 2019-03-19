@@ -8,7 +8,7 @@ import {
   MatDialog
 } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { debounceTime, distinctUntilChanged, filter, finalize, map, startWith, switchMap } from 'rxjs/operators';
+import { finalize, map, startWith} from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommunitiesService } from './communities.service';
 import { CommunityType } from './community-type.enum';
@@ -19,8 +19,6 @@ import { Skill } from '../skills/skill';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { SkillsService } from '../skills/skills.service';
 import { CommunityResponse } from './community-response';
-import { User } from '../users/user';
-import { UsersService } from '../users/users.service';
 
 @Component({
   selector: 'app-communities-edit',
@@ -31,13 +29,10 @@ export class CommunitiesEditComponent implements OnInit {
 
   @ViewChild('skillsAutoComplete') skillsMatAutocomplete: MatAutocomplete;
   @ViewChild('skillInput') skillAutocompleteInput: ElementRef<HTMLInputElement>;
-  @ViewChild('usersInput') usersAutocompleteInput: ElementRef<HTMLInputElement>;
-  @ViewChild('usersAutocomplete') usersMatAutocomplete: MatAutocomplete;
 
   communityForm: FormGroup;
   errorMessage: string = null;
   skills$: Observable<Skill[]> = of([]);
-  userSuggestions$: Observable<User[]>;
   allAvailableSkills: Skill[];
 
   elemSelectable = true;
@@ -45,11 +40,9 @@ export class CommunitiesEditComponent implements OnInit {
   elemAddOnBlur = false;
   elemSeparatorKeysCodes = [COMMA, ENTER];
   skillAutocompleteCtrl = new FormControl();
-  usersControl = new FormControl();
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public community: CommunityResponse,
               private communityService: CommunitiesService,
-              private usersService: UsersService,
               private skillsService: SkillsService,
               private formBuilder: FormBuilder,
               private bottomSheet: MatBottomSheetRef,
@@ -63,14 +56,12 @@ export class CommunitiesEditComponent implements OnInit {
 
   ngOnInit() {
     this.loadSkills();
-    this.loadUsers();
     this.communityForm = this.formBuilder.group({
       title: new FormControl(this.community.title, Validators.required),
       type: new FormControl(this.community.type),
       skills: new FormControl((this.community.skills || []).map(item => item.name)),
       description: new FormControl(this.community.description),
-      links: new FormArray([]),
-      invitedUsers: new FormControl([])
+      links: new FormArray([])
     });
 
     if (this.community.links) {
@@ -153,24 +144,6 @@ export class CommunitiesEditComponent implements OnInit {
     }
   }
 
-  addSelectedUser(event: MatAutocompleteSelectedEvent): void {
-    const value = event.option.value;
-    if (value && this.usersArray.indexOf(value) === -1) {
-      this.usersArray.push(value);
-      this.communityForm.markAsDirty();
-    }
-
-    this.usersAutocompleteInput.nativeElement.value = '';
-    this.usersControl.setValue(null);
-  }
-
-  removeUser(user: User): void {
-    const index = this.usersArray.indexOf(user);
-    if (index >= 0) {
-      this.usersArray.splice(index, 1);
-    }
-  }
-
   private createLinkFormGroup(): FormGroup {
     return this.formBuilder.group({
       name: [null, Validators.required],
@@ -185,8 +158,7 @@ export class CommunitiesEditComponent implements OnInit {
       type: this.communityForm.get('type').value,
       skillNames: this.skillsArray || [],
       description: this.communityForm.get('description').value,
-      links: this.communityForm.get('links').value,
-      invitedUserIds: (this.usersArray || []).map(item => item.id)
+      links: this.communityForm.get('links').value
     } as CommunityRequest;
   }
 
@@ -217,15 +189,6 @@ export class CommunitiesEditComponent implements OnInit {
     });
   }
 
-  private loadUsers() {
-    this.userSuggestions$ = this.usersControl.valueChanges.pipe(
-      filter(search => typeof search === 'string'),
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(search => this.usersService.getUserSuggestions(search))
-    );
-  }
-
   private _filter(value: any): Skill[] {
     // the FormControl valueChanges event isn't reliably returning a String
     if (typeof value === 'object') {
@@ -247,10 +210,6 @@ export class CommunitiesEditComponent implements OnInit {
 
   get skillsArray(): string[] {
     return this.communityForm.get('skills').value;
-  }
-
-  get usersArray(): User[] {
-    return this.communityForm.get('invitedUsers').value;
   }
 
 }

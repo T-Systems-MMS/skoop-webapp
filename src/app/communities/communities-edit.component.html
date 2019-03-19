@@ -77,30 +77,6 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <mat-divider></mat-divider>
-  <div class="communities-edit-invitation-section">
-    <mat-form-field class="communities-edit-form-field">
-      <mat-chip-list #usersChipList>
-        <mat-chip *ngFor="let user of usersArray"
-                  selectable="true" removable="true"
-                  (removed)="removeUser(user)">
-          {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
-          <mat-icon matChipRemove>cancel</mat-icon>
-        </mat-chip>
-        <input placeholder="Users for invitation" #usersInput
-               [formControl]="usersControl"
-               [matAutocomplete]="usersAutocomplete"
-               [matChipInputFor]="usersChipList"
-               matChipInputAddOnBlur="true">
-      </mat-chip-list>
-      <mat-autocomplete #usersAutocomplete="matAutocomplete"
-                        (optionSelected)="addSelectedUser($event)">
-        <mat-option *ngFor="let user of userSuggestions$ | async" [value]="user">
-          {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </div>
   <div>
     <button mat-raised-button id="communities-edit-button" color="primary" (click)="editCommunity()"
             [disabled]="!communityForm.valid || communityForm.pristine" class="communities-edit-actions">Edit community
