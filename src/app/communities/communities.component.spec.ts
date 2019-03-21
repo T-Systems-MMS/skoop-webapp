@@ -20,6 +20,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
 import { MatDialog } from '@angular/material';
+import { CommunityUserResponse } from './community-user-response';
+import { CommunityRole } from './community-role.enum';
 import { CommunityCardComponent } from '../shared/community-card/community-card.component';
 import { Component } from '@angular/core';
 
@@ -28,7 +30,7 @@ const communities: CommunityResponse[] = [
     id: '123',
     title: 'group1',
     description: 'super group description',
-    type: CommunityType.OPENED,
+    type: CommunityType.OPEN,
     recommended: true,
     links: [
       {
@@ -39,12 +41,6 @@ const communities: CommunityResponse[] = [
         name: 'stackoveflow',
         href: 'https://stackoverflow.com/'
       }],
-    members: [
-      {
-        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-        userName: 'tester'
-      } as User
-    ],
     managers: [
       {
         id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -56,13 +52,7 @@ const communities: CommunityResponse[] = [
     id: '123456',
     title: 'group2',
     description: 'other group',
-    type: CommunityType.OPENED,
-    members: [
-      {
-        id: 'c6d8badc-0f80-4d20-b436-0e7e871f97f5',
-        userName: 'anotherTester'
-      } as User
-    ],
+    type: CommunityType.OPEN,
     managers: [
       {
         id: 'c6d8badc-0f80-4d20-b436-0e7e871f97f5',
@@ -111,11 +101,24 @@ describe('CommunitiesComponent', () => {
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
             'getCommunities': of<Community[]>(communities),
+            'getUserCommunities': of<CommunityResponse[]>(
+              [
+                {
+                  id: '123',
+                  title: 'Java User Group',
+                  type: CommunityType.OPEN
+                } as CommunityResponse,
+                {
+                  id: '456',
+                  title: 'Scala User Group'
+                } as CommunityResponse
+              ]
+            ),
             'deleteCommunity': of<void>(),
             'joinCommunity': of<CommunityResponse>({
               id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
               title: 'test1',
-              type: CommunityType.OPENED,
+              type: CommunityType.OPEN,
               description: 'description1',
               links: [{
                 name: 'google',
@@ -125,8 +128,7 @@ describe('CommunitiesComponent', () => {
                   name: 'stackoveflow',
                   href: 'https://stackoverflow.com/'
                 }],
-              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}],
-              members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
+              managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
             } as CommunityResponse)
           })
         },
@@ -172,26 +174,18 @@ describe('CommunitiesComponent', () => {
   }));
 
   it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
-    const closedCommunity = {
-      id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
-      title: 'test1',
-      type: CommunityType.CLOSED,
-      description: 'description1',
-      links: [{
-        name: 'google',
-        href: 'https://www.google.com'
-      },
-        {
-          name: 'stackoveflow',
-          href: 'https://stackoverflow.com/'
-        }],
-      managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}],
-      members: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759'}]
-    };
-    const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
-    communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(closedCommunity));
+    const response = {
+      role: CommunityRole.MEMBER,
+      user: {
+        id: authenticatedUser.userId,
+        userName: authenticatedUser.userName
+      } as User
+    } as CommunityUserResponse;
 
-    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse);
+    const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
+    communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(response));
+
+    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', type: CommunityType.CLOSED} as CommunityResponse);
     fixture.detectChanges();
     expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBeFalsy();
 

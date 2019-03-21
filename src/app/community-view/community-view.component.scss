@@ -34,6 +34,11 @@
   right: 10px;
 }
 
+.members-not-available-label {
+  @extend %base-description-label;
+  margin-top: 15px;
+}
+
 .community-toolbar > button {
   margin-right: 15px;
 }

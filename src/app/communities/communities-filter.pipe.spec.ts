@@ -7,7 +7,7 @@ const communities: CommunityResponse[] = [
     id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
     title: 'test1',
     description: 'description1',
-    type: CommunityType.OPENED,
+    type: CommunityType.OPEN,
     links: [{
       name: 'google',
       href: 'https://www.google.com'
@@ -16,20 +16,18 @@ const communities: CommunityResponse[] = [
         name: 'stackoveflow',
         href: 'https://stackoverflow.com/'
       }],
-    managers: [],
-    members: []
+    managers: []
   },
   {
     id: '6b7ebd19-4542-4c1d-9602-905e35b7f7f8',
     title: 'test2',
     description: 'description2',
-    type: CommunityType.OPENED,
+    type: CommunityType.OPEN,
     skills: [{
       id: '12343534536',
       name: 'java'
     }],
-    managers: [],
-    members: []
+    managers: []
   }
 ];
 

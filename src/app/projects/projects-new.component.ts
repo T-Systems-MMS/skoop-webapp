@@ -46,7 +46,6 @@ export class ProjectsNewComponent implements OnInit, OnDestroy {
     this.projectService.createProject(this.getProjectData())
       .pipe(
         finalize( () => {
-            console.log('asdasd')
             this.savingInProgress = false;
           }
         )

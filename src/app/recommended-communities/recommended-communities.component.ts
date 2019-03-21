@@ -7,6 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
 import { MatDialog } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { CommunityUserResponse } from '../communities/community-user-response';
 
 @Component({
   selector: 'app-recommended-communities',
@@ -29,7 +30,7 @@ export class RecommendedCommunitiesComponent implements OnInit {
   }
 
   joinCommunity(community: CommunityResponse) {
-    this.communityService.joinCommunity(community.id).subscribe((community: CommunityResponse) => {
+    this.communityService.joinCommunity(community.id).subscribe((communityUserResponse: CommunityUserResponse) => {
       if (community.type === CommunityType.CLOSED) {
         this.showInfoDialog(community);
       }
