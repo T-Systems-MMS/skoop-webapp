@@ -1,0 +1,18 @@
+@import "variables";
+
+.community-card {
+  @extend %base-card;
+}
+
+.community-card-description-label {
+  @extend %base-description-label;
+}
+
+.community-card-skill-label {
+  padding-top: 5px;
+}
+
+:host-context(.recommended-communities) .community-card {
+  margin-right: 20px;
+  width: 400px;
+}

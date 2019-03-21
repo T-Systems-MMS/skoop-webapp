@@ -122,7 +122,7 @@ describe('CommunitiesNewComponent', () => {
       const expectedRequestData: CommunityRequest = {
         title: 'title',
         description: 'description',
-        type: CommunityType.OPENED,
+        type: CommunityType.OPEN,
         skillNames: [],
         links: [
           {

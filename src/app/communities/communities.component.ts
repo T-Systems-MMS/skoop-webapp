@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommunitiesService } from './communities.service';
 import { combineLatest, Observable, of } from 'rxjs';
-import { filter} from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheet, MatDialog } from '@angular/material';
@@ -14,6 +14,8 @@ import { CommunityResponse } from './community-response';
 import { User } from '../users/user';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { Community } from './community';
+import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { CommunityUserResponse } from './community-user-response';
 
 @Component({
   selector: 'app-communities',
@@ -38,6 +40,7 @@ export class CommunitiesComponent implements OnInit {
 
   ngOnInit() {
     this.loadCommunities();
+    this.loadUserCommunities();
   }
 
   openNewDialog(): void {
@@ -54,19 +57,22 @@ export class CommunitiesComponent implements OnInit {
       data: <CommunityResponse>{
         id: community.id,
         title: community.title,
-        type: community.type || CommunityType.OPENED,
+        type: community.type || CommunityType.OPEN,
         skills: community.skills,
         description: community.description,
         links: community.links,
-        managers: community.managers,
-        members: community.members
+        managers: community.managers
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadCommunities());
   }
 
   joinCommunity(community: CommunityResponse) {
-    this.communityService.joinCommunity(community.id).subscribe((response: CommunityResponse) => {
-      this.joinedCommunityIds.push(response.id);
+    this.communityService.joinCommunity(community.id).subscribe((communityUserResponse: CommunityUserResponse) => {
+      if (community.type === CommunityType.CLOSED) {
+        this.showInfoDialog(community);
+      } else {
+        this.joinedCommunityIds.push(community.id);
+      }
     }, (errorResponse: HttpErrorResponse) => {
       this.handleErrorResponse(errorResponse);
     });
@@ -89,6 +95,16 @@ export class CommunitiesComponent implements OnInit {
     });
   }
 
+  private loadUserCommunities(): void {
+    this.communityService.getUserCommunities().subscribe((userCommunities: CommunityResponse[]) => {
+      const joinedCommunityIds: string[] = [];
+      userCommunities.forEach(community => joinedCommunityIds.push(community.id));
+      this.joinedCommunityIds = joinedCommunityIds;
+    }, (errorResponse: HttpErrorResponse) => {
+      this.handleErrorResponse(errorResponse);
+    });
+  }
+
   private loadCommunities() {
     combineLatest(
       this.userIdentityService.getUserIdentity(),
@@ -98,23 +114,15 @@ export class CommunitiesComponent implements OnInit {
       const communities = compoundObject[1];
 
       this.communities$ = of(communities);
-      const joinedCommunityIds: string[] = [];
       const managedCommunityIds: string[] = [];
 
       communities.forEach((community: CommunityResponse) => {
-        if (community.members) {
-          if (community.members.map((member: User) => member.id).indexOf(userIdentity.userId) !== -1) {
-            joinedCommunityIds.push(community.id);
-          }
-        }
         if (community.managers) {
           if (community.managers.map((manager: User) => manager.id).indexOf(userIdentity.userId) !== -1) {
             managedCommunityIds.push(community.id);
           }
         }
       });
-
-      this.joinedCommunityIds = joinedCommunityIds;
       this.managedCommunityIds = managedCommunityIds;
     }, (errorResponse: HttpErrorResponse) => {
       this.handleErrorResponse(errorResponse);
@@ -135,4 +143,10 @@ export class CommunitiesComponent implements OnInit {
     this.changeDetector.markForCheck();
   }
 
+  private showInfoDialog(community: CommunityResponse) {
+    this.dialog.open(ClosedCommunityInfoDialogComponent, {
+      width: '350px',
+      data: Object.assign({}, community)
+    });
+  }
 }

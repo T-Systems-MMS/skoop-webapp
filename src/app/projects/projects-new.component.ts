@@ -5,6 +5,7 @@ import { Project } from './project';
 import { MatBottomSheetRef } from '@angular/material';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-projects-new',
@@ -12,6 +13,8 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
   styleUrls: ['./projects-new.component.scss']
 })
 export class ProjectsNewComponent implements OnInit, OnDestroy {
+
+  private _savingInProgress: boolean = false;
 
   projectForm: FormGroup;
   errorMessage: string = null;
@@ -39,7 +42,14 @@ export class ProjectsNewComponent implements OnInit, OnDestroy {
   }
 
   createProject() {
+    this.savingInProgress = true;
     this.projectService.createProject(this.getProjectData())
+      .pipe(
+        finalize( () => {
+            this.savingInProgress = false;
+          }
+        )
+      )
       .subscribe(() => {
         this.addedProjectsCount++;
         this.projectForm.reset();
@@ -62,6 +72,14 @@ export class ProjectsNewComponent implements OnInit, OnDestroy {
       industrySector: this.projectForm.get('industrySector').value,
       description: this.projectForm.get('description').value,
     } as Project;
+  }
+
+  get savingInProgress(): boolean {
+    return this._savingInProgress;
+  }
+
+  set savingInProgress(value: boolean) {
+    this._savingInProgress = value;
   }
 
 }
