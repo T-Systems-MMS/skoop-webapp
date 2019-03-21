@@ -95,7 +95,7 @@ export class CommunityViewComponent implements OnInit {
     }
 
     return (this.community.type === CommunityType.OPEN && this.isCommunityMember)
-      || (this.community.type === CommunityType.CLOSED && this.isCommunityManager)
+      || (this.community.type === CommunityType.CLOSED && this.isCommunityManager);
   }
 
   removeMember(member: User) {

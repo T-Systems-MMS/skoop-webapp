@@ -90,7 +90,8 @@ export class CommunitiesService {
   }
 
   inviteUsers(communityId: string, userIds: string[]): Observable<CommunityUserRegistrationResponse[]> {
-    return this.httpClient.post<CommunityUserRegistrationResponse[]>(this.registrationCommunityUrlPattern.replace('{communityId}', communityId),
+    return this.httpClient.post<CommunityUserRegistrationResponse[]>(
+      this.registrationCommunityUrlPattern.replace('{communityId}', communityId),
       {userIds: userIds});
   }
 

@@ -28,7 +28,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
   userSuggestions$: Observable<User[]>;
   usersControl = new FormControl();
 
-  constructor(@Inject(MAT_DIALOG_DATA) public communityId: string,
+  constructor(@Inject(MAT_DIALOG_DATA) public dialogData: InvitationDialogData,
               public dialogRef: MatDialogRef<CommunityInvitationDialogComponent>,
               private usersService: UsersService,
               private communityService: CommunitiesService,
@@ -66,7 +66,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
       return;
     }
 
-    this.communityService.inviteUsers(this.communityId, this.usersArray.map(item => item.id))
+    this.communityService.inviteUsers(this.dialogData.communityId, this.usersArray.map(item => item.id))
       .subscribe(() => {
         this.dialogRef.close();
       }, errorResponse => {
@@ -93,4 +93,8 @@ export class CommunityInvitationDialogComponent implements OnInit {
     return this.invitationForm.get('invitedUsers').value;
   }
 
+}
+
+export interface InvitationDialogData {
+  communityId: string;
 }

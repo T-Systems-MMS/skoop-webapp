@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 
 import { CommunityViewComponent } from './community-view.component';
 import { AppMaterialModule } from '../app-material.module';

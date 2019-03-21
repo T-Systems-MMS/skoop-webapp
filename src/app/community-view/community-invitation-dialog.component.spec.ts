@@ -57,7 +57,7 @@ describe('CommunityInvitationDialogComponent', () => {
           provide: UsersService,
           useValue: jasmine.createSpyObj('userService', {'getUserSuggestions': of<User[]>(users)})
         },
-        {provide: MAT_DIALOG_DATA, useValue: communityId},
+        {provide: MAT_DIALOG_DATA, useValue: {communityId: communityId}},
         { provide: MatDialogRef, useValue: {} },
       ]
     })

@@ -350,7 +350,7 @@ describe('CommunitiesService', () => {
           id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
           userName: 'first user'
         },
-        approvedByUser: true,
+        approvedByUser: false,
         approvedByCommunity: true
       },
       {
@@ -358,7 +358,7 @@ describe('CommunitiesService', () => {
           id: 'e11235ab-f13e-4fd6-b5d6-9c4c4e18aa6g',
           userName: 'second user'
         },
-        approvedByUser: true,
+        approvedByUser: false,
         approvedByCommunity: true
       }
     ];
