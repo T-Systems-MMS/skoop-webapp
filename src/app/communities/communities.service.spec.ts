@@ -13,7 +13,6 @@ import { CommunityUserRequest } from './community-user-request';
 import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
 import { User } from '../users/user';
-import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 
 describe('CommunitiesService', () => {
   let httpTestingController: HttpTestingController;
@@ -340,42 +339,6 @@ describe('CommunitiesService', () => {
     expect(req.request.method).toBe('GET');
   }));
 
-  it('should send an invitation request', async(() => {
-    const userIds: string[] = ['d11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', 'e11235ab-f13e-4fd6-b5d6-9c4c4e18aa6g'];
-    const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 
-    const testCommunityResponse: CommunityUserRegistrationResponse[] = [
-      {
-        user: {
-          id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
-          userName: 'first user'
-        },
-        approvedByUser: false,
-        approvedByCommunity: true
-      },
-      {
-        user: {
-          id: 'e11235ab-f13e-4fd6-b5d6-9c4c4e18aa6g',
-          userName: 'second user'
-        },
-        approvedByUser: false,
-        approvedByCommunity: true
-      }
-    ];
-
-    service.inviteUsers(communityId, userIds).subscribe(community => {
-      expect(community).toEqual(testCommunityResponse);
-    });
-
-    const request = httpTestingController.expectOne({
-      method: 'POST',
-      url: `${environment.serverApiUrl}/communities/${communityId}/user-registrations`
-    });
-
-    expect(request.request.responseType).toEqual('json');
-    expect(request.request.body).toEqual({userIds: userIds});
-
-    request.flush(testCommunityResponse);
-  }));
 
 });

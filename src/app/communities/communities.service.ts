@@ -9,7 +9,6 @@ import { switchMap } from 'rxjs/operators';
 import { CommunityUserRequest } from './community-user-request';
 import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
-import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +21,6 @@ export class CommunitiesService {
   private leaveCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users/{userId}`;
   private userCommunitiesUrlPattern = `${environment.serverApiUrl}/users/{userId}/communities`;
   private recommendedCommunitiesUrlPattern = `${environment.serverApiUrl}/users/{userId}/community-recommendations`;
-  private registrationCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/user-registrations`;
 
   constructor(private httpClient: HttpClient,
               private userIdentityService: UserIdentityService) {
@@ -89,10 +87,6 @@ export class CommunitiesService {
           this.leaveCommunityUrlPattern.replace('{communityId}', communityId).replace('{userId}', userId));
   }
 
-  inviteUsers(communityId: string, userIds: string[]): Observable<CommunityUserRegistrationResponse[]> {
-    return this.httpClient.post<CommunityUserRegistrationResponse[]>(
-      this.registrationCommunityUrlPattern.replace('{communityId}', communityId),
-      {userIds: userIds});
-  }
+
 
 }

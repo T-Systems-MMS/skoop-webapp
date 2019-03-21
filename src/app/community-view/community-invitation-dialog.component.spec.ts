@@ -7,12 +7,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { CommunitiesService } from '../communities/communities.service';
 import { of } from 'rxjs';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
 
 const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 
@@ -50,8 +50,8 @@ describe('CommunityInvitationDialogComponent', () => {
       providers: [
         GlobalErrorHandlerService,
         {
-          provide: CommunitiesService,
-          useValue: jasmine.createSpyObj('communityService', {'inviteUsers': of<CommunityUserRegistrationResponse[]>()})
+          provide: CommunityRegistrationService,
+          useValue: jasmine.createSpyObj('registrationService', {'inviteUsers': of<CommunityUserRegistrationResponse[]>()})
         },
         {
           provide: UsersService,
@@ -76,14 +76,14 @@ describe('CommunityInvitationDialogComponent', () => {
   });
 
   it('should not call the service when list of users is empty', async(() => {
-    const communityService: CommunitiesService = TestBed.get(CommunitiesService);
+    const registrationService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
 
     component.inviteUsers();
-    expect(communityService.inviteUsers).not.toHaveBeenCalled();
+    expect(registrationService.inviteUsers).not.toHaveBeenCalled();
   }));
 
   it('should invite list of users', async(() => {
-    const communityService: CommunitiesService = TestBed.get(CommunitiesService);
+    const communityService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
     component.usersArray.push(users[0]);
     component.usersArray.push(users[1]);
     component.inviteUsers();

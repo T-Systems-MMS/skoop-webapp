@@ -10,8 +10,8 @@ import { User } from '../users/user';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { UsersService } from '../users/users.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
-import { CommunitiesService } from '../communities/communities.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
 
 @Component({
   selector: 'app-community-invitation-dialog',
@@ -31,7 +31,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: InvitationDialogData,
               public dialogRef: MatDialogRef<CommunityInvitationDialogComponent>,
               private usersService: UsersService,
-              private communityService: CommunitiesService,
+              private registrationService: CommunityRegistrationService,
               private formBuilder: FormBuilder,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -66,7 +66,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
       return;
     }
 
-    this.communityService.inviteUsers(this.dialogData.communityId, this.usersArray.map(item => item.id))
+    this.registrationService.inviteUsers(this.dialogData.communityId, this.usersArray.map(item => item.id))
       .subscribe(() => {
         this.dialogRef.close();
       }, errorResponse => {
