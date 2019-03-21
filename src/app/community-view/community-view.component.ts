@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { User } from '../users/user';
 import { CommunityType } from '../communities/community-type.enum';
 import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { CommunityInvitationDialogComponent } from './community-invitation-dialog.component';
 
 @Component({
   selector: 'app-community-view',
@@ -86,6 +87,15 @@ export class CommunityViewComponent implements OnInit {
     return this.isCommunityManager && this.currentUserId !== user.id;
   }
 
+  canInviteUsers() {
+    if (!this.community) {
+      return false;
+    }
+
+    return (this.community.type === CommunityType.OPENED && this.isCommunityMember)
+      || (this.community.type === CommunityType.CLOSED && this.isCommunityManager)
+  }
+
   removeMember(member: User) {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
@@ -100,6 +110,15 @@ export class CommunityViewComponent implements OnInit {
         }, (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
         });
+      }
+    });
+  }
+
+  openInvitationDialog() {
+    this.dialog.open(CommunityInvitationDialogComponent, {
+      width: '350px',
+      data: {
+        communityId: this.community.id
       }
     });
   }

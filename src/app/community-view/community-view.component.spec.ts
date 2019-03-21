@@ -219,4 +219,8 @@ describe('CommunityViewComponent', () => {
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityInfoDialogComponent));
   }));
+
+  it('should allow user to invite other users', fakeAsync(() => {
+   expect(component.canInviteUsers).toBeTruthy();
+  }));
 });

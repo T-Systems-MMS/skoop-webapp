@@ -55,6 +55,7 @@ import { FormatCounterPipe } from './format-counter.pipe';
 import { ClosedCommunityInfoDialogComponent } from './shared/closed-community-info-dialog/closed-community-info-dialog.component';
 import { RecommendedCommunitiesComponent } from './recommended-communities/recommended-communities.component';
 import { CommunityCardComponent } from './shared/community-card/community-card.component';
+import { CommunityInvitationDialogComponent } from './community-view/community-invitation-dialog.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -104,6 +105,7 @@ export const CUSTOM_FORMATS = {
     ClosedCommunityInfoDialogComponent,
     RecommendedCommunitiesComponent,
     CommunityCardComponent,
+    CommunityInvitationDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -147,7 +149,8 @@ export const CUSTOM_FORMATS = {
     CommunitiesNewComponent,
     CommunitiesEditComponent,
     ClosedCommunityConfirmDialogComponent,
-    ClosedCommunityInfoDialogComponent
+    ClosedCommunityInfoDialogComponent,
+    CommunityInvitationDialogComponent
   ],
   bootstrap: [AppComponent]
 })
