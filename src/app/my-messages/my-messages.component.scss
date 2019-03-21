@@ -1,11 +1,14 @@
-.my-messages-table table {
-  width: 100%;
+@import "variables";
+
+.messages-card {
+  @extend %base-card;
 }
 
-.my-messages-operations > * {
-  margin-right: 10px;
+.messages-error-message {
+  @extend %base-error;
 }
 
-.mat-column-operations {
-  width: 200px;
+.messages-description-label {
+  @extend %base-description-label;
 }
+

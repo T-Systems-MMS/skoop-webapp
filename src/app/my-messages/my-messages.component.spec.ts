@@ -14,7 +14,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MatTableModule } from '@angular/material';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -121,7 +120,7 @@ describe('MyMessagesComponent', () => {
         BrowserAnimationsModule,
         MatMomentDateModule,
         ReactiveFormsModule,
-        MatTableModule
+        RouterTestingModule
       ],
       declarations: [ MyMessagesComponent ],
       providers: [
