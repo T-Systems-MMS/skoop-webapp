@@ -11,6 +11,8 @@ import { MatDialog } from '@angular/material';
 import { User } from '../users/user';
 import { CommunityType } from '../communities/community-type.enum';
 import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { CommunityUserResponse } from '../communities/community-user-response';
+import { CommunityRole } from '../communities/community-role.enum';
 
 @Component({
   selector: 'app-community-view',
@@ -22,6 +24,8 @@ export class CommunityViewComponent implements OnInit {
   private currentUserId: string;
 
   community: CommunityResponse;
+  communityMembers: CommunityUserResponse[] = [];
+  communityManagers: CommunityUserResponse[] = [];
   errorMessage: string = null;
   isCommunityMember: boolean;
   isCommunityManager: boolean;
@@ -39,16 +43,16 @@ export class CommunityViewComponent implements OnInit {
       .pipe(map(params => params.get('communityId')))
       .subscribe(communityId => {
         this.loadCommunity(communityId);
+        this.loadCommunityUsers(communityId);
       });
   }
 
   joinCommunity() {
-    this.communityService.joinCommunity(this.community.id).subscribe((community: CommunityResponse) => {
-      if (community.type === CommunityType.CLOSED) {
-        this.showInfoDialog(community);
+    this.communityService.joinCommunity(this.community.id).subscribe((communityUserResponse: CommunityUserResponse) => {
+      if (this.community.type === CommunityType.CLOSED) {
+        this.showInfoDialog(this.community);
       } else {
         this.isCommunityMember = true;
-        this.community = community;
       }
     }, (errorResponse: HttpErrorResponse) => {
       this.handleErrorResponse(errorResponse);
@@ -64,9 +68,8 @@ export class CommunityViewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.communityService.leaveCommunity(this.community.id).subscribe((community: CommunityResponse) => {
+        this.communityService.leaveCommunity(this.community.id).subscribe(() => {
           this.isCommunityMember = false;
-          this.community = community;
         }, (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
         });
@@ -75,11 +78,10 @@ export class CommunityViewComponent implements OnInit {
   }
 
   /**
-   * User can leave a community when he/she is not the only member or is not the only manager
+   * User can leave a community when he/she is a member of a community and is not a community manager.
    */
   canLeaveCommunity() {
-    return !this.isCommunityManager && this.isCommunityMember && this.community.members && this.community.members.length > 1
-      || this.isCommunityManager && this.community.managers && this.community.managers.length > 1;
+    return !this.isCommunityManager && this.isCommunityMember;
   }
 
   canRemoveMember(user: User) {
@@ -95,9 +97,7 @@ export class CommunityViewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.communityService.removeMember(this.community.id, member.id).subscribe((community: CommunityResponse) => {
-          this.community = community;
-        }, (errorResponse: HttpErrorResponse) => {
+        this.communityService.removeMember(this.community.id, member.id).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
         });
       }
@@ -108,17 +108,34 @@ export class CommunityViewComponent implements OnInit {
     this.communityService.getCommunity(communityId)
       .subscribe(community => {
         this.community = community;
-        this.detectMembership(community);
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
   }
 
-  private detectMembership(community: CommunityResponse) {
+  private loadCommunityUsers(communityId: string) {
+    this.communityService.getCommunityUsers(communityId, null).subscribe((communityUsers: CommunityUserResponse[]) => {
+      this.detectMembership(communityUsers);
+    }, (errorResponse: HttpErrorResponse) => {
+      if (errorResponse.status !== 403) {
+        this.handleErrorResponse(errorResponse);
+      } else {
+        this.isCommunityMember = false;
+        this.isCommunityManager = false;
+      }
+    });
+  }
+
+  private detectMembership(communityUsers: CommunityUserResponse[]) {
+    if (!communityUsers) {
+      return;
+    }
     this.userIdentityService.getUserIdentity().subscribe(userIdentity => {
       this.currentUserId = userIdentity.userId;
-      this.isCommunityMember = community.members && community.members.find(item => item.id === userIdentity.userId) != null;
-      this.isCommunityManager = community.managers && community.managers.find(item => item.id === userIdentity.userId) != null;
+      this.communityMembers = communityUsers.filter(cm => cm.role === CommunityRole.MEMBER);
+      this.communityManagers = communityUsers.filter(cm => cm.role === CommunityRole.MANAGER);
+      this.isCommunityMember = this.communityMembers && this.communityMembers.some(item => item.user.id === userIdentity.userId);
+      this.isCommunityManager = this.communityManagers && this.communityManagers.some(item => item.user.id === userIdentity.userId);
     }, errorResponse => {
       this.handleErrorResponse(errorResponse);
     });

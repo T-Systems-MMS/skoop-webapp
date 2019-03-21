@@ -63,7 +63,7 @@ export class CommunitiesNewComponent implements OnInit {
     this.loadUsers();
     this.communityForm = this.formBuilder.group({
       title: new FormControl('', Validators.required),
-      type: new FormControl(CommunityType.OPENED),
+      type: new FormControl(CommunityType.OPEN),
       skills: new FormControl([]),
       description: new FormControl(''),
       links: new FormArray([]),
@@ -81,7 +81,7 @@ export class CommunitiesNewComponent implements OnInit {
 
   createCommunity() {
     const communityData = this.getCommunityData();
-    if (communityData.type === CommunityType.OPENED) {
+    if (communityData.type === CommunityType.OPEN) {
       this.innerCreateCommunity(communityData);
     } else {
       const dialogRef = this.dialog.open(ClosedCommunityConfirmDialogComponent, {
