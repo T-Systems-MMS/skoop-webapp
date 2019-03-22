@@ -1,4 +1,4 @@
-import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
 
 import { CommunityViewComponent } from './community-view.component';
 import { AppMaterialModule } from '../app-material.module';
@@ -17,7 +17,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
 
@@ -72,7 +72,7 @@ describe('CommunityViewComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [CommunityViewComponent, DeleteConfirmationDialogComponent, ClosedCommunityInfoDialogComponent],
+      declarations: [CommunityViewComponent, DeleteConfirmationDialogComponent, InfoDialogComponent],
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
@@ -154,7 +154,7 @@ describe('CommunityViewComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [DeleteConfirmationDialogComponent, ClosedCommunityInfoDialogComponent]
+          entryComponents: [DeleteConfirmationDialogComponent, InfoDialogComponent]
         }
       })
       .compileComponents();
@@ -225,6 +225,10 @@ describe('CommunityViewComponent', () => {
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
-    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityInfoDialogComponent));
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
   }));
+
+  it('should allow user to invite other users', () => {
+   expect(component.canInviteUsers).toBeTruthy();
+  });
 });

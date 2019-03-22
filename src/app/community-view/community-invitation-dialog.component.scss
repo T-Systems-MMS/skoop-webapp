@@ -1,0 +1,13 @@
+@import "variables";
+
+.invitation-dialog-form-field {
+  width: 100%;
+}
+
+.invitation-dialog-actions {
+  margin-right: 16px;
+}
+
+.invitation-dialog-error {
+  @extend %base-error;
+}

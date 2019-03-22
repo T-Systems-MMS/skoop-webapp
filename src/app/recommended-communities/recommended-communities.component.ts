@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { CommunityResponse } from '../communities/community-response';
 import { CommunityType } from '../communities/community-type.enum';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { CommunityUserResponse } from '../communities/community-user-response';
@@ -40,7 +40,7 @@ export class RecommendedCommunitiesComponent implements OnInit {
   }
 
   private showInfoDialog(community: CommunityResponse) {
-    this.dialog.open(ClosedCommunityInfoDialogComponent, {
+    this.dialog.open(InfoDialogComponent, {
       width: '350px',
       data: Object.assign({}, community)
     });
