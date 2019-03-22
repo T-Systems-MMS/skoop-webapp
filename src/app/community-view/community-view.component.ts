@@ -10,7 +10,7 @@ import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation
 import { MatDialog } from '@angular/material';
 import { User } from '../users/user';
 import { CommunityType } from '../communities/community-type.enum';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
 import { CommunityInvitationDialogComponent } from './community-invitation-dialog.component';
@@ -51,7 +51,7 @@ export class CommunityViewComponent implements OnInit {
   joinCommunity() {
     this.communityService.joinCommunity(this.community.id).subscribe((communityUserResponse: CommunityUserResponse) => {
       if (this.community.type === CommunityType.CLOSED) {
-        this.showInfoDialog(this.community);
+        this.showCommunityInfoDialog(this.community);
       } else {
         this.isCommunityMember = true;
       }
@@ -120,6 +120,8 @@ export class CommunityViewComponent implements OnInit {
       data: {
         communityId: this.community.id
       }
+    }).afterClosed().subscribe((users: User[]) => {
+      this.showUsersInfoDialog(users);
     });
   }
 
@@ -166,10 +168,22 @@ export class CommunityViewComponent implements OnInit {
     this.changeDetector.markForCheck();
   }
 
-  private showInfoDialog(community: CommunityResponse) {
-    this.dialog.open(ClosedCommunityInfoDialogComponent, {
+  private showCommunityInfoDialog(community: CommunityResponse) {
+    this.dialog.open(InfoDialogComponent, {
       width: '350px',
-      data: Object.assign({}, community)
+      data: {
+        message: `The join request has been successfully sent to the community "${community.title}".`
+      }
+    });
+  }
+
+  private showUsersInfoDialog(users: User[]) {
+    const userNames = users.map(user => `${user.firstName} ${user.lastName}`).join(', ');
+    this.dialog.open(InfoDialogComponent, {
+      width: '350px',
+      data: {
+        message: `Users ${userNames} were successfully invited to join the community.`
+      }
     });
   }
 }

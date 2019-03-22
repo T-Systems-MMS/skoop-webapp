@@ -12,6 +12,7 @@ import { UsersService } from '../users/users.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 
 @Component({
   selector: 'app-community-invitation-dialog',
@@ -67,8 +68,8 @@ export class CommunityInvitationDialogComponent implements OnInit {
     }
 
     this.registrationService.inviteUsers(this.dialogData.communityId, this.usersArray.map(item => item.id))
-      .subscribe(() => {
-        this.dialogRef.close();
+      .subscribe((data: CommunityUserRegistrationResponse[]) => {
+        this.dialogRef.close(data.map(item => item.user));
       }, errorResponse => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772

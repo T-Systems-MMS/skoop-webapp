@@ -52,7 +52,7 @@ import { CommunityViewComponent } from './community-view/community-view.componen
 import { SearchUserFormComponent } from './search-users/search-user-form/search-user-form.component';
 import { SearchUserResultsComponent } from './search-users/search-user-results/search-user-results.component';
 import { FormatCounterPipe } from './format-counter.pipe';
-import { ClosedCommunityInfoDialogComponent } from './shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from './shared/info-dialog/info-dialog.component';
 import { RecommendedCommunitiesComponent } from './recommended-communities/recommended-communities.component';
 import { CommunityCardComponent } from './shared/community-card/community-card.component';
 import { CommunityInvitationDialogComponent } from './community-view/community-invitation-dialog.component';
@@ -102,7 +102,7 @@ export const CUSTOM_FORMATS = {
     SearchUserFormComponent,
     SearchUserResultsComponent,
     FormatCounterPipe,
-    ClosedCommunityInfoDialogComponent,
+    InfoDialogComponent,
     RecommendedCommunitiesComponent,
     CommunityCardComponent,
     CommunityInvitationDialogComponent,
@@ -149,7 +149,7 @@ export const CUSTOM_FORMATS = {
     CommunitiesNewComponent,
     CommunitiesEditComponent,
     ClosedCommunityConfirmDialogComponent,
-    ClosedCommunityInfoDialogComponent,
+    InfoDialogComponent,
     CommunityInvitationDialogComponent
   ],
   bootstrap: [AppComponent]

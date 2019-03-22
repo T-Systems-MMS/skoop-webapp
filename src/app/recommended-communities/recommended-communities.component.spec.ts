@@ -15,7 +15,7 @@ import { of } from 'rxjs';
 import { Community } from '../communities/community';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatDialog } from '@angular/material';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
@@ -70,7 +70,7 @@ describe('RecommendedCommunitiesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ RecommendedCommunitiesComponent, CommunityCardComponent, ClosedCommunityInfoDialogComponent ],
+      declarations: [ RecommendedCommunitiesComponent, CommunityCardComponent, InfoDialogComponent ],
       providers: [
         {
           provide: CommunitiesService, useValue: jasmine.createSpyObj('communityService', {
@@ -97,7 +97,7 @@ describe('RecommendedCommunitiesComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [ClosedCommunityInfoDialogComponent]
+          entryComponents: [InfoDialogComponent]
         }
       })
     .compileComponents();
@@ -130,6 +130,6 @@ describe('RecommendedCommunitiesComponent', () => {
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
-    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityInfoDialogComponent));
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
   }));
 });
