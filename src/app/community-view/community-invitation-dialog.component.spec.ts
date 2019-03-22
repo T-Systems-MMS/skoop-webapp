@@ -13,6 +13,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { By } from '@angular/platform-browser';
 
 const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 
@@ -33,6 +34,19 @@ const users: User[] = [{
   coach: false,
 }];
 
+const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
+  {
+    user: users[0],
+    approvedByUser: false,
+    approvedByCommunity: true
+  },
+  {
+    user: users[1],
+    approvedByUser: false,
+    approvedByCommunity: true
+  }
+];
+
 describe('CommunityInvitationDialogComponent', () => {
   let component: CommunityInvitationDialogComponent;
   let fixture: ComponentFixture<CommunityInvitationDialogComponent>;
@@ -51,14 +65,16 @@ describe('CommunityInvitationDialogComponent', () => {
         GlobalErrorHandlerService,
         {
           provide: CommunityRegistrationService,
-          useValue: jasmine.createSpyObj('registrationService', {'inviteUsers': of<CommunityUserRegistrationResponse[]>()})
+          useValue: jasmine.createSpyObj('registrationService', {'inviteUsers': of<CommunityUserRegistrationResponse[]>(communityUserRegistrations)})
         },
         {
           provide: UsersService,
           useValue: jasmine.createSpyObj('userService', {'getUserSuggestions': of<User[]>(users)})
         },
         {provide: MAT_DIALOG_DATA, useValue: {communityId: communityId}},
-        { provide: MatDialogRef, useValue: {} },
+        {
+          provide: MatDialogRef,
+          useValue: jasmine.createSpyObj('dialogRef', {'close': of<void>()}) },
       ]
     })
     .compileComponents();
@@ -75,11 +91,11 @@ describe('CommunityInvitationDialogComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should not call the service when list of users is empty', async(() => {
-    const registrationService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
+  it('should disable button when there are no users to invite', async(() => {
+    component.usersArray.splice(0, component.usersArray.length);
 
-    component.inviteUsers();
-    expect(registrationService.inviteUsers).not.toHaveBeenCalled();
+    const inviteButton = fixture.debugElement.query(By.css('#invitation-dialog-button'));
+    expect(inviteButton.nativeElement.disabled).toBeTruthy();
   }));
 
   it('should invite list of users', async(() => {
@@ -92,6 +108,9 @@ describe('CommunityInvitationDialogComponent', () => {
         communityId,
         [users[0].id, users[1].id]
       );
+
+      const dialogRef = TestBed.get(MatDialogRef);
+      expect(dialogRef.close).toHaveBeenCalledWith([communityUserRegistrations[0].user, communityUserRegistrations[1].user]);
     });
   }));
 });

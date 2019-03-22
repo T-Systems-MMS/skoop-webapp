@@ -23,7 +23,7 @@
   </mat-form-field>
   <div>
     <button mat-raised-button id="invitation-dialog-button" color="primary" (click)="inviteUsers()"
-            class="invitation-dialog-actions">Invite users
+            [disabled]="!usersCanBeInvited()" class="invitation-dialog-actions">Invite users
     </button>
     <button mat-raised-button (click)="cancel()" aria-label="Close" class="invitation-dialog-actions">Cancel</button>
   </div>

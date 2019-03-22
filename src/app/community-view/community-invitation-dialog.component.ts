@@ -63,10 +63,6 @@ export class CommunityInvitationDialogComponent implements OnInit {
   }
 
   inviteUsers() {
-    if (!this.usersArray || this.usersArray.length === 0) {
-      return;
-    }
-
     this.registrationService.inviteUsers(this.dialogData.communityId, this.usersArray.map(item => item.id))
       .subscribe((data: CommunityUserRegistrationResponse[]) => {
         this.dialogRef.close(data.map(item => item.user));
@@ -75,6 +71,10 @@ export class CommunityInvitationDialogComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
+  }
+
+  usersCanBeInvited(): boolean {
+    return this.usersArray && this.usersArray.length > 0;
   }
 
   cancel() {

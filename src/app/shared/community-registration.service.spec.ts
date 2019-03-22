@@ -28,7 +28,7 @@ describe('CommunityRegistrationService', () => {
     const userIds: string[] = ['d11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', 'e11235ab-f13e-4fd6-b5d6-9c4c4e18aa6g'];
     const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 
-    const testCommunityResponse: CommunityUserRegistrationResponse[] = [
+    const communityUserRegistrationResponse: CommunityUserRegistrationResponse[] = [
       {
         user: {
           id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
@@ -48,7 +48,7 @@ describe('CommunityRegistrationService', () => {
     ];
 
     communityRegistrationService.inviteUsers(communityId, userIds).subscribe(community => {
-      expect(community).toEqual(testCommunityResponse);
+      expect(community).toEqual(communityUserRegistrationResponse);
     });
 
     const request = httpTestingController.expectOne({
@@ -59,6 +59,6 @@ describe('CommunityRegistrationService', () => {
     expect(request.request.responseType).toEqual('json');
     expect(request.request.body).toEqual({userIds: userIds});
 
-    request.flush(testCommunityResponse);
+    request.flush(communityUserRegistrationResponse);
   }));
 });
