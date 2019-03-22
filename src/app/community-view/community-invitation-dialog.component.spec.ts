@@ -9,11 +9,11 @@ import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { of } from 'rxjs';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
-import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { By } from '@angular/platform-browser';
+import { CommunityUserService } from '../shared/community-user.service';
 
 const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 
@@ -65,11 +65,14 @@ describe('CommunityInvitationDialogComponent', () => {
         GlobalErrorHandlerService,
         {
           provide: CommunityRegistrationService,
-          useValue: jasmine.createSpyObj('registrationService', {'inviteUsers': of<CommunityUserRegistrationResponse[]>(communityUserRegistrations)})
+          useValue: jasmine.createSpyObj('registrationService',
+            {
+              'inviteUsers': of<CommunityUserRegistrationResponse[]>(communityUserRegistrations)
+            })
         },
         {
-          provide: UsersService,
-          useValue: jasmine.createSpyObj('userService', {'getUserSuggestions': of<User[]>(users)})
+          provide: CommunityUserService,
+          useValue: jasmine.createSpyObj('userService', {'getCommunityUserSuggestions': of<User[]>(users)})
         },
         {provide: MAT_DIALOG_DATA, useValue: {communityId: communityId}},
         {

@@ -8,11 +8,11 @@ import {
 import { Observable } from 'rxjs';
 import { User } from '../users/user';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { UsersService } from '../users/users.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { CommunityUserService } from '../shared/community-user.service';
 
 @Component({
   selector: 'app-community-invitation-dialog',
@@ -31,7 +31,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: InvitationDialogData,
               public dialogRef: MatDialogRef<CommunityInvitationDialogComponent>,
-              private usersService: UsersService,
+              private usersService: CommunityUserService,
               private registrationService: CommunityRegistrationService,
               private formBuilder: FormBuilder,
               private changeDetector: ChangeDetectorRef,
@@ -86,7 +86,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
       filter(search => typeof search === 'string'),
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(search => this.usersService.getUserSuggestions(search))
+      switchMap(search => this.usersService.getCommunityUserSuggestions(this.dialogData.communityId, search))
     );
   }
 
