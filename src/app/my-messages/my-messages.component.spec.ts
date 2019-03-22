@@ -1,112 +1,62 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyMessagesComponent } from './my-messages.component';
-import { UserIdentity } from '../shared/user-identity';
-import { UserIdentityService } from '../shared/user-identity.service';
 import { of } from 'rxjs';
-import { MessageService } from './message.service';
-import { Message } from './message';
 import { MessageStatus } from './message-status.enum';
-import { MessageType } from './message-type.enum';
 import { CommunityType } from '../communities/community-type.enum';
 import { AppMaterialModule } from '../app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
 
-const authenticatedUser: UserIdentity = {
-  userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-  userName: 'tester',
-  firstName: 'Toni',
-  lastName: 'Tester',
-  email: 'toni.tester@myskills.io',
-  roles: ['ROLE_USER']
-};
-
-const userMessages: Message[] = [
+const response: CommunityUserRegistrationResponse[] = [
   {
-    id: '1',
-    initiator: {
-      id: '1',
-      firstName: 'some',
-      lastName: 'user',
-      userName: 'fila'
-
+    id: '12345',
+    user: {
+      id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+      userName: 'testing',
+      firstName: 'Tina',
+      lastName: 'Testing',
+      email: 'tina.testing@myskills.io',
+      coach: false,
     },
-    recipient:  {
-      id: '4fc55946-96d6-4306-883c-5480917bfad9',
-      firstName: 'firstName',
-      lastName: 'lastNmae',
-      userName: 'fila'
-
-    },
+    approvedByUser: false,
+    approvedByCommunity: true,
     status: MessageStatus.PENDING,
-    type: MessageType.COMMUNITY_JOIN_REQUEST,
     community: {
       id: '1',
       title: 'community',
       description: '',
       links: [],
-      type: CommunityType.CLOSED
+      type: CommunityType.OPEN,
     },
     creationDatetime: new Date()
   },
   {
-    id: '12',
-    initiator: {
-      id: '1',
-      firstName: 'some',
-      lastName: 'user',
-      userName: 'fila'
-
+    id: '567890',
+    user: {
+      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+      userName: 'testbed',
+      firstName: 'Tabia',
+      lastName: 'Testbed',
+      email: 'tabia.testbed@myskills.io',
+      coach: false,
     },
-    recipient:  {
-      id: '4fc55946-96d6-4306-883c-5480917bfad9',
-      firstName: 'firstName',
-      lastName: 'lastNmae',
-      userName: 'fila'
-
-    },
-    status: MessageStatus.ACCEPTED,
-    type: MessageType.COMMUNITY_JOIN_REQUEST,
-    community: {
-      id: '1',
-      title: 'community',
-      description: '',
-      links: [],
-      type: CommunityType.CLOSED
-    },
-    creationDatetime: new Date()
-  },
-  {
-    id: '1',
-    initiator: {
-      id: '1',
-      firstName: 'some',
-      lastName: 'user',
-      userName: 'fila'
-
-    },
-    recipient:  {
-      id: '4fc55946-96d6-4306-883c-5480917bfad9',
-      firstName: 'firstName',
-      lastName: 'lastNmae',
-      userName: 'fila'
-
-    },
+    approvedByUser: false,
+    approvedByCommunity: true,
     status: MessageStatus.PENDING,
-    type: MessageType.MESSAGE,
     community: {
       id: '1',
       title: 'community',
       description: '',
       links: [],
-      type: CommunityType.CLOSED
+      type: CommunityType.OPEN
     },
     creationDatetime: new Date()
-  },
-
+  }
 ];
 
 describe('MyMessagesComponent', () => {
@@ -125,13 +75,8 @@ describe('MyMessagesComponent', () => {
       declarations: [ MyMessagesComponent ],
       providers: [
         {
-          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
-            'getUserIdentity': of(authenticatedUser)
-          })
-        },
-        {
-          provide: MessageService, useValue: jasmine.createSpyObj('messageService', {
-            'getMessages': of(userMessages)
+          provide: CommunityRegistrationService, useValue: jasmine.createSpyObj('communityRegistrationService', {
+            'getUserRegistrations': of(response)
           })
         },
       ]

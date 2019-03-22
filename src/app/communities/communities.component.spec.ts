@@ -31,7 +31,6 @@ const communities: CommunityResponse[] = [
     title: 'group1',
     description: 'super group description',
     type: CommunityType.OPEN,
-    recommended: true,
     links: [
       {
         name: 'google',

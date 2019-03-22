@@ -14,6 +14,8 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { By } from '@angular/platform-browser';
 import { CommunityUserService } from '../shared/community-user.service';
+import { MessageStatus } from '../my-messages/message-status.enum';
+import { CommunityType } from '../communities/community-type.enum';
 
 const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 
@@ -36,14 +38,34 @@ const users: User[] = [{
 
 const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
   {
+    id: '12345',
     user: users[0],
     approvedByUser: false,
-    approvedByCommunity: true
+    approvedByCommunity: true,
+    status: MessageStatus.PENDING,
+    community: {
+      id: '1',
+      title: 'community',
+      description: '',
+      links: [],
+      type: CommunityType.OPEN,
+    },
+    creationDatetime: new Date()
   },
   {
+    id: '567890',
     user: users[1],
     approvedByUser: false,
-    approvedByCommunity: true
+    approvedByCommunity: true,
+    status: MessageStatus.PENDING,
+    community: {
+      id: '1',
+      title: 'community',
+      description: '',
+      links: [],
+      type: CommunityType.OPEN
+    },
+    creationDatetime: new Date()
   }
 ];
 

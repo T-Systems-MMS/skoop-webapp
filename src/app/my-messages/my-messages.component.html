@@ -6,10 +6,6 @@
     <div>
       <div fxFlex>
         <div fxLayout="row">
-          <div class="messages-description-label">Sender:</div>
-          <div>{{message.initiator.firstName}} {{message.initiator.lastName}}</div>
-        </div>
-        <div fxLayout="row">
           <div class="messages-description-label">Date:</div>
           <div>{{message.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
         </div>
@@ -20,10 +16,6 @@
         <div fxLayout="row">
           <div class="messages-description-label">Status:</div>
           <div>{{message.status}}</div>
-        </div>
-        <div fxLayout="row">
-          <div class="messages-description-label">Type:</div>
-          <div>{{message.type}}</div>
         </div>
       </div>
       <div fxFlex="none">

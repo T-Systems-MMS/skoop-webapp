@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageService } from './message.service';
-import { UserIdentityService } from '../shared/user-identity.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Message } from './message';
-import { switchMap } from 'rxjs/operators';
-import { MessageType } from './message-type.enum';
-import { MessageStatus } from './message-status.enum';
 import { Observable, of } from 'rxjs';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRegistration } from '../shared/community-user-registration';
 
 @Component({
   selector: 'app-my-messages',
@@ -15,32 +12,36 @@ import { Observable, of } from 'rxjs';
 })
 export class MyMessagesComponent implements OnInit {
 
-  private currentUserId: string;
-  messages$: Observable<Message[]> = of([]);
+  messages$: Observable<CommunityUserRegistrationResponse[]> = of([]);
 
-  constructor(private messageService: MessageService,
-              private userIdentityService: UserIdentityService) {
+  constructor(private communityRegistrationService: CommunityRegistrationService) {
   }
 
   ngOnInit() {
-   this.messages$ = this.userIdentityService.getUserIdentity()
-     .pipe(switchMap(userIdentity => {
-       this.currentUserId = userIdentity.userId;
-       return this.messageService.getMessages(userIdentity.userId);
-     }));
+   this.messages$ = this.communityRegistrationService.getUserRegistrations();
   }
 
-  showButtons(message: Message) {
+  showButtons(message: CommunityUserRegistrationResponse) {
     // return (message.type === MessageType.COMMUNITY_JOIN_REQUEST || message.type === MessageType.INVITATION)
     //   && message.status === MessageStatus.PENDING && message.recipient.id === this.currentUserId;
     return true;
   }
 
-  onAccept(message: Message) {
+  onAccept(message: CommunityUserRegistrationResponse) {
+    const requestData: CommunityUserRegistration = {
+      id: message.id,
+      approvedByUser: true,
+      approvedByCommunity: message.approvedByCommunity
+    };
+    this.communityRegistrationService.updateRegistration(message.community.id, requestData)
+      .subscribe(()=>{
 
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 
-  onDecline(message: Message) {
+  onDecline(message: CommunityUserRegistrationResponse) {
 
   }
 
