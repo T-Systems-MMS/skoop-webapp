@@ -14,7 +14,7 @@ import { CommunityResponse } from './community-response';
 import { User } from '../users/user';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { Community } from './community';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { CommunityUserResponse } from './community-user-response';
 
 @Component({
@@ -144,7 +144,7 @@ export class CommunitiesComponent implements OnInit {
   }
 
   private showInfoDialog(community: CommunityResponse) {
-    this.dialog.open(ClosedCommunityInfoDialogComponent, {
+    this.dialog.open(InfoDialogComponent, {
       width: '350px',
       data: Object.assign({}, community)
     });

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClosedCommunityInfoDialogComponent } from './closed-community-info-dialog.component';
+import { InfoDialogComponent } from './info-dialog.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
 import { CommunityType } from '../../communities/community-type.enum';
 
@@ -20,13 +20,13 @@ const communityData = {
   members: [{id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'}]
 };
 
-describe('ClosedCommunityInfoDialogComponent', () => {
-  let component: ClosedCommunityInfoDialogComponent;
-  let fixture: ComponentFixture<ClosedCommunityInfoDialogComponent>;
+describe('InfoDialogComponent', () => {
+  let component: InfoDialogComponent;
+  let fixture: ComponentFixture<InfoDialogComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ClosedCommunityInfoDialogComponent ],
+      declarations: [ InfoDialogComponent ],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: communityData }
@@ -36,7 +36,7 @@ describe('ClosedCommunityInfoDialogComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ClosedCommunityInfoDialogComponent);
+    fixture = TestBed.createComponent(InfoDialogComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

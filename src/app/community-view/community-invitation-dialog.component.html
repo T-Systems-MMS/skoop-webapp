@@ -1,0 +1,30 @@
+<form [formGroup]="invitationForm" class="invitation-dialog">
+  <div *ngIf="errorMessage" class="invitation-dialog-error">{{errorMessage}}</div>
+  <mat-form-field class="invitation-dialog-form-field">
+    <mat-chip-list #usersChipList>
+      <mat-chip *ngFor="let user of usersArray"
+                selectable="true" removable="true"
+                (removed)="removeUser(user)">
+        {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Users for invitation" #usersInput
+             [formControl]="usersControl"
+             [matAutocomplete]="usersAutocomplete"
+             [matChipInputFor]="usersChipList"
+             matChipInputAddOnBlur="true">
+    </mat-chip-list>
+    <mat-autocomplete #usersAutocomplete="matAutocomplete"
+                      (optionSelected)="addSelectedUser($event)">
+      <mat-option *ngFor="let user of userSuggestions$ | async" [value]="user">
+        {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <div>
+    <button mat-raised-button id="invitation-dialog-button" color="primary" (click)="inviteUsers()"
+            [disabled]="!usersCanBeInvited()" class="invitation-dialog-actions">Invite users
+    </button>
+    <button mat-raised-button (click)="cancel()" aria-label="Close" class="invitation-dialog-actions">Cancel</button>
+  </div>
+</form>

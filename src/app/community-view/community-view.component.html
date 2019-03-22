@@ -24,8 +24,9 @@
       <div class="community-toolbar" *ngIf="isCommunityMember === false">
         <button mat-raised-button color="primary" (click)="joinCommunity()" aria-label="Join">Join</button>
       </div>
-      <div class="community-toolbar" *ngIf="canLeaveCommunity()">
-        <button mat-raised-button (click)="leaveCommunity()" aria-label="Leave">Leave</button>
+      <div class="community-toolbar" >
+        <button mat-raised-button (click)="leaveCommunity()" *ngIf="canLeaveCommunity()" aria-label="Leave">Leave</button>
+        <button mat-raised-button (click)="openInvitationDialog()" *ngIf="canInviteUsers()" aria-label="Invite">Invite</button>
       </div>
       <div>
         <div class="community-label">Community managers</div>

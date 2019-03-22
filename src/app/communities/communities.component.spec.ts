@@ -18,7 +18,7 @@ import { CommunityResponse } from './community-response';
 import { User } from '../users/user';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ClosedCommunityInfoDialogComponent } from '../shared/closed-community-info-dialog/closed-community-info-dialog.component';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { MatDialog } from '@angular/material';
 import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
@@ -94,7 +94,7 @@ describe('CommunitiesComponent', () => {
       declarations: [
         CommunitiesComponent,
         CommunitiesFilterPipe,
-        ClosedCommunityInfoDialogComponent,
+        InfoDialogComponent,
         CommunityCardComponent,
         RecommendedCommunitiesStubComponent],
       providers: [
@@ -142,7 +142,7 @@ describe('CommunitiesComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [ClosedCommunityInfoDialogComponent]
+          entryComponents: [InfoDialogComponent]
         }
       })
       .compileComponents();
@@ -191,7 +191,7 @@ describe('CommunitiesComponent', () => {
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
-    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(ClosedCommunityInfoDialogComponent));
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
   }));
 
   it('should check if the user is manager of a community', fakeAsync(() => {
