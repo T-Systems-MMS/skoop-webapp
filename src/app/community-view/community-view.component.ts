@@ -178,6 +178,11 @@ export class CommunityViewComponent implements OnInit {
   }
 
   private showUsersInfoDialog(users: User[]) {
+    // click on cancel
+    if (!users || users.length === 0) {
+      return;
+    }
+
     const userNames = users.map(user => `${user.firstName} ${user.lastName}`).join(', ');
     this.dialog.open(InfoDialogComponent, {
       width: '350px',
