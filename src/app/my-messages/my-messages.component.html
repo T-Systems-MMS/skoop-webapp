@@ -13,9 +13,9 @@
           <div class="messages-description-label">Community:</div>
           <div><a [routerLink]="['/communities', message.community.id]">{{message.community.title}}</a></div>
         </div>
-        <div fxLayout="row">
+        <div fxLayout="row" *ngIf="message.type === 'INVITATION'">
           <div class="messages-description-label">Status:</div>
-          <div>{{message.status}}</div>
+          <div>{{getStatusText(message)}}</div>
         </div>
       </div>
       <div fxFlex="none">
@@ -23,10 +23,10 @@
            mat-icon-button title="View message" aria-label="View message">
           <mat-icon>visibility</mat-icon>
         </a>
-        <button mat-icon-button *ngIf="showButtons(message)" (click)="onAccept(message)" title="Accept" aria-label="Accept">
+        <button mat-icon-button *ngIf="showInvitationButtons(message)" (click)="onAccept(message)" title="Accept" aria-label="Accept">
           <mat-icon>done_outline</mat-icon>
         </button>
-        <button mat-icon-button *ngIf="showButtons(message)" (click)="onDecline(message)" title="Decline" aria-label="Decline">
+        <button mat-icon-button *ngIf="showInvitationButtons(message)" (click)="onDecline(message)" title="Decline" aria-label="Decline">
           <mat-icon>cancel</mat-icon>
         </button>
       </div>

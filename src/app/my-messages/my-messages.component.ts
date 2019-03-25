@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { CommunityUserRegistration } from '../shared/community-user-registration';
+import { Message } from './message';
+import { MessagesService } from './messages.service';
+import { MessageType } from './message-type.enum';
 
 @Component({
   selector: 'app-my-messages',
@@ -12,28 +14,42 @@ import { CommunityUserRegistration } from '../shared/community-user-registration
 })
 export class MyMessagesComponent implements OnInit {
 
-  messages$: Observable<CommunityUserRegistrationResponse[]> = of([]);
+  messages$: Observable<Message[]> = of([]);
 
-  constructor(private communityRegistrationService: CommunityRegistrationService) {
+  constructor(private communityRegistrationService: CommunityRegistrationService,
+              private messageService: MessagesService) {
   }
 
   ngOnInit() {
-   this.messages$ = this.communityRegistrationService.getUserRegistrations();
+   this.messages$ = this.messageService.getUserRegistrations();
   }
 
-  showButtons(message: CommunityUserRegistrationResponse) {
-    // return (message.type === MessageType.COMMUNITY_JOIN_REQUEST || message.type === MessageType.INVITATION)
-    //   && message.status === MessageStatus.PENDING && message.recipient.id === this.currentUserId;
-    return true;
+  showInvitationButtons(message: Message) {
+    return message.type === MessageType.INVITATION
+      && (message.registration.approvedByUser == null || message.registration.approvedByCommunity == null);
+
   }
 
-  onAccept(message: CommunityUserRegistrationResponse) {
+  onAccept(message: Message) {
     const requestData: CommunityUserRegistration = {
       id: message.id,
       approvedByUser: true,
-      approvedByCommunity: message.approvedByCommunity
+      approvedByCommunity: true
     };
-    this.communityRegistrationService.updateRegistration(message.community.id, requestData)
+    this.updateRegistration(message.community.id, requestData);
+  }
+
+  onDecline(message: Message) {
+    const requestData: CommunityUserRegistration = {
+      id: message.id,
+      approvedByUser: message.registration.approvedByUser || false,
+      approvedByCommunity: message.registration.approvedByCommunity || false
+    };
+    this.updateRegistration(message.community.id, requestData);
+  }
+
+  private updateRegistration(communityId: string, registration: CommunityUserRegistration) {
+    this.communityRegistrationService.updateRegistration(communityId, registration)
       .subscribe(()=>{
 
       }, errorResponse => {
@@ -41,8 +57,20 @@ export class MyMessagesComponent implements OnInit {
       });
   }
 
-  onDecline(message: CommunityUserRegistrationResponse) {
+  getStatusText(message: Message) {
+    if (!message.registration) {
+      return '';
+    }
 
+    if (message.registration.approvedByUser && message.registration.approvedByCommunity) {
+      return 'Accepted';
+    }
+
+    if (message.registration.approvedByCommunity === false || message.registration.approvedByUser === false) {
+      return 'Declined';
+    }
+
+    return 'Pending';
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse) {

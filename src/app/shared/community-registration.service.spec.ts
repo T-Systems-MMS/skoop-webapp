@@ -4,8 +4,6 @@ import { CommunityRegistrationService } from './community-registration.service';
 import { CommunityUserRegistrationResponse } from './community-user-registration-response';
 import { environment } from '../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { MessageStatus } from '../my-messages/message-status.enum';
-import { CommunityType } from '../communities/community-type.enum';
 
 describe('CommunityRegistrationService', () => {
   let httpTestingController: HttpTestingController;
@@ -42,16 +40,7 @@ describe('CommunityRegistrationService', () => {
           coach: false,
         },
         approvedByUser: false,
-        approvedByCommunity: true,
-        status: MessageStatus.PENDING,
-        community: {
-          id: '1',
-          title: 'community',
-          description: '',
-          links: [],
-          type: CommunityType.OPEN,
-        },
-        creationDatetime: new Date()
+        approvedByCommunity: true
       },
       {
         id: '567890',
@@ -64,16 +53,7 @@ describe('CommunityRegistrationService', () => {
           coach: false,
         },
         approvedByUser: false,
-        approvedByCommunity: true,
-        status: MessageStatus.PENDING,
-        community: {
-          id: '1',
-          title: 'community',
-          description: '',
-          links: [],
-          type: CommunityType.OPEN
-        },
-        creationDatetime: new Date()
+        approvedByCommunity: true
       }
     ];
 
