@@ -6,6 +6,8 @@ import { CommunityUserRegistration } from '../shared/community-user-registration
 import { Message } from './message';
 import { MessagesService } from './messages.service';
 import { MessageType } from './message-type.enum';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-my-messages',
@@ -17,7 +19,8 @@ export class MyMessagesComponent implements OnInit {
   messages$: Observable<Message[]> = of([]);
 
   constructor(private communityRegistrationService: CommunityRegistrationService,
-              private messageService: MessagesService) {
+              private messageService: MessagesService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -40,12 +43,22 @@ export class MyMessagesComponent implements OnInit {
   }
 
   onDecline(message: Message) {
-    const requestData: CommunityUserRegistration = {
-      id: message.id,
-      approvedByUser: message.registration.approvedByUser || false,
-      approvedByCommunity: message.registration.approvedByCommunity || false
-    };
-    this.updateRegistration(message.community.id, requestData);
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        message: 'Are you sure you want to decline the request?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        const requestData: CommunityUserRegistration = {
+          id: message.id,
+          approvedByUser: message.registration.approvedByUser || false,
+          approvedByCommunity: message.registration.approvedByCommunity || false
+        };
+        this.updateRegistration(message.community.id, requestData);
+      }
+    });
   }
 
   private updateRegistration(communityId: string, registration: CommunityUserRegistration) {
