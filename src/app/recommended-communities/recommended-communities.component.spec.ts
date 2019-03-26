@@ -19,6 +19,10 @@ import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { UserIdentity } from '../shared/user-identity';
 
 const communities: CommunityResponse[] = [
   {
@@ -57,6 +61,32 @@ const communities: CommunityResponse[] = [
   } as CommunityResponse
 ];
 
+const authenticatedUser: UserIdentity = {
+  userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+  userName: 'tester',
+  firstName: 'Toni',
+  lastName: 'Tester',
+  email: 'toni.tester@myskills.io',
+  roles: ['ROLE_USER']
+};
+
+const currentUser = {
+  id: authenticatedUser.userId,
+  userName: authenticatedUser.userName,
+  firstName: authenticatedUser.firstName,
+  lastName: authenticatedUser.lastName,
+  email: authenticatedUser.email,
+  coach: false,
+};
+
+const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
+  {
+    user: currentUser,
+    approvedByUser: true,
+    approvedByCommunity: null
+  }
+];
+
 describe('RecommendedCommunitiesComponent', () => {
   let component: RecommendedCommunitiesComponent;
   let fixture: ComponentFixture<RecommendedCommunitiesComponent>;
@@ -92,6 +122,18 @@ describe('RecommendedCommunitiesComponent', () => {
             } as CommunityResponse)
           })
         },
+        {
+          provide: CommunityRegistrationService,
+          useValue: jasmine.createSpyObj('registrationService',
+            {
+              'inviteUsers': of<CommunityUserRegistrationResponse[]>(communityUserRegistrations)
+            })
+        },
+        {
+          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
+            'getUserIdentity': of(authenticatedUser)
+          })
+        },
         GlobalErrorHandlerService
       ]
     })
@@ -113,6 +155,15 @@ describe('RecommendedCommunitiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should remove the community from the list of recommended communities when user has joined to it', fakeAsync(() => {
+    const communityToJoin = communities[1];
+    expect(component.communities).toContain(communityToJoin);
+
+    component.joinCommunity(communityToJoin);
+    fixture.detectChanges();
+    expect(component.communities).not.toContain(communityToJoin);
+  }));
+
 
   it('should display closed community info dialog', fakeAsync(() => {
     const communityUserResponse = {
@@ -125,11 +176,16 @@ describe('RecommendedCommunitiesComponent', () => {
     const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
     communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(communityUserResponse));
 
-    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', type: CommunityType.CLOSED} as CommunityResponse);
+    const registrationService = TestBed.get(CommunityRegistrationService) as CommunityRegistrationService;
+
+    const closedCommunity = {id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', type: CommunityType.CLOSED} as CommunityResponse;
+    component.joinCommunity(closedCommunity);
     fixture.detectChanges();
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
+
+    expect(registrationService.inviteUsers).toHaveBeenCalledWith(closedCommunity.id, [authenticatedUser.userId]);
   }));
 });
