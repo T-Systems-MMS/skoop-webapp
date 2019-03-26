@@ -18,7 +18,7 @@ const response: Message[] = [
   {
     id: '567',
     creationDatetime: new Date(),
-    type: MessageType.INVITATION,
+    type: MessageType.INVITATION_TO_JOIN_COMMUNITY,
     registration: {
       id: '123',
       approvedByUser: false,
@@ -50,7 +50,7 @@ const response: Message[] = [
   {
     id: '567',
     creationDatetime: new Date(),
-    type: MessageType.INVITATION,
+    type: MessageType.INVITATION_TO_JOIN_COMMUNITY,
     registration: {
       id: '123',
       approvedByUser: null,
@@ -67,7 +67,7 @@ const response: Message[] = [
   {
     id: '890',
     creationDatetime: new Date(),
-    type: MessageType.INVITATION,
+    type: MessageType.INVITATION_TO_JOIN_COMMUNITY,
     registration: {
       id: '123',
       approvedByUser: true,

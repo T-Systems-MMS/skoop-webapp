@@ -28,9 +28,8 @@ export class MyMessagesComponent implements OnInit {
   }
 
   showInvitationButtons(message: Message) {
-    return message.type === MessageType.INVITATION
+    return (message.type === MessageType.INVITATION_TO_JOIN_COMMUNITY || message.type === MessageType.REQUEST_TO_JOIN_COMMUNITY)
       && (message.registration.approvedByUser == null || message.registration.approvedByCommunity == null);
-
   }
 
   onAccept(message: Message) {
