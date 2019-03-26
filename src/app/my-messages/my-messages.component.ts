@@ -27,18 +27,22 @@ export class MyMessagesComponent implements OnInit {
    this.messages$ = this.messageService.getUserRegistrations();
   }
 
-  showInvitationButtons(message: Message) {
-    return (message.type === MessageType.INVITATION_TO_JOIN_COMMUNITY || message.type === MessageType.REQUEST_TO_JOIN_COMMUNITY)
+  hasJoinRequestType(message: Message): boolean {
+    return message.type === MessageType.INVITATION_TO_JOIN_COMMUNITY || message.type === MessageType.REQUEST_TO_JOIN_COMMUNITY;
+  }
+
+  showAcceptDeclineButtons(message: Message) {
+    return this.hasJoinRequestType(message)
       && (message.registration.approvedByUser == null || message.registration.approvedByCommunity == null);
   }
 
   onAccept(message: Message) {
     const requestData: CommunityUserRegistration = {
-      id: message.id,
+      id: message.registration.id,
       approvedByUser: true,
       approvedByCommunity: true
     };
-    this.updateRegistration(message.community.id, requestData);
+    this.updateRegistration(message.registration.community.id, requestData);
   }
 
   onDecline(message: Message) {
@@ -51,19 +55,19 @@ export class MyMessagesComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         const requestData: CommunityUserRegistration = {
-          id: message.id,
+          id: message.registration.id,
           approvedByUser: message.registration.approvedByUser || false,
           approvedByCommunity: message.registration.approvedByCommunity || false
         };
-        this.updateRegistration(message.community.id, requestData);
+        this.updateRegistration(message.registration.community.id, requestData);
       }
     });
   }
 
   private updateRegistration(communityId: string, registration: CommunityUserRegistration) {
     this.communityRegistrationService.updateRegistration(communityId, registration)
-      .subscribe(()=>{
-
+      .subscribe(() => {
+        this.messages$ = this.messageService.getUserRegistrations();
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });

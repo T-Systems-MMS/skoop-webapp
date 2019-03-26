@@ -83,6 +83,7 @@ const currentUser = {
 
 const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
   {
+    id: '123',
     user: currentUser,
     approvedByUser: true,
     approvedByCommunity: null

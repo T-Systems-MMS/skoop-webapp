@@ -6,14 +6,28 @@
     <div>
       <div fxFlex>
         <div fxLayout="row">
+          <div class="messages-description-label">Type:</div>
+          <div>{{message.type}}</div>
+        </div>
+        <div fxLayout="row">
           <div class="messages-description-label">Date:</div>
           <div>{{message.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
         </div>
         <div fxLayout="row">
           <div class="messages-description-label">Community:</div>
-          <div><a [routerLink]="['/communities', message.community.id]">{{message.community.title}}</a></div>
+          <div *ngIf="hasJoinRequestType(message); then join_content else notification_content"></div>
         </div>
-        <div fxLayout="row" *ngIf="message.type === 'INVITATION'">
+        <ng-template #join_content>
+          <a [routerLink]="['/communities', message.registration.community.id]">{{message.registration.community.title}}</a>
+        </ng-template>
+        <ng-template #notification_content>
+          <!--<a [routerLink]="['/communities', message.community.id]">{{message.community.title}}</a>-->
+        </ng-template>
+        <div fxLayout="row" *ngIf="message.type === 'REQUEST_TO_JOIN_COMMUNITY'">
+          <div class="messages-description-label">User:</div>
+          <div>{{message.registration.user.firstName}} {{message.registration.user.lastName}}</div>
+        </div>
+        <div fxLayout="row" *ngIf="hasJoinRequestType(message)">
           <div class="messages-description-label">Status:</div>
           <div>{{getStatusText(message)}}</div>
         </div>
@@ -23,12 +37,14 @@
            mat-icon-button title="View message" aria-label="View message">
           <mat-icon>visibility</mat-icon>
         </a>
-        <button mat-icon-button *ngIf="showInvitationButtons(message)" (click)="onAccept(message)" title="Accept" aria-label="Accept">
-          <mat-icon>done_outline</mat-icon>
-        </button>
-        <button mat-icon-button *ngIf="showInvitationButtons(message)" (click)="onDecline(message)" title="Decline" aria-label="Decline">
-          <mat-icon>cancel</mat-icon>
-        </button>
+        <span *ngIf="showAcceptDeclineButtons(message)">
+          <button mat-icon-button (click)="onAccept(message)" title="Accept" aria-label="Accept">
+            <mat-icon>done_outline</mat-icon>
+          </button>
+          <button mat-icon-button (click)="onDecline(message)" title="Decline" aria-label="Decline">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </span>
       </div>
     </div>
   </mat-card>

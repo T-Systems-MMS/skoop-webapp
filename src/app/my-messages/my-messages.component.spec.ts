@@ -22,15 +22,23 @@ const response: Message[] = [
     registration: {
       id: '123',
       approvedByUser: false,
-      approvedByCommunity: true
-    },
-    community: {
-      id: '1',
-      title: 'community',
-      description: '',
-      links: [],
-      type: CommunityType.OPEN,
-    },
+      approvedByCommunity: true,
+      community: {
+        id: '1',
+        title: 'community',
+        description: '',
+        links: [],
+        type: CommunityType.OPEN,
+      },
+      user: {
+        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+        userName: 'testbed',
+        firstName: 'Tabia',
+        lastName: 'Testbed',
+        email: 'tabia.testbed@myskills.io',
+        coach: false,
+      }
+    }
   },
   {
     id: '123',
@@ -54,15 +62,24 @@ const response: Message[] = [
     registration: {
       id: '123',
       approvedByUser: null,
-      approvedByCommunity: true
+      approvedByCommunity: true,
+      community: {
+        id: '1',
+        title: 'community',
+        description: '',
+        links: [],
+        type: CommunityType.OPEN,
+      },
+      user: {
+        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+        userName: 'testbed',
+        firstName: 'Tabia',
+        lastName: 'Testbed',
+        email: 'tabia.testbed@myskills.io',
+        coach: false,
+      }
     },
-    community: {
-      id: '1',
-      title: 'community',
-      description: '',
-      links: [],
-      type: CommunityType.OPEN,
-    },
+
   },
   {
     id: '890',
@@ -71,14 +88,22 @@ const response: Message[] = [
     registration: {
       id: '123',
       approvedByUser: true,
-      approvedByCommunity: true
-    },
-    community: {
-      id: '1',
-      title: 'community',
-      description: '',
-      links: [],
-      type: CommunityType.OPEN,
+      approvedByCommunity: true,
+      community: {
+        id: '1',
+        title: 'community',
+        description: '',
+        links: [],
+        type: CommunityType.OPEN,
+      },
+      user: {
+        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+        userName: 'testbed',
+        firstName: 'Tabia',
+        lastName: 'Testbed',
+        email: 'tabia.testbed@myskills.io',
+        coach: false,
+      }
     },
   }
 ];
@@ -95,7 +120,7 @@ const registrationResponse: CommunityUserRegistrationResponse = {
   },
   approvedByUser: false,
   approvedByCommunity: true
-}
+};
 
 describe('MyMessagesComponent', () => {
   let component: MyMessagesComponent;

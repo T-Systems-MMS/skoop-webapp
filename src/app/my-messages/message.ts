@@ -1,12 +1,12 @@
-import { Community } from '../communities/community';
 import { MessageType } from './message-type.enum';
-import { CommunityUserRegistration } from '../shared/community-user-registration';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { Community } from '../communities/community';
 
 export interface Message {
   id: string;
   creationDatetime: Date;
   type: MessageType;
   community?: Community;
-  registration?: CommunityUserRegistration;
+  registration?: CommunityUserRegistrationResponse;
   attributes?: any;
 }
