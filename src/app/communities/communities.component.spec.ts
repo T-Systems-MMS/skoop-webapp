@@ -86,7 +86,7 @@ const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
   {
     user: currentUser,
     approvedByUser: true,
-    approvedByCommunity: true
+    approvedByCommunity: null
   }
 ];
 

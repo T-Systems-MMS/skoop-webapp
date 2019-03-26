@@ -83,7 +83,7 @@ const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
   {
     user: currentUser,
     approvedByUser: true,
-    approvedByCommunity: true
+    approvedByCommunity: null
   }
 ];
 
@@ -155,7 +155,7 @@ describe('RecommendedCommunitiesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should remove the community form the list of recommended communities when user has joined to it', fakeAsync(() => {
+  it('should remove the community from the list of recommended communities when user has joined to it', fakeAsync(() => {
     const communityToJoin = communities[1];
     expect(component.communities).toContain(communityToJoin);
 
