@@ -24,6 +24,8 @@ import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
 import { CommunityCardComponent } from '../shared/community-card/community-card.component';
 import { Component } from '@angular/core';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 
 const communities: CommunityResponse[] = [
   {
@@ -62,6 +64,32 @@ const communities: CommunityResponse[] = [
   }
 ];
 
+const authenticatedUser: UserIdentity = {
+  userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+  userName: 'tester',
+  firstName: 'Toni',
+  lastName: 'Tester',
+  email: 'toni.tester@myskills.io',
+  roles: ['ROLE_USER']
+};
+
+const currentUser = {
+  id: authenticatedUser.userId,
+  userName: authenticatedUser.userName,
+  firstName: authenticatedUser.firstName,
+  lastName: authenticatedUser.lastName,
+  email: authenticatedUser.email,
+  coach: false,
+};
+
+const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
+  {
+    user: currentUser,
+    approvedByUser: true,
+    approvedByCommunity: null
+  }
+];
+
 @Component({
   selector: 'app-recommended-communities',
   template: ''
@@ -72,15 +100,6 @@ class RecommendedCommunitiesStubComponent {
 describe('CommunitiesComponent', () => {
   let component: CommunitiesComponent;
   let fixture: ComponentFixture<CommunitiesComponent>;
-
-  const authenticatedUser: UserIdentity = {
-    userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-    userName: 'tester',
-    firstName: 'Toni',
-    lastName: 'Tester',
-    email: 'toni.tester@myskills.io',
-    roles: ['ROLE_USER']
-  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -137,6 +156,13 @@ describe('CommunitiesComponent', () => {
             'getUserIdentity': of(authenticatedUser)
           })
         },
+        {
+          provide: CommunityRegistrationService,
+          useValue: jasmine.createSpyObj('registrationService',
+            {
+              'inviteUsers': of<CommunityUserRegistrationResponse[]>(communityUserRegistrations)
+            })
+        },
         GlobalErrorHandlerService
       ]
     })
@@ -168,9 +194,15 @@ describe('CommunitiesComponent', () => {
   }));
 
   it('should make user join a community', fakeAsync(() => {
-    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse);
+    const communityToJoin = {
+      id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
+      title: 'test1',
+      type: CommunityType.OPEN
+    } as CommunityResponse;
+
+    component.joinCommunity(communityToJoin);
     fixture.detectChanges();
-    expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBeTruthy();
+    expect(component.isCommunityJoined(communityToJoin)).toBeTruthy();
   }));
 
   it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
@@ -184,14 +216,18 @@ describe('CommunitiesComponent', () => {
 
     const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
     communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(response));
+    const registrationService = TestBed.get(CommunityRegistrationService) as CommunityRegistrationService;
 
-    component.joinCommunity({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', type: CommunityType.CLOSED} as CommunityResponse);
+    const community = {id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f', type: CommunityType.CLOSED} as CommunityResponse;
+    component.joinCommunity(community);
     fixture.detectChanges();
     expect(component.isCommunityJoined({id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f'} as CommunityResponse)).toBeFalsy();
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
+
+    expect(registrationService.inviteUsers).toHaveBeenCalledWith(community.id, [authenticatedUser.userId]);
   }));
 
   it('should check if the user is manager of a community', fakeAsync(() => {

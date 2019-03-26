@@ -20,6 +20,8 @@ import { MatDialog } from '@angular/material';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -58,6 +60,23 @@ const community: CommunityResponse = {
     } as User
   ]
 };
+
+const currentUser = {
+  id: authenticatedUser.userId,
+  userName: authenticatedUser.userName,
+  firstName: authenticatedUser.firstName,
+  lastName: authenticatedUser.lastName,
+  email: authenticatedUser.email,
+  coach: false,
+};
+
+const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
+  {
+    user: currentUser,
+    approvedByUser: true,
+    approvedByCommunity: null
+  }
+];
 
 describe('CommunityViewComponent', () => {
   let component: CommunityViewComponent;
@@ -149,6 +168,13 @@ describe('CommunityViewComponent', () => {
             'getUserIdentity': of(authenticatedUser)
           })
         },
+        {
+          provide: CommunityRegistrationService,
+          useValue: jasmine.createSpyObj('registrationService',
+            {
+              'inviteUsers': of<CommunityUserRegistrationResponse[]>(communityUserRegistrations)
+            })
+        },
         GlobalErrorHandlerService
       ]
     })
@@ -219,6 +245,8 @@ describe('CommunityViewComponent', () => {
     const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
     communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(communityUserResponse));
 
+    const registrationService = TestBed.get(CommunityRegistrationService) as CommunityRegistrationService;
+
     component.joinCommunity();
     fixture.detectChanges();
     expect(component.isCommunityMember).toBeFalsy();
@@ -226,6 +254,8 @@ describe('CommunityViewComponent', () => {
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
+
+    expect(registrationService.inviteUsers).toHaveBeenCalledWith(component.community.id, [authenticatedUser.userId]);
   }));
 
   it('should allow user to invite other users', () => {
