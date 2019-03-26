@@ -1,8 +1,8 @@
-<div *ngIf="(communities$ | async)?.length" class="recommended-communities">
+<div *ngIf="communities?.length" class="recommended-communities">
   <div *ngIf="errorMessage" class="recommended-communities-error-message">{{errorMessage}}</div>
   <h2>Recommended communities</h2>
   <div class="recommended-communities-wrapper">
-    <span *ngFor="let community of communities$ | async">
+    <span *ngFor="let community of communities">
       <app-community-card [community]="community">
         <div fxFlex="none" buttonContent>
           <button mat-icon-button (click)="joinCommunity(community)" title="Join"

@@ -14,6 +14,7 @@ import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
 import { CommunityInvitationDialogComponent } from './community-invitation-dialog.component';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
 
 @Component({
   selector: 'app-community-view',
@@ -33,6 +34,7 @@ export class CommunityViewComponent implements OnInit {
 
   constructor(private communityService: CommunitiesService,
               private userIdentityService: UserIdentityService,
+              private registrationService: CommunityRegistrationService,
               private activatedRoute: ActivatedRoute,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
@@ -46,18 +48,21 @@ export class CommunityViewComponent implements OnInit {
         this.loadCommunity(communityId);
         this.loadCommunityUsers(communityId);
       });
+
+    this.userIdentityService.getUserIdentity()
+      .subscribe(userIdentity => {
+        this.currentUserId = userIdentity.userId;
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 
   joinCommunity() {
-    this.communityService.joinCommunity(this.community.id).subscribe((communityUserResponse: CommunityUserResponse) => {
-      if (this.community.type === CommunityType.CLOSED) {
-        this.showCommunityInfoDialog(this.community);
-      } else {
-        this.isCommunityMember = true;
-      }
-    }, (errorResponse: HttpErrorResponse) => {
-      this.handleErrorResponse(errorResponse);
-    });
+    if (this.community.type === CommunityType.OPEN) {
+      this.joinOpenCommunity();
+    } else {
+      this.joinClosedCommunity();
+    }
   }
 
   leaveCommunity() {
@@ -166,6 +171,24 @@ export class CommunityViewComponent implements OnInit {
     this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
+  }
+
+  private joinOpenCommunity() {
+    this.communityService.joinCommunity(this.community.id)
+      .subscribe(() => {
+        this.isCommunityMember = true;
+      }, (errorResponse: HttpErrorResponse) => {
+        this.handleErrorResponse(errorResponse);
+      });
+  }
+
+  private joinClosedCommunity() {
+    this.registrationService.inviteUsers(this.community.id, [this.currentUserId])
+      .subscribe(() => {
+        this.showCommunityInfoDialog(this.community);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 
   private showCommunityInfoDialog(community: CommunityResponse) {

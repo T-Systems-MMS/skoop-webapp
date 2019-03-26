@@ -15,7 +15,7 @@ import { User } from '../users/user';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { Community } from './community';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
-import { CommunityUserResponse } from './community-user-response';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
 
 @Component({
   selector: 'app-communities',
@@ -29,9 +29,11 @@ export class CommunitiesComponent implements OnInit {
   filter: FormControl = new FormControl('');
   private joinedCommunityIds: string[] = [];
   private managedCommunityIds: string[] = [];
+  private currentUserId: string = null;
 
   constructor(private communityService: CommunitiesService,
               private userIdentityService: UserIdentityService,
+              private registrationService: CommunityRegistrationService,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               private bottomSheet: MatBottomSheet,
@@ -67,15 +69,11 @@ export class CommunitiesComponent implements OnInit {
   }
 
   joinCommunity(community: CommunityResponse) {
-    this.communityService.joinCommunity(community.id).subscribe((communityUserResponse: CommunityUserResponse) => {
-      if (community.type === CommunityType.CLOSED) {
-        this.showInfoDialog(community);
-      } else {
-        this.joinedCommunityIds.push(community.id);
-      }
-    }, (errorResponse: HttpErrorResponse) => {
-      this.handleErrorResponse(errorResponse);
-    });
+    if (community.type === CommunityType.OPEN) {
+      this.joinOpenCommunity(community);
+    } else {
+      this.joinClosedCommunity(community);
+    }
   }
 
   delete(community: CommunityResponse): void {
@@ -114,6 +112,7 @@ export class CommunitiesComponent implements OnInit {
       const communities = compoundObject[1];
 
       this.communities$ = of(communities);
+      this.currentUserId = userIdentity.userId;
       const managedCommunityIds: string[] = [];
 
       communities.forEach((community: CommunityResponse) => {
@@ -146,7 +145,27 @@ export class CommunitiesComponent implements OnInit {
   private showInfoDialog(community: CommunityResponse) {
     this.dialog.open(InfoDialogComponent, {
       width: '350px',
-      data: Object.assign({}, community)
+      data: {
+        message: `The join request has been successfully sent to the community "${community.title}".`
+      }
     });
+  }
+
+  private joinOpenCommunity(community: CommunityResponse) {
+    this.communityService.joinCommunity(community.id)
+      .subscribe(() => {
+        this.joinedCommunityIds.push(community.id);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.handleErrorResponse(errorResponse);
+      });
+  }
+
+  private joinClosedCommunity(community: CommunityResponse) {
+    this.registrationService.inviteUsers(community.id, [this.currentUserId])
+      .subscribe(() => {
+        this.showInfoDialog(community);
+      }, (errorResponse: HttpErrorResponse) => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 }
