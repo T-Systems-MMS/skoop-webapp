@@ -1,4 +1,4 @@
-= MySkills WebApp
+= SKOOP WebApp
 Georg Wittberger <georg.wittberger@gmail.com>
 v0.0.1, 2018-12-23
 
@@ -8,7 +8,7 @@ image:https://sonarcloud.io/api/project_badges/measure?project=myskills-webapp&m
 image:https://img.shields.io/github/issues-raw/KnowledgeAssets/myskills-webapp.svg["GitHub issues",link="https://github.com/KnowledgeAssets/myskills-webapp/issues"]
 image:https://img.shields.io/github/license/KnowledgeAssets/myskills-webapp.svg["MIT License"]
 
-A single page application providing a responsive web user interface for the MySkills server application.
+A single page application providing a responsive web user interface for the SKOOP server application.
 
 == INCUBATION WARNING
 
@@ -18,7 +18,7 @@ A single page application providing a responsive web user interface for the MySk
 
 === Introduction
 
-MySkills WebApp is a single page application which provides a responsive web user interface for the MySkills Server. It makes use of the REST API provided by the server to interact with the various MySkills functionalities like relating users to skills, viewing statistics and many more.
+SKOOP WebApp is a single page application which provides a responsive web user interface for the SKOOP Server. It makes use of the REST API provided by the server to interact with the various SKOOP functionalities like relating users to skills, viewing statistics and many more.
 
 === System requirements
 
@@ -55,7 +55,7 @@ The web server must provide the `index.html` file for every route of the applica
 
 See the following documentation for example configurations: https://angular.io/guide/deployment#server-configuration
 
-Additionally, the web server must forward every request starting with `/api/` to the MySkills Server application. For example, the MySkills WebApp will request the user identity by calling `/api/my-identity`. The web server receiving this request must strip off the leading `/api` and forward the request for `/my-identity` to the MySkills Server.
+Additionally, the web server must forward every request starting with `/api/` to the SKOOP Server application. For example, the SKOOP WebApp will request the user identity by calling `/api/my-identity`. The web server receiving this request must strip off the leading `/api` and forward the request for `/my-identity` to the SKOOP Server.
 
 === Running as Docker container
 
@@ -85,21 +85,21 @@ docker run \
   myskills/webapp:latest
 ----
 
-Now the MySkills WebApp is accessible at http://localhost:4200/
+Now the SKOOP WebApp is accessible at http://localhost:4200/
 
-_Note: This command example assumes that you have created a container for the MySkills Server named "myskills-server" and that a KeyCloak server with a "MySkills" realm is running on `localhost:9000`._
+_Note: This command example assumes that you have created a container for the SKOOP Server named "myskills-server" and that a KeyCloak server with a "MySkills" realm is running on `localhost:9000`._
 
 == Development
 
 === Call for contributors
 
-Become a contributor to MySkills by joining our KnowledgeAssets organization! Everyone can help, from UX designer over software developers and testers to documentation writers. Get involved and be part of a great community project!
+Become a contributor to SKOOP by joining our KnowledgeAssets organization! Everyone can help, from UX designer over software developers and testers to documentation writers. Get involved and be part of a great community project!
 
 Interested? Contact georg.wittberger (at) gmail.com
 
 === Technology overview
 
-As described in the introduction the MySkills WebApp is a browser-based single page application which provides a web user interface to interact with the MySkills Server. Therefore, it focuses on the presentation of the data retrieved from the REST API endpoints of the server. The project makes use of the following noteworthy frameworks:
+As described in the introduction the SKOOP WebApp is a browser-based single page application which provides a web user interface to interact with the SKOOP Server. Therefore, it focuses on the presentation of the data retrieved from the REST API endpoints of the server. The project makes use of the following noteworthy frameworks:
 
 * https://angular.io/[Angular]: The popular JavaScript framework is the basis of the application. We use the Angular routing for navigation to different views.
 * https://github.com/angular/angular-cli[Angular CLI]: Makes development and the build process of the application much easier. It encapsulates the Webpack build configuration and provides some reasonable conventions to follow instead. The CLI also provides some convenient commands to generate new components, services, etc.
@@ -107,7 +107,7 @@ As described in the introduction the MySkills WebApp is a browser-based single p
 * https://github.com/angular/flex-layout[Angular Flex-Layout]: Provides directives to create responsive layouts with Angular based on Flexbox CSS. We use it to make the application look great on handsets and desktops.
 * https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC]: Enables support for user authentication via OpenID Connect using an external authorization server.
 * https://sass-lang.com/[SASS]: Stylesheet pre-processor used for component style definitions.
-* https://rxjs-dev.firebaseapp.com/[RxJS]: When it comes to asynchronous operations the reactive extensions with their well-known `Observables` come into play. We use them primarily when requesting the API of the MySkills Server.
+* https://rxjs-dev.firebaseapp.com/[RxJS]: When it comes to asynchronous operations the reactive extensions with their well-known `Observables` come into play. We use them primarily when requesting the API of the SKOOP Server.
 * https://karma-runner.github.io/[Karma] and https://jasmine.github.io/[Jasmine]: The standard tools for test automation in Angular projects.
 
 === Installing the dependencies
@@ -128,13 +128,13 @@ As soon as the server is running open this URL in your browser: http://localhost
 
 Webpack automatically reloads modules when you change the source code. There is no need to restart the server after each modification.
 
-The server proxies all requests starting with the path `/api/` to http://localhost:8080/ (stripping that prefix). For example, a request to `/api/skills` will be forwarded to `http://localhost:8080/skills`. This allows the development server to collaborate with the real MySkills Server application.
+The server proxies all requests starting with the path `/api/` to http://localhost:8080/ (stripping that prefix). For example, a request to `/api/skills` will be forwarded to `http://localhost:8080/skills`. This allows the development server to collaborate with the real SKOOP Server application.
 
 === Configuring authentication
 
 In order to set up the OpenID Connect login you need to install a local https://www.keycloak.org/[KeyCloak] server and configure an appropriate realm.
 
-In the development configuration the MySkills WebApp assumes that the KeyCloak server is available at `localhost:9000`. Currently, there is no option for external configuration. If you have to use a different host or port please temporarily adjust the configuration in `src/environments/environment.ts`.
+In the development configuration the SKOOP WebApp assumes that the KeyCloak server is available at `localhost:9000`. Currently, there is no option for external configuration. If you have to use a different host or port please temporarily adjust the configuration in `src/environments/environment.ts`.
 
 There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
 
@@ -152,7 +152,7 @@ Travis CI uploads test coverage reports to https://codecov.io[codecov.io]. Uploa
 
 === Architecture overview
 
-Fundamentally, the MySkills WebApp project follows the principles of https://angular.io/[Angular] projects. The directory structure and naming follows the conventions given by the https://github.com/angular/angular-cli[Angular CLI] tool and the https://angular.io/guide/styleguide[Angular style guide].
+Fundamentally, the SKOOP WebApp project follows the principles of https://angular.io/[Angular] projects. The directory structure and naming follows the conventions given by the https://github.com/angular/angular-cli[Angular CLI] tool and the https://angular.io/guide/styleguide[Angular style guide].
 
 ==== Source code structure
 
@@ -168,7 +168,7 @@ The import of all Angular Material components is also centralized in the module 
 
 ==== Authentication and authorization
 
-The application makes use of the https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC] module to authenticates users against an external OpenID Connect provider (e.g. KeyCloak) using the implicit flow. The obtained ID tokens are automatically added to any API requests sent to the MySkills Server using an auto-configured `HttpInterceptor`.
+The application makes use of the https://github.com/manfredsteyer/angular-oauth2-oidc[Angular OAuth2 OIDC] module to authenticates users against an external OpenID Connect provider (e.g. KeyCloak) using the implicit flow. The obtained ID tokens are automatically added to any API requests sent to the SKOOP Server using an auto-configured `HttpInterceptor`.
 
 ==== Styling
 
@@ -180,13 +180,13 @@ Environment-specific configuration is located in the module `src/environments/en
 
 The concept for external environment configuration assumes that environment-specific settings are given as `meta` elements in the main HTML page. Therefore, the production `environment` module looks for external configuration in such specific `meta` elements in the document.
 
-The main HTML page for production contains the supported `meta` elements with server-side-include tags inside their `content` attributes. This allows the Apache HTTP Server hosting the MySkills WebApp to resolve these placeholders to configuration values given as external environment variables.
+The main HTML page for production contains the supported `meta` elements with server-side-include tags inside their `content` attributes. This allows the Apache HTTP Server hosting the SKOOP WebApp to resolve these placeholders to configuration values given as external environment variables.
 
 ==== Code guidelines
 
 There are some general design principles to follow in the project.
 
-Components should never make use of the `HttpClient` directly. Calling the API of the MySkills Server is the responsibility of services. These services should return the `Observable` of the HTTP response directly to their calling code without subscribing on their own (except there is some reason to do so).
+Components should never make use of the `HttpClient` directly. Calling the API of the SKOOP Server is the responsibility of services. These services should return the `Observable` of the HTTP response directly to their calling code without subscribing on their own (except there is some reason to do so).
 
 Reusable styles should be written as Sass mixins in the file `src/styles/_mixins.scss`. Common values for sizes and colors should be written as variables in the file `src/styles/_variables.scss` and then the variable should be used for the specific style property.
 
