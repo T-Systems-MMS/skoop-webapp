@@ -27,7 +27,7 @@ describe('MessagesService', () => {
           provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
             'getUserIdentity': of(authenticatedUser)
           })
-        },]
+        }]
     });
 
     httpTestingController = TestBed.get(HttpTestingController);

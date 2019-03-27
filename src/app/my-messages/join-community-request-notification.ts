@@ -1,0 +1,22 @@
+import { AbstractNotification } from './abstract-notification';
+import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+
+export class JoinCommunityRequestNotification extends AbstractNotification {
+  registration: CommunityUserRegistrationResponse;
+
+  getStatusText(): string {
+    if (this.registration.approvedByUser && this.registration.approvedByCommunity) {
+      return 'Accepted';
+    }
+
+    if (this.registration.approvedByCommunity === false || this.registration.approvedByUser === false) {
+      return 'Declined';
+    }
+
+    return 'Pending';
+  }
+
+  getTypeText(): string {
+    return 'Request to join a community';
+  }
+}

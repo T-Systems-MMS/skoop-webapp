@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { CommunityUserRegistration } from '../shared/community-user-registration';
-import { Message } from './message';
 import { MessagesService } from './messages.service';
-import { MessageType } from './message-type.enum';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { AbstractNotification } from './abstract-notification';
+import { CommunityInvitationNotification } from './community-invitation-notification';
+import { JoinCommunityRequestNotification } from './join-community-request-notification';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 @Component({
   selector: 'app-my-messages',
@@ -16,36 +18,49 @@ import { MatDialog } from '@angular/material';
 })
 export class MyMessagesComponent implements OnInit {
 
-  messages$: Observable<Message[]> = of([]);
+  errorMessage: string = null;
+  notifications$ = of([]);
 
   constructor(private communityRegistrationService: CommunityRegistrationService,
               private messageService: MessagesService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              private changeDetector: ChangeDetectorRef,
+              private globalErrorHandlerService: GlobalErrorHandlerService) {
   }
 
   ngOnInit() {
-   this.messages$ = this.messageService.getUserRegistrations();
+   this.notifications$ = this.messageService.getUserNotifications();
   }
 
-  hasJoinRequestType(message: Message): boolean {
-    return message.type === MessageType.INVITATION_TO_JOIN_COMMUNITY || message.type === MessageType.REQUEST_TO_JOIN_COMMUNITY;
+  hasJoinRequestType<T extends AbstractNotification>(notification: T): boolean {
+    return notification.hasCommunityInvitationType() || notification.hasJoinCommunityType();
   }
 
-  showAcceptDeclineButtons(message: Message) {
-    return this.hasJoinRequestType(message)
-      && (message.registration.approvedByUser == null || message.registration.approvedByCommunity == null);
+  showAcceptDeclineButtons<T extends AbstractNotification>(notification: T) {
+    if (notification.hasCommunityInvitationType()) {
+      const registration = (<CommunityInvitationNotification><any>notification).registration;
+      return registration.approvedByUser === null || registration.approvedByCommunity === null;
+    } else if (notification.hasJoinCommunityType()) {
+      const registration = (<JoinCommunityRequestNotification><any>notification).registration;
+      return registration.approvedByUser === null || registration.approvedByCommunity === null;
+    } else {
+      return false;
+    }
   }
 
-  onAccept(message: Message) {
+  onAccept<T extends AbstractNotification>(notification: T) {
+    const registration = notification.hasCommunityInvitationType() ?
+      (<CommunityInvitationNotification><any>notification).registration :
+      (<JoinCommunityRequestNotification><any>notification).registration;
     const requestData: CommunityUserRegistration = {
-      id: message.registration.id,
+      id: registration.id,
       approvedByUser: true,
       approvedByCommunity: true
     };
-    this.updateRegistration(message.registration.community.id, requestData);
+    this.updateRegistration(registration.community.id, requestData);
   }
 
-  onDecline(message: Message) {
+  onDecline<T extends AbstractNotification>(notification: T) {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -54,12 +69,16 @@ export class MyMessagesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        const registration = notification.hasCommunityInvitationType() ?
+          (<CommunityInvitationNotification><any>notification).registration :
+          (<JoinCommunityRequestNotification><any>notification).registration;
+
         const requestData: CommunityUserRegistration = {
-          id: message.registration.id,
-          approvedByUser: message.registration.approvedByUser || false,
-          approvedByCommunity: message.registration.approvedByCommunity || false
+          id: registration.id,
+          approvedByUser: registration.approvedByUser || false,
+          approvedByCommunity: registration.approvedByCommunity || false
         };
-        this.updateRegistration(message.registration.community.id, requestData);
+        this.updateRegistration(registration.community.id, requestData);
       }
     });
   }
@@ -67,32 +86,16 @@ export class MyMessagesComponent implements OnInit {
   private updateRegistration(communityId: string, registration: CommunityUserRegistration) {
     this.communityRegistrationService.updateRegistration(communityId, registration)
       .subscribe(() => {
-        this.messages$ = this.messageService.getUserRegistrations();
+        this.notifications$ = this.messageService.getUserNotifications();
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
   }
 
-  getStatusText(message: Message) {
-    if (!message.registration) {
-      return '';
-    }
-
-    if (message.registration.approvedByUser && message.registration.approvedByCommunity) {
-      return 'Accepted';
-    }
-
-    if (message.registration.approvedByCommunity === false || message.registration.approvedByUser === false) {
-      return 'Declined';
-    }
-
-    return 'Pending';
-  }
-
   private handleErrorResponse(errorResponse: HttpErrorResponse) {
-    // this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-    // // Dirty fix because of: https://github.com/angular/angular/issues/17772
-    // this.changeDetector.markForCheck();
+    this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 
 }

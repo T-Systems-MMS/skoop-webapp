@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { Message } from './message';
+import { Observable, of } from 'rxjs';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { switchMap } from 'rxjs/operators';
+import { AbstractNotification } from './abstract-notification';
+import { Util } from '../util/util';
 
 @Injectable({
   providedIn: 'root'
@@ -17,9 +18,14 @@ export class MessagesService {
               private userIdentityService: UserIdentityService) {
   }
 
-  getUserRegistrations(): Observable<Message[]> {
+  getUserNotifications<T extends AbstractNotification>(): Observable<T[]> {
     return this.userIdentityService.getUserIdentity()
-      .pipe(switchMap(userIdentity =>
-        this.httpClient.get<Message[]>(this.messagesUrlPattern.replace('{userId}', userIdentity.userId))));
+      .pipe(
+        switchMap(userIdentity =>
+          this.httpClient.get<T[]>(this.messagesUrlPattern.replace('{userId}', userIdentity.userId))
+            .pipe(switchMap(notifications =>
+              of(notifications.map(item => Util.createNotificationInstance(item)))
+            ))
+        ));
   }
 }
