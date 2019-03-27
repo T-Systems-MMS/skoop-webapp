@@ -52,7 +52,6 @@ export class Util {
 
   /**
    * Creates notification instance according to its type
-   * @param notification
    */
   public static createNotificationInstance<T extends AbstractNotification>(notification: any): T {
     switch (notification.type) {

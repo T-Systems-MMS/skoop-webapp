@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { MyMessagesComponent } from './my-messages.component';
 import { of } from 'rxjs';
@@ -13,8 +13,13 @@ import { CommunityUserRegistrationResponse } from '../shared/community-user-regi
 import { Util } from '../util/util';
 import { NotificationType } from './notification-type.enum';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { By } from '@angular/platform-browser';
+import { CommunityUserRegistration } from '../shared/community-user-registration';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { MatDialog } from '@angular/material';
 
-const response: any[] = [
+const expectedNotifications: any[] = [
   Util.createNotificationInstance({
     type: NotificationType.INVITATION_TO_JOIN_COMMUNITY,
     id: '76887802-f12f-47b0-bf8d-6d69fbcc77e5',
@@ -81,7 +86,7 @@ const registrationResponse: CommunityUserRegistrationResponse = {
     email: 'tabia.testbed@myskills.io',
     coach: false,
   },
-  approvedByUser: false,
+  approvedByUser: true,
   approvedByCommunity: true
 };
 
@@ -98,12 +103,12 @@ describe('MyMessagesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ MyMessagesComponent ],
+      declarations: [ MyMessagesComponent, DeleteConfirmationDialogComponent ],
       providers: [
         GlobalErrorHandlerService,
         {
           provide: MessagesService, useValue: jasmine.createSpyObj('messageService', {
-            'getUserNotifications': of(response)
+            'getUserNotifications': of(expectedNotifications)
           })
         },
         {
@@ -113,6 +118,11 @@ describe('MyMessagesComponent', () => {
         }
       ]
     })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [DeleteConfirmationDialogComponent]
+        }
+      })
     .compileComponents();
   }));
 
@@ -125,4 +135,52 @@ describe('MyMessagesComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should initialize the list of notifications', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+
+    expect(notificationCards.length).toBe(2);
+  }));
+
+  it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+
+    const buttons = notificationCards[0].queryAll(By.css('button'));
+    expect(buttons.length).toBe(2);
+    expect(buttons[0].nativeElement.textContent).toContain('done_outline');
+    expect(buttons[1].nativeElement.textContent).toContain('cancel');
+  }));
+
+  it('should send an accept request on accept button click', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const acceptButton = notificationCards[0].nativeElement.querySelector('button');
+
+    acceptButton.click();
+    fixture.whenStable().then(() => {
+      const expectedRequestData: CommunityUserRegistration = {
+        id: expectedNotifications[0].registration.id,
+        approvedByUser: true,
+        approvedByCommunity: true
+      };
+      const registrationService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
+      expect(registrationService.updateRegistration)
+        .toHaveBeenCalledWith(expectedNotifications[0].registration.community.id, expectedRequestData);
+    });
+  }));
+
+  it('should open confirmation dialog on decline button click', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const buttons = notificationCards[0].queryAll(By.css('button'));
+
+    buttons[1].nativeElement.click();
+    fixture.whenStable().then(() => {
+      const matDialog: MatDialog = TestBed.get(MatDialog);
+      expect(matDialog.openDialogs.length).toBe(1);
+      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+    });
+  }));
 });
