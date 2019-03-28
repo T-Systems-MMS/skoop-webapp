@@ -4,17 +4,17 @@ export const environment: EnvironmentConfig = {
   production: true,
   authentication: {
     issuer: document
-      .querySelector('meta[name="myskills-config-authentication-issuer"]')
+      .querySelector('meta[name="skoop-config-authentication-issuer"]')
       .getAttribute('content'),
     clientId: 'myskills',
     scope: 'openid profile email',
     redirectUri: null,
     silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
     requireHttps: document
-      .querySelector('meta[name="myskills-config-authentication-insecure"]')
+      .querySelector('meta[name="skoop-config-authentication-insecure"]')
       .getAttribute('content') !== 'true'
   },
   serverApiUrl: document
-    .querySelector('meta[name="myskills-config-server-api-url"]')
+    .querySelector('meta[name="skoop-config-server-api-url"]')
     .getAttribute('content')
 };
