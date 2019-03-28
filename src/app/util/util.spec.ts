@@ -3,7 +3,7 @@ import {Util} from './util';
 import { UserProject } from '../user-projects/user-project';
 import { NotificationType } from '../my-messages/notification-type.enum';
 import { AcceptanceToCommunityNotification } from '../my-messages/acceptance-to-community-notification';
-import { CommunityChangedMotification } from '../my-messages/community-changed-motification';
+import { CommunityChangedNotification } from '../my-messages/community-changed-notification';
 import { CommunityDeletedNotification } from '../my-messages/community-deleted-notification';
 import { CommunityInvitationNotification } from '../my-messages/community-invitation-notification';
 import { CommunityRoleChangedNotification } from '../my-messages/community-role-changed-notification';
@@ -106,7 +106,7 @@ describe('Util', () => {
         expect(Util.createNotificationInstance({type: NotificationType.ACCEPTANCE_TO_COMMUNITY})
           instanceof AcceptanceToCommunityNotification).toBeTruthy();
         expect(Util.createNotificationInstance({type: NotificationType.COMMUNITY_CHANGED})
-          instanceof CommunityChangedMotification).toBeTruthy();
+          instanceof CommunityChangedNotification).toBeTruthy();
         expect(Util.createNotificationInstance({type: NotificationType.COMMUNITY_DELETED})
           instanceof CommunityDeletedNotification).toBeTruthy();
         expect(Util.createNotificationInstance({type: NotificationType.INVITATION_TO_JOIN_COMMUNITY})

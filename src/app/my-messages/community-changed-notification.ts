@@ -1,7 +1,7 @@
 import { AbstractNotification } from './abstract-notification';
 import { Community } from '../communities/community';
 
-export class CommunityChangedMotification extends AbstractNotification {
+export class CommunityChangedNotification extends AbstractNotification {
   community: Community;
 
   getTypeText(): string {

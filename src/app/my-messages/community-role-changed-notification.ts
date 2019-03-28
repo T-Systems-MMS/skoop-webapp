@@ -5,6 +5,6 @@ export class CommunityRoleChangedNotification extends AbstractNotification {
   community: Community;
 
   getTypeText(): string {
-    return 'Changes community-role';
+    return 'The community role changed.';
   }
 }

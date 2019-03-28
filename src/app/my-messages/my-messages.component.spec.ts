@@ -163,7 +163,7 @@ describe('MyMessagesComponent', () => {
       const expectedRequestData: CommunityUserRegistration = {
         id: expectedNotifications[0].registration.id,
         approvedByUser: true,
-        approvedByCommunity: true
+        approvedByCommunity: null
       };
       const registrationService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
       expect(registrationService.updateRegistration)

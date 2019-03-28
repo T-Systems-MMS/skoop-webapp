@@ -5,6 +5,6 @@ export class MemberKickedOutNotification extends AbstractNotification {
   community: Community;
 
   getTypeText(): string {
-    return 'Being licked-out of community';
+    return 'The user was kicked out of the community';
   }
 }

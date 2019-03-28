@@ -10,6 +10,7 @@ import { AbstractNotification } from './abstract-notification';
 import { CommunityInvitationNotification } from './community-invitation-notification';
 import { JoinCommunityRequestNotification } from './join-community-request-notification';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { Util } from '../util/util';
 
 @Component({
   selector: 'app-my-messages',
@@ -38,26 +39,18 @@ export class MyMessagesComponent implements OnInit {
 
   showAcceptDeclineButtons<T extends AbstractNotification>(notification: T) {
     if (notification.hasCommunityInvitationType()) {
-      const registration = (<CommunityInvitationNotification><any>notification).registration;
-      return registration.approvedByUser === null || registration.approvedByCommunity === null;
+      const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
+      return invitationNotification.registration.approvedByUser === null || invitationNotification.registration.approvedByCommunity === null;
     } else if (notification.hasJoinCommunityType()) {
-      const registration = (<JoinCommunityRequestNotification><any>notification).registration;
-      return registration.approvedByUser === null || registration.approvedByCommunity === null;
+      const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
+      return joinRequestNotification.registration.approvedByUser === null || joinRequestNotification.registration.approvedByCommunity === null;
     } else {
       return false;
     }
   }
 
   onAccept<T extends AbstractNotification>(notification: T) {
-    const registration = notification.hasCommunityInvitationType() ?
-      (<CommunityInvitationNotification><any>notification).registration :
-      (<JoinCommunityRequestNotification><any>notification).registration;
-    const requestData: CommunityUserRegistration = {
-      id: registration.id,
-      approvedByUser: true,
-      approvedByCommunity: true
-    };
-    this.updateRegistration(registration.community.id, requestData);
+    this.buildAcceptanceRequest(notification, true);
   }
 
   onDecline<T extends AbstractNotification>(notification: T) {
@@ -69,18 +62,31 @@ export class MyMessagesComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        const registration = notification.hasCommunityInvitationType() ?
-          (<CommunityInvitationNotification><any>notification).registration :
-          (<JoinCommunityRequestNotification><any>notification).registration;
-
-        const requestData: CommunityUserRegistration = {
-          id: registration.id,
-          approvedByUser: registration.approvedByUser || false,
-          approvedByCommunity: registration.approvedByCommunity || false
-        };
-        this.updateRegistration(registration.community.id, requestData);
+        this.buildAcceptanceRequest(notification, false);
       }
     });
+  }
+
+  private buildAcceptanceRequest<T extends AbstractNotification>(notification: T, isAccepted: boolean) {
+    if (notification.hasCommunityInvitationType()) {
+      const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
+      const requestData = {
+        id: invitationNotification.registration.id,
+        approvedByUser: isAccepted,
+        approvedByCommunity: null
+      };
+
+      this.updateRegistration(invitationNotification.registration.community.id, requestData);
+    } else if (notification.hasJoinCommunityType()) {
+      const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
+      const requestData = {
+        id: joinRequestNotification.registration.id,
+        approvedByUser: null,
+        approvedByCommunity: isAccepted
+      };
+
+      this.updateRegistration(joinRequestNotification.registration.community.id, requestData);
+    }
   }
 
   private updateRegistration(communityId: string, registration: CommunityUserRegistration) {
