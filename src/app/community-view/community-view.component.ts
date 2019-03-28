@@ -112,7 +112,9 @@ export class CommunityViewComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.communityService.removeMember(this.community.id, member.id).subscribe(() => {}, (errorResponse: HttpErrorResponse) => {
+        this.communityService.removeMember(this.community.id, member.id).subscribe(() => {
+          this.communityMembers = this.communityMembers.filter(cm => cm.user.id !== member.id);
+        }, (errorResponse: HttpErrorResponse) => {
           this.handleErrorResponse(errorResponse);
         });
       }
