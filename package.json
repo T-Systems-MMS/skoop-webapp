@@ -1,19 +1,19 @@
 {
-  "name": "myskills-webapp",
-  "description": "Single page application providing a web user interface for the MySkills application.",
+  "name": "skoop-webapp",
+  "description": "Single page application providing a web user interface for the SKOOP application.",
   "version": "0.0.1",
   "author": {
     "name": "Georg Wittberger",
     "email": "georg.wittberger@gmail.com",
     "url": "https://github.com/georgwittberger"
   },
-  "homepage": "https://github.com/KnowledgeAssets/myskills-webapp",
+  "homepage": "https://github.com/T-Systems-MMS/skoop-webapp",
   "bugs": {
-    "url": "https://github.com/KnowledgeAssets/myskills-webapp/issues"
+    "url": "https://github.com/T-Systems-MMS/skoop-webapp/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/KnowledgeAssets/myskills-webapp.git"
+    "url": "https://github.com/T-Systems-MMS/skoop-webapp.git"
   },
   "license": "MIT",
   "scripts": {

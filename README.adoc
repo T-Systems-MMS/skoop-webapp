@@ -138,7 +138,7 @@ In the development configuration the SKOOP WebApp assumes that the KeyCloak serv
 
 There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
 
-Please see the https://github.com/KnowledgeAssets/myskills-server[MySkills Server] for more hints and a preconfigured KeyCloak test realm.
+Please see the https://github.com/T-Systems-MMS/skoop-server[SKOOP Server] for more hints and a preconfigured KeyCloak test realm.
 
 === Testing the application
 
