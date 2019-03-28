@@ -28,13 +28,13 @@
         <button mat-raised-button (click)="leaveCommunity()" *ngIf="canLeaveCommunity()" aria-label="Leave">Leave</button>
         <button mat-raised-button (click)="openInvitationDialog()" *ngIf="canInviteUsers()" aria-label="Invite">Invite</button>
       </div>
-      <div>
+      <div class="community-managers-list">
         <div class="community-label">Community managers</div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
           <mat-chip *ngFor="let manager of community?.managers">{{ manager.firstName }} {{manager.lastName}}</mat-chip>
         </mat-chip-list>
       </div>
-      <div *ngIf="isCommunityMember || isCommunityManager">
+      <div *ngIf="isCommunityMember || isCommunityManager" class="community-members-list">
         <div class="community-label">Members</div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
           <mat-chip *ngFor="let cu of communityMembers" (removed)="removeMember(cu.user)">{{ cu.user.firstName }} {{cu.user.lastName}}

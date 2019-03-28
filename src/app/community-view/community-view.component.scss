@@ -42,3 +42,16 @@
 .community-toolbar > button {
   margin-right: 15px;
 }
+
+.community-managers-list {
+  .mat-chip {
+    width: auto;
+  }
+}
+
+.community-members-list {
+  // additional space for the delete icon
+  .mat-chip {
+    width: 110%;
+  }
+}
