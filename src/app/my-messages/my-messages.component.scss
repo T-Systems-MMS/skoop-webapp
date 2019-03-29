@@ -1,0 +1,14 @@
+@import "variables";
+
+.messages-card {
+  @extend %base-card;
+}
+
+.messages-error-message {
+  @extend %base-error;
+}
+
+.messages-description-label {
+  @extend %base-description-label;
+}
+

@@ -4,6 +4,7 @@ import { CommunityRegistrationService } from './community-registration.service';
 import { CommunityUserRegistrationResponse } from './community-user-registration-response';
 import { environment } from '../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { CommunityUserRegistration } from './community-user-registration';
 
 describe('CommunityRegistrationService', () => {
   let httpTestingController: HttpTestingController;
@@ -30,17 +31,27 @@ describe('CommunityRegistrationService', () => {
 
     const communityUserRegistrationResponse: CommunityUserRegistrationResponse[] = [
       {
+        id: '12345',
         user: {
-          id: 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f',
-          userName: 'first user'
+          id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+          userName: 'testing',
+          firstName: 'Tina',
+          lastName: 'Testing',
+          email: 'tina.testing@myskills.io',
+          coach: false,
         },
         approvedByUser: false,
         approvedByCommunity: true
       },
       {
+        id: '567890',
         user: {
-          id: 'e11235ab-f13e-4fd6-b5d6-9c4c4e18aa6g',
-          userName: 'second user'
+          id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+          userName: 'testbed',
+          firstName: 'Tabia',
+          lastName: 'Testbed',
+          email: 'tabia.testbed@myskills.io',
+          coach: false,
         },
         approvedByUser: false,
         approvedByCommunity: true
@@ -60,5 +71,43 @@ describe('CommunityRegistrationService', () => {
     expect(request.request.body).toEqual({userIds: userIds});
 
     request.flush(communityUserRegistrationResponse);
+  }));
+
+  it('should send an update registration request', async(() => {
+    const communityId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
+
+    const updateResponse: CommunityUserRegistrationResponse = {
+      id: '12345',
+      user: {
+        id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+        userName: 'testing',
+        firstName: 'Tina',
+        lastName: 'Testing',
+        email: 'tina.testing@myskills.io',
+        coach: false,
+      },
+      approvedByUser: false,
+      approvedByCommunity: true
+    };
+
+    const userRegistrationRequest: CommunityUserRegistration = {
+      id: '12345',
+      approvedByUser: false,
+      approvedByCommunity: true
+    };
+
+    communityRegistrationService.updateRegistration(communityId, userRegistrationRequest).subscribe(community => {
+      expect(community).toEqual(updateResponse);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/communities/${communityId}/user-registrations/${userRegistrationRequest.id}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+    expect(request.request.body).toEqual(userRegistrationRequest);
+
+    request.flush(updateResponse);
   }));
 });

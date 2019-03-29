@@ -21,7 +21,7 @@ import {
   MatDividerModule,
   MatDatepickerModule,
   MatButtonToggleModule,
-  MatBadgeModule,
+  MatBadgeModule
 } from '@angular/material';
 
 @NgModule({

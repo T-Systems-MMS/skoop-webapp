@@ -56,6 +56,7 @@ import { InfoDialogComponent } from './shared/info-dialog/info-dialog.component'
 import { RecommendedCommunitiesComponent } from './recommended-communities/recommended-communities.component';
 import { CommunityCardComponent } from './shared/community-card/community-card.component';
 import { CommunityInvitationDialogComponent } from './community-view/community-invitation-dialog.component';
+import { MyMessagesComponent } from './my-messages/my-messages.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -106,6 +107,7 @@ export const CUSTOM_FORMATS = {
     RecommendedCommunitiesComponent,
     CommunityCardComponent,
     CommunityInvitationDialogComponent,
+    MyMessagesComponent,
   ],
   imports: [
     BrowserModule,

@@ -36,11 +36,13 @@ const users: User[] = [{
 
 const communityUserRegistrations: CommunityUserRegistrationResponse[] = [
   {
+    id: '12345',
     user: users[0],
     approvedByUser: false,
     approvedByCommunity: true
   },
   {
+    id: '567890',
     user: users[1],
     approvedByUser: false,
     approvedByCommunity: true
