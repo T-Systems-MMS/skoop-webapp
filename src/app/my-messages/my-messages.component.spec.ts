@@ -190,7 +190,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(3);
+    expect(notificationCards.length).toBe(4);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -254,18 +254,25 @@ describe('MyMessagesComponent', () => {
     expect(actualData.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
     expect(actualData.text).toBe(expectedNotifications[0].registration.community.title);
 
-    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
+    // REQUEST_TO_JOIN_COMMUNITY -> link to the community from a registration object
     communityRow = getCommunityInformation(notificationCards[1]);
     actualData = communityRow.nativeElement.querySelector('a');
     expect(actualData).toBeDefined();
+    expect(actualData.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(actualData.text).toBe(expectedNotifications[1].registration.community.title);
+
+    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
+    communityRow = getCommunityInformation(notificationCards[2]);
+    actualData = communityRow.nativeElement.querySelector('a');
+    expect(actualData).toBeDefined();
     expect(actualData.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
-    expect(actualData.text).toBe(expectedNotifications[0].registration.community.title);
+    expect(actualData.text).toBe(expectedNotifications[2].registration.community.title);
 
     // COMMUNITY_DELETED -> community name
-    communityRow = getCommunityInformation(notificationCards[2]);
+    communityRow = getCommunityInformation(notificationCards[3]);
     actualData = communityRow.nativeElement.innerText;
     expect(actualData).toBeDefined();
-    expect(actualData).toBe(expectedNotifications[2].communityName);
+    expect(actualData).toBe(expectedNotifications[3].communityName);
   }));
 
   function getCommunityInformation(notificationCard: DebugElement): DebugElement {
