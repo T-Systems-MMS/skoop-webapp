@@ -11,6 +11,8 @@ import { CommunityInvitationNotification } from './community-invitation-notifica
 import { JoinCommunityRequestNotification } from './join-community-request-notification';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { Util } from '../util/util';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-my-messages',
@@ -20,17 +22,23 @@ import { Util } from '../util/util';
 export class MyMessagesComponent implements OnInit {
 
   errorMessage: string = null;
+  currentUserId: string;
   notifications$ = of([]);
 
   constructor(private communityRegistrationService: CommunityRegistrationService,
               private messageService: MessagesService,
+              private userIdentityService: UserIdentityService,
               public dialog: MatDialog,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
   }
 
   ngOnInit() {
-   this.notifications$ = this.messageService.getUserNotifications();
+    this.notifications$ = this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity => {
+        this.currentUserId = userIdentity.userId;
+        return this.messageService.getUserNotifications(this.currentUserId);
+      }));
   }
 
   hasJoinRequestType<T extends AbstractNotification>(notification: T): boolean {
@@ -40,10 +48,12 @@ export class MyMessagesComponent implements OnInit {
   showAcceptDeclineButtons<T extends AbstractNotification>(notification: T) {
     if (notification.hasCommunityInvitationType()) {
       const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
-      return invitationNotification.registration.approvedByUser === null || invitationNotification.registration.approvedByCommunity === null;
+      return invitationNotification.registration.user.id === this.currentUserId &&
+        (invitationNotification.registration.approvedByUser === null || invitationNotification.registration.approvedByCommunity === null);
     } else if (notification.hasJoinCommunityType()) {
       const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
-      return joinRequestNotification.registration.approvedByUser === null || joinRequestNotification.registration.approvedByCommunity === null;
+      return joinRequestNotification.registration.user.id !== this.currentUserId &&
+        (joinRequestNotification.registration.approvedByUser === null || joinRequestNotification.registration.approvedByCommunity === null);
     } else {
       return false;
     }
@@ -92,7 +102,7 @@ export class MyMessagesComponent implements OnInit {
   private updateRegistration(communityId: string, registration: CommunityUserRegistration) {
     this.communityRegistrationService.updateRegistration(communityId, registration)
       .subscribe(() => {
-        this.notifications$ = this.messageService.getUserNotifications();
+        this.notifications$ = this.messageService.getUserNotifications(this.currentUserId);
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
