@@ -285,48 +285,49 @@ describe('MyMessagesComponent', () => {
     let communityRow = getCommunityInformation(notificationCards[0]);
 
     // INVITATION_TO_JOIN_COMMUNITY -> link to the community from a registration object
-    let actualData = communityRow.nativeElement.querySelector('a');
-    expect(actualData).toBeDefined();
-    expect(actualData.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
-    expect(actualData.text).toBe(expectedNotifications[0].registration.community.title);
+    let linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[0].registration.community.title);
 
     // REQUEST_TO_JOIN_COMMUNITY -> link to the community from a registration object
     communityRow = getCommunityInformation(notificationCards[1]);
-    actualData = communityRow.nativeElement.querySelector('a');
-    expect(actualData).toBeDefined();
-    expect(actualData.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
-    expect(actualData.text).toBe(expectedNotifications[1].registration.community.title);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[1].registration.community.title);
 
     // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
     communityRow = getCommunityInformation(notificationCards[2]);
-    actualData = communityRow.nativeElement.querySelector('a');
-    expect(actualData).toBeDefined();
-    expect(actualData.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
-    expect(actualData.text).toBe(expectedNotifications[2].registration.community.title);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[2].registration.community.title);
 
     // COMMUNITY_DELETED -> community name
     communityRow = getCommunityInformation(notificationCards[3]);
-    actualData = communityRow.nativeElement.innerText;
-    expect(actualData).toBeDefined();
-    expect(actualData).toBe(expectedNotifications[3].communityName);
+    const communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[3].communityName);
 
     // MEMBER_LEFT_COMMUNITY -> link to the community from a notification object
     communityRow = getCommunityInformation(notificationCards[4]);
-    actualData = communityRow.nativeElement.querySelector('a');
-    expect(actualData).toBeDefined();
-    expect(actualData.href).toContain(`/communities/${expectedNotifications[4].community.id}`);
-    expect(actualData.text).toBe(expectedNotifications[4].community.title);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[4].community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[4].community.title);
 
     // MEMBER_KICKED_OUT_OF_COMMUNITY -> link to the community from a notification object
     communityRow = getCommunityInformation(notificationCards[5]);
-    actualData = communityRow.nativeElement.querySelector('a');
-    expect(actualData).toBeDefined();
-    expect(actualData.href).toContain(`/communities/${expectedNotifications[5].community.id}`);
-    expect(actualData.text).toBe(expectedNotifications[5].community.title);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[5].community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[5].community.title);
+
+    function getCommunityInformation(notificationCard: DebugElement): DebugElement {
+      const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
+      return communityDebugElement.children[1];
+    }
   }));
 
-  function getCommunityInformation(notificationCard: DebugElement): DebugElement {
-    const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
-    return communityDebugElement.children[1];
-  }
 });
