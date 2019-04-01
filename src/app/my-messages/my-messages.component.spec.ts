@@ -119,6 +119,42 @@ const expectedNotifications: any[] = [
     creationDatetime: new Date(),
     communityName: 'deleted community'
   }),
+  Util.createNotificationInstance({
+    type: NotificationType.MEMBER_LEFT_COMMUNITY,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    community: {
+      id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+      title: 'Some closed community',
+      type: 'CLOSED',
+      description: 'Some closed community description',
+      links: [],
+      managers: [],
+      skills: []
+    },
+    user: {
+      id: authenticatedUser.userId,
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@myskills.io',
+      coach: false
+    },
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    community: {
+      id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+      title: 'Some closed community',
+      type: 'CLOSED',
+      description: 'Some closed community description',
+      links: [],
+      managers: [],
+      skills: []
+    }
+  }),
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -190,7 +226,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(4);
+    expect(notificationCards.length).toBe(6);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -273,6 +309,20 @@ describe('MyMessagesComponent', () => {
     actualData = communityRow.nativeElement.innerText;
     expect(actualData).toBeDefined();
     expect(actualData).toBe(expectedNotifications[3].communityName);
+
+    // MEMBER_LEFT_COMMUNITY -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[4]);
+    actualData = communityRow.nativeElement.querySelector('a');
+    expect(actualData).toBeDefined();
+    expect(actualData.href).toContain(`/communities/${expectedNotifications[4].community.id}`);
+    expect(actualData.text).toBe(expectedNotifications[4].community.title);
+
+    // MEMBER_KICKED_OUT_OF_COMMUNITY -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[5]);
+    actualData = communityRow.nativeElement.querySelector('a');
+    expect(actualData).toBeDefined();
+    expect(actualData.href).toContain(`/communities/${expectedNotifications[5].community.id}`);
+    expect(actualData.text).toBe(expectedNotifications[5].community.title);
   }));
 
   function getCommunityInformation(notificationCard: DebugElement): DebugElement {
