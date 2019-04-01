@@ -2,21 +2,10 @@ import { async, TestBed } from '@angular/core/testing';
 
 import { MessagesService } from './messages.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { UserIdentityService } from '../shared/user-identity.service';
-import { of } from 'rxjs';
-import { UserIdentity } from '../shared/user-identity';
 import { environment } from '../../environments/environment';
 import { Util } from '../util/util';
 import { NotificationType } from './notification-type.enum';
 
-const authenticatedUser: UserIdentity = {
-  userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-  userName: 'tester',
-  firstName: 'Toni',
-  lastName: 'Tester',
-  email: 'toni.tester@myskills.io',
-  roles: ['ROLE_USER']
-};
 
 describe('MessagesService', () => {
   let httpTestingController: HttpTestingController;
@@ -25,12 +14,7 @@ describe('MessagesService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [MessagesService,
-        {
-          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
-            'getUserIdentity': of(authenticatedUser)
-          })
-        }]
+      providers: [MessagesService]
     });
 
     httpTestingController = TestBed.get(HttpTestingController);
@@ -47,6 +31,7 @@ describe('MessagesService', () => {
   });
 
   it('should provide list of notifications', async(() => {
+    const userId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
     const expectedNotifications: any[] = [
       Util.createNotificationInstance({
         type: NotificationType.INVITATION_TO_JOIN_COMMUNITY,
@@ -104,13 +89,13 @@ describe('MessagesService', () => {
       })
     ];
 
-    messagesService.getUserNotifications().subscribe((actualNotifications) => {
+    messagesService.getUserNotifications(userId).subscribe((actualNotifications) => {
       expect(actualNotifications).toEqual(expectedNotifications);
     });
 
     const request = httpTestingController.expectOne((req) =>
       req.method === 'GET'
-      && req.url === `${environment.serverApiUrl}/users/${authenticatedUser.userId}/notifications`
+      && req.url === `${environment.serverApiUrl}/users/${userId}/notifications`
     );
 
     expect(request.request.responseType).toEqual('json');

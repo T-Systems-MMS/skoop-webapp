@@ -18,6 +18,17 @@ import { CommunityUserRegistration } from '../shared/community-user-registration
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { UserIdentityService } from '../shared/user-identity.service';
+import { UserIdentity } from '../shared/user-identity';
+
+const authenticatedUser: UserIdentity = {
+  userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+  userName: 'tester',
+  firstName: 'Toni',
+  lastName: 'Tester',
+  email: 'toni.tester@myskills.io',
+  roles: ['ROLE_USER']
+};
 
 const expectedNotifications: any[] = [
   Util.createNotificationInstance({
@@ -27,15 +38,42 @@ const expectedNotifications: any[] = [
     registration: {
       id: 'b9f7a830-6437-4585-980c-b6820b6f03fb',
       user: {
-        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-        userName: 'testbed',
-        firstName: 'Tabia',
-        lastName: 'Testbed',
-        email: 'tabia.testbed@myskills.io',
-        coach: false,
+        id: authenticatedUser.userId,
+        userName: 'tester',
+        firstName: 'Toni',
+        lastName: 'Tester',
+        email: 'toni.tester@myskills.io',
+        coach: false
       },
       approvedByUser: null,
       approvedByCommunity: true,
+      community: {
+        id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+        title: 'Some closed community',
+        type: 'CLOSED',
+        description: 'Some closed community description',
+        links: [],
+        managers: [],
+        skills: []
+      }
+    }
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.REQUEST_TO_JOIN_COMMUNITY,
+    id: 'e84cacac-4fba-4cea-b7e6-7e3d9841b0a6',
+    creationDatetime: new Date(),
+    registration: {
+      id: 'b9f7a830-6437-4585-980c-b6820b6f03fb',
+      user: {
+        id: authenticatedUser.userId,
+        userName: 'tester',
+        firstName: 'Toni',
+        lastName: 'Tester',
+        email: 'toni.tester@myskills.io',
+        coach: false
+      },
+      approvedByUser: true,
+      approvedByCommunity: null,
       community: {
         id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
         title: 'Some closed community',
@@ -54,12 +92,12 @@ const expectedNotifications: any[] = [
     registration: {
       id: '26fa54c0-163d-48e1-aab1-519f0ed7db13',
       user: {
-        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-        userName: 'testbed',
-        firstName: 'Tabia',
-        lastName: 'Testbed',
-        email: 'tabia.testbed@myskills.io',
-        coach: false,
+        id: authenticatedUser.userId,
+        userName: 'tester',
+        firstName: 'Toni',
+        lastName: 'Tester',
+        email: 'toni.tester@myskills.io',
+        coach: false
       },
       approvedByUser: true,
       approvedByCommunity: true,
@@ -115,6 +153,11 @@ describe('MyMessagesComponent', () => {
           provide: CommunityRegistrationService, useValue: jasmine.createSpyObj('communityRegistrationService', {
             'updateRegistration': of(registrationResponse)
           })
+        },
+        {
+          provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
+            'getUserIdentity': of(authenticatedUser)
+          })
         }
       ]
     })
@@ -140,7 +183,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(2);
+    expect(notificationCards.length).toBe(3);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -151,6 +194,14 @@ describe('MyMessagesComponent', () => {
     expect(buttons.length).toBe(2);
     expect(buttons[0].nativeElement.textContent).toContain('done_outline');
     expect(buttons[1].nativeElement.textContent).toContain('cancel');
+  }));
+
+  it('should not display accept/decline buttons in case of REQUEST_TO_JOIN_COMMUNITY for user who sent the request', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+
+    const buttons = notificationCards[1].queryAll(By.css('button'));
+    expect(buttons.length).toBe(0);
   }));
 
   it('should send an accept request on accept button click', fakeAsync(() => {
