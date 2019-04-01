@@ -72,8 +72,8 @@ const expectedNotifications: any[] = [
         email: 'toni.tester@myskills.io',
         coach: false
       },
-      approvedByUser: null,
-      approvedByCommunity: true,
+      approvedByUser: true,
+      approvedByCommunity: null,
       community: {
         id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
         title: 'Some closed community',
