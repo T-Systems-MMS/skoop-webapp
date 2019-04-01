@@ -18,6 +18,7 @@ import { CommunityUserRegistration } from '../shared/community-user-registration
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { DebugElement } from '@angular/core';
 
 const expectedNotifications: any[] = [
   Util.createNotificationInstance({
@@ -73,7 +74,13 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  })
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.COMMUNITY_DELETED,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    communityName: 'deleted community'
+  }),
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -140,7 +147,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(2);
+    expect(notificationCards.length).toBe(3);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -183,4 +190,35 @@ describe('MyMessagesComponent', () => {
       expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
     });
   }));
+
+  it('should display community information regarding to the notification type', fakeAsync(() => {
+    fixture.detectChanges();
+
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    let communityRow = getCommunityInformation(notificationCards[0]);
+
+    // INVITATION_TO_JOIN_COMMUNITY -> link to the community from a registration object
+    let actualData = communityRow.nativeElement.querySelector('a');
+    expect(actualData).toBeDefined();
+    expect(actualData.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(actualData.text).toBe(expectedNotifications[0].registration.community.title);
+
+    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
+    communityRow = getCommunityInformation(notificationCards[1]);
+    actualData = communityRow.nativeElement.querySelector('a');
+    expect(actualData).toBeDefined();
+    expect(actualData.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
+    expect(actualData.text).toBe(expectedNotifications[0].registration.community.title);
+
+    // COMMUNITY_DELETED -> community name
+    communityRow = getCommunityInformation(notificationCards[2]);
+    actualData = communityRow.nativeElement.innerText;
+    expect(actualData).toBeDefined();
+    expect(actualData).toBe(expectedNotifications[2].communityName);
+  }));
+
+  function getCommunityInformation(notificationCard: DebugElement): DebugElement {
+    const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
+    return communityDebugElement.children[1];
+  }
 });
