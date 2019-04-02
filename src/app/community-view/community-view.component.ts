@@ -15,6 +15,7 @@ import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
 import { CommunityInvitationDialogComponent } from './community-invitation-dialog.component';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRoleRequest } from './community-user-role-request';
 
 @Component({
   selector: 'app-community-view',
@@ -119,6 +120,30 @@ export class CommunityViewComponent implements OnInit {
         });
       }
     });
+  }
+
+  canChangeRole(user: User): boolean {
+    return this.isCommunityManager && user.id !== this.currentUserId;
+  }
+
+  changeRole(user: User, isRaising: boolean) {
+    const updateRoleRequest: CommunityUserRoleRequest = {
+      role: isRaising ? CommunityRole.MANAGER : CommunityRole.MEMBER
+    };
+
+    this.communityService.changeUserRole(this.community.id, user.id, updateRoleRequest)
+      .subscribe(updatedUser => {
+        if (isRaising) {
+          this.communityMembers = this.communityMembers.filter(item => item.user.id !== updatedUser.user.id);
+          this.communityManagers.push(updatedUser);
+        } else {
+          this.communityManagers = this.communityManagers.filter(item => item.user.id !== updatedUser.user.id);
+          this.communityMembers.push(updatedUser);
+        }
+
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      })
   }
 
   openInvitationDialog() {
