@@ -18,6 +18,7 @@ import { CommunityUserRegistration } from '../shared/community-user-registration
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MatDialog } from '@angular/material';
+import { DebugElement } from '@angular/core';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
 
@@ -111,7 +112,49 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  })
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.COMMUNITY_DELETED,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    communityName: 'deleted community'
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.MEMBER_LEFT_COMMUNITY,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    community: {
+      id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+      title: 'Some closed community',
+      type: 'CLOSED',
+      description: 'Some closed community description',
+      links: [],
+      managers: [],
+      skills: []
+    },
+    user: {
+      id: authenticatedUser.userId,
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@myskills.io',
+      coach: false
+    },
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    community: {
+      id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+      title: 'Some closed community',
+      type: 'CLOSED',
+      description: 'Some closed community description',
+      links: [],
+      managers: [],
+      skills: []
+    }
+  }),
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -183,7 +226,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(3);
+    expect(notificationCards.length).toBe(6);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -234,4 +277,57 @@ describe('MyMessagesComponent', () => {
       expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
     });
   }));
+
+  it('should display community information regarding to the notification type', fakeAsync(() => {
+    fixture.detectChanges();
+
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    let communityRow = getCommunityInformation(notificationCards[0]);
+
+    // INVITATION_TO_JOIN_COMMUNITY -> link to the community from a registration object
+    let linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[0].registration.community.title);
+
+    // REQUEST_TO_JOIN_COMMUNITY -> link to the community from a registration object
+    communityRow = getCommunityInformation(notificationCards[1]);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[1].registration.community.title);
+
+    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
+    communityRow = getCommunityInformation(notificationCards[2]);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[2].registration.community.title);
+
+    // COMMUNITY_DELETED -> community name
+    communityRow = getCommunityInformation(notificationCards[3]);
+    const communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[3].communityName);
+
+    // MEMBER_LEFT_COMMUNITY -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[4]);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[4].community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[4].community.title);
+
+    // MEMBER_KICKED_OUT_OF_COMMUNITY -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[5]);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[5].community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[5].community.title);
+
+    function getCommunityInformation(notificationCard: DebugElement): DebugElement {
+      const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
+      return communityDebugElement.children[1];
+    }
+  }));
+
 });

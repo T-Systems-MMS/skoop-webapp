@@ -13,20 +13,26 @@
           <div class="messages-description-label">Date:</div>
           <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
         </div>
-        <div fxLayout="row">
+        <div fxLayout="row" class="messages-community-information">
           <div class="messages-description-label">Community:</div>
-          <div *ngIf="notification.hasJoinCommunityType() || notification.hasCommunityInvitationType() || notification.hasAcceptanceToCommunityType();
-           then registration_community_content else community_content"></div>
+          <div *ngIf="notification.hasJoinCommunityType() || notification.hasCommunityInvitationType() || notification.hasAcceptanceToCommunityType()">
+            <a [routerLink]="['/communities', notification.registration.community.id]">{{notification.registration.community.title}}</a>
+          </div>
+          <div *ngIf="notification.hasCommunityDeletedType()">
+            {{notification.communityName}}
+          </div>
+          <div *ngIf="notification.hasCommunityChangedType() || notification.hasCommunityRoleChangedType()
+          || notification.hasMemberKickedOutType() || notification.hasMemberLeftType()">
+            <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>
+          </div>
         </div>
-        <ng-template #registration_community_content>
-          <a [routerLink]="['/communities', notification.registration.community.id]">{{notification.registration.community.title}}</a>
-        </ng-template>
-        <ng-template #community_content>
-          <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>
-        </ng-template>
         <div fxLayout="row" *ngIf="notification.hasJoinCommunityType()">
           <div class="messages-description-label">User:</div>
           <div>{{notification.registration.user.firstName}} {{notification.registration.user.lastName}}</div>
+        </div>
+        <div fxLayout="row" *ngIf="notification.hasMemberLeftType()">
+          <div class="messages-description-label">User:</div>
+          <div>{{notification.user.firstName}} {{notification.user.lastName}}</div>
         </div>
         <div fxLayout="row" *ngIf="hasJoinRequestType(notification)">
           <div class="messages-description-label">Status:</div>
