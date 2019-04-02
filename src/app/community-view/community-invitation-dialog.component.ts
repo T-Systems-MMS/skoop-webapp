@@ -117,7 +117,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
   }
 
   private existsInUsersArray(user: User): boolean {
-    return this.usersArray.find(item => item.id === user.id) != null;
+    return this.usersArray.some(item => item.id === user.id);
   }
 
   get usersArray(): User[] {
