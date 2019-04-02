@@ -74,7 +74,10 @@ describe('CommunityInvitationDialogComponent', () => {
         },
         {
           provide: CommunityUserService,
-          useValue: jasmine.createSpyObj('userService', {'getCommunityUserSuggestions': of<User[]>(users)})
+          useValue: jasmine.createSpyObj('communityUserService', {
+            'getCommunityUserSuggestions': of<User[]>(users),
+            'getRecommendedUsers': of<User[]>(users)
+          })
         },
         {provide: MAT_DIALOG_DATA, useValue: {communityId: communityId}},
         {
@@ -117,5 +120,28 @@ describe('CommunityInvitationDialogComponent', () => {
       const dialogRef = TestBed.get(MatDialogRef);
       expect(dialogRef.close).toHaveBeenCalledWith([communityUserRegistrations[0].user, communityUserRegistrations[1].user]);
     });
+  }));
+
+  it('should add user from the list of recommended users', async(() => {
+    expect(component.recommendedUsers).toEqual(users);
+    expect(component.usersArray).toEqual([]);
+
+    const recommendedUser: User = users[1];
+    component.chooseRecommendedUser(recommendedUser);
+
+    expect(component.recommendedUsers.length).toBe(1);
+    expect(component.recommendedUsers).toContain(users[0]);
+    expect(component.usersArray.length).toBe(1);
+    expect(component.usersArray).toContain(recommendedUser);
+  }));
+
+  it('should not add already added user', async(() => {
+    component.usersArray.push(users[0]);
+
+    const recommendedUser: User = users[0];
+    component.chooseRecommendedUser(recommendedUser);
+
+    expect(component.usersArray.length).toBe(1);
+    expect(component.usersArray).toContain(recommendedUser);
   }));
 });
