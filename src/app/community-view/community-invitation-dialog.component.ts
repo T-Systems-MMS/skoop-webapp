@@ -27,11 +27,12 @@ export class CommunityInvitationDialogComponent implements OnInit {
   errorMessage: string = null;
   invitationForm: FormGroup;
   userSuggestions$: Observable<User[]>;
+  recommendedUsers: User[] = [];
   usersControl = new FormControl();
 
   constructor(@Inject(MAT_DIALOG_DATA) public dialogData: InvitationDialogData,
               public dialogRef: MatDialogRef<CommunityInvitationDialogComponent>,
-              private usersService: CommunityUserService,
+              private communityUserService: CommunityUserService,
               private registrationService: CommunityRegistrationService,
               private formBuilder: FormBuilder,
               private changeDetector: ChangeDetectorRef,
@@ -40,6 +41,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
 
   ngOnInit() {
     this.loadUsers();
+    this.loadRecommendedUsers();
     this.invitationForm = this.formBuilder.group({
       invitedUsers: new FormControl([])
     });
@@ -47,7 +49,7 @@ export class CommunityInvitationDialogComponent implements OnInit {
 
   addSelectedUser(event: MatAutocompleteSelectedEvent): void {
     const value = event.option.value;
-    if (value && this.usersArray.indexOf(value) === -1) {
+    if (value && !this.existsInUsersArray(value)) {
       this.usersArray.push(value);
     }
 
@@ -67,14 +69,23 @@ export class CommunityInvitationDialogComponent implements OnInit {
       .subscribe((data: CommunityUserRegistrationResponse[]) => {
         this.dialogRef.close(data.map(item => item.user));
       }, errorResponse => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
   }
 
   usersCanBeInvited(): boolean {
     return this.usersArray && this.usersArray.length > 0;
+  }
+
+  chooseRecommendedUser(user: User) {
+    const index = this.recommendedUsers.indexOf(user);
+    if (index >= 0) {
+      this.recommendedUsers.splice(index, 1);
+    }
+
+    if (user && !this.existsInUsersArray(user)) {
+      this.usersArray.push(user);
+    }
   }
 
   cancel() {
@@ -86,8 +97,27 @@ export class CommunityInvitationDialogComponent implements OnInit {
       filter(search => typeof search === 'string'),
       debounceTime(500),
       distinctUntilChanged(),
-      switchMap(search => this.usersService.getCommunityUserSuggestions(this.dialogData.communityId, search))
+      switchMap(search => this.communityUserService.getCommunityUserSuggestions(this.dialogData.communityId, search))
     );
+  }
+
+  private loadRecommendedUsers() {
+    this.communityUserService.getRecommendedUsers(this.dialogData.communityId)
+      .subscribe(users => {
+        this.recommendedUsers = users;
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      });
+  }
+
+  private handleErrorResponse(errorResponse) {
+    this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
+  }
+
+  private existsInUsersArray(user: User): boolean {
+    return this.usersArray.find(item => item.id === user.id) != null;
   }
 
   get usersArray(): User[] {

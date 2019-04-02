@@ -123,7 +123,7 @@ export class CommunityViewComponent implements OnInit {
 
   openInvitationDialog() {
     this.dialog.open(CommunityInvitationDialogComponent, {
-      width: '350px',
+      width: '550px',
       data: {
         communityId: this.community.id
       }
