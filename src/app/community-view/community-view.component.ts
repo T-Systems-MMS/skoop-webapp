@@ -148,7 +148,7 @@ export class CommunityViewComponent implements OnInit {
 
   openInvitationDialog() {
     this.dialog.open(CommunityInvitationDialogComponent, {
-      width: '350px',
+      width: '550px',
       data: {
         communityId: this.community.id
       }
@@ -187,7 +187,7 @@ export class CommunityViewComponent implements OnInit {
       this.currentUserId = userIdentity.userId;
       this.communityMembers = communityUsers.filter(cm => cm.role === CommunityRole.MEMBER);
       this.communityManagers = communityUsers.filter(cm => cm.role === CommunityRole.MANAGER);
-      this.isCommunityMember = this.communityMembers && this.communityMembers.some(item => item.user.id === userIdentity.userId);
+      this.isCommunityMember = communityUsers && communityUsers.some(item => item.user.id === userIdentity.userId);
       this.isCommunityManager = this.communityManagers && this.communityManagers.some(item => item.user.id === userIdentity.userId);
     }, errorResponse => {
       this.handleErrorResponse(errorResponse);

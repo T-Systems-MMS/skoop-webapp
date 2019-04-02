@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 
 import { CommunityUserService } from './community-user.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -65,4 +65,37 @@ describe('CommunityUserService', () => {
     expect(req.request.method).toBe('GET');
     req.flush(expectedUsers);
   });
+
+  it('should provide list of users recommended for community', async(() => {
+    const communityId = 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f';
+    const recommendedUsersResponse: User[] = [{
+      id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+      userName: 'testing',
+      firstName: 'Tina',
+      lastName: 'Testing',
+      email: 'tina.testing@myskills.io',
+      coach: false,
+    },
+      {
+        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+        userName: 'testbed',
+        firstName: 'Tabia',
+        lastName: 'Testbed',
+        email: 'tabia.testbed@myskills.io',
+        coach: false,
+      }];
+
+    communityUserService.getRecommendedUsers(communityId).subscribe((users) => {
+      expect(users).toEqual(recommendedUsersResponse);
+    });
+
+    const request = httpTestingController.expectOne((req) =>
+      req.method === 'GET'
+      && req.url === `${environment.serverApiUrl}/communities/${communityId}/recommended-users`
+    );
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(recommendedUsersResponse);
+  }));
 });

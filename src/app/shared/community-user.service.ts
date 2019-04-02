@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 export class CommunityUserService {
 
   private communityUserSuggestionUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/user-suggestions`;
+  private recommendedUsersUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/recommended-users`;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -20,5 +21,9 @@ export class CommunityUserService {
       {
         params: new HttpParams().set('search', search)
       });
+  }
+
+  getRecommendedUsers(communityId: string): Observable<User[]> {
+    return this.httpClient.get<User[]>(this.recommendedUsersUrlPattern.replace('{communityId}', communityId));
   }
 }

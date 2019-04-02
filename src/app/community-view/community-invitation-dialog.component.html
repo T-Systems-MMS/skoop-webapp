@@ -1,5 +1,16 @@
 <form [formGroup]="invitationForm" class="invitation-dialog">
   <div *ngIf="errorMessage" class="invitation-dialog-error">{{errorMessage}}</div>
+    <div *ngIf="recommendedUsers.length" class="invitation-dialog-recommended-users">
+      <div class="invitation-dialog-recommended-users-label">Recommended users:</div>
+      <mat-chip-list>
+        <mat-chip *ngFor="let user of recommendedUsers"
+                  selectable="false" removable="true"
+                  (removed)="chooseRecommendedUser(user)">
+          {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
+          <mat-icon matChipRemove>add_circle</mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </div>
   <mat-form-field class="invitation-dialog-form-field">
     <mat-chip-list #usersChipList>
       <mat-chip *ngFor="let user of usersArray"

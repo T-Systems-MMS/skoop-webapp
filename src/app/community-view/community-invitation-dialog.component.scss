@@ -11,3 +11,11 @@
 .invitation-dialog-error {
   @extend %base-error;
 }
+
+.invitation-dialog-recommended-users {
+  margin-bottom: 15px;
+
+  .invitation-dialog-recommended-users-label {
+    margin-bottom: 5px;
+  }
+}
