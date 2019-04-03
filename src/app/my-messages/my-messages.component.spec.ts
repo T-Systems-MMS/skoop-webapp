@@ -21,6 +21,7 @@ import { MatDialog } from '@angular/material';
 import { DebugElement } from '@angular/core';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
+import { CommunityRole } from '../communities/community-role.enum';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -155,6 +156,13 @@ const expectedNotifications: any[] = [
       skills: []
     }
   }),
+  Util.createNotificationInstance({
+    type: NotificationType.COMMUNITY_ROLE_CHANGED,
+    id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
+    communityName: 'Super group',
+    creationDatetime: '2019-04-03T13:59:54.5288521',    
+    role: CommunityRole.MEMBER
+  })
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -226,7 +234,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(6);
+    expect(notificationCards.length).toBe(7);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -306,7 +314,7 @@ describe('MyMessagesComponent', () => {
 
     // COMMUNITY_DELETED -> community name
     communityRow = getCommunityInformation(notificationCards[3]);
-    const communityName = communityRow.nativeElement.innerText;
+    let communityName = communityRow.nativeElement.innerText;
     expect(communityName).toBeDefined();
     expect(communityName).toBe(expectedNotifications[3].communityName);
 
@@ -323,6 +331,12 @@ describe('MyMessagesComponent', () => {
     expect(linkToCommunity).toBeDefined();
     expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[5].community.id}`);
     expect(linkToCommunity.text).toBe(expectedNotifications[5].community.title);
+
+    // COMMUNITY_ROLE_CHANGED -> community name
+    communityRow = getCommunityInformation(notificationCards[6]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[6].communityName);
 
     function getCommunityInformation(notificationCard: DebugElement): DebugElement {
       const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
