@@ -203,7 +203,6 @@ describe('CommunityViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CommunityViewComponent);
     component = fixture.componentInstance;
-    // fixture.detectChanges();
   });
 
   it('should create', () => {
