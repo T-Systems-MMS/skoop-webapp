@@ -55,8 +55,12 @@ const community: CommunityResponse = {
     }],
   managers: [
     {
-      id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
-      userName: 'tester'
+      id: authenticatedUser.userId,
+      userName: authenticatedUser.userName
+    } as User,
+    {
+      id: '123456',
+      userName: 'manager to lower'
     } as User
   ]
 };
@@ -113,15 +117,15 @@ describe('CommunityViewComponent', () => {
               [
                 {
                   user: {
-                    id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
+                    id: authenticatedUser.userId,
                     userName: 'tester'
                   } as User,
-                  role: CommunityRole.MEMBER
+                  role: CommunityRole.MANAGER
                 } as CommunityUserResponse,
                 {
                   user: {
                     id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
-                    userName: 'tester'
+                    userName: 'manager'
                   } as User,
                   role: CommunityRole.MANAGER
                 } as CommunityUserResponse,
@@ -161,7 +165,16 @@ describe('CommunityViewComponent', () => {
                   href: 'https://stackoverflow.com/'
                 }],
               managers: [{id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666'}]
-            } as CommunityResponse)
+            } as CommunityResponse),
+            'changeUserRole': of<CommunityUserResponse>({
+              user: {
+                id: 'e6b808eb-b6bd-447d-8dce-3e0d66b11234',
+                userName: 'tester',
+                firstName: 'test',
+                lastName: 'tester'
+              } as User,
+              role: CommunityRole.MANAGER
+            })
           })
         },
         {
@@ -190,7 +203,7 @@ describe('CommunityViewComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CommunityViewComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+    // fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -198,11 +211,33 @@ describe('CommunityViewComponent', () => {
   });
 
   it('should check if the user is not a member of community', fakeAsync(() => {
+    const notMember: UserIdentity = {
+      userId: 'g5b808eb-b6bd-447d-8dce-3e0d66b112345',
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@myskills.io',
+      roles: ['ROLE_USER']
+    };
+    const userService = TestBed.get(UserIdentityService) as UserIdentityService;
+    userService.getUserIdentity = jasmine.createSpy().and.returnValue(of(notMember));
     fixture.detectChanges();
     expect(component.isCommunityMember).toBeFalsy();
   }));
 
   it('should make user join a community', fakeAsync(() => {
+    const notMember: UserIdentity = {
+      userId: 'g5b808eb-b6bd-447d-8dce-3e0d66b112345',
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@myskills.io',
+      roles: ['ROLE_USER']
+    };
+    const userService = TestBed.get(UserIdentityService) as UserIdentityService;
+    userService.getUserIdentity = jasmine.createSpy().and.returnValue(of(notMember));
+
+    fixture.detectChanges();
     component.joinCommunity();
     fixture.detectChanges();
     expect(component.isCommunityMember).toBeTruthy();
@@ -229,7 +264,9 @@ describe('CommunityViewComponent', () => {
     expect(component.canLeaveCommunity).toBeTruthy();
     component.leaveCommunity();
     fixture.detectChanges();
-    expect(component.isCommunityMember).toBeFalsy();
+    const matDialog: MatDialog = TestBed.get(MatDialog);
+    expect(matDialog.openDialogs.length).toBe(1);
+    expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
   }));
 
   it('should not make user join a closed community and display closed community info dialog', fakeAsync(() => {
@@ -240,26 +277,77 @@ describe('CommunityViewComponent', () => {
         userName: authenticatedUser.userName
       } as User
     } as CommunityUserResponse;
-    const c: CommunityResponse = Object.assign({}, component.community);
-    c.type = CommunityType.CLOSED;
-    component.community = c;
+    const closedCommunity: CommunityResponse = Object.assign({}, component.community);
+    closedCommunity.type = CommunityType.CLOSED;
+
     const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
+    communityService.getCommunity = jasmine.createSpy().and.returnValue(of(closedCommunity));
     communityService.joinCommunity = jasmine.createSpy().and.returnValue(of(communityUserResponse));
 
     const registrationService = TestBed.get(CommunityRegistrationService) as CommunityRegistrationService;
+    const notMember: UserIdentity = {
+      userId: 'g5b808eb-b6bd-447d-8dce-3e0d66b112345',
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@myskills.io',
+      roles: ['ROLE_USER']
+    };
+    const userService = TestBed.get(UserIdentityService) as UserIdentityService;
+    userService.getUserIdentity = jasmine.createSpy().and.returnValue(of(notMember));
+    fixture.detectChanges();
 
     component.joinCommunity();
-    fixture.detectChanges();
     expect(component.isCommunityMember).toBeFalsy();
 
     const matDialog: MatDialog = TestBed.get(MatDialog);
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
 
-    expect(registrationService.inviteUsers).toHaveBeenCalledWith(component.community.id, [authenticatedUser.userId]);
+    expect(registrationService.inviteUsers).toHaveBeenCalledWith(component.community.id, [notMember.userId]);
   }));
 
   it('should allow user to invite other users', () => {
-   expect(component.canInviteUsers).toBeTruthy();
+    fixture.detectChanges();
+    expect(component.canInviteUsers).toBeTruthy();
   });
+
+  it('should allow manager to change user role', fakeAsync(() => {
+    fixture.detectChanges();
+    expect(component.canChangeRole(component.communityMembers[0].user)).toBeTruthy();
+  }));
+
+  it('should raise member to manager', fakeAsync(() => {
+    fixture.detectChanges();
+    const userToRaise = component.communityMembers[0].user;
+
+    const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
+    communityService.changeUserRole = jasmine.createSpy().and.returnValue(of({
+      user: userToRaise,
+      role: CommunityRole.MANAGER
+    }));
+
+    component.changeRole(userToRaise, true);
+
+    expect(component.communityMembers.length).toBe(0);
+    expect(component.community.managers).toContain(userToRaise);
+  }));
+
+  it('should lower a manager to member', fakeAsync(() => {
+    fixture.detectChanges();
+    const managerCount = component.community.managers.length;
+    const userToLower = component.community.managers[1];
+
+    const communityService = TestBed.get(CommunitiesService) as CommunitiesService;
+    const expectedResponse = {
+      user: userToLower,
+      role: CommunityRole.MEMBER
+    };
+    communityService.changeUserRole = jasmine.createSpy().and.returnValue(of(expectedResponse));
+
+    component.changeRole(userToLower, false);
+
+    expect(component.communityMembers).toContain(expectedResponse);
+    expect(component.community.managers.length).toBe(managerCount - 1);
+  }));
 });

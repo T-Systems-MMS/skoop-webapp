@@ -136,8 +136,10 @@ export class CommunityViewComponent implements OnInit {
         if (isRaising) {
           this.communityMembers = this.communityMembers.filter(item => item.user.id !== updatedUser.user.id);
           this.community.managers.push(updatedUser.user);
+          this.communityManagers.push(updatedUser);
         } else {
           this.community.managers = this.community.managers.filter(item => item.id !== updatedUser.user.id);
+          this.communityManagers = this.communityManagers.filter(item => item.user.id !== updatedUser.user.id);
           this.communityMembers.push(updatedUser);
         }
 

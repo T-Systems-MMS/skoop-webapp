@@ -13,6 +13,7 @@ import { CommunityUserRequest } from './community-user-request';
 import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
 import { User } from '../users/user';
+import { CommunityUserRoleRequest } from '../community-view/community-user-role-request';
 
 describe('CommunitiesService', () => {
   let httpTestingController: HttpTestingController;
@@ -339,6 +340,33 @@ describe('CommunitiesService', () => {
     expect(req.request.method).toBe('GET');
   }));
 
+  it('should change a member role', async(() => {
+    const communityId = 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f';
+    const memberId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17666';
+    const updateRoleData: CommunityUserRoleRequest =  {
+      role: CommunityRole.MANAGER
+    };
 
+    const expectedResponse: CommunityUserResponse = {
+        user: {
+          id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17666',
+          userName: 'tester',
+          firstName: 'test',
+          lastName: 'tester'
+        } as User,
+        role: CommunityRole.MANAGER
+      };
+
+    service.changeUserRole(communityId, memberId, updateRoleData).subscribe((data: any) => {
+      expect(data).toEqual(expectedResponse);
+    });
+
+    const req = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/communities/${communityId}/users/${memberId}`
+    });
+    expect(req.request.method).toBe('PUT');
+    req.flush(expectedResponse);
+  }));
 
 });
