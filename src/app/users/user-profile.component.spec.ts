@@ -36,7 +36,7 @@ describe('UserProfileComponent', () => {
           userName: 'tester',
           firstName: 'Toni',
           lastName: 'Tester',
-          email: 'toni.tester@myskills.io',
+          email: 'toni.tester@skoop.io',
           academicDegree: 'academic degree',
           positionProfile: 'position profile',
           summary: 'summary',
@@ -55,7 +55,7 @@ describe('UserProfileComponent', () => {
           userName: 'testing',
           firstName: 'Tina',
           lastName: 'Testing',
-          email: 'tina.testing@myskills.io',
+          email: 'tina.testing@skoop.io',
           coach: false,
         }]
       ));
@@ -67,7 +67,7 @@ describe('UserProfileComponent', () => {
           userName: 'tester',
           firstName: 'Toni',
           lastName: 'Tester',
-          email: 'toni.tester@myskills.io',
+          email: 'toni.tester@skoop.io',
           coach: true,
         }
       ));
@@ -79,7 +79,7 @@ describe('UserProfileComponent', () => {
           userName: 'testing',
           firstName: 'Tina',
           lastName: 'Testing',
-          email: 'tina.testing@myskills.io',
+          email: 'tina.testing@skoop.io',
           coach: false,
         },
         {
@@ -87,7 +87,7 @@ describe('UserProfileComponent', () => {
           userName: 'testbed',
           firstName: 'Tabia',
           lastName: 'Testbed',
-          email: 'tabia.testbed@myskills.io',
+          email: 'tabia.testbed@skoop.io',
           coach: false,
         }]
       ));
@@ -128,7 +128,7 @@ describe('UserProfileComponent', () => {
     expect(component.userForm.get('firstName').value).toBe('Toni');
     expect(component.userForm.get('lastName').value).toBe('Tester');
     expect(component.userForm.get('userName').value).toBe('tester');
-    expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
+    expect(component.userForm.get('email').value).toBe('toni.tester@skoop.io');
     expect(component.userForm.get('academicDegree').value).toBe('academic degree');
     expect(component.userForm.get('positionProfile').value).toBe('position profile');
     expect(component.userForm.get('summary').value).toBe('summary');
@@ -145,7 +145,7 @@ describe('UserProfileComponent', () => {
       userName: 'testing',
       firstName: 'Tina',
       lastName: 'Testing',
-      email: 'tina.testing@myskills.io',
+      email: 'tina.testing@skoop.io',
       coach: false,
     }]);
   });
@@ -156,7 +156,7 @@ describe('UserProfileComponent', () => {
       userName: 'testing',
       firstName: 'Tina',
       lastName: 'Testing',
-      email: 'tina.testing@myskills.io',
+      email: 'tina.testing@skoop.io',
       coach: false,
     },
     {
@@ -164,7 +164,7 @@ describe('UserProfileComponent', () => {
       userName: 'testbed',
       firstName: 'Tabia',
       lastName: 'Testbed',
-      email: 'tabia.testbed@myskills.io',
+      email: 'tabia.testbed@skoop.io',
       coach: false,
     }];
     component.onAuthorizedUserRemoved(component.authorizedUsers[0]);
@@ -173,7 +173,7 @@ describe('UserProfileComponent', () => {
       userName: 'testbed',
       firstName: 'Tabia',
       lastName: 'Testbed',
-      email: 'tabia.testbed@myskills.io',
+      email: 'tabia.testbed@skoop.io',
       coach: false,
     }]);
   });
@@ -186,7 +186,7 @@ describe('UserProfileComponent', () => {
       expect(component.userForm.get('firstName').value).toBe('Toni');
       expect(component.userForm.get('lastName').value).toBe('Tester');
       expect(component.userForm.get('userName').value).toBe('tester');
-      expect(component.userForm.get('email').value).toBe('toni.tester@myskills.io');
+      expect(component.userForm.get('email').value).toBe('toni.tester@skoop.io');
       expect(component.userForm.get('coach').value).toBeTruthy();
 
       const expectedRequestData: UserRequest = {
@@ -211,7 +211,7 @@ describe('UserProfileComponent', () => {
       userName: 'testbed',
       firstName: 'Tabia',
       lastName: 'Testbed',
-      email: 'tabia.testbed@myskills.io',
+      email: 'tabia.testbed@skoop.io',
       coach: false,
     });
     component.savePermissions();
@@ -222,7 +222,7 @@ describe('UserProfileComponent', () => {
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@myskills.io',
+        email: 'tina.testing@skoop.io',
         coach: false,
       },
       {
@@ -230,7 +230,7 @@ describe('UserProfileComponent', () => {
         userName: 'testbed',
         firstName: 'Tabia',
         lastName: 'Testbed',
-        email: 'tabia.testbed@myskills.io',
+        email: 'tabia.testbed@skoop.io',
         coach: false,
       }]);
 
@@ -241,7 +241,7 @@ describe('UserProfileComponent', () => {
           userName: 'testing',
           firstName: 'Tina',
           lastName: 'Testing',
-          email: 'tina.testing@myskills.io',
+          email: 'tina.testing@skoop.io',
           coach: false,
         },
         {
@@ -249,7 +249,7 @@ describe('UserProfileComponent', () => {
           userName: 'testbed',
           firstName: 'Tabia',
           lastName: 'Testbed',
-          email: 'tabia.testbed@myskills.io',
+          email: 'tabia.testbed@skoop.io',
           coach: false,
         }]
       );

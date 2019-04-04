@@ -43,7 +43,7 @@ The project uses https://www.npmjs.com/[NPM] in conjunction with https://github.
     npm install
     npm run build
 
-This installs the dependencies and then compiles the final static assets in the `dist/myskills-webapp` directory. These files can be served by an arbitrary web server.
+This installs the dependencies and then compiles the final static assets in the `dist/skoop-webapp` directory. These files can be served by an arbitrary web server.
 
 === Hosting the compiled distribution
 
@@ -79,15 +79,15 @@ docker run \
   --link skoop-server \
   -e SERVER_NAME=localhost:4200 \
   -e SERVER_ADMIN=your-name@your-domain.com
-  -e SKOOP_SERVER_URL=http://myskills-server:8080 \
-  -e SKOOP_WEBAPP_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/MySkills \
+  -e SKOOP_SERVER_URL=http://skoop-server:8080 \
+  -e SKOOP_WEBAPP_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/SKOOP \
   -e SKOOP_WEBAPP_AUTHENTICATION_INSECURE=true \
   skoop/webapp:latest
 ----
 
 Now the SKOOP WebApp is accessible at http://localhost:4200/
 
-_Note: This command example assumes that you have created a container for the SKOOP Server named "myskills-server" and that a KeyCloak server with a "MySkills" realm is running on `localhost:9000`._
+_Note: This command example assumes that you have created a container for the SKOOP Server named "skoop-server" and that a KeyCloak server with a "SKOOP" realm is running on `localhost:9000`._
 
 == Development
 
@@ -136,7 +136,7 @@ In order to set up the OpenID Connect login you need to install a local https://
 
 In the development configuration the SKOOP WebApp assumes that the KeyCloak server is available at `localhost:9000`. Currently, there is no option for external configuration. If you have to use a different host or port please temporarily adjust the configuration in `src/environments/environment.ts`.
 
-There must be a realm called `MySkills` which allows the client `myskills` to perform the OpenID Connect implicit flow.
+There must be a realm called `SKOOP` which allows the client `skoop` to perform the OpenID Connect implicit flow.
 
 Please see the https://github.com/T-Systems-MMS/skoop-server[SKOOP Server] for more hints and a preconfigured KeyCloak test realm.
 
@@ -148,7 +148,7 @@ The automated tests can be executed by running the following command in the proj
 
 _Note: The Karma configuration relies on Chrome as the browser to run the tests._
 
-Travis CI uploads test coverage reports to https://codecov.io[codecov.io]. Uploaded reports can be found https://codecov.io/gh/KnowledgeAssets/myskills-webapp[here].
+Travis CI uploads test coverage reports to https://codecov.io[codecov.io]. Uploaded reports can be found https://codecov.io/gh/T-Systems-MMS/skoop-webapp[here].
 
 === Architecture overview
 
@@ -156,7 +156,7 @@ Fundamentally, the SKOOP WebApp project follows the principles of https://angula
 
 ==== Source code structure
 
-In the application source directory `src/app` there are various subdirectories focusing on specific parts of the domain model. For example, the directory `src/app/my-skills` contains everything related to the presentation of the user's personal skill profile page (components, services, tests). The `src/app/shared` directory contains cross-cutting sources which are used all across the application.
+In the application source directory `src/app` there are various subdirectories focusing on specific parts of the domain model. For example, the directory `src/app/skoop` contains everything related to the presentation of the user's personal skill profile page (components, services, tests). The `src/app/shared` directory contains cross-cutting sources which are used all across the application.
 
 ==== Routing
 

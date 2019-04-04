@@ -19,7 +19,7 @@ const authenticatedUser: UserIdentity = {
   userName: 'tester',
   firstName: 'Toni',
   lastName: 'Tester',
-  email: 'toni.tester@myskills.io',
+  email: 'toni.tester@skoop.io',
   roles: ['ROLE_USER']
 };
 
@@ -68,7 +68,7 @@ describe('UsersService', () => {
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@myskills.io',
+      email: 'toni.tester@skoop.io',
       coach: true,
     };
 
@@ -91,7 +91,7 @@ describe('UsersService', () => {
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@myskills.io',
+      email: 'toni.tester@skoop.io',
       coach: true,
     };
 
@@ -114,7 +114,7 @@ describe('UsersService', () => {
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@myskills.io',
+      email: 'toni.tester@skoop.io',
       academicDegree: 'academic degree',
       positionProfile: 'position profile',
       summary: 'summary',
@@ -148,7 +148,7 @@ describe('UsersService', () => {
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@myskills.io',
+        email: 'toni.tester@skoop.io',
         coach: true,
       },
       {
@@ -156,7 +156,7 @@ describe('UsersService', () => {
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@myskills.io',
+        email: 'tina.testing@skoop.io',
         coach: false,
       }
     ];
@@ -183,7 +183,7 @@ describe('UsersService', () => {
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@myskills.io',
+        email: 'tina.testing@skoop.io',
         coach: false,
       },
       {
@@ -191,7 +191,7 @@ describe('UsersService', () => {
         userName: 'testbed',
         firstName: 'Tabia',
         lastName: 'Testbed',
-        email: 'tabia.testbed@myskills.io',
+        email: 'tabia.testbed@skoop.io',
         coach: true,
       }
     ];
@@ -202,7 +202,7 @@ describe('UsersService', () => {
           userName: 'tester',
           firstName: 'Toni',
           lastName: 'Tester',
-          email: 'toni.tester@myskills.io',
+          email: 'toni.tester@skoop.io',
           coach: true,
         },
         scope: UserPermissionScope.READ_USER_SKILLS,
@@ -231,7 +231,7 @@ describe('UsersService', () => {
         userName: 'owner1',
         firstName: 'first',
         lastName: 'owner',
-        email: 'first.owner@myskills.io',
+        email: 'first.owner@skoop.io',
         coach: true,
       },
       {
@@ -239,7 +239,7 @@ describe('UsersService', () => {
         userName: 'owner2',
         firstName: 'second',
         lastName: 'owner',
-        email: 'second.owner@myskills.io',
+        email: 'second.owner@skoop.io',
         coach: true,
       }
     ];

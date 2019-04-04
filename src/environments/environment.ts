@@ -7,8 +7,8 @@ import { EnvironmentConfig } from './environment.config';
 export const environment: EnvironmentConfig = {
   production: false,
   authentication: {
-    issuer: 'http://localhost:9000/auth/realms/MySkills',
-    clientId: 'myskills',
+    issuer: 'http://localhost:9000/auth/realms/SKOOP',
+    clientId: 'skoop',
     scope: 'openid profile email',
     redirectUri: null,
     silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',

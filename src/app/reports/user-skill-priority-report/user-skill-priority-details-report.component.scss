@@ -13,10 +13,10 @@
   font-size: 24px;
 }
 
-.my-skills-toolbar {
-  margin-bottom: $myskills-toolbar-margin-bottom;
+.skoop-toolbar {
+  margin-bottom: $skoop-toolbar-margin-bottom;
 }
 
-.my-skills-new-error {
+.skoop-new-error {
   @extend %base-error;
 }

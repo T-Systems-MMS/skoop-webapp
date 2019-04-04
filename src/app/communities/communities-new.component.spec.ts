@@ -41,7 +41,7 @@ const user: User = {
   userName: 'testing',
   firstName: 'Tina',
   lastName: 'Testing',
-  email: 'tina.testing@myskills.io',
+  email: 'tina.testing@skoop.io',
   coach: false,
 };
 

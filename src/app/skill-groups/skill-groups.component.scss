@@ -1,34 +1,30 @@
 @import 'variables';
 
-.my-skills-toolbar {
-  margin-bottom: $myskills-toolbar-margin-bottom;
+.skoop-toolbar {
+  margin-bottom: $skoop-toolbar-margin-bottom;
 }
 
-.my-skills-card {
+.skoop-card {
   @extend %base-card;
 }
 
-.my-skills-skill-name {
+.skoop-skill-name {
   margin: 0;
   line-height: 40px;
 }
 
-.my-skills-level-value {
-  font-size: 24px;
-}
-
-.my-skills-coaches {
+.skoop-coaches {
   line-height: 24px;
 }
 
-.my-skills-coaches-icon {
+.skoop-coaches-icon {
   margin-right: 8px;
 }
 
-.my-skills-new-error {
+.skoop-new-error {
   @extend %base-error;
 }
 
-.my-skills-description-label {
+.skoop-description-label {
   @extend %base-description-label;
 }

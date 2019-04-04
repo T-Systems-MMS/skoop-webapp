@@ -1,22 +1,22 @@
 @import 'variables';
 
-.mySkillsCard {
+.skillCard {
   @extend %base-card;
 }
 
-.mySkillsCard__heading {
+.skillCard__heading {
   margin: 0;
   line-height: 40px;
 }
 
-.mySkillsCard__levelValue {
+.skillCard__levelValue {
   font-size: 24px;
 }
 
-.mySkillsCard__coaches {
+.skillCard__coaches {
   line-height: 24px;
 }
 
-.mySkillsCard__coachesIcon {
+.skillCard__coachesIcon {
   margin-right: 8px;
 }

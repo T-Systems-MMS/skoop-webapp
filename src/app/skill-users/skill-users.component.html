@@ -1,6 +1,6 @@
 <div class="skill-users mat-typography">
   <h1>Users of {{ skill?.name }}</h1>
-  <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
+  <div *ngIf="errorMessage" class="skoop-new-error">{{errorMessage}}</div>
 
   <mat-card *ngFor="let skillUser of skillUsers" class="skill-users-card">
     <app-skill-user [skillUser]="skillUser"></app-skill-user>

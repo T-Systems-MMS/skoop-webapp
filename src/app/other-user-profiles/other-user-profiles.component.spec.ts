@@ -18,7 +18,7 @@ const permissionOwners: User[] = [
     userName: 'fius',
     firstName: 'first',
     lastName: 'user',
-    email: 'first.user@myskills.io',
+    email: 'first.user@skoop.io',
     coach: true,
   },
   {
@@ -26,7 +26,7 @@ const permissionOwners: User[] = [
     userName: 'seus',
     firstName: 'second',
     lastName: 'user',
-    email: 'second.user@myskills.io',
+    email: 'second.user@skoop.io',
     coach: true,
   }
 ];

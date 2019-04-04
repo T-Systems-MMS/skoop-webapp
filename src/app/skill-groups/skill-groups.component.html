@@ -1,18 +1,18 @@
-<div class="my-skills mat-typography">
+<div class="skoop mat-typography">
   <h1>Skill group management</h1>
-  <div class="my-skills-toolbar">
+  <div class="skoop-toolbar">
     <button mat-raised-button (click)="openNewDialog()" aria-label="Add skill">Add skill group</button>
     <mat-form-field style="margin-left: 15px;">
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field>
     <!-- TODO: Searching, filtering and sorting elements could be added here -->
   </div>
-  <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
-  <mat-card *ngFor="let group of groupsFiltered" class="my-skills-card">
+  <div *ngIf="errorMessage" class="skoop-new-error">{{errorMessage}}</div>
+  <mat-card *ngFor="let group of groupsFiltered" class="skoop-card">
     <mat-card-content>
       <div fxLayout="row">
         <div fxFlex>
-          <h2 class="my-skills-skill-name">{{ group.name }}</h2>
+          <h2 class="skoop-skill-name">{{ group.name }}</h2>
         </div>
         <div fxFlex="none">
           <button mat-icon-button (click)="openEditDialog(group)" title="Edit" aria-label="Edit">
@@ -24,7 +24,7 @@
         </div>
       </div>
       <div fxLayout="row">
-        <div class="my-skills-description-label">Description:</div>
+        <div class="skoop-description-label">Description:</div>
         <div>{{ group.description }}</div>
       </div>
     </mat-card-content>

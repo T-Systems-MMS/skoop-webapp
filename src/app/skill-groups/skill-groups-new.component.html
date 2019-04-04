@@ -1,20 +1,20 @@
-<div class="my-skills-new" (keypress)="onKeyPress($event)">
-  <div *ngIf="errorMessage" class="my-skills-new-error">{{errorMessage}}</div>
+<div class="skoop-new" (keypress)="onKeyPress($event)">
+  <div *ngIf="errorMessage" class="skoop-new-error">{{errorMessage}}</div>
   <div>
-    <mat-form-field class="my-skills-new-form-field">
-      <input #skillGroupNameInput type="text" id="my-skills-new-skill-name"  matInput [formControl]="groupName"  placeholder="Skill group name">
+    <mat-form-field class="skoop-new-form-field">
+      <input #skillGroupNameInput type="text" id="skoop-new-skill-name"  matInput [formControl]="groupName"  placeholder="Skill group name">
       <mat-error *ngIf="groupName.hasError('required')">Skill group name is Mandetory</mat-error>
       <mat-error *ngIf="groupName.hasError('minlength')">Put in at least 3 characters, please</mat-error>
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field class="my-skills-new-form-field">
-      <input type="text" id="my-skills-new-skill-name"  matInput [formControl]="groupDescription"  placeholder="Skill group description">
+    <mat-form-field class="skoop-new-form-field">
+      <input type="text" id="skoop-new-skill-name"  matInput [formControl]="groupDescription"  placeholder="Skill group description">
     </mat-form-field>
   </div>
   <div>
     <button mat-raised-button color="primary" (click)="addGroup()" [disabled]="operationInProgress || groupName.invalid" aria-label="Add skill group"
-      class="my-skills-new-button">Add skill group</button>
-    <button mat-raised-button (click)="close()" aria-label="Close" class="my-skills-new-button">Close</button>
+      class="skoop-new-button">Add skill group</button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="skoop-new-button">Close</button>
   </div>
 </div>

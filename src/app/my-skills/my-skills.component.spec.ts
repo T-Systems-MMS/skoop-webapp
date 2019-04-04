@@ -82,23 +82,23 @@ describe('MySkillsComponent', () => {
   });
 
   it('should render the names of the current user skills', () => {
-    const cardHeadings = fixture.debugElement.queryAll(By.css('.mySkillsCard__heading'));
+    const cardHeadings = fixture.debugElement.queryAll(By.css('.skillCard__heading'));
     expect(cardHeadings.length).toBe(2);
     expect(cardHeadings[0].nativeElement.textContent).toBe('Angular');
     expect(cardHeadings[1].nativeElement.textContent).toBe('Spring Boot');
   });
 
   it('should render the levels and priorities of the current user skills', () => {
-    const cards = fixture.debugElement.queryAll(By.css('.mySkillsCard'));
+    const cards = fixture.debugElement.queryAll(By.css('.skillCard'));
     expect(cards.length).toBe(2);
 
-    expect(cards[0].query(By.css('.mySkillsCard__currentLevelValue')).nativeElement.textContent).toBe('2');
-    expect(cards[0].query(By.css('.mySkillsCard__desiredLevelValue')).nativeElement.textContent).toBe('3');
-    expect(cards[0].query(By.css('.mySkillsCard__priorityValue')).nativeElement.textContent).toBe('4');
+    expect(cards[0].query(By.css('.skillCard__currentLevelValue')).nativeElement.textContent).toBe('2');
+    expect(cards[0].query(By.css('.skillCard__desiredLevelValue')).nativeElement.textContent).toBe('3');
+    expect(cards[0].query(By.css('.skillCard__priorityValue')).nativeElement.textContent).toBe('4');
 
-    expect(cards[1].query(By.css('.mySkillsCard__currentLevelValue')).nativeElement.textContent).toBe('1');
-    expect(cards[1].query(By.css('.mySkillsCard__desiredLevelValue')).nativeElement.textContent).toBe('2');
-    expect(cards[1].query(By.css('.mySkillsCard__priorityValue')).nativeElement.textContent).toBe('3');
+    expect(cards[1].query(By.css('.skillCard__currentLevelValue')).nativeElement.textContent).toBe('1');
+    expect(cards[1].query(By.css('.skillCard__desiredLevelValue')).nativeElement.textContent).toBe('2');
+    expect(cards[1].query(By.css('.skillCard__priorityValue')).nativeElement.textContent).toBe('3');
   });
 
   it('should initially render no coaches', () => {
@@ -125,7 +125,7 @@ describe('MySkillsComponent', () => {
     spyOn(TestBed.get(MySkillsService) as MySkillsService, 'getCurrentUserSkillCoaches')
       .and.returnValue(of<User[]>(testCoaches));
 
-    const card = fixture.debugElement.query(By.css('.mySkillsCard'));
+    const card = fixture.debugElement.query(By.css('.skillCard'));
     const findCoachesButton = card.query(By.css('.mySkillsCard__findCoachesButton'));
     expect(findCoachesButton).toBeDefined();
     (findCoachesButton.nativeElement as HTMLElement).click();
