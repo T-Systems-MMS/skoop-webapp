@@ -102,7 +102,7 @@ describe('MySkillsComponent', () => {
   });
 
   it('should initially render no coaches', () => {
-    const coaches = fixture.debugElement.queryAll(By.css('.skoopCard__coaches'));
+    const coaches = fixture.debugElement.queryAll(By.css('.mySkillsCard__coaches'));
     expect(coaches.length).toBe(0);
   });
 
