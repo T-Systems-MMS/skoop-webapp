@@ -63,7 +63,7 @@ describe('MySkillsNewComponent', () => {
     spyOn(mySkillsService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Spring Boot', 'Spring Security']));
 
     // Enter skill name and trigger change detection.
-    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#skoopNewDialog__skillNameInput')).nativeElement;
+    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__skillNameInput')).nativeElement;
     skillNameInput.focus();
     skillNameInput.value = 'spr';
     skillNameInput.dispatchEvent(new Event('input'));
@@ -98,7 +98,7 @@ describe('MySkillsNewComponent', () => {
       .and.returnValue(of<UserSkill>(testUserSkill));
 
     // Enter skill name and trigger change detection.
-    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#skoopNewDialog__skillNameInput')).nativeElement;
+    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__skillNameInput')).nativeElement;
     skillNameInput.focus();
     skillNameInput.value = 'Angular';
     skillNameInput.dispatchEvent(new Event('input'));
@@ -111,7 +111,7 @@ describe('MySkillsNewComponent', () => {
     component.priority.setValue(4);
 
     // Click add button and verify service call.
-    const addButton: HTMLButtonElement = fixture.debugElement.query(By.css('#skoopNewDialog__addButton')).nativeElement;
+    const addButton: HTMLButtonElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__addButton')).nativeElement;
     addButton.click();
     expect(mySkillsService.createCurrentUserSkill).toHaveBeenCalledWith('Angular', 2, 3, 4);
 

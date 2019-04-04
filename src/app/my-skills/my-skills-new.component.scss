@@ -1,13 +1,13 @@
 @import 'variables';
 
-.skoopNewDialog__formField {
+.mySkillsNewDialog__formField {
   width: 100%;
 }
 
-.skoopNewDialog__button {
+.mySkillsNewDialog__button {
   margin-right: 16px;
 }
 
-.skoopNewDialog__errorMessage {
+.mySkillsNewDialog__errorMessage {
   @extend %base-error;
 }

@@ -8,7 +8,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
 @Component({
-  selector: 'app-skoop-edit',
+  selector: 'app-my-skills-edit',
   templateUrl: './my-skills-edit.component.html',
   styleUrls: ['./my-skills-edit.component.scss']
 })

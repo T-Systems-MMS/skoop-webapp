@@ -8,7 +8,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { MySkillsService } from './my-skills.service';
 
 @Component({
-  selector: 'app-skoop-new',
+  selector: 'app-my-skills-new',
   templateUrl: './my-skills-new.component.html',
   styleUrls: ['./my-skills-new.component.scss']
 })
