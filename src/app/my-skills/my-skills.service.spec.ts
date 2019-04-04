@@ -1,7 +1,7 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { Observable, of } from 'rxjs';
 
-import { SkoopService } from './skoop.service';
+import { MySkillsService } from './my-skills.service';
 import { UserSkillsService } from '../user-skills/user-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { UserIdentityService } from '../shared/user-identity.service';
@@ -16,8 +16,8 @@ const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
 };
 
-describe('SkoopService', () => {
-  let service: SkoopService;
+describe('MySkillsService', () => {
+  let service: MySkillsService;
 
   beforeEach(() => {
     spyOn(userSkillsServiceStub, 'getUserSkills').and.returnValue(of([{
@@ -39,13 +39,13 @@ describe('SkoopService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        SkoopService, GlobalErrorHandlerService,
+        MySkillsService, GlobalErrorHandlerService,
         { provide: UserSkillsService, useValue: userSkillsServiceStub },
         { provide: UserIdentityService, useValue: userIdentityServiceStub }
       ]
     });
 
-    service = TestBed.get(SkoopService);
+    service = TestBed.get(MySkillsService);
   });
 
   it('should be created', () => {

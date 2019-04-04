@@ -2,24 +2,24 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatBottomSheet, MatDialog } from '@angular/material';
 import { filter, map } from 'rxjs/operators';
 
-import { SkoopNewComponent } from './skoop-new.component';
-import { SkoopEditComponent} from './skoop-edit.component';
+import { MySkillsNewComponent } from './my-skills-new.component';
+import { MySkillsEditComponent} from './my-skills-edit.component';
 import { UserSkillView as EditUserSkillView} from '../shared/skill-card/user-skill-view';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import {SkoopService} from './skoop.service';
+import {MySkillsService} from './my-skills.service';
 
 @Component({
-  selector: 'app-skoop',
-  templateUrl: './skoop.component.html',
-  styleUrls: ['./skoop.component.scss']
+  selector: 'app-my-skills',
+  templateUrl: './my-skills.component.html',
+  styleUrls: ['./my-skills.component.scss']
 })
-export class SkoopComponent implements OnInit {
+export class MySkillsComponent implements OnInit {
   userSkills: UserSkillView[] = [];
   errorMessage: string = null;
 
-  constructor(private skoopService: SkoopService,
+  constructor(private mySkillsService: MySkillsService,
     private bottomSheet: MatBottomSheet,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService,
@@ -30,7 +30,7 @@ export class SkoopComponent implements OnInit {
   }
 
   getCoaches(userSkill: UserSkillView): void {
-    this.skoopService.getCurrentUserSkillCoaches(userSkill.skill.id)
+    this.mySkillsService.getCurrentUserSkillCoaches(userSkill.skill.id)
       .pipe(map(coaches => coaches.map<UserView>(coach => ({
         id: coach.id,
         userName: coach.userName,
@@ -47,12 +47,12 @@ export class SkoopComponent implements OnInit {
   }
 
   openNewDialog(): void {
-    this.bottomSheet.open(SkoopNewComponent)
+    this.bottomSheet.open(MySkillsNewComponent)
       .afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadUserSkills());
   }
 
   openEditDialog(userSkill: UserSkillView): void {
-    this.bottomSheet.open(SkoopEditComponent, {
+    this.bottomSheet.open(MySkillsEditComponent, {
       data: <EditUserSkillView>{
         skill: {
           id: userSkill.skill.id,
@@ -72,7 +72,7 @@ export class SkoopComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.skoopService.deleteCurrentUserSkill(userSkill.skill.id)
+        this.mySkillsService.deleteCurrentUserSkill(userSkill.skill.id)
           .subscribe(() => {
             this.loadUserSkills();
           }, (errorResponse: HttpErrorResponse) => {
@@ -85,7 +85,7 @@ export class SkoopComponent implements OnInit {
   }
 
   private loadUserSkills(): void {
-    this.skoopService.getCurrentUserSkills()
+    this.mySkillsService.getCurrentUserSkills()
       .pipe(map(userSkills => userSkills.map<UserSkillView>(userSkill => ({
         skill: {
           id: userSkill.skill.id,

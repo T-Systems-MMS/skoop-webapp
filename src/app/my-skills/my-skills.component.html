@@ -1,15 +1,15 @@
-<div class="skoop mat-typography">
+<div class="mySkills mat-typography">
   <h1>My skill profile</h1>
-  <div class="skoopToolbar">
+  <div class="mySkillsToolbar">
     <button mat-raised-button (click)="openNewDialog()" aria-label="Add skill">Add skill</button>
     <!-- TODO: Searching, filtering and sorting elements could be added here -->
   </div>
-  <div *ngIf="errorMessage" class="skoopErrorMessage">{{errorMessage}}</div>
+  <div *ngIf="errorMessage" class="mySkillsErrorMessage">{{errorMessage}}</div>
 
   <app-skill-card *ngFor="let userSkill of userSkills" [userSkill]="userSkill">
     <div fxFlex="none" buttonContent>
       <button mat-icon-button (click)="getCoaches(userSkill)" title="Find coaches" aria-label="Find coaches"
-              class="skoopCard__findCoachesButton">
+              class="mySkillsCard__findCoachesButton">
         <mat-icon>school</mat-icon>
       </button>
       <button mat-icon-button (click)="openEditDialog(userSkill)" title="Edit" aria-label="Edit">
@@ -19,8 +19,8 @@
         <mat-icon>delete</mat-icon>
       </button>
     </div>
-    <div fxLayout="row" *ngIf="userSkill.coaches" class="skoopCard__coaches" coachContent>
-      <mat-icon fxFlex="none" aria-label="Coaches" class="skoopCard__coachesIcon">school</mat-icon>
+    <div fxLayout="row" *ngIf="userSkill.coaches" class="mySkillsCard__coaches" coachContent>
+      <mat-icon fxFlex="none" aria-label="Coaches" class="mySkillsCard__coachesIcon">school</mat-icon>
       <div fxFlex *ngIf="userSkill.coaches.length === 0">No coaches found.</div>
       <div fxFlex="none" *ngFor="let coach of userSkill.coaches; last as isLast">
         {{ coach.firstName }} {{ coach.lastName }} ({{ coach.userName }})<span *ngIf="!isLast">,&nbsp;</span>

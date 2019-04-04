@@ -20,8 +20,8 @@ import { OAuthModule, OAuthModuleConfig, OAuthService, JwksValidationHandler } f
 
 // Components
 import { AppComponent } from './app.component';
-import { SkoopNewComponent } from './skoop/skoop-new.component';
-import { SkoopEditComponent } from './skoop/skoop-edit.component';
+import { MySkillsNewComponent } from './my-skills/my-skills-new.component';
+import { MySkillsEditComponent } from './my-skills/my-skills-edit.component';
 import { SkillPriorityStatisticCardComponent } from './statistics/skill-priority-statistic-card.component';
 import { GlobalErrorHandlerService } from './error/global-error-handler.service';
 import { SkillsNewComponent } from './skills/skills-new.component';
@@ -75,8 +75,8 @@ export const CUSTOM_FORMATS = {
     AppComponent,
     routingComponents,
     SkillUserComponent,
-    SkoopNewComponent,
-    SkoopEditComponent,
+    MySkillsNewComponent,
+    MySkillsEditComponent,
     SkillPriorityStatisticCardComponent,
     SkillsNewComponent,
     SkillsEditComponent,
@@ -138,8 +138,8 @@ export const CUSTOM_FORMATS = {
   ],
   entryComponents: [
     DeleteConfirmationDialogComponent,
-    SkoopNewComponent,
-    SkoopEditComponent,
+    MySkillsNewComponent,
+    MySkillsEditComponent,
     SkillsNewComponent,
     SkillsEditComponent,
     SkillGroupsNewComponent,

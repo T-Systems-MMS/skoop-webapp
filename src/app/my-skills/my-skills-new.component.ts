@@ -5,14 +5,14 @@ import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { SkoopService } from './skoop.service';
+import { MySkillsService } from './my-skills.service';
 
 @Component({
   selector: 'app-skoop-new',
-  templateUrl: './skoop-new.component.html',
-  styleUrls: ['./skoop-new.component.scss']
+  templateUrl: './my-skills-new.component.html',
+  styleUrls: ['./my-skills-new.component.scss']
 })
-export class SkoopNewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _savingInProgress: boolean = false;
 
@@ -28,7 +28,7 @@ export class SkoopNewComponent implements OnInit, OnDestroy, AfterViewInit {
   skillSuggestions$: Observable<string[]>;
   @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
 
-  constructor(private skoopService: SkoopService,
+  constructor(private mySkillsService: MySkillsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
@@ -37,7 +37,7 @@ export class SkoopNewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.skillSuggestions$ = this.skillName.valueChanges
       .pipe(debounceTime(500),
         distinctUntilChanged(),
-        switchMap(search => this.skoopService.getCurrentUserSkillSuggestions(search)));
+        switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
   }
 
   ngAfterViewInit(): void {
@@ -52,7 +52,7 @@ export class SkoopNewComponent implements OnInit, OnDestroy, AfterViewInit {
   addUserSkill(): void {
     this.errorMessage = '';
     this.savingInProgress = true;
-    this.skoopService.createCurrentUserSkill(
+    this.mySkillsService.createCurrentUserSkill(
       this.skillName.value, this.currentLevel.value, this.desiredLevel.value, this.priority.value
     )
       .pipe(

@@ -8,12 +8,12 @@ import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { User } from '../users/user';
-import { SkoopComponent } from './skoop.component';
-import { SkoopService } from './skoop.service';
+import { MySkillsComponent } from './my-skills.component';
+import { MySkillsService } from './my-skills.service';
 import { SkillCardComponent } from '../shared/skill-card/skill-card.component';
 
 // Stub only those methods of the service which are used by the component.
-const skoopServiceStub: Partial<SkoopService> = {
+const mySkillsServiceStub: Partial<MySkillsService> = {
   getCurrentUserSkills(): Observable<UserSkill[]> { return null; },
   getCurrentUserSkillCoaches(skillId: string): Observable<User[]> { return null; },
   deleteCurrentUserSkill(skillId: string): Observable<void> { return null; }
@@ -42,9 +42,9 @@ const initialUserSkills: UserSkill[] = [
   }
 ];
 
-describe('SkoopComponent', () => {
-  let component: SkoopComponent;
-  let fixture: ComponentFixture<SkoopComponent>;
+describe('MySkillsComponent', () => {
+  let component: MySkillsComponent;
+  let fixture: ComponentFixture<MySkillsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -54,20 +54,20 @@ describe('SkoopComponent', () => {
         FlexLayoutModule,
         AppMaterialModule
       ],
-      declarations: [SkoopComponent, SkillCardComponent],
+      declarations: [MySkillsComponent, SkillCardComponent],
       providers: [
         GlobalErrorHandlerService,
-        { provide: SkoopService, useValue: skoopServiceStub }
+        { provide: MySkillsService, useValue: mySkillsServiceStub }
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     // Spy on service methods used during component initialization.
-    spyOn(TestBed.get(SkoopService) as SkoopService, 'getCurrentUserSkills')
+    spyOn(TestBed.get(MySkillsService) as MySkillsService, 'getCurrentUserSkills')
       .and.returnValue(of<UserSkill[]>(initialUserSkills));
 
-    fixture = TestBed.createComponent(SkoopComponent);
+    fixture = TestBed.createComponent(MySkillsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -122,18 +122,18 @@ describe('SkoopComponent', () => {
       }
     ];
     // Spy on service methods used during interaction with the component.
-    spyOn(TestBed.get(SkoopService) as SkoopService, 'getCurrentUserSkillCoaches')
+    spyOn(TestBed.get(MySkillsService) as MySkillsService, 'getCurrentUserSkillCoaches')
       .and.returnValue(of<User[]>(testCoaches));
 
     const card = fixture.debugElement.query(By.css('.skoopCard'));
-    const findCoachesButton = card.query(By.css('.skoopCard__findCoachesButton'));
+    const findCoachesButton = card.query(By.css('.mySkillsCard__findCoachesButton'));
     expect(findCoachesButton).toBeDefined();
     (findCoachesButton.nativeElement as HTMLElement).click();
 
     tick();
     fixture.detectChanges();
 
-    const coaches = card.query(By.css('.skoopCard__coaches'));
+    const coaches = card.query(By.css('.mySkillsCard__coaches'));
     expect(coaches).toBeDefined();
     expect(coaches.nativeElement.textContent).toContain('Toni Tester (tester)');
     expect(coaches.nativeElement.textContent).toContain('Tina Testing (testing)');
