@@ -8,7 +8,7 @@ import { UserSkillView as EditUserSkillView} from '../shared/skill-card/user-ski
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import {MySkillsService} from './my-skills.service';
+import { MySkillsService } from './my-skills.service';
 
 @Component({
   selector: 'app-my-skills',
