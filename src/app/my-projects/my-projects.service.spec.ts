@@ -22,7 +22,7 @@ describe('MyProjectsService', () => {
     userName: 'tester',
     firstName: 'Toni',
     lastName: 'Tester',
-    email: 'toni.tester@myskills.io',
+    email: 'toni.tester@skoop.io',
     roles: ['ROLE_USER']
   };
 

@@ -1,13 +1,13 @@
 @import 'variables';
 
-.my-skills-edit-form-field {
+.skoopNewDialog__formField {
   width: 100%;
 }
 
-.my-skills-edit-button {
+.skoopNewDialog__button {
   margin-right: 16px;
 }
 
-.my-skills-edit-error {
+.skoopNewDialog__errorMessage {
   @extend %base-error;
 }

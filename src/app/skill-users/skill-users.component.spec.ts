@@ -45,7 +45,7 @@ describe('SkillUsersComponent', () => {
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@myskills.com',
+        email: 'toni.tester@skoop.com',
         coach: true
       },
       currentLevel: 2,

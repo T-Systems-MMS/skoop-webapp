@@ -1,0 +1,10 @@
+@import "variables";
+
+.skoopToolbar {
+  margin-bottom: $skoop-toolbar-margin-bottom;
+}
+
+.skoopErrorMessage {
+  @extend %base-error;
+}
+

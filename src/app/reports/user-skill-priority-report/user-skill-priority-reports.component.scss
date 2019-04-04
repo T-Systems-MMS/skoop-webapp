@@ -3,10 +3,10 @@
 .skill-priority-report-card {
   margin-bottom: 8px;
 }
-.my-skills-toolbar {
-  margin-bottom: $myskills-toolbar-margin-bottom;
+.skoop-toolbar {
+  margin-bottom: $skoop-toolbar-margin-bottom;
 }
 
-.my-skills-edit-error {
+.skoop-edit-error {
   @extend %base-error;
 }

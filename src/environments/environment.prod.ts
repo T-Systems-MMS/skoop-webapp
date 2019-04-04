@@ -6,7 +6,7 @@ export const environment: EnvironmentConfig = {
     issuer: document
       .querySelector('meta[name="skoop-config-authentication-issuer"]')
       .getAttribute('content'),
-    clientId: 'myskills',
+    clientId: 'skoop',
     scope: 'openid profile email',
     redirectUri: null,
     silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',

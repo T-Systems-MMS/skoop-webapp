@@ -10,10 +10,10 @@ import { Observable, of } from 'rxjs';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkill } from '../user-skills/user-skill';
-import { MySkillsNewComponent } from './my-skills-new.component';
-import { MySkillsService } from './my-skills.service';
+import { SkoopNewComponent } from './skoop-new.component';
+import { SkoopService } from './skoop.service';
 
-const mySkillsServiceStub: Partial<MySkillsService> = {
+const skoopServiceStub: Partial<SkoopService> = {
   getCurrentUserSkillSuggestions(search: string): Observable<string[]> { return null; },
   createCurrentUserSkill(skillName: string, currentLevel: number, desiredLevel: number, priority: number):
     Observable<UserSkill> { return null; }
@@ -23,9 +23,9 @@ const bottomSheetStub: Partial<MatBottomSheetRef> = {
   dismiss(result?: any): void { }
 };
 
-describe('MySkillsNewComponent', () => {
-  let component: MySkillsNewComponent;
-  let fixture: ComponentFixture<MySkillsNewComponent>;
+describe('SkoopNewComponent', () => {
+  let component: SkoopNewComponent;
+  let fixture: ComponentFixture<SkoopNewComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -36,10 +36,10 @@ describe('MySkillsNewComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsNewComponent],
+      declarations: [SkoopNewComponent],
       providers: [
         GlobalErrorHandlerService,
-        { provide: MySkillsService, useValue: mySkillsServiceStub },
+        { provide: SkoopService, useValue: skoopServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub }
       ]
     }).compileComponents();
@@ -48,7 +48,7 @@ describe('MySkillsNewComponent', () => {
   beforeEach(() => {
     spyOn(TestBed.get(MatBottomSheetRef) as MatBottomSheetRef, 'dismiss').and.callThrough();
 
-    fixture = TestBed.createComponent(MySkillsNewComponent);
+    fixture = TestBed.createComponent(SkoopNewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -59,11 +59,11 @@ describe('MySkillsNewComponent', () => {
 
   it('should render skill suggestions for the given skill name input', fakeAsync(() => {
     // Spy on service methods used during interaction with the component.
-    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
-    spyOn(mySkillsService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Spring Boot', 'Spring Security']));
+    const skoopService = TestBed.get(SkoopService) as SkoopService;
+    spyOn(skoopService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Spring Boot', 'Spring Security']));
 
     // Enter skill name and trigger change detection.
-    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__skillNameInput')).nativeElement;
+    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#skoopNewDialog__skillNameInput')).nativeElement;
     skillNameInput.focus();
     skillNameInput.value = 'spr';
     skillNameInput.dispatchEvent(new Event('input'));
@@ -71,7 +71,7 @@ describe('MySkillsNewComponent', () => {
     fixture.detectChanges();
 
     // Verify service call and rendering of autocomplete options.
-    expect(mySkillsService.getCurrentUserSkillSuggestions).toHaveBeenCalledWith('spr');
+    expect(skoopService.getCurrentUserSkillSuggestions).toHaveBeenCalledWith('spr');
     const autocompleteOptions = fixture.debugElement.queryAll(By.css('.mat-autocomplete-panel mat-option'));
     expect(autocompleteOptions.length).toBe(2);
     expect((autocompleteOptions[0].nativeElement as HTMLElement).textContent.trim()).toBe('Spring Boot');
@@ -92,13 +92,13 @@ describe('MySkillsNewComponent', () => {
       priority: 4
     };
     // Spy on service methods used during interaction with the component.
-    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
-    spyOn(mySkillsService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Angular']));
-    spyOn(mySkillsService, 'createCurrentUserSkill')
+    const skoopService = TestBed.get(SkoopService) as SkoopService;
+    spyOn(skoopService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Angular']));
+    spyOn(skoopService, 'createCurrentUserSkill')
       .and.returnValue(of<UserSkill>(testUserSkill));
 
     // Enter skill name and trigger change detection.
-    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__skillNameInput')).nativeElement;
+    const skillNameInput: HTMLInputElement = fixture.debugElement.query(By.css('#skoopNewDialog__skillNameInput')).nativeElement;
     skillNameInput.focus();
     skillNameInput.value = 'Angular';
     skillNameInput.dispatchEvent(new Event('input'));
@@ -111,9 +111,9 @@ describe('MySkillsNewComponent', () => {
     component.priority.setValue(4);
 
     // Click add button and verify service call.
-    const addButton: HTMLButtonElement = fixture.debugElement.query(By.css('#mySkillsNewDialog__addButton')).nativeElement;
+    const addButton: HTMLButtonElement = fixture.debugElement.query(By.css('#skoopNewDialog__addButton')).nativeElement;
     addButton.click();
-    expect(mySkillsService.createCurrentUserSkill).toHaveBeenCalledWith('Angular', 2, 3, 4);
+    expect(skoopService.createCurrentUserSkill).toHaveBeenCalledWith('Angular', 2, 3, 4);
 
     discardPeriodicTasks();
   }));
@@ -130,9 +130,9 @@ describe('MySkillsNewComponent', () => {
       priority: 4
     };
     // Spy on service methods used during interaction with the component.
-    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
-    spyOn(mySkillsService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Angular']));
-    spyOn(mySkillsService, 'createCurrentUserSkill')
+    const skoopService = TestBed.get(SkoopService) as SkoopService;
+    spyOn(skoopService, 'getCurrentUserSkillSuggestions').and.returnValue(of(['Angular']));
+    spyOn(skoopService, 'createCurrentUserSkill')
       .and.returnValue(of<UserSkill>(testUserSkill));
 
     // Set the initial form control values.
@@ -155,18 +155,18 @@ describe('MySkillsNewComponent', () => {
   }));
 
   it('should send getCurrentUserSkillSuggestions request in 500 ms', fakeAsync(() => {
-    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
-    spyOn(mySkillsService, 'getCurrentUserSkillSuggestions').and.returnValue(of([]));
+    const skoopService = TestBed.get(SkoopService) as SkoopService;
+    spyOn(skoopService, 'getCurrentUserSkillSuggestions').and.returnValue(of([]));
 
     component.skillName.setValue('test');
     tick(200);
     fixture.detectChanges();
 
-    expect(mySkillsService.getCurrentUserSkillSuggestions).not.toHaveBeenCalled();
+    expect(skoopService.getCurrentUserSkillSuggestions).not.toHaveBeenCalled();
 
     tick(300);
     fixture.detectChanges();
-    expect(mySkillsService.getCurrentUserSkillSuggestions).toHaveBeenCalled();
+    expect(skoopService.getCurrentUserSkillSuggestions).toHaveBeenCalled();
 
     discardPeriodicTasks();
   }));
@@ -182,8 +182,8 @@ describe('MySkillsNewComponent', () => {
       desiredLevel: 3,
       priority: 4
     };
-    const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
-    spyOn(mySkillsService, 'createCurrentUserSkill')
+    const skoopService = TestBed.get(SkoopService) as SkoopService;
+    spyOn(skoopService, 'createCurrentUserSkill')
       .and.returnValue(of<UserSkill>(testUserSkill));
     const setSavingInProgress = spyOnProperty(component, 'savingInProgress', 'set');
 

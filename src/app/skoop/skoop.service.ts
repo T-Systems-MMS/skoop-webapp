@@ -10,7 +10,7 @@ import { User } from '../users/user';
 @Injectable({
   providedIn: 'root'
 })
-export class MySkillsService {
+export class SkoopService {
 
   constructor(private userSkillsService: UserSkillsService,
     private userIdentityService: UserIdentityService) { }

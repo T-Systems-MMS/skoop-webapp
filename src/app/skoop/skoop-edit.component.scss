@@ -1,13 +1,13 @@
 @import 'variables';
 
-.skoop-new-form-field {
+.skoop-edit-form-field {
   width: 100%;
 }
 
-.skoop-new-button {
+.skoop-edit-button {
   margin-right: 16px;
 }
 
-.skoop-new-error {
+.skoop-edit-error {
   @extend %base-error;
 }

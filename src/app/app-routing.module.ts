@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { MySkillsComponent } from './my-skills/my-skills.component';
+import { SkoopComponent } from './skoop/skoop.component';
 import { SkillPriorityStatisticsComponent } from './statistics/skill-priority-statistics.component';
 import { UserSkillPriorityReportsComponent } from './reports/user-skill-priority-report/user-skill-priority-reports.component';
 import { SkillUsersComponent } from './skill-users/skill-users.component';
@@ -23,7 +23,7 @@ import { MyMessagesComponent } from './my-messages/my-messages.component';
 
 export const routes: Routes = [
   { path: 'my-messages', component: MyMessagesComponent },
-  { path: 'my-skills', component: MySkillsComponent },
+  { path: 'my-skills', component: SkoopComponent },
   { path: 'my-projects', component: MyProjectsComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },
   {
@@ -57,7 +57,7 @@ export const routes: Routes = [
 ];
 
 export const routingComponents = [
-  MySkillsComponent,
+  SkoopComponent,
   SkillPriorityStatisticsComponent,
   UserSkillPriorityReportsComponent,
   SkillUsersComponent,

@@ -22,7 +22,7 @@ const users: User[] = [{
   userName: 'testing',
   firstName: 'Tina',
   lastName: 'Testing',
-  email: 'tina.testing@myskills.io',
+  email: 'tina.testing@skoop.io',
   coach: false,
 },
 {
@@ -30,7 +30,7 @@ const users: User[] = [{
   userName: 'testbed',
   firstName: 'Tabia',
   lastName: 'Testbed',
-  email: 'tabia.testbed@myskills.io',
+  email: 'tabia.testbed@skoop.io',
   coach: false,
 }];
 

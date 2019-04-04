@@ -156,7 +156,7 @@ Fundamentally, the SKOOP WebApp project follows the principles of https://angula
 
 ==== Source code structure
 
-In the application source directory `src/app` there are various subdirectories focusing on specific parts of the domain model. For example, the directory `src/app/my-skills` contains everything related to the presentation of the user's personal skill profile page (components, services, tests). The `src/app/shared` directory contains cross-cutting sources which are used all across the application.
+In the application source directory `src/app` there are various subdirectories focusing on specific parts of the domain model. For example, the directory `src/app/skoop` contains everything related to the presentation of the user's personal skill profile page (components, services, tests). The `src/app/shared` directory contains cross-cutting sources which are used all across the application.
 
 ==== Routing
 

@@ -27,7 +27,7 @@ const authenticatedUser: UserIdentity = {
   userName: 'tester',
   firstName: 'Toni',
   lastName: 'Tester',
-  email: 'toni.tester@myskills.io',
+  email: 'toni.tester@skoop.io',
   roles: ['ROLE_USER']
 };
 
@@ -43,7 +43,7 @@ const expectedNotifications: any[] = [
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@myskills.io',
+        email: 'toni.tester@skoop.io',
         coach: false
       },
       approvedByUser: null,
@@ -70,7 +70,7 @@ const expectedNotifications: any[] = [
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@myskills.io',
+        email: 'toni.tester@skoop.io',
         coach: false
       },
       approvedByUser: true,
@@ -97,7 +97,7 @@ const expectedNotifications: any[] = [
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@myskills.io',
+        email: 'toni.tester@skoop.io',
         coach: false
       },
       approvedByUser: true,
@@ -137,7 +137,7 @@ const expectedNotifications: any[] = [
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@myskills.io',
+      email: 'toni.tester@skoop.io',
       coach: false
     },
   }),
@@ -164,7 +164,7 @@ const registrationResponse: CommunityUserRegistrationResponse = {
     userName: 'testbed',
     firstName: 'Tabia',
     lastName: 'Testbed',
-    email: 'tabia.testbed@myskills.io',
+    email: 'tabia.testbed@skoop.io',
     coach: false,
   },
   approvedByUser: true,

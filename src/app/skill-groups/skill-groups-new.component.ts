@@ -66,7 +66,7 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy, AfterViewInit
         this.operationInProgress = false;
         this.groupName.reset('');
         this.groupDescription.reset('');
-        document.querySelector<HTMLElement>('#my-skills-new-skill-name').focus();
+        document.querySelector<HTMLElement>('#skoop-new-skill-name').focus();
       }, (errorResponse: HttpErrorResponse) => {
         this.operationInProgress = false;
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);

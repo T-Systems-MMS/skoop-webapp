@@ -20,7 +20,7 @@ const testUserIdentity: UserIdentity = {
   userName: 'tester',
   firstName: 'Toni',
   lastName: 'Tester',
-  email: 'toni.tester@myskills.io',
+  email: 'toni.tester@skoop.io',
   roles: ['ROLE_USER'],
   notificationCount: 0
 };
@@ -72,7 +72,7 @@ describe('AppComponent', () => {
 
   it('should render the app name in the toolbar', () => {
     const title = fixture.debugElement.query(By.css('.toolbar__title'));
-    expect(title.nativeElement.textContent).toContain('MySkills');
+    expect(title.nativeElement.textContent).toContain('SKOOP');
   });
 
   it('should render the user name in the toolbar', () => {

@@ -8,12 +8,12 @@ import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { User } from '../users/user';
-import { MySkillsComponent } from './my-skills.component';
-import { MySkillsService } from './my-skills.service';
+import { SkoopComponent } from './skoop.component';
+import { SkoopService } from './skoop.service';
 import { SkillCardComponent } from '../shared/skill-card/skill-card.component';
 
 // Stub only those methods of the service which are used by the component.
-const mySkillsServiceStub: Partial<MySkillsService> = {
+const skoopServiceStub: Partial<SkoopService> = {
   getCurrentUserSkills(): Observable<UserSkill[]> { return null; },
   getCurrentUserSkillCoaches(skillId: string): Observable<User[]> { return null; },
   deleteCurrentUserSkill(skillId: string): Observable<void> { return null; }
@@ -42,9 +42,9 @@ const initialUserSkills: UserSkill[] = [
   }
 ];
 
-describe('MySkillsComponent', () => {
-  let component: MySkillsComponent;
-  let fixture: ComponentFixture<MySkillsComponent>;
+describe('SkoopComponent', () => {
+  let component: SkoopComponent;
+  let fixture: ComponentFixture<SkoopComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -54,20 +54,20 @@ describe('MySkillsComponent', () => {
         FlexLayoutModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsComponent, SkillCardComponent],
+      declarations: [SkoopComponent, SkillCardComponent],
       providers: [
         GlobalErrorHandlerService,
-        { provide: MySkillsService, useValue: mySkillsServiceStub }
+        { provide: SkoopService, useValue: skoopServiceStub }
       ]
     }).compileComponents();
   }));
 
   beforeEach(() => {
     // Spy on service methods used during component initialization.
-    spyOn(TestBed.get(MySkillsService) as MySkillsService, 'getCurrentUserSkills')
+    spyOn(TestBed.get(SkoopService) as SkoopService, 'getCurrentUserSkills')
       .and.returnValue(of<UserSkill[]>(initialUserSkills));
 
-    fixture = TestBed.createComponent(MySkillsComponent);
+    fixture = TestBed.createComponent(SkoopComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -82,27 +82,27 @@ describe('MySkillsComponent', () => {
   });
 
   it('should render the names of the current user skills', () => {
-    const cardHeadings = fixture.debugElement.queryAll(By.css('.mySkillsCard__heading'));
+    const cardHeadings = fixture.debugElement.queryAll(By.css('.skoopCard__heading'));
     expect(cardHeadings.length).toBe(2);
     expect(cardHeadings[0].nativeElement.textContent).toBe('Angular');
     expect(cardHeadings[1].nativeElement.textContent).toBe('Spring Boot');
   });
 
   it('should render the levels and priorities of the current user skills', () => {
-    const cards = fixture.debugElement.queryAll(By.css('.mySkillsCard'));
+    const cards = fixture.debugElement.queryAll(By.css('.skoopCard'));
     expect(cards.length).toBe(2);
 
-    expect(cards[0].query(By.css('.mySkillsCard__currentLevelValue')).nativeElement.textContent).toBe('2');
-    expect(cards[0].query(By.css('.mySkillsCard__desiredLevelValue')).nativeElement.textContent).toBe('3');
-    expect(cards[0].query(By.css('.mySkillsCard__priorityValue')).nativeElement.textContent).toBe('4');
+    expect(cards[0].query(By.css('.skoopCard__currentLevelValue')).nativeElement.textContent).toBe('2');
+    expect(cards[0].query(By.css('.skoopCard__desiredLevelValue')).nativeElement.textContent).toBe('3');
+    expect(cards[0].query(By.css('.skoopCard__priorityValue')).nativeElement.textContent).toBe('4');
 
-    expect(cards[1].query(By.css('.mySkillsCard__currentLevelValue')).nativeElement.textContent).toBe('1');
-    expect(cards[1].query(By.css('.mySkillsCard__desiredLevelValue')).nativeElement.textContent).toBe('2');
-    expect(cards[1].query(By.css('.mySkillsCard__priorityValue')).nativeElement.textContent).toBe('3');
+    expect(cards[1].query(By.css('.skoopCard__currentLevelValue')).nativeElement.textContent).toBe('1');
+    expect(cards[1].query(By.css('.skoopCard__desiredLevelValue')).nativeElement.textContent).toBe('2');
+    expect(cards[1].query(By.css('.skoopCard__priorityValue')).nativeElement.textContent).toBe('3');
   });
 
   it('should initially render no coaches', () => {
-    const coaches = fixture.debugElement.queryAll(By.css('.mySkillsCard__coaches'));
+    const coaches = fixture.debugElement.queryAll(By.css('.skoopCard__coaches'));
     expect(coaches.length).toBe(0);
   });
 
@@ -122,18 +122,18 @@ describe('MySkillsComponent', () => {
       }
     ];
     // Spy on service methods used during interaction with the component.
-    spyOn(TestBed.get(MySkillsService) as MySkillsService, 'getCurrentUserSkillCoaches')
+    spyOn(TestBed.get(SkoopService) as SkoopService, 'getCurrentUserSkillCoaches')
       .and.returnValue(of<User[]>(testCoaches));
 
-    const card = fixture.debugElement.query(By.css('.mySkillsCard'));
-    const findCoachesButton = card.query(By.css('.mySkillsCard__findCoachesButton'));
+    const card = fixture.debugElement.query(By.css('.skoopCard'));
+    const findCoachesButton = card.query(By.css('.skoopCard__findCoachesButton'));
     expect(findCoachesButton).toBeDefined();
     (findCoachesButton.nativeElement as HTMLElement).click();
 
     tick();
     fixture.detectChanges();
 
-    const coaches = card.query(By.css('.mySkillsCard__coaches'));
+    const coaches = card.query(By.css('.skoopCard__coaches'));
     expect(coaches).toBeDefined();
     expect(coaches.nativeElement.textContent).toContain('Toni Tester (tester)');
     expect(coaches.nativeElement.textContent).toContain('Tina Testing (testing)');

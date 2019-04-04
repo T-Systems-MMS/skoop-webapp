@@ -7,15 +7,15 @@ import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { Observable } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
-import { MySkillsEditComponent } from './my-skills-edit.component';
-import { MySkillsService } from './my-skills.service';
+import { SkoopEditComponent } from './skoop-edit.component';
+import { SkoopService } from './skoop.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
-const mySkillsServiceStub: Partial<MySkillsService> = {
+const skoopServiceStub: Partial<SkoopService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
     Observable<UserSkill> { return null; }
 };
@@ -34,12 +34,12 @@ const userSkillTestData: UserSkillView = {
   priority: 4
 };
 
-describe('MySkillsEditComponent', () => {
-  let component: MySkillsEditComponent;
-  let fixture: ComponentFixture<MySkillsEditComponent>;
+describe('SkoopEditComponent', () => {
+  let component: SkoopEditComponent;
+  let fixture: ComponentFixture<SkoopEditComponent>;
 
   beforeEach(async(() => {
-    spyOn(mySkillsServiceStub, 'updateCurrentUserSkill');
+    spyOn(skoopServiceStub, 'updateCurrentUserSkill');
     spyOn(bottomSheetStub, 'dismiss');
     TestBed.configureTestingModule({
       imports: [
@@ -49,10 +49,10 @@ describe('MySkillsEditComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsEditComponent],
+      declarations: [SkoopEditComponent],
       providers: [
         GlobalErrorHandlerService,
-        { provide: MySkillsService, useValue: mySkillsServiceStub },
+        { provide: SkoopService, useValue: skoopServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData }
       ]
@@ -60,7 +60,7 @@ describe('MySkillsEditComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MySkillsEditComponent);
+    fixture = TestBed.createComponent(SkoopEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

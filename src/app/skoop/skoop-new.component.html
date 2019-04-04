@@ -1,9 +1,9 @@
-<div class="mySkillsNewDialog">
-  <div *ngIf="errorMessage" class="mySkillsNewDialog__errorMessage">{{errorMessage}}</div>
+<div class="skoopNewDialog">
+  <div *ngIf="errorMessage" class="skoopNewDialog__errorMessage">{{errorMessage}}</div>
   <div>
-    <mat-form-field class="mySkillsNewDialog__formField">
+    <mat-form-field class="skoopNewDialog__formField">
       <input #skillNameInput
-             id="mySkillsNewDialog__skillNameInput"
+             id="skoopNewDialog__skillNameInput"
              [formControl]="skillName"
              [matAutocomplete]="auto"
              type="text"
@@ -20,52 +20,52 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="mySkillsNewDialog__currentLevelInput">Current level:</label>
+      <label for="skoopNewDialog__currentLevelInput">Current level:</label>
     </div>
     <div fxFlex>
       <mat-slider
-        id="mySkillsNewDialog__currentLevelInput"
+        id="skoopNewDialog__currentLevelInput"
         min="0"
         max="4"
         step="1"
         thumbLabel
         tickInterval="1"
         [formControl]="currentLevel"
-        class="mySkillsNewDialog__formField">
+        class="skoopNewDialog__formField">
       </mat-slider>
     </div>
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="mySkillsNewDialog__desiredLevelInput">Desired level:</label>
+      <label for="skoopNewDialog__desiredLevelInput">Desired level:</label>
     </div>
     <div fxFlex>
       <mat-slider
-        id="mySkillsNewDialog__desiredLevelInput"
+        id="skoopNewDialog__desiredLevelInput"
         min="0"
         max="4"
         step="1"
         thumbLabel
         tickInterval="1"
         [formControl]="desiredLevel"
-        class="mySkillsNewDialog__formField">
+        class="skoopNewDialog__formField">
       </mat-slider>
     </div>
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="mySkillsNewDialog__priorityInput">Priority:</label>
+      <label for="skoopNewDialog__priorityInput">Priority:</label>
     </div>
     <div fxFlex>
       <mat-slider
-        id="mySkillsNewDialog__priorityInput"
+        id="skoopNewDialog__priorityInput"
         min="0"
         max="4"
         step="1"
         thumbLabel
         tickInterval="1"
         [formControl]="priority"
-        class="mySkillsNewDialog__formField">
+        class="skoopNewDialog__formField">
       </mat-slider>
     </div>
   </div>
@@ -76,16 +76,16 @@
       [disabled]="skillName.invalid || savingInProgress"
       (click)="addUserSkill()"
       aria-label="Add skill"
-      class="mySkillsNewDialog__button"
-      id="mySkillsNewDialog__addButton">
+      class="skoopNewDialog__button"
+      id="skoopNewDialog__addButton">
       Add skill
     </button>
     <button
       mat-raised-button
       (click)="close()"
       aria-label="Close"
-      class="mySkillsNewDialog__button"
-      id="mySkillsNewDialog__closeButton">
+      class="skoopNewDialog__button"
+      id="skoopNewDialog__closeButton">
       Close
     </button>
   </div>

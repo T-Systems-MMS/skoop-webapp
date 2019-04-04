@@ -1,13 +1,13 @@
 @import 'variables';
 
-.my-skills-new-form-field {
+.skoop-new-form-field {
   width: 100%;
 }
 
-.my-skills-new-button {
+.skoop-new-button {
   margin-right: 16px;
 }
 
-.my-skills-new-error {
+.skoop-new-error {
   @extend %base-error;
 }

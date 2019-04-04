@@ -47,7 +47,7 @@ describe('SkillCardComponent', () => {
   });
 
   it('should render the name of skills', () => {
-    const skillName: HTMLElement = fixture.debugElement.query(By.css('.mySkillsCard__heading')).nativeElement;
+    const skillName: HTMLElement = fixture.debugElement.query(By.css('.skoopCard__heading')).nativeElement;
     expect(skillName.textContent).toBe(expectedSkill.skill.name);
   });
 });

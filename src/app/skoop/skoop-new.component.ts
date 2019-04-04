@@ -5,14 +5,14 @@ import { MatBottomSheetRef } from '@angular/material';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MySkillsService } from './my-skills.service';
+import { SkoopService } from './skoop.service';
 
 @Component({
-  selector: 'app-my-skills-new',
-  templateUrl: './my-skills-new.component.html',
-  styleUrls: ['./my-skills-new.component.scss']
+  selector: 'app-skoop-new',
+  templateUrl: './skoop-new.component.html',
+  styleUrls: ['./skoop-new.component.scss']
 })
-export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class SkoopNewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private _savingInProgress: boolean = false;
 
@@ -28,7 +28,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   skillSuggestions$: Observable<string[]>;
   @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
 
-  constructor(private mySkillsService: MySkillsService,
+  constructor(private skoopService: SkoopService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
@@ -37,7 +37,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.skillSuggestions$ = this.skillName.valueChanges
       .pipe(debounceTime(500),
         distinctUntilChanged(),
-        switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
+        switchMap(search => this.skoopService.getCurrentUserSkillSuggestions(search)));
   }
 
   ngAfterViewInit(): void {
@@ -52,7 +52,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   addUserSkill(): void {
     this.errorMessage = '';
     this.savingInProgress = true;
-    this.mySkillsService.createCurrentUserSkill(
+    this.skoopService.createCurrentUserSkill(
       this.skillName.value, this.currentLevel.value, this.desiredLevel.value, this.priority.value
     )
       .pipe(

@@ -2,17 +2,17 @@ import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 
-import { MySkillsService } from './my-skills.service';
+import { SkoopService } from './skoop.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
 
 @Component({
-  selector: 'app-my-skills-edit',
-  templateUrl: './my-skills-edit.component.html',
-  styleUrls: ['./my-skills-edit.component.scss']
+  selector: 'app-skoop-edit',
+  templateUrl: './skoop-edit.component.html',
+  styleUrls: ['./skoop-edit.component.scss']
 })
-export class MySkillsEditComponent implements OnInit {
+export class SkoopEditComponent implements OnInit {
   currentLevel: FormControl = new FormControl(this.userSkill.currentLevel);
   desiredLevel: FormControl = new FormControl(this.userSkill.desiredLevel);
   priority: FormControl = new FormControl(this.userSkill.priority);
@@ -20,7 +20,7 @@ export class MySkillsEditComponent implements OnInit {
   errorMessage: string = null;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView,
-    private mySkillsService: MySkillsService,
+    private skoopService: SkoopService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
@@ -30,7 +30,7 @@ export class MySkillsEditComponent implements OnInit {
   saveUserSkill(): void {
     this.operationInProgress = true;
     this.errorMessage = null;
-    this.mySkillsService.updateCurrentUserSkill(
+    this.skoopService.updateCurrentUserSkill(
       this.userSkill.skill.id, this.currentLevel.value, this.desiredLevel.value, this.priority.value)
       .subscribe(() => {
         // Return 'true' to indicate that the user skill was changed.
