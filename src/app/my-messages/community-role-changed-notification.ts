@@ -10,6 +10,6 @@ export class CommunityRoleChangedNotification extends AbstractNotification {
   }
 
   getMessageText(): string {
-    return `Your role was changed to ${this.role}`
+    return `Your role was changed to ${this.role}`;
   }
 }

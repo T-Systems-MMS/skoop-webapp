@@ -32,7 +32,7 @@
         <div class="community-label">Community managers</div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
           <mat-chip *ngFor="let manager of community?.managers">{{ manager.firstName }} {{manager.lastName}}
-            <mat-icon (click)="changeRole(manager, false)" *ngIf="canChangeRole(manager)" class="community-change-role">arrow_downward</mat-icon>
+            <mat-icon (click)="demoteToMember(manager)" *ngIf="canChangeRole(manager)" class="community-change-role">arrow_downward</mat-icon>
           </mat-chip>
         </mat-chip-list>
       </div>
@@ -43,7 +43,7 @@
         </div>
         <mat-chip-list class="mat-chip-list-stacked" aria-orientation="vertical">
           <mat-chip *ngFor="let cu of communityMembers" (removed)="removeMember(cu.user)">{{ cu.user.firstName }} {{cu.user.lastName}}
-            <mat-icon (click)="changeRole(cu.user, true)" *ngIf="canChangeRole(cu.user)" class="community-change-role">arrow_upward</mat-icon>
+            <mat-icon (click)="promoteToManager(cu.user)" *ngIf="canChangeRole(cu.user)" class="community-change-role">arrow_upward</mat-icon>
             <mat-icon matChipRemove *ngIf="canRemoveMember(cu.user)" class="community-remove-member">cancel</mat-icon>
           </mat-chip>
         </mat-chip-list>

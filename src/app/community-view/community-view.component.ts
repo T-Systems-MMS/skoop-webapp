@@ -126,14 +126,22 @@ export class CommunityViewComponent implements OnInit {
     return this.isCommunityManager && user.id !== this.currentUserId;
   }
 
-  changeRole(user: User, isRaising: boolean) {
+  promoteToManager(user: User) {
+    this.changeRole(user, CommunityRole.MANAGER);
+  }
+
+  demoteToMember(user: User) {
+    this.changeRole(user, CommunityRole.MEMBER);
+  }
+
+  private changeRole(user: User, role: CommunityRole) {
     const updateRoleRequest: CommunityUserRoleRequest = {
-      role: isRaising ? CommunityRole.MANAGER : CommunityRole.MEMBER
+      role: role
     };
 
     this.communityService.changeUserRole(this.community.id, user.id, updateRoleRequest)
       .subscribe(updatedUser => {
-        if (isRaising) {
+        if (role === CommunityRole.MANAGER) {
           this.communityMembers = this.communityMembers.filter(item => item.user.id !== updatedUser.user.id);
           this.community.managers.push(updatedUser.user);
           this.communityManagers.push(updatedUser);

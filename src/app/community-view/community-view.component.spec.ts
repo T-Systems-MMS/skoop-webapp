@@ -326,7 +326,7 @@ describe('CommunityViewComponent', () => {
       role: CommunityRole.MANAGER
     }));
 
-    component.changeRole(userToRaise, true);
+    component.promoteToManager(userToRaise);
 
     expect(component.communityMembers.length).toBe(0);
     expect(component.community.managers).toContain(userToRaise);
@@ -344,7 +344,7 @@ describe('CommunityViewComponent', () => {
     };
     communityService.changeUserRole = jasmine.createSpy().and.returnValue(of(expectedResponse));
 
-    component.changeRole(userToLower, false);
+    component.demoteToMember(userToLower);
 
     expect(component.communityMembers).toContain(expectedResponse);
     expect(component.community.managers.length).toBe(managerCount - 1);
