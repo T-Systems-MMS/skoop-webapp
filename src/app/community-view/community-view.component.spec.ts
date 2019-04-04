@@ -259,7 +259,7 @@ describe('CommunityViewComponent', () => {
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
   }));
 
-  it('should make user leave a community', fakeAsync(() => {
+  it('should open a dialog to confirm user leaves a community', fakeAsync(() => {
     expect(component.canLeaveCommunity).toBeTruthy();
     component.leaveCommunity();
     fixture.detectChanges();
