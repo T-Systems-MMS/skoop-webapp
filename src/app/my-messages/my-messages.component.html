@@ -18,11 +18,10 @@
           <div *ngIf="notification.hasJoinCommunityType() || notification.hasCommunityInvitationType() || notification.hasAcceptanceToCommunityType()">
             <a [routerLink]="['/communities', notification.registration.community.id]">{{notification.registration.community.title}}</a>
           </div>
-          <div *ngIf="notification.hasCommunityDeletedType()">
+          <div *ngIf="notification.hasCommunityDeletedType() || notification.hasCommunityRoleChangedType()">
             {{notification.communityName}}
           </div>
-          <div *ngIf="notification.hasCommunityChangedType() || notification.hasCommunityRoleChangedType()
-          || notification.hasMemberKickedOutType() || notification.hasMemberLeftType()">
+          <div *ngIf="notification.hasCommunityChangedType() || notification.hasMemberKickedOutType() || notification.hasMemberLeftType()">
             <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>
           </div>
         </div>
@@ -37,6 +36,10 @@
         <div fxLayout="row" *ngIf="hasJoinRequestType(notification)">
           <div class="messages-description-label">Status:</div>
           <div>{{notification.getStatusText()}}</div>
+        </div>
+        <div fxLayout="row" *ngIf="notification.hasCommunityRoleChangedType()">
+          <div class="messages-description-label">Message:</div>
+          <div>{{notification.getMessageText()}}</div>
         </div>
       </div>
       <div fxFlex="none">

@@ -15,6 +15,7 @@ import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';
 import { CommunityInvitationDialogComponent } from './community-invitation-dialog.component';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
+import { CommunityUserRoleRequest } from './community-user-role-request';
 
 @Component({
   selector: 'app-community-view',
@@ -119,6 +120,40 @@ export class CommunityViewComponent implements OnInit {
         });
       }
     });
+  }
+
+  canChangeRole(user: User): boolean {
+    return this.isCommunityManager && user.id !== this.currentUserId;
+  }
+
+  promoteToManager(user: User) {
+    this.changeRole(user, CommunityRole.MANAGER);
+  }
+
+  demoteToMember(user: User) {
+    this.changeRole(user, CommunityRole.MEMBER);
+  }
+
+  private changeRole(user: User, role: CommunityRole) {
+    const updateRoleRequest: CommunityUserRoleRequest = {
+      role: role
+    };
+
+    this.communityService.changeUserRole(this.community.id, user.id, updateRoleRequest)
+      .subscribe(updatedUser => {
+        if (role === CommunityRole.MANAGER) {
+          this.communityMembers = this.communityMembers.filter(item => item.user.id !== updatedUser.user.id);
+          this.community.managers.push(updatedUser.user);
+          this.communityManagers.push(updatedUser);
+        } else {
+          this.community.managers = this.community.managers.filter(item => item.id !== updatedUser.user.id);
+          this.communityManagers = this.communityManagers.filter(item => item.user.id !== updatedUser.user.id);
+          this.communityMembers.push(updatedUser);
+        }
+
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      })
   }
 
   openInvitationDialog() {

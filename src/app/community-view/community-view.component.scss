@@ -45,13 +45,26 @@
 
 .community-managers-list {
   .mat-chip {
-    width: auto;
+    width: 110%;
+  }
+  .community-change-role {
+    right: 10px;
   }
 }
 
 .community-members-list {
   // additional space for the delete icon
   .mat-chip {
-    width: 110%;
+    width: 120%;
   }
+
+  .community-change-role {
+    right: 30px;
+  }
+}
+
+.community-change-role {
+  position: absolute;
+  cursor: pointer;
+  opacity: .4;
 }

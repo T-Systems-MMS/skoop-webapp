@@ -9,6 +9,7 @@ import { switchMap } from 'rxjs/operators';
 import { CommunityUserRequest } from './community-user-request';
 import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
+import { CommunityUserRoleRequest } from '../community-view/community-user-role-request';
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +18,8 @@ export class CommunitiesService {
 
   private communitiesUrlPattern = `${environment.serverApiUrl}/communities`;
   private communityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}`;
-  private joinCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users`;
-  private leaveCommunityUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users/{userId}`;
+  private communityUsersUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users`;
+  private communityUserUrlPattern = `${environment.serverApiUrl}/communities/{communityId}/users/{userId}`;
   private userCommunitiesUrlPattern = `${environment.serverApiUrl}/users/{userId}/communities`;
   private recommendedCommunitiesUrlPattern = `${environment.serverApiUrl}/users/{userId}/community-recommendations`;
 
@@ -45,7 +46,7 @@ export class CommunitiesService {
     if (role) {
       params.append('role', role);
     }
-    return this.httpClient.get<CommunityUserResponse[]>(this.joinCommunityUrlPattern.replace('{communityId}', communityId), {
+    return this.httpClient.get<CommunityUserResponse[]>(this.communityUsersUrlPattern.replace('{communityId}', communityId), {
       params: params
     });
   }
@@ -72,21 +73,24 @@ export class CommunitiesService {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
         this.httpClient.post<CommunityUserResponse>(
-          this.joinCommunityUrlPattern.replace('{communityId}', communityId), { userId: userIdentity.userId } as CommunityUserRequest)));
+          this.communityUsersUrlPattern.replace('{communityId}', communityId), { userId: userIdentity.userId } as CommunityUserRequest)));
   }
 
   leaveCommunity(communityId: string): Observable<void> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
         this.httpClient.delete<void>(
-          this.leaveCommunityUrlPattern.replace('{communityId}', communityId).replace('{userId}', userIdentity.userId))));
+          this.communityUserUrlPattern.replace('{communityId}', communityId).replace('{userId}', userIdentity.userId))));
   }
 
   removeMember(communityId: string, userId: string): Observable<void> {
     return this.httpClient.delete<void>(
-          this.leaveCommunityUrlPattern.replace('{communityId}', communityId).replace('{userId}', userId));
+          this.communityUserUrlPattern.replace('{communityId}', communityId).replace('{userId}', userId));
   }
 
-
+  changeUserRole(communityId: string, userId: string, request: CommunityUserRoleRequest): Observable<CommunityUserResponse> {
+    return this.httpClient.put<CommunityUserResponse>(
+      this.communityUserUrlPattern.replace('{communityId}', communityId).replace('{userId}', userId), request);
+  }
 
 }

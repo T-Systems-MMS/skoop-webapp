@@ -1,10 +1,15 @@
 import { AbstractNotification } from './abstract-notification';
-import { Community } from '../communities/community';
+import { CommunityRole } from '../communities/community-role.enum';
 
 export class CommunityRoleChangedNotification extends AbstractNotification {
-  community: Community;
+  communityName: string;
+  role: CommunityRole;
 
   getTypeText(): string {
     return 'The community role changed.';
+  }
+
+  getMessageText(): string {
+    return `Your role was changed to ${this.role}`;
   }
 }

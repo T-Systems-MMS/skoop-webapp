@@ -1,10 +1,10 @@
 export enum NotificationType {
-  INVITATION_TO_JOIN_COMMUNITY = 'InvitationToJoinCommunityNotificationResponse',
-  REQUEST_TO_JOIN_COMMUNITY = 'RequestToJoinCommunityNotificationResponse',
-  MEMBER_LEFT_COMMUNITY = 'UserLeftCommunityNotificationResponse',
-  COMMUNITY_ROLE_CHANGED = 'COMMUNITY_ROLE_CHANGED',
+  INVITATION_TO_JOIN_COMMUNITY = 'InvitationToJoinCommunityNotification',
+  REQUEST_TO_JOIN_COMMUNITY = 'RequestToJoinCommunityNotification',
+  MEMBER_LEFT_COMMUNITY = 'UserLeftCommunityNotification',
+  COMMUNITY_ROLE_CHANGED = 'CommunityUserRoleChangedNotification',
   COMMUNITY_CHANGED = 'COMMUNITY_CHANGED',
-  MEMBER_KICKED_OUT_OF_COMMUNITY = 'UserKickedOutFromCommunityNotificationResponse',
-  COMMUNITY_DELETED = 'CommunityDeletedNotificationResponse',
-  ACCEPTANCE_TO_COMMUNITY = 'AcceptanceToCommunityNotificationResponse'
+  MEMBER_KICKED_OUT_OF_COMMUNITY = 'UserKickedOutFromCommunityNotification',
+  COMMUNITY_DELETED = 'CommunityDeletedNotification',
+  ACCEPTANCE_TO_COMMUNITY = 'AcceptanceToCommunityNotification'
 }
