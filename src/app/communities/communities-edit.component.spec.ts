@@ -29,6 +29,7 @@ const communityEditData = {
   skills: [],
   links: [
     {
+      id: '12343',
       name: 'google',
       href: 'https://www.google.com'
     }
@@ -120,6 +121,32 @@ describe('CommunitiesEditComponent', () => {
     const communityService: CommunitiesService = TestBed.get(CommunitiesService);
 
     expect(communityService.updateCommunity).toHaveBeenCalledWith(communityEditRequest);
+  });
+
+  it('should send a request to update community with new link', () => {
+    const expectedRequest = Object.assign({}, communityEditRequest);
+    expectedRequest.links[1] = {
+      id: null,
+      name: 'new link',
+      href: 'https://wwww.new-link.com'
+    };
+    component.addLink();
+    fixture.detectChanges();
+
+    const linkCards = fixture.debugElement.queryAll(By.css(('.communities-link-card')));
+    const inputs = linkCards[1].queryAll(By.css(('input')));
+
+    // fill new link
+    inputs[0].nativeElement.value = expectedRequest.links[1].name;
+    inputs[0].nativeElement.dispatchEvent(new Event('input'));
+    inputs[1].nativeElement.value = expectedRequest.links[1].href;
+    inputs[1].nativeElement.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+
+    component.editCommunity();
+    const communityService: CommunitiesService = TestBed.get(CommunitiesService);
+
+    expect(communityService.updateCommunity).toHaveBeenCalledWith(expectedRequest);
   });
 
   it('should disable createButton when an added link is not filled', async(() => {

@@ -68,6 +68,7 @@ export class CommunitiesEditComponent implements OnInit {
       this.community.links.forEach(link => {
         this.linkList.push(this.formBuilder.group(
           {
+            id: new FormControl(link.id),
             name: new FormControl(link.name, Validators.required),
             href: new FormControl(link.href, Validators.required)
           }));
@@ -146,6 +147,7 @@ export class CommunitiesEditComponent implements OnInit {
 
   private createLinkFormGroup(): FormGroup {
     return this.formBuilder.group({
+      id: null,
       name: [null, Validators.required],
       href: [null, Validators.required]
     });

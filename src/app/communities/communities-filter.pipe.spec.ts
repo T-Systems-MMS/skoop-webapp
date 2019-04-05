@@ -8,14 +8,18 @@ const communities: CommunityResponse[] = [
     title: 'test1',
     description: 'description1',
     type: CommunityType.OPEN,
-    links: [{
-      name: 'google',
-      href: 'https://www.google.com'
-    },
+    links: [
       {
+        id: '12345',
+        name: 'google',
+        href: 'https://www.google.com'
+      },
+      {
+        id: '342374',
         name: 'stackoveflow',
         href: 'https://stackoverflow.com/'
-      }],
+      }
+    ],
     managers: []
   },
   {
