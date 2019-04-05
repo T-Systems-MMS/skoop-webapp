@@ -50,6 +50,7 @@ export class CommunitiesComponent implements OnInit {
       .afterDismissed().subscribe((result) => {
       if (result) {
         this.loadCommunities();
+        this.loadUserCommunities();
       }
     });
   }
