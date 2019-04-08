@@ -37,6 +37,7 @@ const expectedNotifications: any[] = [
     type: NotificationType.INVITATION_TO_JOIN_COMMUNITY,
     id: '76887802-f12f-47b0-bf8d-6d69fbcc77e5',
     creationDatetime: new Date(),
+    communityName: 'Some closed community',
     registration: {
       id: 'b9f7a830-6437-4585-980c-b6820b6f03fb',
       user: {
@@ -64,6 +65,7 @@ const expectedNotifications: any[] = [
     type: NotificationType.REQUEST_TO_JOIN_COMMUNITY,
     id: 'e84cacac-4fba-4cea-b7e6-7e3d9841b0a6',
     creationDatetime: new Date(),
+    communityName: 'Some closed community',
     registration: {
       id: 'b9f7a830-6437-4585-980c-b6820b6f03fb',
       user: {
@@ -91,6 +93,7 @@ const expectedNotifications: any[] = [
     type: NotificationType.ACCEPTANCE_TO_COMMUNITY,
     id: '7019db9c-b658-4531-aa6c-d1e8e60b5ec3',
     creationDatetime: '2019-03-26T13:33:32.790655',
+    communityName: 'Some closed community',
     registration: {
       id: '26fa54c0-163d-48e1-aab1-519f0ed7db13',
       user: {
@@ -124,6 +127,7 @@ const expectedNotifications: any[] = [
     type: NotificationType.MEMBER_LEFT_COMMUNITY,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
+    communityName: 'Some closed community',
     community: {
       id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
       title: 'Some closed community',
@@ -146,6 +150,7 @@ const expectedNotifications: any[] = [
     type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
+    communityName: 'Some closed community',
     community: {
       id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
       title: 'Some closed community',
@@ -162,7 +167,23 @@ const expectedNotifications: any[] = [
     communityName: 'Super group',
     creationDatetime: new Date(),
     role: CommunityRole.MEMBER
-  })
+  }),
+  Util.createNotificationInstance({
+    type: NotificationType.COMMUNITY_CHANGED,
+    id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
+    creationDatetime: new Date(),
+    communityName: 'Some closed community',
+    community: {
+      id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+      title: 'Some closed community',
+      type: 'CLOSED',
+      description: 'Some closed community description',
+      links: [],
+      managers: [],
+      skills: []
+    },
+    communityDetails: ['NAME', 'TYPE', 'DESCRIPTION', 'SKILLS', 'LINKS']
+  }),
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -234,7 +255,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(7);
+    expect(notificationCards.length).toBe(8);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -337,6 +358,13 @@ describe('MyMessagesComponent', () => {
     communityName = communityRow.nativeElement.innerText;
     expect(communityName).toBeDefined();
     expect(communityName).toBe(expectedNotifications[6].communityName);
+
+    // COMMUNITY_CHANGED -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[7]);
+    linkToCommunity = communityRow.nativeElement.querySelector('a');
+    expect(linkToCommunity).toBeDefined();
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[7].community.id}`);
+    expect(linkToCommunity.text).toBe(expectedNotifications[7].community.title);
   }));
 
 
@@ -352,6 +380,8 @@ describe('MyMessagesComponent', () => {
     notificationsWithoutCommunity[4].communityName = 'Name of deleted community';
     notificationsWithoutCommunity[5].community = null;
     notificationsWithoutCommunity[5].communityName = 'Name of deleted community';
+    notificationsWithoutCommunity[7].community = null;
+    notificationsWithoutCommunity[7].communityName = 'Name of deleted community';
 
 
     const messagesService = TestBed.get(MessagesService) as MessagesService;
@@ -401,6 +431,21 @@ describe('MyMessagesComponent', () => {
     communityName = communityRow.nativeElement.innerText;
     expect(communityName).toBeDefined();
     expect(communityName).toBe(expectedNotifications[6].communityName);
+
+    // COMMUNITY_CHANGED -> community name
+    communityRow = getCommunityInformation(notificationCards[7]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[7].communityName);
+  }));
+
+  it('should show changed community fields', fakeAsync(() => {
+    const expectedText = 'name, type, description, skills, links changed';
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const notificationText = notificationCards[7].query(By.css('.messages-notification-text'));
+
+    expect(notificationText.nativeElement.innerText).toContain(expectedText);
   }));
 
   function getCommunityInformation(notificationCard: DebugElement): DebugElement {
