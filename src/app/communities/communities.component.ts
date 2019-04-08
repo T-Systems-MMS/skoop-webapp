@@ -47,10 +47,11 @@ export class CommunitiesComponent implements OnInit {
 
   openNewDialog(): void {
     this.bottomSheet.open(CommunitiesNewComponent)
-      .afterDismissed().subscribe((result) => {
-      if (result) {
+      .afterDismissed().subscribe((createdCommunity: CommunityResponse) => {
+      if (createdCommunity) {
         this.loadCommunities();
-        this.loadUserCommunities();
+        this.joinedCommunityIds.push(createdCommunity.id);
+        this.managedCommunityIds.push(createdCommunity.id);
       }
     });
   }
