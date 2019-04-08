@@ -3,6 +3,7 @@ import { CommunityUserRegistrationResponse } from '../shared/community-user-regi
 
 export class CommunityInvitationNotification extends AbstractNotification {
   registration: CommunityUserRegistrationResponse;
+  communityName: string;
 
   getStatusText(): string {
     if (this.registration.approvedByUser && this.registration.approvedByCommunity) {

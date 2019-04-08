@@ -3,6 +3,7 @@ import { CommunityUserRegistrationResponse } from '../shared/community-user-regi
 
 export class AcceptanceToCommunityNotification extends AbstractNotification {
   registration: CommunityUserRegistrationResponse;
+  communityName: string;
 
   getTypeText(): string {
     return 'Acceptance to a community';
