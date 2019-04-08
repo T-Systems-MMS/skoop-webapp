@@ -35,13 +35,16 @@ const communities: CommunityResponse[] = [
     type: CommunityType.OPEN,
     links: [
       {
+        id: '12345',
         name: 'google',
         href: 'https://www.google.com'
       },
       {
+        id: '342374',
         name: 'stackoveflow',
         href: 'https://stackoverflow.com/'
-      }],
+      }
+    ],
     managers: [
       {
         id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
