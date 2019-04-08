@@ -160,7 +160,7 @@ const expectedNotifications: any[] = [
     type: NotificationType.COMMUNITY_ROLE_CHANGED,
     id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
     communityName: 'Super group',
-    creationDatetime: '2019-04-03T13:59:54.5288521',    
+    creationDatetime: new Date(),
     role: CommunityRole.MEMBER
   })
 ];
@@ -302,7 +302,7 @@ describe('MyMessagesComponent', () => {
     communityRow = getCommunityInformation(notificationCards[1]);
     linkToCommunity = communityRow.nativeElement.querySelector('a');
     expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
+    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
     expect(linkToCommunity.text).toBe(expectedNotifications[1].registration.community.title);
 
     // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
@@ -337,11 +337,75 @@ describe('MyMessagesComponent', () => {
     communityName = communityRow.nativeElement.innerText;
     expect(communityName).toBeDefined();
     expect(communityName).toBe(expectedNotifications[6].communityName);
-
-    function getCommunityInformation(notificationCard: DebugElement): DebugElement {
-      const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
-      return communityDebugElement.children[1];
-    }
   }));
+
+
+  it('should display community name (without link) when community was deleted', fakeAsync(() => {
+    const notificationsWithoutCommunity = Object.assign({}, expectedNotifications);
+    notificationsWithoutCommunity[0].registration.community = null;
+    notificationsWithoutCommunity[0].communityName = 'Name of deleted community';
+    notificationsWithoutCommunity[1].registration.community = null;
+    notificationsWithoutCommunity[1].communityName = 'Name of deleted community';
+    notificationsWithoutCommunity[2].registration.community = null;
+    notificationsWithoutCommunity[2].communityName = 'Name of deleted community';
+    notificationsWithoutCommunity[4].community = null;
+    notificationsWithoutCommunity[4].communityName = 'Name of deleted community';
+    notificationsWithoutCommunity[5].community = null;
+    notificationsWithoutCommunity[5].communityName = 'Name of deleted community';
+
+
+    const messagesService = TestBed.get(MessagesService) as MessagesService;
+    messagesService.getUserNotifications = jasmine.createSpy().and.returnValue(of(notificationsWithoutCommunity));
+    fixture.detectChanges();
+
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    let communityRow = getCommunityInformation(notificationCards[0]);
+
+    // INVITATION_TO_JOIN_COMMUNITY -> link to the community from a registration object
+    let communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[0].communityName);
+
+    // REQUEST_TO_JOIN_COMMUNITY -> link to the community from a registration object
+    communityRow = getCommunityInformation(notificationCards[1]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[1].communityName);
+
+    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
+    communityRow = getCommunityInformation(notificationCards[2]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[2].communityName);
+
+    // COMMUNITY_DELETED -> community name
+    communityRow = getCommunityInformation(notificationCards[3]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[3].communityName);
+
+    // MEMBER_LEFT_COMMUNITY -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[4]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[4].communityName);
+
+    // MEMBER_KICKED_OUT_OF_COMMUNITY -> link to the community from a notification object
+    communityRow = getCommunityInformation(notificationCards[5]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[5].communityName);
+
+    // COMMUNITY_ROLE_CHANGED -> community name
+    communityRow = getCommunityInformation(notificationCards[6]);
+    communityName = communityRow.nativeElement.innerText;
+    expect(communityName).toBeDefined();
+    expect(communityName).toBe(expectedNotifications[6].communityName);
+  }));
+
+  function getCommunityInformation(notificationCard: DebugElement): DebugElement {
+    const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
+    return communityDebugElement.children[1];
+  }
 
 });

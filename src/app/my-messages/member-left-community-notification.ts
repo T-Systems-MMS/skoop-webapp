@@ -4,6 +4,7 @@ import { User } from '../users/user';
 
 export class MemberLeftCommunityNotification extends AbstractNotification {
   community: Community;
+  communityName: string;
   user: User;
 
   getTypeText(): string {

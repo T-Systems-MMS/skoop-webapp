@@ -16,14 +16,23 @@
         <div fxLayout="row" class="messages-community-information">
           <div class="messages-description-label">Community:</div>
           <div *ngIf="notification.hasJoinCommunityType() || notification.hasCommunityInvitationType() || notification.hasAcceptanceToCommunityType()">
-            <a [routerLink]="['/communities', notification.registration.community.id]">{{notification.registration.community.title}}</a>
+            <div *ngIf="notification.registration.community; then registration_community_link; else community_name"></div>
           </div>
-          <div *ngIf="notification.hasCommunityDeletedType() || notification.hasCommunityRoleChangedType()">
-            {{notification.communityName}}
+          <div *ngIf="notification.hasCommunityDeletedType() || notification.hasCommunityRoleChangedType(); then community_name">
           </div>
           <div *ngIf="notification.hasCommunityChangedType() || notification.hasMemberKickedOutType() || notification.hasMemberLeftType()">
-            <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>
+            <div *ngIf="notification.community; then community_link; else community_name"></div>
           </div>
+          <ng-template #community_name>
+            <div>{{notification.communityName}}</div>
+          </ng-template>
+          <ng-template #community_link>
+            <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>
+          </ng-template>
+          <ng-template #registration_community_link>
+            <a [routerLink]="['/communities', notification.registration.community.id]">{{notification.registration.community.title}}</a>
+          </ng-template>
+
         </div>
         <div fxLayout="row" *ngIf="notification.hasJoinCommunityType()">
           <div class="messages-description-label">User:</div>
