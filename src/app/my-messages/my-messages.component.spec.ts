@@ -307,6 +307,15 @@ describe('MyMessagesComponent', () => {
     });
   }));
 
+  it('should show changed community fields', fakeAsync(() => {
+    const expectedText = 'name, type, description, skills, links changed';
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const notificationText = notificationCards[7].query(By.css('.messages-notification-text'));
+
+    expect(notificationText.nativeElement.innerText).toContain(expectedText);
+  }));
+
   it('should display community information regarding to the notification type', fakeAsync(() => {
     fixture.detectChanges();
 
@@ -437,15 +446,6 @@ describe('MyMessagesComponent', () => {
     communityName = communityRow.nativeElement.innerText;
     expect(communityName).toBeDefined();
     expect(communityName).toBe(expectedNotifications[7].communityName);
-  }));
-
-  it('should show changed community fields', fakeAsync(() => {
-    const expectedText = 'name, type, description, skills, links changed';
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const notificationText = notificationCards[7].query(By.css('.messages-notification-text'));
-
-    expect(notificationText.nativeElement.innerText).toContain(expectedText);
   }));
 
   function getCommunityInformation(notificationCard: DebugElement): DebugElement {
