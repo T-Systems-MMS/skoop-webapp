@@ -56,7 +56,7 @@
             <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>&nbsp;{{notification.getMessageText()}}
           </div>
           <ng-template #community_details_without_link>
-            <b>{{notification.communityName}}</b>&nbsp;{{notification.getMessageText()}}
+            <strong>{{notification.communityName}}</strong>&nbsp;{{notification.getMessageText()}}
           </ng-template>
         </div>
       </div>
