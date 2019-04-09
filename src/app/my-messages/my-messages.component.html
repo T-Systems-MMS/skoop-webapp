@@ -61,10 +61,6 @@
         </div>
       </div>
       <div fxFlex="none">
-        <a [routerLink]="[notification.id]"
-           mat-icon-button title="View message" aria-label="View message">
-          <mat-icon>visibility</mat-icon>
-        </a>
         <span *ngIf="showAcceptDeclineButtons(notification)">
           <button mat-icon-button (click)="onAccept(notification)" title="Accept" aria-label="Accept">
             <mat-icon>done_outline</mat-icon>
