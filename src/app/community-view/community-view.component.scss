@@ -45,7 +45,8 @@
 
 .community-managers-list {
   .mat-chip {
-    width: 110%;
+    width: auto;
+    padding-right: 40px;
   }
   .community-change-role {
     right: 10px;
@@ -55,7 +56,8 @@
 .community-members-list {
   // additional space for the delete icon
   .mat-chip {
-    width: 120%;
+    width: auto;
+    padding-right: 60px;
   }
 
   .community-change-role {
