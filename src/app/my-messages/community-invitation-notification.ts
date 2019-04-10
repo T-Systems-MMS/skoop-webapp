@@ -17,6 +17,15 @@ export class CommunityInvitationNotification extends AbstractNotification {
     return 'Pending';
   }
 
+  isCompleted(): boolean {
+    return (this.registration.approvedByUser && this.registration.approvedByCommunity)
+      || (this.registration.approvedByCommunity === false || this.registration.approvedByUser === false);
+  }
+
+  isToDoType(): boolean {
+    return true;
+  }
+
   getTypeText(): string {
     return 'Invitation to a community';
   }

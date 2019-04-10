@@ -34,11 +34,7 @@ export class MyMessagesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.notifications$ = this.userIdentityService.getUserIdentity()
-      .pipe(switchMap(userIdentity => {
-        this.currentUserId = userIdentity.userId;
-        return this.messageService.getUserNotifications(this.currentUserId);
-      }));
+    this.loadMessages();
   }
 
   hasJoinRequestType<T extends AbstractNotification>(notification: T): boolean {
@@ -48,12 +44,10 @@ export class MyMessagesComponent implements OnInit {
   showAcceptDeclineButtons<T extends AbstractNotification>(notification: T) {
     if (notification.hasCommunityInvitationType()) {
       const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
-      return invitationNotification.registration.user.id === this.currentUserId &&
-        (invitationNotification.registration.approvedByUser === null || invitationNotification.registration.approvedByCommunity === null);
+      return !invitationNotification.isCompleted();
     } else if (notification.hasJoinCommunityType()) {
       const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
-      return joinRequestNotification.registration.user.id !== this.currentUserId &&
-        (joinRequestNotification.registration.approvedByUser === null || joinRequestNotification.registration.approvedByCommunity === null);
+      return !joinRequestNotification.isCompleted();
     } else {
       return false;
     }
@@ -75,6 +69,24 @@ export class MyMessagesComponent implements OnInit {
         this.buildAcceptanceRequest(notification, false);
       }
     });
+  }
+
+  showDeleteButton<T extends AbstractNotification>(notification: T): boolean {
+    return !notification.isToDoType();
+  }
+
+  delete<T extends AbstractNotification>(notification: T) {
+    if (notification.isToDoType()) {
+      throw 'Invalid type of notification to delete';
+    }
+
+    this.messageService.delete(notification.id)
+      .subscribe(() => {
+        this.loadMessages();
+        // update message counter
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 
   private buildAcceptanceRequest<T extends AbstractNotification>(notification: T, isAccepted: boolean) {
@@ -106,6 +118,14 @@ export class MyMessagesComponent implements OnInit {
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
+  }
+
+  private loadMessages() {
+    this.notifications$ = this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity => {
+        this.currentUserId = userIdentity.userId;
+        return this.messageService.getUserNotifications(this.currentUserId);
+      }));
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse) {

@@ -8,4 +8,8 @@ export class AcceptanceToCommunityNotification extends AbstractNotification {
   getTypeText(): string {
     return 'Acceptance to a community';
   }
+
+  isToDoType(): boolean {
+    return false;
+  }
 }

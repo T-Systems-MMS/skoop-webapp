@@ -12,6 +12,7 @@ import { Util } from '../util/util';
 export class MessagesService {
 
   private messagesUrlPattern = `${environment.serverApiUrl}/users/{userId}/notifications`;
+  private messageUrlPattern = `${environment.serverApiUrl}/notifications/{notificationId}`;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -20,5 +21,9 @@ export class MessagesService {
     return this.httpClient.get<T[]>(this.messagesUrlPattern.replace('{userId}', userId))
       .pipe(switchMap(notifications =>
         of(notifications.map(item => Util.createNotificationInstance(item)))));
+  }
+
+  delete(notificationId: string): Observable<void> {
+    return this.httpClient.delete<void>(this.messageUrlPattern.replace('{notificationId}', notificationId));
   }
 }

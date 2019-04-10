@@ -10,4 +10,8 @@ export class MemberLeftCommunityNotification extends AbstractNotification {
   getTypeText(): string {
     return 'A member leaving a community';
   }
+
+  isToDoType(): boolean {
+    return false;
+  }
 }

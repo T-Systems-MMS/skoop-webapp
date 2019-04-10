@@ -61,6 +61,9 @@
         </div>
       </div>
       <div fxFlex="none">
+        <button *ngIf="showDeleteButton(notification)" mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
+          <mat-icon>delete</mat-icon>
+        </button>
         <span *ngIf="showAcceptDeclineButtons(notification)">
           <button mat-icon-button (click)="onAccept(notification)" title="Accept" aria-label="Accept">
             <mat-icon>done_outline</mat-icon>
