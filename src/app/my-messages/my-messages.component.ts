@@ -44,10 +44,12 @@ export class MyMessagesComponent implements OnInit {
   showAcceptDeclineButtons<T extends AbstractNotification>(notification: T) {
     if (notification.hasCommunityInvitationType()) {
       const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
-      return !invitationNotification.isCompleted();
+      return invitationNotification.registration.user.id === this.currentUserId &&
+        (invitationNotification.registration.approvedByUser === null || invitationNotification.registration.approvedByCommunity === null);
     } else if (notification.hasJoinCommunityType()) {
       const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
-      return !joinRequestNotification.isCompleted();
+      return joinRequestNotification.registration.user.id !== this.currentUserId &&
+        (joinRequestNotification.registration.approvedByUser === null || joinRequestNotification.registration.approvedByCommunity === null);
     } else {
       return false;
     }
@@ -77,16 +79,26 @@ export class MyMessagesComponent implements OnInit {
 
   delete<T extends AbstractNotification>(notification: T) {
     if (notification.isToDoType()) {
-      throw 'Invalid type of notification to delete';
+      throw new Error('Invalid type of notification to delete');
     }
 
-    this.messageService.delete(notification.id)
-      .subscribe(() => {
-        this.loadMessages();
-        // update message counter
-      }, errorResponse => {
-        this.handleErrorResponse(errorResponse);
-      });
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        message: 'Are you sure you want to delete the notification?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.messageService.delete(notification.id)
+          .subscribe(() => {
+            this.loadMessages();
+            // update message counter
+          }, errorResponse => {
+            this.handleErrorResponse(errorResponse);
+          });
+      }
+    });
   }
 
   private buildAcceptanceRequest<T extends AbstractNotification>(notification: T, isAccepted: boolean) {

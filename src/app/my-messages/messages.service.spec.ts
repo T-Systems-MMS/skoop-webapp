@@ -102,4 +102,20 @@ describe('MessagesService', () => {
 
     request.flush(expectedNotifications);
   }));
+
+  it('should send request to delete notification', async(() => {
+    const notificationId = '7019db9c-b658-4531-aa6c-d1e8e60b5ec3';
+    messagesService.delete(notificationId).subscribe(data => {
+      expect(data).toBeNull();
+    });
+
+    const request = httpTestingController.expectOne((req) =>
+      req.method === 'DELETE'
+      && req.url === `${environment.serverApiUrl}/notifications/${notificationId}`
+    );
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(null);
+  }));
 });
