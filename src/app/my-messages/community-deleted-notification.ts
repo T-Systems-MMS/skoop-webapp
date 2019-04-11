@@ -6,4 +6,8 @@ export class CommunityDeletedNotification extends AbstractNotification {
   getTypeText(): string {
     return 'Deletion of a community';
   }
+
+  isToDoType(): boolean {
+    return false;
+  }
 }

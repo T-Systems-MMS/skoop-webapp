@@ -8,4 +8,8 @@ export class MemberKickedOutNotification extends AbstractNotification {
   getTypeText(): string {
     return 'The user was kicked out of the community';
   }
+
+  isToDoType(): boolean {
+    return false;
+  }
 }

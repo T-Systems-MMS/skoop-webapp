@@ -316,6 +316,26 @@ describe('MyMessagesComponent', () => {
     expect(notificationText.nativeElement.innerText).toContain(expectedText);
   }));
 
+  it('should throw an exception in case of deleting message of To-Do type', fakeAsync(() => {
+    fixture.detectChanges();
+    expect(function () {
+      component.delete(expectedNotifications[0]);
+    }).toThrow();
+  }));
+
+  it('should open confirmation dialog on delete button click', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const buttons = notificationCards[3].query(By.css('button'));
+
+    buttons.nativeElement.click();
+    fixture.whenStable().then(() => {
+      const matDialog: MatDialog = TestBed.get(MatDialog);
+      expect(matDialog.openDialogs.length).toBe(1);
+      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+    });
+  }));
+
   it('should display community information regarding to the notification type', fakeAsync(() => {
     fixture.detectChanges();
 

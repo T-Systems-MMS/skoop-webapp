@@ -34,11 +34,7 @@ export class MyMessagesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.notifications$ = this.userIdentityService.getUserIdentity()
-      .pipe(switchMap(userIdentity => {
-        this.currentUserId = userIdentity.userId;
-        return this.messageService.getUserNotifications(this.currentUserId);
-      }));
+    this.loadMessages();
   }
 
   hasJoinRequestType<T extends AbstractNotification>(notification: T): boolean {
@@ -77,6 +73,34 @@ export class MyMessagesComponent implements OnInit {
     });
   }
 
+  showDeleteButton<T extends AbstractNotification>(notification: T): boolean {
+    return !notification.isToDoType();
+  }
+
+  delete<T extends AbstractNotification>(notification: T) {
+    if (notification.isToDoType()) {
+      throw new Error('Invalid type of notification to delete');
+    }
+
+    const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
+      width: '350px',
+      data: {
+        message: 'Are you sure you want to delete the notification?'
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.messageService.delete(notification.id)
+          .subscribe(() => {
+            this.loadMessages();
+            // update message counter
+          }, errorResponse => {
+            this.handleErrorResponse(errorResponse);
+          });
+      }
+    });
+  }
+
   private buildAcceptanceRequest<T extends AbstractNotification>(notification: T, isAccepted: boolean) {
     if (notification.hasCommunityInvitationType()) {
       const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
@@ -106,6 +130,14 @@ export class MyMessagesComponent implements OnInit {
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
+  }
+
+  private loadMessages() {
+    this.notifications$ = this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity => {
+        this.currentUserId = userIdentity.userId;
+        return this.messageService.getUserNotifications(this.currentUserId);
+      }));
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse) {

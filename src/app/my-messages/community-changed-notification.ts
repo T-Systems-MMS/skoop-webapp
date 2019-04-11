@@ -11,6 +11,10 @@ export class CommunityChangedNotification extends AbstractNotification {
     return 'Changes in the community details';
   }
 
+  isToDoType(): boolean {
+    return false;
+  }
+
   getMessageText() {
     return `${this.communityDetails.map(item => CommunityDetails[item]).join(', ')} changed`;
   }

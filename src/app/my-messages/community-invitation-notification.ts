@@ -17,6 +17,10 @@ export class CommunityInvitationNotification extends AbstractNotification {
     return 'Pending';
   }
 
+  isToDoType(): boolean {
+    return true;
+  }
+
   getTypeText(): string {
     return 'Invitation to a community';
   }

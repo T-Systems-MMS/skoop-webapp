@@ -17,6 +17,10 @@ export class JoinCommunityRequestNotification extends AbstractNotification {
     return 'Pending';
   }
 
+  isToDoType(): boolean {
+    return true;
+  }
+
   getTypeText(): string {
     return 'Request to join a community';
   }
