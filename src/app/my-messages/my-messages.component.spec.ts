@@ -22,6 +22,7 @@ import { DebugElement } from '@angular/core';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
 import { CommunityRole } from '../communities/community-role.enum';
+import { NotificationCounterService } from '../shared/notification-counter.service';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -230,7 +231,8 @@ describe('MyMessagesComponent', () => {
           provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
             'getUserIdentity': of(authenticatedUser)
           })
-        }
+        },
+        NotificationCounterService
       ]
     })
       .overrideModule(BrowserDynamicTestingModule, {

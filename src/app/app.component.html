@@ -6,8 +6,8 @@
   <span class="toolbar__spacer"></span>
   <a routerLink="/my-messages" class="toolbar__counter">
     <mat-icon class="toolbar__counter-icon"
-      [matBadge]="(userIdentity$ | async)?.notificationCount | formatCounter"
-      [matBadgeHidden]="(userIdentity$ | async)?.notificationCount == 0"
+      [matBadge]="notificationCount$ | async | formatCounter"
+      [matBadgeHidden]="(notificationCount$ | async) <= 0"
       matBadgeColor="warn">mail_outline</mat-icon>
   </a>
   <span class="toolbar__username">{{ (userIdentity$ | async)?.userName }}</span>

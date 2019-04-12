@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { NotificationCounterService } from './shared/notification-counter.service';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +20,18 @@ export class AppComponent implements OnInit {
   ]).pipe(map(result => result.matches));
   userIdentity$: Observable<UserIdentity> = this.userIdentityService.getUserIdentity();
   @ViewChild('drawer') drawer: MatSidenav;
+  notificationCount$: Observable<number> = this.notificationCounterService.getCount();
 
   constructor(private breakpointObserver: BreakpointObserver,
               private userIdentityService: UserIdentityService,
-              private authService: OAuthService) { }
+              private authService: OAuthService,
+              private notificationCounterService: NotificationCounterService) { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.userIdentity$.subscribe(userIdentity => {
+      this.notificationCounterService.setCount(userIdentity.notificationCount);
+    });
+  }
 
   onNavItemClick(): void {
     if (this.drawer.mode === 'over') { this.drawer.close(); }
