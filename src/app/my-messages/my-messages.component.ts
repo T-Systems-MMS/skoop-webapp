@@ -129,6 +129,7 @@ export class MyMessagesComponent implements OnInit {
     this.communityRegistrationService.updateRegistration(communityId, registration)
       .subscribe(() => {
         this.notifications$ = this.messageService.getUserNotifications(this.currentUserId);
+        this.notificationCounterService.decrementCount();
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
