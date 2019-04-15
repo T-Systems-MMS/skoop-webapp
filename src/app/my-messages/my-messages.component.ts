@@ -13,6 +13,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { Util } from '../util/util';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { switchMap } from 'rxjs/operators';
+import { NotificationCounterService } from '../shared/notification-counter.service';
 
 @Component({
   selector: 'app-my-messages',
@@ -28,6 +29,7 @@ export class MyMessagesComponent implements OnInit {
   constructor(private communityRegistrationService: CommunityRegistrationService,
               private messageService: MessagesService,
               private userIdentityService: UserIdentityService,
+              private notificationCounterService: NotificationCounterService,
               public dialog: MatDialog,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -93,7 +95,7 @@ export class MyMessagesComponent implements OnInit {
         this.messageService.delete(notification.id)
           .subscribe(() => {
             this.loadMessages();
-            // update message counter
+            this.notificationCounterService.decrementCount();
           }, errorResponse => {
             this.handleErrorResponse(errorResponse);
           });
@@ -127,6 +129,7 @@ export class MyMessagesComponent implements OnInit {
     this.communityRegistrationService.updateRegistration(communityId, registration)
       .subscribe(() => {
         this.notifications$ = this.messageService.getUserNotifications(this.currentUserId);
+        this.notificationCounterService.decrementCount();
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
