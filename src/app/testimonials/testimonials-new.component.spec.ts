@@ -12,7 +12,6 @@ import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheetRef } from '@angular/material';
 import { Component, Input } from '@angular/core';
-import { SkillSelectInputComponent } from '../shared/skill-select-input/skill-select-input.component';
 
 const testimonial: Testimonial = {
   id: '123123123123123',
@@ -67,4 +66,25 @@ describe('TestimonialsNewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should call the createTestimonial method', async(() => {
+    component.testimonialForm.get('author').setValue(testimonial.author);
+    component.testimonialForm.get('comment').setValue(testimonial.comment);
+    component.testimonialForm.get('skills').setValue(testimonial.skills);
+
+    component.addTestimonial();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      const expectedRequest = {
+        author: testimonial.author,
+        comment: testimonial.comment,
+        skills: testimonial.skills
+      };
+
+      const testimonialService = TestBed.get(TestimonialService) as TestimonialService;
+
+      expect(testimonialService.createTestimonial).toHaveBeenCalledWith(expectedRequest);
+    });
+  }));
 });
