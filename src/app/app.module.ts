@@ -59,6 +59,7 @@ import { CommunityInvitationDialogComponent } from './community-view/community-i
 import { MyMessagesComponent } from './my-messages/my-messages.component';
 import { TestimonialsNewComponent } from './testimonials/testimonials-new.component';
 import { TestimonialsComponent } from './testimonials/testimonials.component';
+import { SkillSelectInputComponent } from './shared/skill-select-input/skill-select-input.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -112,6 +113,7 @@ export const CUSTOM_FORMATS = {
     MyMessagesComponent,
     TestimonialsNewComponent,
     TestimonialsComponent,
+    SkillSelectInputComponent,
   ],
   imports: [
     BrowserModule,

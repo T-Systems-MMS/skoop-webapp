@@ -7,33 +7,7 @@
       </mat-form-field>
     </div>
     <div fxFlex>
-      <mat-form-field class="testimonials-new-form-field">
-        <mat-chip-list #skillsChipList>
-          <mat-chip
-            *ngFor="let skill of skillsArray; let i = index;"
-            [selectable]="elemSelectable"
-            [removable]="elemRemovable"
-            (removed)="removeSkill(i)">
-            {{skill}}
-            <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
-          </mat-chip>
-          <input
-            placeholder="Skills"
-            #skillInput
-            id="skillsChipList"
-            [formControl]="skillAutocompleteCtrl"
-            [matAutocomplete]="skillsAutoComplete"
-            [matChipInputFor]="skillsChipList"
-            [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
-            [matChipInputAddOnBlur]="elemAddOnBlur"
-            (matChipInputTokenEnd)="addNewSkill($event)">
-        </mat-chip-list>
-        <mat-autocomplete #skillsAutoComplete="matAutocomplete" (optionSelected)="selectSkill($event)">
-          <mat-option *ngFor="let skill of skills$ | async" [value]="skill">
-            {{skill.name}}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
+      <app-skill-select-input [parentForm]="testimonialForm"></app-skill-select-input>
     </div>
     <div fxFlex>
       <mat-form-field class="testimonials-new-form-field">
