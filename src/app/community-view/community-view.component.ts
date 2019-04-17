@@ -153,7 +153,7 @@ export class CommunityViewComponent implements OnInit {
 
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
-      })
+      });
   }
 
   openInvitationDialog() {

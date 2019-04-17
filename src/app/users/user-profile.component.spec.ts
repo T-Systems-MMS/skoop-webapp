@@ -13,15 +13,15 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UsersService } from './users.service';
 import { User } from './user';
 import { UserPermissionScope } from './user-permission-scope';
-import { UserRequest } from "./user-request";
-import { ENTER } from "@angular/cdk/keycodes";
+import { UserRequest } from './user-request';
+import { ENTER } from '@angular/cdk/keycodes';
 
 const usersServiceStub: Partial<UsersService> = {
   getUser(): Observable<User> { return null; },
   updateUser(userData: UserRequest): Observable<User> { return null; },
   getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
   updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
-  getUserSuggestions(search: string): Observable<User[]> { return null;}
+  getUserSuggestions(search: string): Observable<User[]> { return null; }
 };
 
 describe('UserProfileComponent', () => {
