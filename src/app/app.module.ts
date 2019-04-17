@@ -57,6 +57,8 @@ import { RecommendedCommunitiesComponent } from './recommended-communities/recom
 import { CommunityCardComponent } from './shared/community-card/community-card.component';
 import { CommunityInvitationDialogComponent } from './community-view/community-invitation-dialog.component';
 import { MyMessagesComponent } from './my-messages/my-messages.component';
+import { TestimonialsNewComponent } from './testimonials/testimonials-new.component';
+import { TestimonialsComponent } from './testimonials/testimonials.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -108,6 +110,8 @@ export const CUSTOM_FORMATS = {
     CommunityCardComponent,
     CommunityInvitationDialogComponent,
     MyMessagesComponent,
+    TestimonialsNewComponent,
+    TestimonialsComponent,
   ],
   imports: [
     BrowserModule,
@@ -152,7 +156,8 @@ export const CUSTOM_FORMATS = {
     CommunitiesEditComponent,
     ClosedCommunityConfirmDialogComponent,
     InfoDialogComponent,
-    CommunityInvitationDialogComponent
+    CommunityInvitationDialogComponent,
+    TestimonialsNewComponent
   ],
   bootstrap: [AppComponent]
 })

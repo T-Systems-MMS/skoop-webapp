@@ -1,0 +1,50 @@
+<form [formGroup]="testimonialForm" class="testimonials-new-form">
+  <div *ngIf="errorMessage" class="testimonials-new-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="testimonials-new-form-field">
+        <input matInput id="testimonials-new-title" placeholder="Author" formControlName="author" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="testimonials-new-form-field">
+        <mat-chip-list #skillsChipList>
+          <mat-chip
+            *ngFor="let skill of skillsArray; let i = index;"
+            [selectable]="elemSelectable"
+            [removable]="elemRemovable"
+            (removed)="removeSkill(i)">
+            {{skill}}
+            <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="Skills"
+            #skillInput
+            id="skillsChipList"
+            [formControl]="skillAutocompleteCtrl"
+            [matAutocomplete]="skillsAutoComplete"
+            [matChipInputFor]="skillsChipList"
+            [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+            [matChipInputAddOnBlur]="elemAddOnBlur"
+            (matChipInputTokenEnd)="addNewSkill($event)">
+        </mat-chip-list>
+        <mat-autocomplete #skillsAutoComplete="matAutocomplete" (optionSelected)="selectSkill($event)">
+          <mat-option *ngFor="let skill of skills$ | async" [value]="skill">
+            {{skill.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="testimonials-new-form-field">
+        <textarea matInput placeholder="Testimonial" formControlName="comment" rows="8" [required]="true"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button id="testimonials-new-button" color="primary" (click)="addTestimonial()"
+            [disabled]="!testimonialForm.valid" class="testimonials-new-actions">Add testimonial
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="testimonials-new-actions">Close</button>
+  </div>
+</form>

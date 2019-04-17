@@ -1,5 +1,5 @@
 import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { DebugElement } from '@angular/core';
+import { Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
@@ -23,6 +23,12 @@ const usersServiceStub: Partial<UsersService> = {
   updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
   getUserSuggestions(search: string): Observable<User[]> { return null; }
 };
+
+@Component({
+  selector: 'app-testimonials',
+  template: ''
+})
+class TestimonialsStubComponent{}
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -100,7 +106,7 @@ describe('UserProfileComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [UserProfileComponent],
+      declarations: [UserProfileComponent, TestimonialsStubComponent],
       providers: [
         GlobalErrorHandlerService,
         { provide: UsersService, useValue: usersServiceStub },
