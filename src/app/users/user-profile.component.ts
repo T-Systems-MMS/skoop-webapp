@@ -9,8 +9,8 @@ import { User } from './user';
 import { UsersService } from './users.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserPermissionScope } from './user-permission-scope';
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
-import { UserRequest } from "./user-request";
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { UserRequest } from './user-request';
 
 @Component({
   selector: 'app-user-profile',

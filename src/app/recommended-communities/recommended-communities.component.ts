@@ -31,7 +31,7 @@ export class RecommendedCommunitiesComponent implements OnInit {
   ngOnInit() {
     this.communityService.getRecommendedCommunities()
       .subscribe((communities: CommunityResponse[]) => {
-        this.communities = communities
+        this.communities = communities;
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });

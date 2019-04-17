@@ -159,7 +159,7 @@ describe('SkillGroupsService', () => {
   it('should not send request to check if the skill already exists for empty search string', () => {
     const searchParam = '';
     skillGroupsService.isSkillGroupExist(searchParam).subscribe(actualResponse => {
-      expect(actualResponse).toBeFalsy()
+      expect(actualResponse).toBeFalsy();
     });
 
     httpTestingController.expectNone( `${environment.serverApiUrl}/groups/group-existence?search=${searchParam}`);
@@ -169,7 +169,7 @@ describe('SkillGroupsService', () => {
     const searchParam = 'group';
 
     skillGroupsService.isSkillGroupExist(searchParam).subscribe(actualResponse => {
-      expect(actualResponse).toBeTruthy()
+      expect(actualResponse).toBeTruthy();
     });
 
     const req = httpTestingController.expectOne( `${environment.serverApiUrl}/groups/group-existence?search=${searchParam}`);
