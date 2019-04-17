@@ -144,7 +144,7 @@ describe('SkillGroupsService', () => {
   it('should delete the group', async(() => {
     const groupId = 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f';
     skillGroupsService.deleteSkillGroup(groupId).subscribe((data: any) => {
-      expect(data).toBe(groupId);
+      expect(data).toBe(null);
     });
 
     const req = httpTestingController.expectOne({
@@ -153,7 +153,7 @@ describe('SkillGroupsService', () => {
     });
     expect(req.request.method).toBe('DELETE');
 
-    req.flush(groupId);
+    req.flush(null);
   }));
 
   it('should not send request to check if the skill already exists for empty search string', () => {

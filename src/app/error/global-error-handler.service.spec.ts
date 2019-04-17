@@ -30,7 +30,7 @@ describe('GlobalErrorHandlerService', () => {
     expect(globalErrorHandlerService.createFullMessage(err)).toBe(message);
   });
 
-  it('should take message text from HttpErrorResponse.message in case of an error from other servers', () => {
+  it('should take message text from HttpErrorResponse.statusText in case of an error from other servers', () => {
     const statusText = 'status text';
     const errorJson = {
       message: 'json error text'
