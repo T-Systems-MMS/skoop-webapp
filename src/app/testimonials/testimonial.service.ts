@@ -31,6 +31,13 @@ export class TestimonialService {
         this.httpClient.post<TestimonialResponse>(this.testimonialsUrlPattern.replace('{userId}', userIdentity.userId), testimonial)));
   }
 
+  updateTestimonial(testimonial: TestimonialRequest): Observable<TestimonialResponse> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.put<TestimonialResponse>(this.testimonialUrlPattern
+          .replace('{userId}', userIdentity.userId).replace('{testimonialId}', testimonial.id), testimonial)));
+  }
+
   deleteTestimonial(testimonialId: string): Observable<void> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>

@@ -1,0 +1,24 @@
+<form [formGroup]="testimonialForm" class="testimonials-edit-form">
+  <div *ngIf="errorMessage" class="testimonials-edit-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="testimonials-edit-form-field">
+        <input matInput id="testimonials-edit-title" placeholder="Author" formControlName="author" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <app-skill-select-input [parentForm]="testimonialForm"></app-skill-select-input>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="testimonials-edit-form-field">
+        <textarea matInput placeholder="Testimonial" formControlName="comment" rows="8" [required]="true"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button id="testimonials-edit-button" color="primary" (click)="editTestimonial()"
+            [disabled]="!testimonialForm.valid || testimonialForm.pristine" class="testimonials-edit-actions">Edit testimonial
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="testimonials-edit-actions">Close</button>
+  </div>
+</form>

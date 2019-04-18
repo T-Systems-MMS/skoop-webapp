@@ -126,6 +126,45 @@ describe('TestimonialService', () => {
     request.flush(testimonialsResponse);
   }));
 
+  it('should update the testimonial with the given data', async(() => {
+    const testimonialRequest: TestimonialRequest = {
+      id: '123123123123123',
+      author: 'author of the testimonial',
+      comment: 'comment of the testimonial',
+      skills: ['Skill1', 'Skill2']
+    };
+
+    const testimonialResponse: TestimonialResponse = {
+      id: testimonialRequest.id,
+      author: testimonialRequest.author,
+      comment: testimonialRequest.comment,
+      skills: [
+        {
+          id: '1231231',
+          name: 'Skill1'
+        },
+        {
+          id: '4325345345',
+          name: 'Skill2'
+        },
+      ]
+    };
+
+    testimonialService.updateTestimonial(testimonialRequest).subscribe(actualData => {
+      expect(actualData).toEqual(testimonialResponse);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/testimonials/${testimonialRequest.id}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+    expect(request.request.body).toEqual(testimonialRequest);
+
+    request.flush(testimonialResponse);
+  }));
+
   it('should delete the testimonial by its id', async(() => {
     const testimonialId = '1231242134134124';
     testimonialService.deleteTestimonial(testimonialId).subscribe(actualData => {
