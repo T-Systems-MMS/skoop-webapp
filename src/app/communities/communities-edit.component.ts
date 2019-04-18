@@ -1,23 +1,17 @@
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   MAT_BOTTOM_SHEET_DATA,
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-  MatBottomSheetRef, MatChipInputEvent,
+  MatBottomSheetRef,
   MatDialog
 } from '@angular/material';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { finalize, map, startWith} from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { CommunitiesService } from './communities.service';
 import { CommunityType } from './community-type.enum';
 import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
 import { CommunityRequest } from './community-request';
-import { Observable, of } from 'rxjs';
-import { Skill } from '../skills/skill';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { SkillsService } from '../skills/skills.service';
 import { CommunityResponse } from './community-response';
 
 @Component({
@@ -27,35 +21,20 @@ import { CommunityResponse } from './community-response';
 })
 export class CommunitiesEditComponent implements OnInit {
 
-  @ViewChild('skillsAutoComplete') skillsMatAutocomplete: MatAutocomplete;
-  @ViewChild('skillInput') skillAutocompleteInput: ElementRef<HTMLInputElement>;
-
   communityForm: FormGroup;
   errorMessage: string = null;
-  skills$: Observable<Skill[]> = of([]);
-  allAvailableSkills: Skill[];
-
-  elemSelectable = true;
-  elemRemovable = true;
-  elemAddOnBlur = false;
-  elemSeparatorKeysCodes = [COMMA, ENTER];
-  skillAutocompleteCtrl = new FormControl();
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public community: CommunityResponse,
               private communityService: CommunitiesService,
-              private skillsService: SkillsService,
               private formBuilder: FormBuilder,
               private bottomSheet: MatBottomSheetRef,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               public dialog: MatDialog) {
-    this.skills$ = this.skillAutocompleteCtrl.valueChanges.pipe(
-      startWith(null),
-      map((term: string | null) => term ? this._filter(term) : this.allAvailableSkills));
+
   }
 
   ngOnInit() {
-    this.loadSkills();
     this.communityForm = this.formBuilder.group({
       title: new FormControl(this.community.title, Validators.required),
       type: new FormControl(this.community.type),
@@ -106,45 +85,6 @@ export class CommunitiesEditComponent implements OnInit {
     this.bottomSheet.dismiss();
   }
 
-  removeSkill(index: number): void {
-    if (index >= 0) {
-      this.skillsArray.splice(index, 1);
-      this.communityForm.markAsDirty();
-    }
-  }
-
-  selectSkill(event: MatAutocompleteSelectedEvent): void {
-    const selectedSkill = event.option.value;
-    if (!this.isSkillExist(selectedSkill.name)) {
-      this.skillsArray.push(selectedSkill.name);
-      this.communityForm.markAsDirty();
-    }
-
-    this.skillAutocompleteInput.nativeElement.value = '';
-    this.skillAutocompleteCtrl.setValue(null);
-  }
-
-  addNewSkill(event: MatChipInputEvent) {
-    // Add skill only when MatAutocomplete is not open
-    // To make sure this does not conflict with OptionSelected Event
-    if (!this.skillsMatAutocomplete.isOpen) {
-      const input = event.input;
-      const value = event.value;
-
-      if (!this.isSkillExist(value)) {
-        this.skillsArray.push(value.trim());
-        this.communityForm.markAsDirty();
-      }
-
-      // Reset the input value
-      if (input) {
-        input.value = '';
-      }
-
-      this.skillAutocompleteCtrl.setValue(null);
-    }
-  }
-
   private createLinkFormGroup(): FormGroup {
     return this.formBuilder.group({
       id: null,
@@ -179,31 +119,6 @@ export class CommunitiesEditComponent implements OnInit {
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
         this.changeDetector.markForCheck();
       });
-  }
-
-  private loadSkills() {
-    this.skillsService.getAllSkills().subscribe(skills => {
-      this.allAvailableSkills = skills;
-    }, (errorResponse: HttpErrorResponse) => {
-      this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-      // Dirty fix because of: https://github.com/angular/angular/issues/17772
-      this.changeDetector.markForCheck();
-    });
-  }
-
-  private _filter(value: any): Skill[] {
-    // the FormControl valueChanges event isn't reliably returning a String
-    if (typeof value === 'object') {
-      return this.allAvailableSkills;
-    }
-
-    const filterValue = value.toLowerCase();
-    return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) != -1);
-  }
-
-  private isSkillExist(skillName: string) {
-    const skillNameLowerCase = (skillName || '').trim().toLowerCase();
-    return this.skillsArray.find(item => item.toLowerCase() === skillNameLowerCase) != null;
   }
 
   get linkList() {
