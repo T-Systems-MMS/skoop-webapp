@@ -85,7 +85,7 @@ describe('SkillSelectInputComponent', () => {
     sendInput('Angular');
 
     const option = overlayContainerElement.querySelector('mat-option') as HTMLElement;
-    tick(10);
+    tick();
 
     option.click();
     fixture.whenStable().then( () => {
@@ -100,11 +100,11 @@ describe('SkillSelectInputComponent', () => {
     sendInput('Angular');
 
     let option = overlayContainerElement.querySelector('mat-option') as HTMLElement;
-    tick(10);
+    tick();
     option.click();
     sendInput('Angular');
     option = overlayContainerElement.querySelector('mat-option') as HTMLElement;
-    tick(10);
+    tick();
     option.click();
 
     fixture.whenStable().then( () => {

@@ -2,11 +2,11 @@
   <mat-chip-list #skillsChipList>
     <mat-chip
       *ngFor="let skill of skillsArray; let i = index;"
-      [selectable]="elemSelectable"
-      [removable]="elemRemovable"
+      [selectable]="true"
+      [removable]="true"
       (removed)="removeSkill(i)">
       {{skill}}
-      <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+      <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
     </mat-chip>
     <input
       placeholder="Skills"
@@ -16,7 +16,7 @@
       [matAutocomplete]="skillsAutoComplete"
       [matChipInputFor]="skillsChipList"
       [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
-      [matChipInputAddOnBlur]="elemAddOnBlur"
+      [matChipInputAddOnBlur]="false"
       (matChipInputTokenEnd)="addNewSkill($event)">
   </mat-chip-list>
   <mat-autocomplete #skillsAutoComplete="matAutocomplete" (optionSelected)="selectSkill($event)">

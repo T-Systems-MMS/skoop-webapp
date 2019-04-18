@@ -23,9 +23,6 @@ export class SkillSelectInputComponent implements OnInit {
   skills$: Observable<Skill[]> = of([]);
   allAvailableSkills: Skill[];
 
-  elemSelectable = true;
-  elemRemovable = true;
-  elemAddOnBlur = false;
   elemSeparatorKeysCodes = [COMMA, ENTER];
   skillAutocompleteCtrl = new FormControl();
 
@@ -94,7 +91,7 @@ export class SkillSelectInputComponent implements OnInit {
     return this.allAvailableSkills.filter(skill => skill.name.toLowerCase().indexOf(filterValue) != -1);
   }
 
-  private isSkillExist(skillName: string) {
+  private isSkillExist(skillName: string): boolean {
     const skillNameLowerCase = (skillName || '').trim().toLowerCase();
     return this.skillsArray.find(item => item.toLowerCase() === skillNameLowerCase) != null;
   }
