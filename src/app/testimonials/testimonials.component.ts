@@ -77,7 +77,6 @@ export class TestimonialsComponent implements OnInit {
           return of([]);
         })
       );
-
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse) {
