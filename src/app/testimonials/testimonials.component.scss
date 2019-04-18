@@ -12,6 +12,10 @@
   @extend %base-description-label;
 }
 
+.testimonials-error-message {
+  @extend %base-error;
+}
+
 .testimonials-skill-label {
   padding-top: 5px;
 }

@@ -88,9 +88,9 @@ describe('TestimonialsComponent', () => {
   });
 
   it('should load list of testimonials', () => {
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.testimonials-card')));
+    const testimonialsCards = fixture.debugElement.queryAll(By.css(('.testimonials-card')));
 
-    expect(notificationCards.length).toBe(2);
+    expect(testimonialsCards.length).toBe(2);
   });
 
   it('should open confirmation dialog before removal of a testimonial', async(() => {
