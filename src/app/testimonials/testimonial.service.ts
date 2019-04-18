@@ -13,7 +13,7 @@ import { TestimonialResponse } from './testimonial-response';
 export class TestimonialService {
 
   private testimonialsUrlPattern = `${environment.serverApiUrl}/users/{userId}/testimonials`;
-  private testimonialUrlPattern = `${environment.serverApiUrl}/users/{userId}/testimonials/{testimonialIs}`;
+  private testimonialUrlPattern = `${environment.serverApiUrl}/users/{userId}/testimonials/{testimonialId}`;
 
   constructor(private httpClient: HttpClient,
               private userIdentityService: UserIdentityService) {
@@ -35,6 +35,6 @@ export class TestimonialService {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
         this.httpClient.delete<void>(this.testimonialUrlPattern
-          .replace('{userId}', userIdentity.userId).replace('{testimonialId', testimonialId))));
+          .replace('{userId}', userIdentity.userId).replace('{testimonialId}', testimonialId))));
   }
 }
