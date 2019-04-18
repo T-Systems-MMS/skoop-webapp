@@ -3,3 +3,19 @@
 .testimonials-toolbar {
   margin-bottom: $skoop-toolbar-margin-bottom;
 }
+
+.testimonials-card {
+  @extend %base-card;
+}
+
+.testimonials-description-label {
+  @extend %base-description-label;
+}
+
+.testimonials-skill-label {
+  padding-top: 5px;
+}
+
+.testimonials-buttons-column {
+  padding-left: 50px;
+}

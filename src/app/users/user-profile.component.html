@@ -1,160 +1,182 @@
 <div class="user-profile mat-typography ">
   <h1>User profile</h1>
   <div *ngIf="errorMessage" class="user-profile-error">{{ errorMessage }}</div>
-  <div *ngIf="dataAvailable" fxLayoutAlign="center center">
-    <form [formGroup]="userForm" class="user-profile-form">
-      <div fxLayout="column">
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <input matInput placeholder="First Name" formControlName="firstName" [readonly]="true">
-          </mat-form-field>
+  <mat-expansion-panel [expanded]="true" class="user-profile-expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        User profile
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div *ngIf="dataAvailable" fxLayoutAlign="center center">
+      <form [formGroup]="userForm" class="user-profile-form">
+        <div fxLayout="column">
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <input matInput placeholder="First Name" formControlName="firstName" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <input matInput placeholder="Last Name" formControlName="lastName" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <input matInput placeholder="User Name" formControlName="userName" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <input matInput placeholder="E-mail address" formControlName="email" [readonly]="true">
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <input matInput placeholder="Academic degree" formControlName="academicDegree">
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <input matInput placeholder="Position profile" formControlName="positionProfile">
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <textarea matInput placeholder="Summary" formControlName="summary" rows="3"></textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <mat-chip-list #industryChipList>
+                <mat-chip *ngFor="let sector of industrySectorsArray; let i = index;" [selectable]="elemSelectable"
+                          [removable]="elemRemovable" (removed)="removeElem(i, industrySectorsArray)">
+                  {{sector}}
+                  <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Industry sectors"
+                       id="industryChipList"
+                       [matChipInputFor]="industryChipList"
+                       [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                       [matChipInputAddOnBlur]="elemAddOnBlur"
+                       (matChipInputTokenEnd)="addElem($event, industrySectorsArray)">
+              </mat-chip-list>
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <mat-chip-list #specializationChipList>
+                <mat-chip *ngFor="let specialization of specializationsArray; let i = index;"
+                          [selectable]="elemSelectable"
+                          [removable]="elemRemovable" (removed)="removeElem(i, specializationsArray)">
+                  {{specialization}}
+                  <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Specializations"
+                       id="specializationChipList"
+                       [matChipInputFor]="specializationChipList"
+                       [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                       [matChipInputAddOnBlur]="elemAddOnBlur"
+                       (matChipInputTokenEnd)="addElem($event, specializationsArray)">
+              </mat-chip-list>
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <mat-chip-list #certificateChipList>
+                <mat-chip *ngFor="let certificate of certificatesArray; let i = index;" [selectable]="elemSelectable"
+                          [removable]="elemRemovable" (removed)="removeElem(i, certificatesArray)">
+                  {{certificate}}
+                  <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Certificates"
+                       id="certificateChipList"
+                       [matChipInputFor]="certificateChipList"
+                       [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                       [matChipInputAddOnBlur]="elemAddOnBlur"
+                       (matChipInputTokenEnd)="addElem($event, certificatesArray)">
+              </mat-chip-list>
+            </mat-form-field>
+          </div>
+          <div fxFlex>
+            <mat-form-field class="user-profile-form-field">
+              <mat-chip-list #languageChipList>
+                <mat-chip *ngFor="let language of languagesArray; let i = index;" [selectable]="elemSelectable"
+                          [removable]="elemRemovable" (removed)="removeElem(i, languagesArray)">
+                  {{language}}
+                  <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Languages"
+                       id="languageChipList"
+                       [matChipInputFor]="languageChipList"
+                       [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
+                       [matChipInputAddOnBlur]="elemAddOnBlur"
+                       (matChipInputTokenEnd)="addElem($event, languagesArray)">
+              </mat-chip-list>
+            </mat-form-field>
+          </div>
         </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <input matInput placeholder="Last Name" formControlName="lastName" [readonly]="true">
-          </mat-form-field>
+        <mat-divider></mat-divider>
+        <div class="user-profile-settings-section">
+          <p class="user-profile-settings-explanation">By enabling the following option you agree that other users can
+            find you as a potential coach for specific skills you have in your profile.</p>
+          <mat-checkbox formControlName="coach">I agree to be shown as coach to other users</mat-checkbox>
         </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <input matInput placeholder="User Name" formControlName="userName" [readonly]="true">
-          </mat-form-field>
+        <div class="user-profile-testimonials-section">
+
         </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <input matInput placeholder="E-mail address" formControlName="email" [readonly]="true">
-          </mat-form-field>
+        <mat-divider></mat-divider>
+        <div class="user-profile-actions">
+          <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="saveUserDetails()">Save user
+            details
+          </button>
         </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <input matInput placeholder="Academic degree" formControlName="academicDegree">
-          </mat-form-field>
-        </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <input matInput placeholder="Position profile" formControlName="positionProfile">
-          </mat-form-field>
-        </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <textarea matInput placeholder="Summary" formControlName="summary" rows="3"></textarea>
-          </mat-form-field>
-        </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <mat-chip-list #industryChipList>
-              <mat-chip *ngFor="let sector of industrySectorsArray; let i = index;" [selectable]="elemSelectable"
-                        [removable]="elemRemovable" (removed)="removeElem(i, industrySectorsArray)">
-                {{sector}}
-                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
-              </mat-chip>
-              <input placeholder="Industry sectors"
-                     id="industryChipList"
-                     [matChipInputFor]="industryChipList"
-                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
-                     [matChipInputAddOnBlur]="elemAddOnBlur"
-                     (matChipInputTokenEnd)="addElem($event, industrySectorsArray)">
-            </mat-chip-list>
-          </mat-form-field>
-        </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <mat-chip-list #specializationChipList>
-              <mat-chip *ngFor="let specialization of specializationsArray; let i = index;" [selectable]="elemSelectable"
-                        [removable]="elemRemovable" (removed)="removeElem(i, specializationsArray)">
-                {{specialization}}
-                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
-              </mat-chip>
-              <input placeholder="Specializations"
-                     id="specializationChipList"
-                     [matChipInputFor]="specializationChipList"
-                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
-                     [matChipInputAddOnBlur]="elemAddOnBlur"
-                     (matChipInputTokenEnd)="addElem($event, specializationsArray)">
-            </mat-chip-list>
-          </mat-form-field>
-        </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <mat-chip-list #certificateChipList>
-              <mat-chip *ngFor="let certificate of certificatesArray; let i = index;" [selectable]="elemSelectable"
-                        [removable]="elemRemovable" (removed)="removeElem(i, certificatesArray)">
-                {{certificate}}
-                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
-              </mat-chip>
-              <input placeholder="Certificates"
-                     id="certificateChipList"
-                     [matChipInputFor]="certificateChipList"
-                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
-                     [matChipInputAddOnBlur]="elemAddOnBlur"
-                     (matChipInputTokenEnd)="addElem($event, certificatesArray)">
-            </mat-chip-list>
-          </mat-form-field>
-        </div>
-        <div fxFlex>
-          <mat-form-field class="user-profile-form-field">
-            <mat-chip-list #languageChipList>
-              <mat-chip *ngFor="let language of languagesArray; let i = index;" [selectable]="elemSelectable"
-                        [removable]="elemRemovable" (removed)="removeElem(i, languagesArray)">
-                {{language}}
-                <mat-icon matChipRemove *ngIf="elemRemovable">cancel</mat-icon>
-              </mat-chip>
-              <input placeholder="Languages"
-                     id="languageChipList"
-                     [matChipInputFor]="languageChipList"
-                     [matChipInputSeparatorKeyCodes]="elemSeparatorKeysCodes"
-                     [matChipInputAddOnBlur]="elemAddOnBlur"
-                     (matChipInputTokenEnd)="addElem($event, languagesArray)">
-            </mat-chip-list>
-          </mat-form-field>
-        </div>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="user-profile-settings-section">
-        <p class="user-profile-settings-explanation">By enabling the following option you agree that other users can find you as a potential coach for specific skills you have in your profile.</p>
-        <mat-checkbox formControlName="coach">I agree to be shown as coach to other users</mat-checkbox>
-      </div>
-      <div class="user-profile-testimonials-section">
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Testimonials
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <app-testimonials></app-testimonials>
-        </mat-expansion-panel>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="user-profile-actions">
-        <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="saveUserDetails()">Save user details</button>
-      </div>
-      <div class="user-profile-settings-section">
-        <p class="user-profile-settings-explanation">All users listed in the following field will be able to view your relationships to skills including the corresponding levels and priorities.</p>
-        <mat-form-field class="user-profile-form-field">
-          <mat-chip-list #authorizedUsersChipList>
-            <mat-chip *ngFor="let authorizedUser of authorizedUsers"
-              selectable="true" removable="true"
-              (removed)="onAuthorizedUserRemoved(authorizedUser)">
-              {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
-              <mat-icon matChipRemove>cancel</mat-icon>
-            </mat-chip>
-            <input placeholder="Users authorized to view my skills" #authorizedUsersInput
-              [formControl]="authorizedUsersControl"
-              [matAutocomplete]="authorizedUsersAutocomplete"
-              [matChipInputFor]="authorizedUsersChipList"
-              matChipInputAddOnBlur="true">
-          </mat-chip-list>
-          <mat-autocomplete #authorizedUsersAutocomplete="matAutocomplete"
-            (optionSelected)="onAuthorizedUserSuggestionSelected($event)">
-            <mat-option *ngFor="let authorizedUser of authorizedUserSuggestions$ | async" [value]="authorizedUser">
-              {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <mat-divider></mat-divider>
-      <div class="user-profile-actions">
-        <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save permissions</button>
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
+  </mat-expansion-panel>
+  <mat-expansion-panel class="user-profile-expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Testimonials
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-testimonials></app-testimonials>
+  </mat-expansion-panel>
+  <mat-expansion-panel class="user-profile-expansion-panel">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Permissions
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <div class="user-profile-settings-section">
+      <p class="user-profile-settings-explanation">All users listed in the following field will be able to view your
+        relationships to skills including the corresponding levels and priorities.</p>
+      <mat-form-field class="user-profile-form-field">
+        <mat-chip-list #authorizedUsersChipList>
+          <mat-chip *ngFor="let authorizedUser of authorizedUsers"
+                    selectable="true" removable="true"
+                    (removed)="onAuthorizedUserRemoved(authorizedUser)">
+            {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
+            <mat-icon matChipRemove>cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Users authorized to view my skills" #authorizedUsersInput
+                 [formControl]="authorizedUsersControl"
+                 [matAutocomplete]="authorizedUsersAutocomplete"
+                 [matChipInputFor]="authorizedUsersChipList"
+                 matChipInputAddOnBlur="true">
+        </mat-chip-list>
+        <mat-autocomplete #authorizedUsersAutocomplete="matAutocomplete"
+                          (optionSelected)="onAuthorizedUserSuggestionSelected($event)">
+          <mat-option *ngFor="let authorizedUser of authorizedUserSuggestions$ | async" [value]="authorizedUser">
+            {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="user-profile-actions">
+      <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save
+        permissions
+      </button>
+    </div>
+  </mat-expansion-panel>
 </div>
