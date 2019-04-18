@@ -4,16 +4,19 @@ import { TestimonialsComponent } from './testimonials.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { TestimonialService } from './testimonial.service';
 import { TestimonialResponse } from './testimonial-response';
 import { of } from 'rxjs';
-import { MatDialog } from '@angular/material';
+import { MatBottomSheet, MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { TestimonialsEditComponent } from './testimonials-edit.component';
+import { TestimonialsNewComponent } from './testimonials-new.component';
+import { Component, Input } from '@angular/core';
 
 const testimonialsResponse: TestimonialResponse[] = [
   {
@@ -48,6 +51,14 @@ const testimonialsResponse: TestimonialResponse[] = [
   }
 ];
 
+@Component({
+  selector: 'app-skill-select-input',
+  template: ''
+})
+class SkillSelectInputStubComponent {
+  @Input() parentForm: FormGroup;
+}
+
 describe('TestimonialsComponent', () => {
   let component: TestimonialsComponent;
   let fixture: ComponentFixture<TestimonialsComponent>;
@@ -61,7 +72,7 @@ describe('TestimonialsComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ TestimonialsComponent, DeleteConfirmationDialogComponent ],
+      declarations: [ TestimonialsComponent, DeleteConfirmationDialogComponent, TestimonialsEditComponent, TestimonialsNewComponent, SkillSelectInputStubComponent ],
       providers: [ GlobalErrorHandlerService,
         {
           provide: TestimonialService,
@@ -71,7 +82,7 @@ describe('TestimonialsComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [DeleteConfirmationDialogComponent]
+          entryComponents: [DeleteConfirmationDialogComponent, TestimonialsEditComponent, TestimonialsNewComponent]
         }
       })
     .compileComponents();
@@ -98,5 +109,25 @@ describe('TestimonialsComponent', () => {
     component.delete(testimonialsResponse[0]);
     expect(matDialog.openDialogs.length).toBe(1);
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+  }));
+
+  it('should open edit user project dialog', async(() => {
+    const m: MatBottomSheet = TestBed.get(MatBottomSheet);
+
+    component.openEditDialog(testimonialsResponse[0]);
+
+    expect(m._openedBottomSheetRef).toBeDefined();
+    expect(m._openedBottomSheetRef.instance).toEqual(jasmine.any(TestimonialsEditComponent));
+    m._openedBottomSheetRef.dismiss();
+  }));
+
+  it('should open new user project dialog', async(() => {
+    const m: MatBottomSheet = TestBed.get(MatBottomSheet);
+
+    component.openNewDialog();
+
+    expect(m._openedBottomSheetRef).toBeDefined();
+    expect(m._openedBottomSheetRef.instance).toEqual(jasmine.any(TestimonialsNewComponent));
+    m._openedBottomSheetRef.dismiss();
   }));
 });
