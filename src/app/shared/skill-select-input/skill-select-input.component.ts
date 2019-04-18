@@ -42,6 +42,7 @@ export class SkillSelectInputComponent implements OnInit {
   removeSkill(index: number): void {
     if (index >= 0) {
       this.skillsArray.splice(index, 1);
+      this.parentForm.markAsDirty();
     }
   }
 
@@ -49,6 +50,7 @@ export class SkillSelectInputComponent implements OnInit {
     const selectedSkill = event.option.value;
     if (!this.isSkillExist(selectedSkill.name)) {
       this.skillsArray.push(selectedSkill.name);
+      this.parentForm.markAsDirty();
     }
 
     this.skillAutocompleteInput.nativeElement.value = '';
@@ -64,6 +66,7 @@ export class SkillSelectInputComponent implements OnInit {
 
       if (!this.isSkillExist(value)) {
         this.skillsArray.push(value.trim());
+        this.parentForm.markAsDirty();
       }
 
       // Reset the input value

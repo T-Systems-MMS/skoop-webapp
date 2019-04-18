@@ -6,9 +6,10 @@ import { TestimonialService } from './testimonial.service';
 import { Observable, of } from 'rxjs';
 import { TestimonialResponse } from './testimonial-response';
 import { HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, filter } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { TestimonialsEditComponent } from './testimonials-edit.component';
 
 @Component({
   selector: 'app-testimonials',
@@ -41,7 +42,14 @@ export class TestimonialsComponent implements OnInit {
   }
 
   openEditDialog(testimonial: TestimonialResponse) {
-
+    this.bottomSheet.open(TestimonialsEditComponent, {
+      data: <TestimonialResponse>{
+        id: testimonial.id,
+        author: testimonial.author,
+        comment: testimonial.comment,
+        skills: testimonial.skills
+      }
+    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadTestimonials());
   }
 
   delete(testimonial: TestimonialResponse) {

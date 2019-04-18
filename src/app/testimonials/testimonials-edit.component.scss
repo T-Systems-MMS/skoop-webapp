@@ -1,0 +1,13 @@
+@import 'variables';
+
+.testimonials-edit-form-field {
+  width: 100%;
+}
+
+.testimonials-edit-error {
+  @extend %base-error;
+}
+
+.testimonials-edit-actions {
+  margin-right: 16px;
+}
