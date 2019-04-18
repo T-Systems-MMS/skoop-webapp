@@ -21,7 +21,8 @@ import {
   MatDividerModule,
   MatDatepickerModule,
   MatButtonToggleModule,
-  MatBadgeModule
+  MatBadgeModule,
+  MatExpansionModule
 } from '@angular/material';
 
 @NgModule({
@@ -47,7 +48,8 @@ import {
     MatDividerModule,
     MatDatepickerModule,
     MatButtonToggleModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatExpansionModule
   ],
   exports: [
     MatSidenavModule,
@@ -71,7 +73,8 @@ import {
     MatDividerModule,
     MatDatepickerModule,
     MatButtonToggleModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatExpansionModule
   ]
 })
 export class AppMaterialModule { }

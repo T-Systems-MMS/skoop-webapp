@@ -113,6 +113,16 @@
         <p class="user-profile-settings-explanation">By enabling the following option you agree that other users can find you as a potential coach for specific skills you have in your profile.</p>
         <mat-checkbox formControlName="coach">I agree to be shown as coach to other users</mat-checkbox>
       </div>
+      <div class="user-profile-testimonials-section">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Testimonials
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <app-testimonials></app-testimonials>
+        </mat-expansion-panel>
+      </div>
       <mat-divider></mat-divider>
       <div class="user-profile-actions">
         <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="saveUserDetails()">Save user details</button>
