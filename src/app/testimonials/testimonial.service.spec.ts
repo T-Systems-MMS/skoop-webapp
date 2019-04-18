@@ -6,7 +6,8 @@ import { UserIdentity } from '../shared/user-identity';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { of } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Testimonial } from './testimonial';
+import { TestimonialRequest } from './testimonial-request';
+import { TestimonialResponse } from './testimonial-response';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -40,15 +41,30 @@ describe('TestimonialService', () => {
   });
 
   it('should create the testimonial with the given data', async(() => {
-    const testimonial: Testimonial = {
-      id: '123123123123123',
+    const testimonialRequest: TestimonialRequest = {
       author: 'author of the testimonial',
       comment: 'comment of the testimonial',
       skills: ['Skill1', 'Skill2']
     };
 
-    testimonialService.createTestimonial(testimonial).subscribe(actualData => {
-      expect(actualData).toEqual(testimonial);
+    const testimonialResponse: TestimonialResponse = {
+      id: '123123123123123',
+      author: testimonialRequest.author,
+      comment: testimonialRequest.comment,
+      skills: [
+        {
+          id: '1231231',
+          name: 'Skill1'
+        },
+        {
+          id: '4325345345',
+          name: 'Skill2'
+        },
+      ]
+    };
+
+    testimonialService.createTestimonial(testimonialRequest).subscribe(actualData => {
+      expect(actualData).toEqual(testimonialResponse);
     });
 
     const request = httpTestingController.expectOne({
@@ -57,8 +73,8 @@ describe('TestimonialService', () => {
     });
 
     expect(request.request.responseType).toEqual('json');
-    expect(request.request.body).toEqual(testimonial);
+    expect(request.request.body).toEqual(testimonialRequest);
 
-    request.flush(testimonial);
+    request.flush(testimonialResponse);
   }));
 });

@@ -12,8 +12,9 @@ import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheetRef } from '@angular/material';
 import { Component, Input } from '@angular/core';
+import { TestimonialRequest } from './testimonial-request';
 
-const testimonial: Testimonial = {
+const testimonial: TestimonialRequest = {
   id: '123123123123123',
   author: 'author of the testimonial',
   comment: 'comment of the testimonial',

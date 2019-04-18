@@ -3,8 +3,8 @@ import { MatBottomSheetRef} from '@angular/material';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TestimonialService } from './testimonial.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Testimonial } from './testimonial';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { TestimonialRequest } from './testimonial-request';
 
 @Component({
   selector: 'app-testimonials-new',
@@ -45,12 +45,12 @@ export class TestimonialsNewComponent implements OnInit {
     this.bottomSheet.dismiss();
   }
 
-  private getTestimonialData(): Testimonial {
+  private getTestimonialData(): TestimonialRequest {
     return {
       author: this.testimonialForm.get('author').value,
       skills: this.skillsArray || [],
       comment: this.testimonialForm.get('comment').value
-    } as Testimonial;
+    } as TestimonialRequest;
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse) {
