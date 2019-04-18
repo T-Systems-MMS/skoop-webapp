@@ -77,4 +77,68 @@ describe('TestimonialService', () => {
 
     request.flush(testimonialResponse);
   }));
+
+  it('should provide list of testimonials', async(() => {
+    const testimonialsResponse: TestimonialResponse[] = [
+      {
+        id: '123123123123123',
+        author: 'Author 1',
+        comment: 'Comment 1',
+        skills: [
+          {
+            id: '1231231',
+            name: 'Skill1'
+          },
+          {
+            id: '4325345345',
+            name: 'Skill2'
+          },
+        ]
+      },
+      {
+        id: '42342352452312434532',
+        author: 'Author 2',
+        comment: 'Comment 2',
+        skills: [
+          {
+            id: '1231231',
+            name: 'Skill1'
+          },
+          {
+            id: '4325345345',
+            name: 'Skill2'
+          },
+        ]
+      }
+    ];
+
+    testimonialService.getTestimonials().subscribe(actualData => {
+      expect(actualData).toEqual(testimonialsResponse);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/testimonials`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(testimonialsResponse);
+  }));
+
+  it('should delete the testimonial by its id', async(() => {
+    const testimonialId = '1231242134134124';
+    testimonialService.deleteTestimonial(testimonialId).subscribe(actualData => {
+      expect(actualData).toBeNull();
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'DELETE',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/testimonials/${testimonialId}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(null);
+  }));
 });

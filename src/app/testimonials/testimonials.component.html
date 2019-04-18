@@ -1,5 +1,37 @@
 <div class="mat-typography">
+  <div *ngIf="errorMessage" class="testimonials-error-message">{{errorMessage}}</div>
   <div class="testimonials-toolbar">
     <button mat-raised-button (click)="openNewDialog()" aria-label="Add testimonial">Add testimonial</button>
+  </div>
+  <div class="testimonials-wrapper">
+    <mat-card *ngFor="let testimonial of testimonials$ | async" class="testimonials-card">
+      <mat-card-content>
+        <div fxFlex="30%">
+          <div fxLayout="row">
+            <div class="testimonials-description-label">Author:</div>
+            <div>{{testimonial.author}}</div>
+          </div>
+          <div fxLayout="row">
+            <div class="testimonials-description-label testimonials-skill-label">Skills:</div>
+            <mat-chip-list>
+              <mat-chip *ngFor="let skill of testimonial.skills">{{ skill.name }}</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        <div fxFlex="60%">
+          <div>{{testimonial.comment}}</div>
+        </div>
+        <div fxFlex class="testimonials-buttons-column">
+          <button mat-icon-button (click)="openEditDialog(testimonial)" title="Edit"
+                  aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="delete(testimonial)" title="Delete"
+                  aria-label="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
