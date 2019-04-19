@@ -1,0 +1,13 @@
+@import 'variables';
+
+.publications-new-form-field {
+  width: 100%;
+}
+
+.publications-new-error {
+  @extend %base-error;
+}
+
+.publications-new-actions {
+  margin-right: 16px;
+}

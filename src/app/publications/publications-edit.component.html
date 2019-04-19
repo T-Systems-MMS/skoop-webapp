@@ -1,3 +1,34 @@
-<p>
-  publications-edit works!
-</p>
+<form [formGroup]="publicationForm" class="publications-edit-form">
+  <div *ngIf="errorMessage" class="publications-edit-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput id="publications-new-title" placeholder="Title" formControlName="title" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput  placeholder="Date" formControlName="date" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput  placeholder="Publisher or location of confluence, etc." formControlName="publisher" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput  placeholder="Web-Site Link" formControlName="link" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <app-skill-select-input [parentForm]="publicationForm"></app-skill-select-input>
+    </div>
+  </div>
+  <div>
+    <button mat-raised-button id="publications-edit-button" color="primary" (click)="editPublication()"
+            [disabled]="!publicationForm.valid || publicationForm.pristine" class="publications-edit-actions">Edit publication
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="publications-edit-actions">Close</button>
+  </div>
+</form>
