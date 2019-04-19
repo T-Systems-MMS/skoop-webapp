@@ -146,9 +146,9 @@ describe('Util', () => {
 
     it('rejects tomorrow date', () => {
       Util.injectNow(() => moment('2000-01-02'));
-      publication.date = new Date(2000, 0, 2); // 2000-01-02
+      publication.date = new Date(2000, 0, 3); // 2000-01-03
 
-      expect(Util.dateIsInPast(publication)).toBeTruthy();
+      expect(Util.dateIsInPast(publication)).toBeFalsy();
     });
   });
 
