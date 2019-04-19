@@ -42,14 +42,7 @@ export class PublicationsComponent implements OnInit {
 
   openEditDialog(publication: PublicationResponse) {
     this.bottomSheet.open(PublicationsEditComponent, {
-      data: <PublicationResponse>{
-        id: publication.id,
-        title: publication.title,
-        date: publication.date,
-        publisher: publication.publisher,
-        link: publication.link,
-        skills: publication.skills
-      }
+      data: Object.assign({}, publication)
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadPublications());
   }
 

@@ -1,7 +1,7 @@
 <div class="mat-typography">
   <div *ngIf="errorMessage" class="publications-error-message">{{errorMessage}}</div>
   <div class="publications-toolbar">
-    <button mat-raised-button (click)="openNewDialog()" aria-label="Add testimonial">Add publication</button>
+    <button mat-raised-button (click)="openNewDialog()" aria-label="Add publication">Add publication</button>
   </div>
 
   <mat-card *ngFor="let publication of publications$ | async" class="publications-card">
