@@ -30,6 +30,12 @@ const usersServiceStub: Partial<UsersService> = {
 })
 class TestimonialsStubComponent{}
 
+@Component({
+  selector: 'app-publications',
+  template: ''
+})
+class PublicationsStubComponent{}
+
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
   let fixture: ComponentFixture<UserProfileComponent>;
@@ -106,7 +112,7 @@ describe('UserProfileComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [UserProfileComponent, TestimonialsStubComponent],
+      declarations: [UserProfileComponent, TestimonialsStubComponent, PublicationsStubComponent],
       providers: [
         GlobalErrorHandlerService,
         { provide: UsersService, useValue: usersServiceStub },

@@ -10,6 +10,7 @@ import { CommunityRoleChangedNotification } from '../my-messages/community-role-
 import { JoinCommunityRequestNotification } from '../my-messages/join-community-request-notification';
 import { MemberKickedOutNotification } from '../my-messages/member-kicked-out-notification';
 import { MemberLeftCommunityNotification } from '../my-messages/member-left-community-notification';
+import { Publication } from '../publications/publication';
 
 describe('Util', () => {
   beforeEach(() => {
@@ -120,6 +121,35 @@ describe('Util', () => {
         expect(Util.createNotificationInstance({type: NotificationType.MEMBER_LEFT_COMMUNITY})
           instanceof MemberLeftCommunityNotification).toBeTruthy();
       });
+  });
+
+  describe('.dateIsInPast()', () => {
+
+    const publication: Publication = {
+      id: '123123',
+      title: 'title',
+      publisher: 'publisher'
+    };
+
+    it('allows empty publication date', () => {
+      publication.date = null;
+
+      expect(Util.dateIsInPast(publication)).toBeTruthy();
+    });
+
+    it('allows date before tomorrow', () => {
+      Util.injectNow(() => moment('2000-01-02'));
+      publication.date = new Date(2000, 0, 1); // 2000-01-01
+
+      expect(Util.dateIsInPast(publication)).toBeTruthy();
+    });
+
+    it('rejects date after tomorrow', () => {
+      Util.injectNow(() => moment('2000-01-02'));
+      publication.date = new Date(2000, 0, 3); // 2000-01-03
+
+      expect(Util.dateIsInPast(publication)).toBeFalsy();
+    });
   });
 
 });

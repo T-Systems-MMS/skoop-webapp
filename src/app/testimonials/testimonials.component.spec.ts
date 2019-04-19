@@ -111,7 +111,7 @@ describe('TestimonialsComponent', () => {
     expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
   }));
 
-  it('should open edit user project dialog', async(() => {
+  it('should open edit testimonial dialog', async(() => {
     const m: MatBottomSheet = TestBed.get(MatBottomSheet);
 
     component.openEditDialog(testimonialsResponse[0]);
@@ -121,7 +121,7 @@ describe('TestimonialsComponent', () => {
     m._openedBottomSheetRef.dismiss();
   }));
 
-  it('should open new user project dialog', async(() => {
+  it('should open new testimonial dialog', async(() => {
     const m: MatBottomSheet = TestBed.get(MatBottomSheet);
 
     component.openNewDialog();

@@ -1,0 +1,39 @@
+<form [formGroup]="publicationForm" class="publications-new-form">
+  <div *ngIf="errorMessage" class="publications-new-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput id="publications-new-title" placeholder="Title" formControlName="title" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput [matDatepicker]="publicationDatePicker" [max]="maxDate"  placeholder="Date" formControlName="date">
+        <mat-datepicker-toggle matSuffix [for]="publicationDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #publicationDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput  placeholder="Publisher or location of conference, etc." formControlName="publisher" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput  placeholder="Web-Site Link" formControlName="link">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <app-skill-select-input [parentForm]="publicationForm"></app-skill-select-input>
+    </div>
+  </div>
+  <mat-error *ngIf="publicationForm.hasError('dateInFuture')">
+    Publication date cannot be in the future
+  </mat-error>
+  <div>
+    <button mat-raised-button id="publications-new-button" color="primary" (click)="addPublication()"
+            [disabled]="!publicationForm.valid" class="publications-new-actions">Add publication
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="publications-new-actions">Close</button>
+  </div>
+</form>

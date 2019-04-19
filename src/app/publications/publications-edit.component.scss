@@ -1,0 +1,13 @@
+@import 'variables';
+
+.publications-edit-form-field {
+  width: 100%;
+}
+
+.publications-edit-error {
+  @extend %base-error;
+}
+
+.publications-edit-actions {
+  margin-right: 16px;
+}

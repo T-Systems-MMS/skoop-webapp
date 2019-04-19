@@ -1,0 +1,50 @@
+<div class="mat-typography">
+  <div *ngIf="errorMessage" class="publications-error-message">{{errorMessage}}</div>
+  <div class="publications-toolbar">
+    <button mat-raised-button (click)="openNewDialog()" aria-label="Add publication">Add publication</button>
+  </div>
+
+  <mat-card *ngFor="let publication of publications$ | async" class="publications-card">
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex>
+          <h2 class="publications-heading">{{ publication.title }}</h2>
+        </div>
+        <div fxFlex="none">
+          <button mat-icon-button (click)="openEditDialog(publication)" title="Edit" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="delete(publication)" title="Delete" aria-label="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex>
+          <div fxLayout="row">
+            <div class="publications-description-label">Date:</div>
+            <div>{{publication.date | date:'dd.MM.yyyy'}}</div>
+          </div>
+          <div fxLayout="row">
+            <div class="publications-description-label">Publisher:</div>
+            <div *ngIf="publication.link; then publisher_link; else publisher"></div>
+            <ng-template #publisher>
+              {{publication.publisher}}
+            </ng-template>
+            <ng-template #publisher_link>
+              <a [href]="publication.link">{{publication.publisher}}</a>
+            </ng-template>
+          </div>
+          
+          <div fxLayout="row">
+            <div class="publications-description-label publications-skill-label">Skills:</div>
+            <mat-chip-list>
+              <mat-chip *ngFor="let skill of publication.skills">{{ skill.name }}</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+        
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
