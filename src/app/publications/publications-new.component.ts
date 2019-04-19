@@ -33,7 +33,7 @@ export class PublicationsNewComponent implements OnInit {
       date: '',
       publisher: ['', Validators.required],
       link: '',
-      skills: ''
+      skills: [[]]
     },
       {
         validators: [

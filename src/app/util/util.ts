@@ -59,8 +59,6 @@ export class Util {
     const publicationDate = Util.ignoreTimezone(publication.date);
 
     const tomorrow: Moment = Util.now().startOf('day').add(1, 'day');
-    console.log(tomorrow);
-    console.log(publicationDate);
     return tomorrow.isAfter(publicationDate);
   }
 

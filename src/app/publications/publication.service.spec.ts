@@ -82,53 +82,45 @@ describe('PublicationService', () => {
     request.flush(publicationResponse);
   }));
 
-  // it('should provide list of testimonials', async(() => {
-  //   const testimonialsResponse: TestimonialResponse[] = [
-  //     {
-  //       id: '123123123123123',
-  //       author: 'Author 1',
-  //       comment: 'Comment 1',
-  //       skills: [
-  //         {
-  //           id: '1231231',
-  //           name: 'Skill1'
-  //         },
-  //         {
-  //           id: '4325345345',
-  //           name: 'Skill2'
-  //         },
-  //       ]
-  //     },
-  //     {
-  //       id: '42342352452312434532',
-  //       author: 'Author 2',
-  //       comment: 'Comment 2',
-  //       skills: [
-  //         {
-  //           id: '1231231',
-  //           name: 'Skill1'
-  //         },
-  //         {
-  //           id: '4325345345',
-  //           name: 'Skill2'
-  //         },
-  //       ]
-  //     }
-  //   ];
-  //
-  //   publicationService.getTestimonials().subscribe(actualData => {
-  //     expect(actualData).toEqual(testimonialsResponse);
-  //   });
-  //
-  //   const request = httpTestingController.expectOne({
-  //     method: 'GET',
-  //     url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/testimonials`
-  //   });
-  //
-  //   expect(request.request.responseType).toEqual('json');
-  //
-  //   request.flush(testimonialsResponse);
-  // }));
+  it('should provide list of publications', async(() => {
+    const publicationResponses: PublicationResponse[] = [
+      {
+        id: '18a30b9b-7d0d-4e50-a953-c643e085e071',
+        title: 'sdfsdf',
+        date: null,
+        publisher: 'customer',
+        'skills': []
+      },
+      {
+        id: '369710e0-5808-4318-961e-0161f9f81f1c',
+        title: 'withot',
+        date: new Date(),
+        publisher: 'adsad',
+        link: '',
+        skills: [
+          {
+            id: '1f5082a3-f7cf-4d6b-ad41-df8bce06e03f',
+            name: 'Java',
+            description: 'Java programming language.',
+            skillGroups: null
+          }
+        ]
+      }
+    ];
+
+    publicationService.getPublications().subscribe(actualData => {
+      expect(actualData).toEqual(publicationResponses);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/publications`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(publicationResponses);
+  }));
 
   it('should update the publication with the given data', async(() => {
     const publicationRequest: PublicationRequest = {
@@ -173,19 +165,19 @@ describe('PublicationService', () => {
     request.flush(publicationResponse);
   }));
 
-  // it('should delete the testimonial by its id', async(() => {
-  //   const testimonialId = '1231242134134124';
-  //   publicationService.deleteTestimonial(testimonialId).subscribe(actualData => {
-  //     expect(actualData).toBeNull();
-  //   });
-  //
-  //   const request = httpTestingController.expectOne({
-  //     method: 'DELETE',
-  //     url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/testimonials/${testimonialId}`
-  //   });
-  //
-  //   expect(request.request.responseType).toEqual('json');
-  //
-  //   request.flush(null);
-  // }));
+  it('should delete the publication by its id', async(() => {
+    const publicationId = '1231242134134124';
+    publicationService.deletePublication(publicationId).subscribe(actualData => {
+      expect(actualData).toBeNull();
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'DELETE',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/publications/${publicationId}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(null);
+  }));
 });

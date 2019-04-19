@@ -19,6 +19,12 @@ export class PublicationService {
               private userIdentityService: UserIdentityService) {
   }
 
+  getPublications(): Observable<PublicationResponse[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.get<PublicationResponse[]>(this.publicationsUrlPattern.replace('{userId}', userIdentity.userId))));
+  }
+
   createPublication(publication: PublicationRequest): Observable<PublicationResponse> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
@@ -30,6 +36,13 @@ export class PublicationService {
       .pipe(switchMap(userIdentity =>
         this.httpClient.put<PublicationResponse>(this.publicationUrlPattern
           .replace('{userId}', userIdentity.userId).replace('{publicationId}', publication.id), publication)));
+  }
+
+  deletePublication(publicationId: string): Observable<void> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.delete<void>(this.publicationUrlPattern
+          .replace('{userId}', userIdentity.userId).replace('{publicationId}', publicationId))));
   }
 
 }
