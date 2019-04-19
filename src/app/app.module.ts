@@ -61,6 +61,9 @@ import { TestimonialsNewComponent } from './testimonials/testimonials-new.compon
 import { TestimonialsComponent } from './testimonials/testimonials.component';
 import { SkillSelectInputComponent } from './shared/skill-select-input/skill-select-input.component';
 import { TestimonialsEditComponent } from './testimonials/testimonials-edit.component';
+import { PublicationsComponent } from './publications/publications.component';
+import { PublicationsNewComponent } from './publications/publications-new.component';
+import { PublicationsEditComponent } from './publications/publications-edit.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -116,6 +119,9 @@ export const CUSTOM_FORMATS = {
     TestimonialsComponent,
     SkillSelectInputComponent,
     TestimonialsEditComponent,
+    PublicationsComponent,
+    PublicationsNewComponent,
+    PublicationsEditComponent
   ],
   imports: [
     BrowserModule,
@@ -162,7 +168,9 @@ export const CUSTOM_FORMATS = {
     InfoDialogComponent,
     CommunityInvitationDialogComponent,
     TestimonialsNewComponent,
-    TestimonialsEditComponent
+    TestimonialsEditComponent,
+    PublicationsNewComponent,
+    PublicationsEditComponent
   ],
   bootstrap: [AppComponent]
 })

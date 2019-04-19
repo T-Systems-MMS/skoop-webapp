@@ -1,0 +1,21 @@
+@import "variables";
+
+.publications-toolbar {
+  margin-bottom: $skoop-toolbar-margin-bottom;
+}
+
+.publications-card {
+  @extend %base-card;
+}
+
+.publications-description-label {
+  @extend %base-description-label;
+}
+
+.publications-error-message {
+  @extend %base-error;
+}
+
+.publications-skill-label {
+  padding-top: 5px;
+}
