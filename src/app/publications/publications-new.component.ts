@@ -1,10 +1,12 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MatBottomSheetRef } from '@angular/material';
 import { PublicationService } from './publication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicationRequest } from './publication-request';
+import { Util } from '../util/util';
+import { FormsService } from '../shared/forms.service';
 
 @Component({
   selector: 'app-publications-new',
@@ -18,6 +20,7 @@ export class PublicationsNewComponent implements OnInit {
   maxDate: Date = new Date();
 
   constructor(private publicationService: PublicationService,
+              private formsService: FormsService,
               private formBuilder: FormBuilder,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
@@ -26,18 +29,22 @@ export class PublicationsNewComponent implements OnInit {
 
   ngOnInit() {
     this.publicationForm = this.formBuilder.group({
-      title: new FormControl('', Validators.required),
-      date: new FormControl('', Validators.required),
-      publisher: new FormControl('', Validators.required),
-      link: new FormControl('', Validators.required),
-      skills: new FormControl([])
-    });
+      title: ['', Validators.required],
+      date: '',
+      publisher: ['', Validators.required],
+      link: '',
+      skills: ''
+    },
+      {
+        validators: [
+          this.formsService.validatorFnOf('dateInFuture', Util.dateIsInFuture)
+        ]
+      });
   }
 
   addPublication() {
     this.publicationService.createPublication(this.getPublicationData())
       .subscribe((data) => {
-        this.publicationForm.reset();
         this.bottomSheet.dismiss(data);
       }, (errorResponse: HttpErrorResponse) => {
         this.handleErrorResponse(errorResponse);

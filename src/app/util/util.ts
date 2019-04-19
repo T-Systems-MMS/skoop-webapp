@@ -11,6 +11,7 @@ import { CommunityRoleChangedNotification } from '../my-messages/community-role-
 import { JoinCommunityRequestNotification } from '../my-messages/join-community-request-notification';
 import { MemberKickedOutNotification } from '../my-messages/member-kicked-out-notification';
 import { MemberLeftCommunityNotification } from '../my-messages/member-left-community-notification';
+import { Publication } from '../publications/publication';
 
 export class Util {
 
@@ -48,6 +49,15 @@ export class Util {
     } else {
       return !from.isAfter(to);
     }
+  }
+
+  public static dateIsInFuture(publication: Publication): boolean {
+    const publicationDate = Util.ignoreTimezone(publication.date);
+    if (!publicationDate.isValid()) {
+      return true;
+    }
+    const today: Moment = Util.now().startOf('day');
+    return today.isAfter(publicationDate);
   }
 
   /**

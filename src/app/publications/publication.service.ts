@@ -24,4 +24,12 @@ export class PublicationService {
       .pipe(switchMap(userIdentity =>
         this.httpClient.post<PublicationResponse>(this.publicationsUrlPattern.replace('{userId}', userIdentity.userId), publication)));
   }
+
+  editPublication(publication: PublicationRequest): Observable<PublicationResponse> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.put<PublicationResponse>(this.publicationUrlPattern
+          .replace('{userId}', userIdentity.userId).replace('{publicationId}', publication.id), publication)));
+  }
+
 }
