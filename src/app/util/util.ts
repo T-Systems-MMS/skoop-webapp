@@ -51,13 +51,17 @@ export class Util {
     }
   }
 
-  public static dateIsInFuture(publication: Publication): boolean {
-    const publicationDate = Util.ignoreTimezone(publication.date);
-    if (!publicationDate.isValid()) {
+  public static dateIsInPast(publication: Publication): boolean {
+    if (!publication.date || !publication.date.toString()) {
       return true;
     }
-    const today: Moment = Util.now().startOf('day');
-    return today.isAfter(publicationDate);
+
+    const publicationDate = Util.ignoreTimezone(publication.date);
+
+    const tomorrow: Moment = Util.now().startOf('day').add(1, 'day');
+    console.log(tomorrow);
+    console.log(publicationDate);
+    return tomorrow.isAfter(publicationDate);
   }
 
   /**

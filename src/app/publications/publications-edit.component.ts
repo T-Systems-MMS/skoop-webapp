@@ -35,11 +35,11 @@ export class PublicationsEditComponent implements OnInit {
         date: this.publication.date,
         publisher: [this.publication.publisher, Validators.required],
         link: this.publication.link,
-        skills: (this.publication.skills || []).map(item => item.name)
+        skills: [(this.publication.skills || []).map(item => item.name)]
       },
       {
         validators: [
-          this.formsService.validatorFnOf('dateInFuture', Util.dateIsInFuture)
+          this.formsService.validatorFnOf('dateInFuture', Util.dateIsInPast)
         ]
       });
   }

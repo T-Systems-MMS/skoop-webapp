@@ -1,7 +1,7 @@
 export interface Publication {
   id?: string;
   title: string;
-  date: Date;
+  date?: Date;
   publisher: string;
-  link: string;
+  link?: string;
 }

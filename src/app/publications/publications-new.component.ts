@@ -37,7 +37,7 @@ export class PublicationsNewComponent implements OnInit {
     },
       {
         validators: [
-          this.formsService.validatorFnOf('dateInFuture', Util.dateIsInFuture)
+          this.formsService.validatorFnOf('dateInFuture', Util.dateIsInPast)
         ]
       });
   }
