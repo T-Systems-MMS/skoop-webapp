@@ -1,3 +1,27 @@
-<p>
-  memberships-edit works!
-</p>
+<form [formGroup]="membershipForm" class="memberships-edit-form">
+  <div *ngIf="errorMessage" class="memberships-edit-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="memberships-edit-form-field">
+        <input matInput id="memberships-edit-title" placeholder="Topic or name of the organisation/web-site (for blogs)" formControlName="topic" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <app-skill-select-input [parentForm]="membershipForm"></app-skill-select-input>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="memberships-edit-form-field">
+        <textarea matInput placeholder="Additional information" formControlName="additionalInformation" rows="8"></textarea>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="memberships-edit-form-field">
+      <input matInput  placeholder="Web-site link" formControlName="link">
+    </mat-form-field>
+  </div>
+  <div>
+    <button mat-raised-button id="memberships-edit-button" color="primary" (click)="editMembership()"
+            [disabled]="!membershipForm.valid || membershipForm.pristine" class="memberships-edit-actions">Edit membership
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="memberships-edit-actions">Close</button>
+  </div>
+</form>
