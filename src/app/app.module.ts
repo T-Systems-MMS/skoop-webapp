@@ -64,6 +64,9 @@ import { TestimonialsEditComponent } from './testimonials/testimonials-edit.comp
 import { PublicationsComponent } from './publications/publications.component';
 import { PublicationsNewComponent } from './publications/publications-new.component';
 import { PublicationsEditComponent } from './publications/publications-edit.component';
+import { MembershipsComponent } from './memberships/memberships.component';
+import { MembershipsNewComponent } from './memberships/memberships-new.component';
+import { MembershipsEditComponent } from './memberships/memberships-edit.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -121,7 +124,10 @@ export const CUSTOM_FORMATS = {
     TestimonialsEditComponent,
     PublicationsComponent,
     PublicationsNewComponent,
-    PublicationsEditComponent
+    PublicationsEditComponent,
+    MembershipsComponent,
+    MembershipsNewComponent,
+    MembershipsEditComponent
   ],
   imports: [
     BrowserModule,
@@ -170,7 +176,9 @@ export const CUSTOM_FORMATS = {
     TestimonialsNewComponent,
     TestimonialsEditComponent,
     PublicationsNewComponent,
-    PublicationsEditComponent
+    PublicationsEditComponent,
+    MembershipsNewComponent,
+    MembershipsEditComponent
   ],
   bootstrap: [AppComponent]
 })
