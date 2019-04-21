@@ -1,0 +1,21 @@
+@import "variables";
+
+.memberships-toolbar {
+  margin-bottom: $skoop-toolbar-margin-bottom;
+}
+
+.memberships-card {
+  @extend %base-card;
+}
+
+.memberships-description-label {
+  @extend %base-description-label;
+}
+
+.memberships-error-message {
+  @extend %base-error;
+}
+
+.memberships-skill-label {
+  padding-top: 5px;
+}

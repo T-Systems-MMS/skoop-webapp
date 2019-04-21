@@ -26,10 +26,23 @@ export class MembershipService {
         this.httpClient.post<MembershipResponse>(this.membershipsUrlPattern.replace('{userId}', userIdentity.userId), membership)));
   }
 
+  getMemberships(): Observable<MembershipResponse[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.get<MembershipResponse[]>(this.membershipsUrlPattern.replace('{userId}', userIdentity.userId))));
+  }
+
   editMembership(membership: MembershipRequest): Observable<MembershipResponse> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity =>
         this.httpClient.put<MembershipResponse>(this.membershipUrlPattern
           .replace('{userId}', userIdentity.userId).replace('{membershipId}', membership.id), membership)));
+  }
+
+  deleteMembership(membershipId): Observable<void> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(switchMap(userIdentity =>
+        this.httpClient.delete<void>(this.membershipUrlPattern
+          .replace('{userId}', userIdentity.userId).replace('{membershipId}', membershipId))));
   }
 }
