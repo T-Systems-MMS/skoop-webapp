@@ -1,3 +1,6 @@
-<p>
-  memberships works!
-</p>
+<div class="mat-typography">
+  <div *ngIf="errorMessage" class="testimonials-error-message">{{errorMessage}}</div>
+  <div class="testimonials-toolbar">
+    <button mat-raised-button (click)="openNewDialog()" aria-label="Add membership">Add membership</button>
+  </div>
+</div>

@@ -1,3 +1,27 @@
-<p>
-  memberships-new works!
-</p>
+<form [formGroup]="membershipForm" class="memberships-new-form">
+  <div *ngIf="errorMessage" class="memberships-new-error">{{errorMessage}}</div>
+  <div fxLayout="column">
+    <div fxFlex>
+      <mat-form-field class="memberships-new-form-field">
+        <input matInput id="memberships-new-title" placeholder="Topic or name of the organisation/web-site (for blogs)" formControlName="topic" [required]="true">
+      </mat-form-field>
+    </div>
+    <div fxFlex>
+      <app-skill-select-input [parentForm]="membershipForm"></app-skill-select-input>
+    </div>
+    <div fxFlex>
+      <mat-form-field class="memberships-new-form-field">
+        <textarea matInput placeholder="Additional information" formControlName="additionalInformation" rows="8"></textarea>
+      </mat-form-field>
+    </div>
+    <mat-form-field class="memberships-new-form-field">
+      <input matInput  placeholder="Web-site link" formControlName="link">
+    </mat-form-field>
+  </div>
+  <div>
+    <button mat-raised-button id="memberships-new-button" color="primary" (click)="addMembership()"
+            [disabled]="!membershipForm.valid" class="memberships-new-actions">Add membership
+    </button>
+    <button mat-raised-button (click)="close()" aria-label="Close" class="memberships-new-actions">Close</button>
+  </div>
+</form>
