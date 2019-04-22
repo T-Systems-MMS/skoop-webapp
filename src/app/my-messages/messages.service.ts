@@ -13,6 +13,7 @@ export class MessagesService {
 
   private messagesUrlPattern = `${environment.serverApiUrl}/users/{userId}/notifications`;
   private messageUrlPattern = `${environment.serverApiUrl}/notifications/{notificationId}`;
+  private messageCounterUrlPatter = `${environment.serverApiUrl}/users/{userId}/notification-counter`;
 
   constructor(private httpClient: HttpClient) {
   }
@@ -21,6 +22,10 @@ export class MessagesService {
     return this.httpClient.get<T[]>(this.messagesUrlPattern.replace('{userId}', userId))
       .pipe(switchMap(notifications =>
         of(notifications.map(item => Util.createNotificationInstance(item)))));
+  }
+
+  getUserNotificationCounter(userId: string): Observable<number> {
+    return this.httpClient.get<number>(this.messageCounterUrlPatter.replace('{userId}', userId));
   }
 
   delete(notificationId: string): Observable<void> {
