@@ -25,7 +25,7 @@ class SkillSelectInputStubComponent {
 
 const membershipRequest: MembershipRequest = {
   name: 'membership name',
-  additionalInformation: 'Additional Information',
+  description: 'Additional Information',
   link: 'https://www.google.com',
   skills: ['Skill1', 'Skill2']
 };
@@ -33,7 +33,7 @@ const membershipRequest: MembershipRequest = {
 const membershipResponse: MembershipResponse = {
   id: '123123123123123',
   name: membershipRequest.name,
-  additionalInformation: membershipRequest.additionalInformation,
+  description: membershipRequest.description,
   link: membershipRequest.link,
   skills: [
     {
@@ -89,7 +89,7 @@ describe('MembershipsNewComponent', () => {
 
   it('should call the createMembership method', async(() => {
     component.membershipForm.get('name').setValue(membershipRequest.name);
-    component.membershipForm.get('additionalInformation').setValue(membershipRequest.additionalInformation);
+    component.membershipForm.get('description').setValue(membershipRequest.description);
     component.membershipForm.get('link').setValue(membershipRequest.link);
     component.membershipForm.get('skills').setValue(membershipRequest.skills);
 

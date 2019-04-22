@@ -45,7 +45,7 @@ describe('MembershipService', () => {
   it('should create the membership with the given data', async(() => {
     const membershipRequest: MembershipRequest = {
       name: 'membership name',
-      additionalInformation: 'Additional Information',
+      description: 'Additional Information',
       link: 'https://www.google.com',
       skills: ['Skill1', 'Skill2']
     };
@@ -53,7 +53,7 @@ describe('MembershipService', () => {
     const membershipResponse: MembershipResponse = {
       id: '123123123123123',
       name: membershipRequest.name,
-      additionalInformation: membershipRequest.additionalInformation,
+      description: membershipRequest.description,
       link: membershipRequest.link,
       skills: [
         {
@@ -87,14 +87,14 @@ describe('MembershipService', () => {
       {
         id: '18a30b9b-7d0d-4e50-a953-c643e085e071',
         name: 'Membership name',
-        additionalInformation: 'Additional Information',
+        description: 'Additional Information',
         link: 'https://www.google.com',
         'skills': []
       },
       {
         id: '369710e0-5808-4318-961e-0161f9f81f1c',
         name: 'Updated name',
-        additionalInformation: 'Updated Additional Information',
+        description: 'Updated Additional Information',
         link: null,
         skills: [
           {
@@ -125,7 +125,7 @@ describe('MembershipService', () => {
     const membershipRequest: MembershipRequest = {
       id: '369710e0-5808-4318-961e-0161f9f81f1c',
       name: 'Updated name',
-      additionalInformation: 'Updated Additional Information',
+      description: 'Updated Additional Information',
       link: null,
       skills: ['Java']
     };
@@ -133,7 +133,7 @@ describe('MembershipService', () => {
     const membershipResponse: MembershipResponse = {
       id: membershipRequest.id,
       name: membershipRequest.name,
-      additionalInformation: membershipRequest.additionalInformation,
+      description: membershipRequest.description,
       link: membershipRequest.link,
       skills: [
         {
