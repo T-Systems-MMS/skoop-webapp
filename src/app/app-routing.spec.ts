@@ -33,8 +33,7 @@ describe('Router: App', () => {
       .and.returnValue(of<UserIdentity>({
         userId: '9a96f28f-8f50-40d9-be1c-605aedd9dfc9',
         userName: 'tester',
-        roles: ['ROLE_USER'],
-        notificationCount: 10
+        roles: ['ROLE_USER']
       }));
 
     TestBed.configureTestingModule({

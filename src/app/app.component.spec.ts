@@ -21,8 +21,7 @@ const testUserIdentity: UserIdentity = {
   firstName: 'Toni',
   lastName: 'Tester',
   email: 'toni.tester@skoop.io',
-  roles: ['ROLE_USER'],
-  notificationCount: 0
+  roles: ['ROLE_USER']
 };
 
 describe('AppComponent', () => {
