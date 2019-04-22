@@ -1,0 +1,13 @@
+@import 'variables';
+
+.memberships-edit-form-field {
+  width: 100%;
+}
+
+.memberships-edit-error {
+  @extend %base-error;
+}
+
+.memberships-edit-actions {
+  margin-right: 16px;
+}

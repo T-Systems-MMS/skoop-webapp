@@ -1,0 +1,42 @@
+<div class="mat-typography">
+  <div *ngIf="errorMessage" class="memberships-error-message">{{errorMessage}}</div>
+  <div class="memberships-toolbar">
+    <button mat-raised-button (click)="openNewDialog()" aria-label="Add membership">Add membership</button>
+  </div>
+
+  <mat-card *ngFor="let membership of memberships$ | async" class="memberships-card">
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex>
+          <h2 class="memberships-heading">{{ membership.name }}</h2>
+        </div>
+        <div fxFlex="none">
+          <button mat-icon-button (click)="openEditDialog(membership)" title="Edit" aria-label="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="delete(membership)" title="Delete" aria-label="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex>
+          <div fxLayout="row">
+            <div class="memberships-description-label">Description:</div>
+            <div>{{membership.description}}</div>
+          </div>
+          <div fxLayout="row">
+            <div class="memberships-description-label">Web-Site link:</div>
+            <div>{{membership.link}}</div>
+          </div>
+          <div fxLayout="row">
+            <div class="memberships-description-label memberships-skill-label">Skills:</div>
+            <mat-chip-list>
+              <mat-chip *ngFor="let skill of membership.skills">{{ skill.name }}</mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
