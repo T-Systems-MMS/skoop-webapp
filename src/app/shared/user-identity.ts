@@ -5,5 +5,4 @@ export interface UserIdentity {
   lastName?: string;
   email?: string;
   roles: string[];
-  notificationCount?: number;
 }

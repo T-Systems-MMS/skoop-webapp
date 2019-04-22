@@ -28,9 +28,9 @@ export class AppComponent implements OnInit {
               private notificationCounterService: NotificationCounterService) { }
 
   ngOnInit(): void {
-    this.userIdentity$.subscribe(userIdentity => {
-      this.notificationCounterService.setCount(userIdentity.notificationCount);
-    });
+    // this.userIdentity$.subscribe(userIdentity => {
+    //   this.notificationCounterService.setCount(userIdentity.notificationCount);
+    // });
   }
 
   onNavItemClick(): void {
