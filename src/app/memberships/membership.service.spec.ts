@@ -44,7 +44,7 @@ describe('MembershipService', () => {
 
   it('should create the membership with the given data', async(() => {
     const membershipRequest: MembershipRequest = {
-      topic: 'membership topic',
+      name: 'membership name',
       additionalInformation: 'Additional Information',
       link: 'https://www.google.com',
       skills: ['Skill1', 'Skill2']
@@ -52,7 +52,7 @@ describe('MembershipService', () => {
 
     const membershipResponse: MembershipResponse = {
       id: '123123123123123',
-      topic: membershipRequest.topic,
+      name: membershipRequest.name,
       additionalInformation: membershipRequest.additionalInformation,
       link: membershipRequest.link,
       skills: [
@@ -86,14 +86,14 @@ describe('MembershipService', () => {
     const membershipResponses: MembershipResponse[] = [
       {
         id: '18a30b9b-7d0d-4e50-a953-c643e085e071',
-        topic: 'Membership topic',
+        name: 'Membership name',
         additionalInformation: 'Additional Information',
         link: 'https://www.google.com',
         'skills': []
       },
       {
         id: '369710e0-5808-4318-961e-0161f9f81f1c',
-        topic: 'Updated topic',
+        name: 'Updated name',
         additionalInformation: 'Updated Additional Information',
         link: null,
         skills: [
@@ -124,7 +124,7 @@ describe('MembershipService', () => {
   it('should update the membership with the given data', async(() => {
     const membershipRequest: MembershipRequest = {
       id: '369710e0-5808-4318-961e-0161f9f81f1c',
-      topic: 'Updated topic',
+      name: 'Updated name',
       additionalInformation: 'Updated Additional Information',
       link: null,
       skills: ['Java']
@@ -132,7 +132,7 @@ describe('MembershipService', () => {
 
     const membershipResponse: MembershipResponse = {
       id: membershipRequest.id,
-      topic: membershipRequest.topic,
+      name: membershipRequest.name,
       additionalInformation: membershipRequest.additionalInformation,
       link: membershipRequest.link,
       skills: [

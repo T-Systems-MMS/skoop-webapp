@@ -26,7 +26,7 @@ class SkillSelectInputStubComponent {
 
 const membershipEditData: MembershipResponse = {
   id: '369710e0-5808-4318-961e-0161f9f81f1c',
-  topic: 'Topic',
+  name: 'Topic',
   additionalInformation: 'Additional Information',
   link: 'https://www.google.com',
   skills: [
@@ -84,7 +84,7 @@ describe('MembershipsEditComponent', () => {
   });
 
   it('should fill in the form with expected values', () => {
-    expect(component.membershipForm.get('topic').value).toBe(membershipEditData.topic);
+    expect(component.membershipForm.get('name').value).toBe(membershipEditData.name);
     expect(component.membershipForm.get('additionalInformation').value).toBe(membershipEditData.additionalInformation);
     expect(component.membershipForm.get('link').value).toBe(membershipEditData.link);
     expect(component.membershipForm.get('skills').value).toEqual(membershipEditData.skills.map(item => item.name));
@@ -93,13 +93,13 @@ describe('MembershipsEditComponent', () => {
   it('should send a request to update a membership', () => {
     const membershipRequest: MembershipRequest = {
       id: membershipEditData.id,
-      topic: 'new title',
+      name: 'new title',
       additionalInformation: membershipEditData.additionalInformation,
       link: 'https://www.new-google.com',
       skills: ['Skill1']
     };
 
-    component.membershipForm.get('topic').setValue(membershipRequest.topic);
+    component.membershipForm.get('name').setValue(membershipRequest.name);
     component.membershipForm.get('additionalInformation').setValue(membershipRequest.additionalInformation);
     component.membershipForm.get('link').setValue(membershipRequest.link);
     component.membershipForm.get('skills').setValue(membershipRequest.skills);

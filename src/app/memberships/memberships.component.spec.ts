@@ -30,14 +30,14 @@ class SkillSelectInputStubComponent {
 const membershipResponses: MembershipResponse[] = [
   {
     id: '18a30b9b-7d0d-4e50-a953-c643e085e071',
-    topic: 'Membership topic',
+    name: 'Membership name',
     additionalInformation: 'Additional Information',
     link: 'https://www.google.com',
     'skills': []
   },
   {
     id: '369710e0-5808-4318-961e-0161f9f81f1c',
-    topic: 'Updated topic',
+    name: 'Updated name',
     additionalInformation: 'Updated Additional Information',
     link: null,
     skills: [

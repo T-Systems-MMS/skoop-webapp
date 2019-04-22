@@ -27,7 +27,7 @@ export class MembershipsEditComponent implements OnInit {
 
   ngOnInit() {
     this.membershipForm = this.formBuilder.group({
-      topic: new FormControl(this.membership.topic, Validators.required),
+      name: new FormControl(this.membership.name, Validators.required),
       additionalInformation: new FormControl(this.membership.additionalInformation),
       link: new FormControl(this.membership.link),
       skills: new FormControl((this.membership.skills || []).map(item => item.name)),
@@ -56,7 +56,7 @@ export class MembershipsEditComponent implements OnInit {
   private getMembershipData(): MembershipRequest {
     return {
       id: this.membership.id,
-      topic: this.membershipForm.get('topic').value,
+      name: this.membershipForm.get('name').value,
       additionalInformation: this.membershipForm.get('additionalInformation').value,
       link: this.membershipForm.get('link').value,
       skills: this.skillsArray || []

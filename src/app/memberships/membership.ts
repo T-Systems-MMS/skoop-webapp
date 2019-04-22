@@ -1,6 +1,6 @@
 export interface Membership {
   id?: string;
-  topic: string;
+  name: string;
   additionalInformation?: string;
   link?: string;
 }
