@@ -26,8 +26,8 @@
             <div>{{membership.description}}</div>
           </div>
           <div fxLayout="row">
-            <div class="memberships-description-label">Web-Site link:</div>
-            <div>{{membership.link}}</div>
+            <div class="memberships-description-label">Web link:</div>
+            <div *ngIf="membership.link"><a [href]="membership.link">{{membership.link}}</a></div>
           </div>
           <div fxLayout="row">
             <div class="memberships-description-label memberships-skill-label">Skills:</div>

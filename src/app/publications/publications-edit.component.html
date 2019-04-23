@@ -7,6 +7,9 @@
       </mat-form-field>
     </div>
     <div fxFlex>
+      <app-skill-select-input [parentForm]="publicationForm"></app-skill-select-input>
+    </div>
+    <div fxFlex>
       <mat-form-field class="publications-edit-form-field">
         <input matInput [matDatepicker]="publicationDatePicker" [max]="maxDate"  placeholder="Date" formControlName="date">
         <mat-datepicker-toggle matSuffix [for]="publicationDatePicker"></mat-datepicker-toggle>
@@ -20,11 +23,8 @@
     </div>
     <div fxFlex>
       <mat-form-field class="publications-edit-form-field">
-        <input matInput  placeholder="Web-Site Link" formControlName="link">
+        <input matInput  placeholder="Web link" formControlName="link">
       </mat-form-field>
-    </div>
-    <div fxFlex>
-      <app-skill-select-input [parentForm]="publicationForm"></app-skill-select-input>
     </div>
   </div>
   <mat-error *ngIf="publicationForm.hasError('dateInFuture')">
