@@ -64,6 +64,11 @@ export class SkillSelectInputComponent implements OnInit {
       const input = event.input;
       const value = event.value;
 
+      // don't add an empty skill
+      if (!value || !value.trim()) {
+        return;
+      }
+
       if (!this.isSkillExist(value)) {
         this.skillsArray.push(value.trim());
         this.parentForm.markAsDirty();

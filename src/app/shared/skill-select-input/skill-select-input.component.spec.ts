@@ -132,6 +132,23 @@ describe('SkillSelectInputComponent', () => {
     expect(component.skillsArray.indexOf(value)).not.toBe(-1);
   });
 
+  it('should not add empty elem to the skills array on enter click', () => {
+    const value = '      ';
+    expect(component.skillsArray.length).toBe(0);
+
+    const skillDebugElement = fixture.debugElement.query(By.css('#skillsChipList'));
+    const inputNativeElement = skillDebugElement.nativeElement;
+
+    inputNativeElement.value = value;
+
+    const event = new KeyboardEvent('keydown', {
+      keyCode: ENTER
+    } as KeyboardEventInit);
+    inputNativeElement.dispatchEvent(event);
+
+    expect(component.skillsArray.length).toBe(0);
+  });
+
   function sendInput(text: string) {
     let inputElement: HTMLInputElement;
 
