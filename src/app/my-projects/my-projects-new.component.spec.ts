@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestBed } from '@angular/core/testing';
 
 import { MyProjectsNewComponent } from './my-projects-new.component';
 import { AppMaterialModule } from '../app-material.module';
@@ -17,6 +17,7 @@ import * as moment from 'moment';
 import { Util } from '../util/util';
 import { AssignUserProjectRequest } from '../user-projects/assign-user-project-request';
 import { Component, Input } from '@angular/core';
+import { OverlayContainer } from '@angular/cdk/overlay';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -26,9 +27,33 @@ class SkillSelectInputStubComponent {
   @Input() parentForm: FormGroup;
 }
 
+const projects: Project[] = [
+  {
+    id: '456',
+    name: 'Project',
+    creationDate: new Date(),
+    customer: 'Customer',
+    description: null,
+    industrySector: 'Software development',
+    lastModifiedDate: new Date()
+  },
+  {
+    id: '123',
+    name: 'Other',
+    creationDate: new Date(),
+    customer: 'Customer',
+    description: null,
+    industrySector: 'Software development',
+    lastModifiedDate: new Date()
+  },
+];
+
 describe('MyProjectsNewComponent', () => {
   let component: MyProjectsNewComponent;
   let fixture: ComponentFixture<MyProjectsNewComponent>;
+  // to test autocomplete features
+  let overlayContainer: OverlayContainer;
+  let overlayContainerElement: HTMLElement;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,12 +65,17 @@ describe('MyProjectsNewComponent', () => {
             'assignProjectToCurrentUser': of<UserProject>()
           }) },
         { provide: ProjectsService, useValue: jasmine.createSpyObj('myProjectsService', {
-            'getProjects': of<Project[]>([])
+            'getProjects': of<Project[]>(projects)
           }) },
         GlobalErrorHandlerService
       ]
     })
       .compileComponents();
+
+    inject([OverlayContainer], (oc: OverlayContainer) => {
+      overlayContainer = oc;
+      overlayContainerElement = oc.getContainerElement();
+    })();
   }));
 
   beforeEach(() => {
@@ -78,5 +108,26 @@ describe('MyProjectsNewComponent', () => {
       skills: ['Java']
     } as AssignUserProjectRequest);
   });
+
+  it('should filter projects based on input', fakeAsync(() => {
+    sendInput('other');
+
+    const options = overlayContainerElement.querySelectorAll('mat-option');
+    expect(options.length).toBe(1);
+    expect(options[0].innerHTML).toContain('Other');
+
+    discardPeriodicTasks();
+
+    function sendInput(text: string) {
+      let inputElement: HTMLInputElement;
+
+      inputElement = component.projectAutocompleteInput.nativeElement;
+      inputElement.value = text;
+      component.formGroup.controls.projectName.setValue(text);
+      inputElement.dispatchEvent(new Event('focusin'));
+
+      fixture.detectChanges();
+    }
+  }));
 
 });

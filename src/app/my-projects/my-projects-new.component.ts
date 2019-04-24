@@ -1,9 +1,13 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { MatAutocompleteTrigger, MatBottomSheetRef } from '@angular/material';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import {
+  MatAutocomplete,
+  MatAutocompleteTrigger,
+  MatBottomSheetRef
+} from '@angular/material';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { finalize } from 'rxjs/operators';
+import { finalize, map, startWith } from 'rxjs/operators';
 import { MyProjectsService } from './my-projects.service';
 import { AssignUserProjectRequest } from '../user-projects/assign-user-project-request';
 import { UserProject } from '../user-projects/user-project';
@@ -26,7 +30,11 @@ export class MyProjectsNewComponent implements OnInit {
 
   @ViewChild(MatAutocompleteTrigger) trigger;
 
+  @ViewChild('projectAutoComplete') projectsMatAutocomplete: MatAutocomplete;
+  @ViewChild('projectInput') projectAutocompleteInput: ElementRef<HTMLInputElement>;
+
   projects$: Observable<Project[]>;
+  allAvailableProjects: Project[];
 
   constructor(private bottomSheet: MatBottomSheetRef,
               private projectsService: ProjectsService,
@@ -37,7 +45,7 @@ export class MyProjectsNewComponent implements OnInit {
               private formsService: FormsService) { }
 
   ngOnInit() {
-
+    this.loadProjects();
     this.formGroup = this.fb.group({
       projectName: ['', Validators.required],
       skills: [[]],
@@ -52,7 +60,9 @@ export class MyProjectsNewComponent implements OnInit {
         ]
       });
 
-    this.projects$ = this.projectsService.getProjects();
+    this.projects$ = this.formGroup.controls.projectName.valueChanges.pipe(
+      startWith(null),
+      map((term: string | null) => term ? this._filter(term) : this.allAvailableProjects));
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
   }
@@ -84,6 +94,17 @@ export class MyProjectsNewComponent implements OnInit {
 
   close(): void {
     this.bottomSheet.dismiss();
+  }
+
+  private _filter(value: any): Project[] {
+    const filterValue = value.toLowerCase();
+    return this.allAvailableProjects.filter(project => project.name.toLowerCase().indexOf(filterValue) != -1);
+  }
+
+  private loadProjects() {
+    this.projectsService.getProjects().subscribe(projects => {
+      this.allAvailableProjects = projects;
+    });
   }
 
   get skillsArray(): string[] {

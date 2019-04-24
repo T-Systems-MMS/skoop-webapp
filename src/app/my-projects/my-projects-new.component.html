@@ -1,12 +1,18 @@
 <div *ngIf="errorMessage" class="my-project-new-dialog__error-message">{{errorMessage}}</div>
 <form fxLayout="column" fxLayoutGap="10px" [formGroup]="formGroup">
   <mat-form-field>
-    <input
+    <input [matAutocomplete]="projectAutoComplete"
+           #projectInput
            formControlName="projectName"
            type="text"
            matInput
            [required]="true"
            placeholder="Project name">
+    <mat-autocomplete #projectAutoComplete="matAutocomplete" >
+      <mat-option *ngFor="let project of projects$ | async" [value]="project.name">
+        {{ project.name }}
+      </mat-option>
+    </mat-autocomplete>
   </mat-form-field>
   <div>
     <app-skill-select-input [parentForm]="formGroup"></app-skill-select-input>
