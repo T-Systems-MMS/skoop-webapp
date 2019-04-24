@@ -30,7 +30,15 @@ describe('UserProjectsService', () => {
       description: null,
       industrySector: 'Software development',
       lastModifiedDate: new Date()
-    }
+    },
+    skills: [
+      {
+        id: '1f5082a3-f7cf-4d6b-ad41-df8bce06e03f',
+        name: 'Java',
+        description: 'Java programming language.',
+        skillGroups: null
+      }
+    ]
   };
 
   const userProjects: UserProject[] = [ userProject ];

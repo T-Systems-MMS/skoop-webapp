@@ -12,11 +12,20 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyProjectsEditComponent } from './my-projects-edit.component';
 import { MyProjectsNewComponent } from './my-projects-new.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-skill-select-input',
+  template: ''
+})
+class SkillSelectInputStubComponent {
+  @Input() parentForm: FormGroup;
+}
 
 describe('MyProjectsComponent', () => {
   let component: MyProjectsComponent;
@@ -42,7 +51,15 @@ describe('MyProjectsComponent', () => {
       description: null,
       industrySector: 'Software development',
       lastModifiedDate: new Date()
-    }
+    },
+    skills: [
+      {
+        id: '1f5082a3-f7cf-4d6b-ad41-df8bce06e03f',
+        name: 'Java',
+        description: 'Java programming language.',
+        skillGroups: null
+      }
+    ]
   };
 
   const userProjects: UserProject[] = [ userProject ];
@@ -53,7 +70,8 @@ describe('MyProjectsComponent', () => {
         MyProjectsComponent,
         MyProjectsEditComponent,
         MyProjectsNewComponent,
-        DeleteConfirmationDialogComponent
+        DeleteConfirmationDialogComponent,
+        SkillSelectInputStubComponent
       ],
       imports: [
         AppMaterialModule,

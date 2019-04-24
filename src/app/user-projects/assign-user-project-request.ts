@@ -1,9 +1,5 @@
-import { Moment } from 'moment';
+import { UpdateUserProjectRequest } from './update-user-project-request';
 
-export interface AssignUserProjectRequest {
+export interface AssignUserProjectRequest extends UpdateUserProjectRequest {
   projectId: string;
-  role: string;
-  tasks: string;
-  startDate: Moment;
-  endDate: Moment;
 }

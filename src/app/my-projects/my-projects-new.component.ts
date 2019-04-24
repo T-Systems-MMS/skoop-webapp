@@ -40,6 +40,7 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
 
     this.formGroup = this.fb.group({
       projectName: ['', Validators.required],
+      skills: [[]],
       role: '',
       tasks: '',
       startDate: ['', Validators.required],
@@ -70,6 +71,7 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
   assignUserProject(): void {
     const request: AssignUserProjectRequest = {
       projectId: this.formGroup.controls.projectName.value ? this.formGroup.controls.projectName.value.id : null,
+      skills: this.skillsArray || [],
       role: this.formGroup.controls.role.value,
       tasks: this.formGroup.controls.tasks.value,
       startDate: this.formGroup.controls.startDate.value,
@@ -97,6 +99,10 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
 
   getProjectName(project?: any): string | undefined {
     return project ? project.name : undefined;
+  }
+
+  get skillsArray(): string[] {
+    return this.formGroup.get('skills').value;
   }
 
 }

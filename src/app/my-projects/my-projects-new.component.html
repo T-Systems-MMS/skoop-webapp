@@ -18,6 +18,9 @@
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
+  <div>
+    <app-skill-select-input [parentForm]="formGroup"></app-skill-select-input>
+  </div>
   <mat-form-field>
     <input matInput type="text" placeholder="Role" formControlName="role">
   </mat-form-field>
