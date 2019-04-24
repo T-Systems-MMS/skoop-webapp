@@ -97,7 +97,7 @@ describe('UserProjectsService', () => {
 
   it('should return data of a project assigned to a user', () => {
     const assignUserProjectRequest: AssignUserProjectRequest = {
-      projectId: '123',
+      projectName: 'Test project',
       role: 'developer',
       tasks: 'development',
       startDate: moment(),

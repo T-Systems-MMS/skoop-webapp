@@ -60,10 +60,7 @@ describe('MyProjectsNewComponent', () => {
 
   it('should send a request to assign a project to a user', () => {
     component.formGroup.setValue({
-      projectName: {
-        id: '123',
-        name: 'Project'
-      } as Project,
+      projectName: 'Test project',
       role: 'developer',
       tasks: 'development',
       startDate: Util.ignoreTimezone(moment('2019-01-10')),
@@ -73,7 +70,7 @@ describe('MyProjectsNewComponent', () => {
     component.assignUserProject();
     const myProjectService: MyProjectsService = TestBed.get(MyProjectsService);
     expect(myProjectService.assignProjectToCurrentUser).toHaveBeenCalledWith({
-      projectId: '123',
+      projectName: 'Test project',
       role: 'developer',
       tasks: 'development',
       startDate: Util.ignoreTimezone(moment('2019-01-10')),

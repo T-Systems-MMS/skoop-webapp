@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatAutocompleteTrigger, MatBottomSheetRef } from '@angular/material';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
@@ -19,7 +19,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./my-projects-new.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MyProjectsNewComponent implements OnInit, AfterViewInit {
+export class MyProjectsNewComponent implements OnInit {
 
   errorMessage: string = null;
   formGroup: FormGroup;
@@ -57,20 +57,9 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
     this.changeDetector.markForCheck();
   }
 
-  ngAfterViewInit() {
-    // clear project name autocomplete when project name is not from a loaded list
-    this.trigger.panelClosingActions
-      .subscribe(e => {
-        if (!(e && e.source)) {
-          this.formGroup.controls.projectName.setValue(null);
-          this.trigger.closePanel();
-        }
-      });
-  }
-
   assignUserProject(): void {
     const request: AssignUserProjectRequest = {
-      projectId: this.formGroup.controls.projectName.value ? this.formGroup.controls.projectName.value.id : null,
+      projectName: this.formGroup.controls.projectName.value,
       skills: this.skillsArray || [],
       role: this.formGroup.controls.role.value,
       tasks: this.formGroup.controls.tasks.value,
@@ -95,10 +84,6 @@ export class MyProjectsNewComponent implements OnInit, AfterViewInit {
 
   close(): void {
     this.bottomSheet.dismiss();
-  }
-
-  getProjectName(project?: any): string | undefined {
-    return project ? project.name : undefined;
   }
 
   get skillsArray(): string[] {
