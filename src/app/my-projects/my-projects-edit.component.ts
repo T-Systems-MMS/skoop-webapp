@@ -33,6 +33,7 @@ export class MyProjectsEditComponent implements OnInit {
 
     this.formGroup = this.fb.group({
       projectName: [{value: this.userProject.project.name, disabled: true}, Validators.required],
+      skills: [(this.userProject.skills || []).map(item => item.name)],
       role: this.userProject.role,
       tasks: this.userProject.tasks,
       startDate: [Util.ignoreTimezone(this.userProject.startDate), Validators.required],
@@ -49,6 +50,7 @@ export class MyProjectsEditComponent implements OnInit {
     const projectId: string = this.userProject.project.id;
     const request: UpdateUserProjectRequest = {
       role: this.formGroup.controls.role.value,
+      skills: this.skillsArray || [],
       tasks: this.formGroup.controls.tasks.value,
       startDate: Util.ignoreTimezone(this.formGroup.controls.startDate.value),
       endDate: Util.ignoreTimezone(this.formGroup.controls.endDate.value)
@@ -71,6 +73,10 @@ export class MyProjectsEditComponent implements OnInit {
 
   close(): void {
     this.bottomSheet.dismiss();
+  }
+
+  get skillsArray(): string[] {
+    return this.formGroup.get('skills').value;
   }
 
 }

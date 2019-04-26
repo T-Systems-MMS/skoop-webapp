@@ -44,7 +44,8 @@ describe('Util', () => {
         tasks: null,
         role: null,
         id: 1,
-        user: null
+        user: null,
+        skills: []
       };
     });
 

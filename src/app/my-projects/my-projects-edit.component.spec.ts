@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MyProjectsEditComponent } from './my-projects-edit.component';
 import { AppMaterialModule } from '../app-material.module';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
 import { MyProjectsService } from './my-projects.service';
 import { of } from 'rxjs';
@@ -14,6 +14,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import * as moment from 'moment';
 import { Util } from '../util/util';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-skill-select-input',
+  template: ''
+})
+class SkillSelectInputStubComponent {
+  @Input() parentForm: FormGroup;
+}
 
 describe('MyProjectsEditComponent', () => {
   let component: MyProjectsEditComponent;
@@ -39,12 +48,20 @@ describe('MyProjectsEditComponent', () => {
       description: null,
       industrySector: 'Software development',
       lastModifiedDate: new Date()
-    }
+    },
+    skills: [
+      {
+        id: '1f5082a3-f7cf-4d6b-ad41-df8bce06e03f',
+        name: 'Java',
+        description: 'Java programming language.',
+        skillGroups: null
+      }
+    ]
   };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MyProjectsEditComponent ],
+      declarations: [ MyProjectsEditComponent, SkillSelectInputStubComponent ],
       imports: [ AppMaterialModule, ReactiveFormsModule, MatMomentDateModule, BrowserAnimationsModule ],
       providers: [
         { provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'] ) },
@@ -84,7 +101,8 @@ describe('MyProjectsEditComponent', () => {
       role: 'developer',
       tasks: 'development',
       startDate: Util.ignoreTimezone(moment('2019-01-10')),
-      endDate: Util.ignoreTimezone(moment('2019-05-10'))
+      endDate: Util.ignoreTimezone(moment('2019-05-10')),
+      skills: ['Java'],
     });
   });
 

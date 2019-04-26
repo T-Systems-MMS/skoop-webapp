@@ -38,6 +38,12 @@
           <div class="my-projects-description-label">End date:</div>
           <div>{{ userProject.endDate ? (userProject.endDate | date : 'dd/MM/yyyy') : 'N/A' }}</div>
         </div>
+        <div fxLayout="row">
+          <div class="my-projects-description-label my-projects-skill-label">Skills:</div>
+          <mat-chip-list>
+            <mat-chip *ngFor="let skill of userProject.skills">{{ skill.name }}</mat-chip>
+          </mat-chip-list>
+        </div>
       </div>
     </mat-card-content>
   </mat-card>

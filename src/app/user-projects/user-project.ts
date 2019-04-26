@@ -1,6 +1,7 @@
 import { User } from '../users/user';
 import { Project } from '../projects/project';
 import { Moment } from 'moment';
+import { Skill } from '../skills/skill';
 
 export interface UserProject {
   id: number;
@@ -12,4 +13,5 @@ export interface UserProject {
   lastModifiedDate: Moment;
   user: User;
   project: Project;
+  skills: Skill[];
 }

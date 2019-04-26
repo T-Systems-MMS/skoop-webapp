@@ -5,4 +5,5 @@ export interface UpdateUserProjectRequest {
   tasks: string;
   startDate: Moment;
   endDate: Moment;
+  skills?: string[];
 }
