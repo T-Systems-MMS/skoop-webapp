@@ -1,0 +1,21 @@
+<mat-form-field class="permissions-form-field">
+  <mat-chip-list #authorizedUsersChipList>
+    <mat-chip *ngFor="let user of users"
+              selectable="true" removable="true"
+              (removed)="onAuthorizedUserRemoved(user)">
+      {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
+      <mat-icon matChipRemove>cancel</mat-icon>
+    </mat-chip>
+    <input placeholder="Users authorized to view my skills" #authorizedUsersInput
+           [formControl]="authorizedUsersControl"
+           [matAutocomplete]="authorizedUsersAutocomplete"
+           [matChipInputFor]="authorizedUsersChipList"
+           matChipInputAddOnBlur="true">
+  </mat-chip-list>
+  <mat-autocomplete #authorizedUsersAutocomplete="matAutocomplete"
+                    (optionSelected)="onAuthorizedUserSuggestionSelected($event)">
+    <mat-option *ngFor="let authorizedUser of authorizedUserSuggestions$ | async" [value]="authorizedUser">
+      {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

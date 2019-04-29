@@ -1,9 +1,6 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { User } from '../users/user';
-import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter, finalize, switchMap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { UsersService } from '../users/users.service';
 import { UserPermissionScope } from '../users/user-permission-scope';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -17,46 +14,25 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 export class PermissionsComponent implements OnInit {
 
   errorMessage: string = null;
+  authorizedSkillsUsers: User[];
+  authorizedProfileUsers: User[];
 
-  authorizedUsers: User[] = [];
-  authorizedUsersControl = new FormControl();
-  authorizedUserSuggestions$: Observable<User[]>;
-
-  @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
   @Input() savingInProgress: boolean;
 
   constructor(private usersService: UsersService,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
-    this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
-      filter(search => typeof search === 'string'),
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(search => this.usersService.getUserSuggestions(search))
-    );
+
   }
 
   ngOnInit() {
-    this.loadAuthorizedUsers();
-  }
-
-
-  onAuthorizedUserSuggestionSelected(event: MatAutocompleteSelectedEvent): void {
-    this.authorizedUsers.push(event.option.value);
-    this.authorizedUsersInput.nativeElement.value = '';
-    this.authorizedUsersControl.setValue(null);
-  }
-
-  onAuthorizedUserRemoved(user: User): void {
-    const index = this.authorizedUsers.indexOf(user);
-    if (index >= 0) {
-      this.authorizedUsers.splice(index, 1);
-    }
+    this.loadAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, users => this.authorizedSkillsUsers = users);
+    this.loadAuthorizedUsers(UserPermissionScope.READ_USER_PROFILE, users => this.authorizedProfileUsers = users);
   }
 
   savePermissions() {
     this.savingInProgress = true;
-    this.usersService.updateAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, this.authorizedUsers)
+    this.usersService.updateAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, this.authorizedSkillsUsers)
       .pipe(
         finalize( () => {
             this.savingInProgress = false;
@@ -64,23 +40,25 @@ export class PermissionsComponent implements OnInit {
         )
       )
       .subscribe(authorizedUsers => {
-        this.authorizedUsers = authorizedUsers;
+        this.authorizedSkillsUsers = authorizedUsers;
       }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
   }
 
-  private loadAuthorizedUsers(): void {
-    this.usersService.getAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS)
+  private loadAuthorizedUsers(scope: UserPermissionScope, callback: (users:User[]) => void): void {
+    this.usersService.getAuthorizedUsers(scope)
       .subscribe(authorizedUsers => {
-        this.authorizedUsers = authorizedUsers;
+        callback(authorizedUsers);
       }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
+  }
+
+  private handleErrorResponse(errorResponse: HttpErrorResponse) {
+    this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 
 }

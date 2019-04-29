@@ -1,4 +1,4 @@
-import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PermissionsComponent } from './permissions.component';
 import { UserPermissionScope } from '../users/user-permission-scope';
@@ -12,6 +12,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { Component, Input } from '@angular/core';
 
 const usersServiceStub: Partial<UsersService> = {
   getUser(): Observable<User> { return null; },
@@ -20,6 +21,14 @@ const usersServiceStub: Partial<UsersService> = {
   updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
   getUserSuggestions(search: string): Observable<User[]> { return null; }
 };
+
+@Component({
+  selector: 'app-authorized-users-select',
+  template: ''
+})
+class AuthorizedUsersSelectStubComponent {
+  @Input('users') users = [];
+}
 
 describe('PermissionsComponent', () => {
   let component: PermissionsComponent;
@@ -65,10 +74,10 @@ describe('PermissionsComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ PermissionsComponent ],
+      declarations: [ PermissionsComponent, AuthorizedUsersSelectStubComponent ],
       providers: [
         GlobalErrorHandlerService,
-        { provide: UsersService, useValue: usersServiceStub },
+        { provide: UsersService, useValue: usersServiceStub }
       ]
     })
     .compileComponents();
@@ -85,46 +94,18 @@ describe('PermissionsComponent', () => {
   });
 
   it('should initialize the list of authorized users', () => {
-    expect(component.authorizedUsers).toEqual([{
+    expect(component.authorizedSkillsUsers).toEqual([{
       id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
       userName: 'testing',
       firstName: 'Tina',
       lastName: 'Testing',
       email: 'tina.testing@skoop.io',
-      coach: false,
-    }]);
-  });
-
-  it('should remove a given user from the list of authorized users', () => {
-    component.authorizedUsers = [{
-      id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-      userName: 'testing',
-      firstName: 'Tina',
-      lastName: 'Testing',
-      email: 'tina.testing@skoop.io',
-      coach: false,
-    },
-      {
-        id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-        userName: 'testbed',
-        firstName: 'Tabia',
-        lastName: 'Testbed',
-        email: 'tabia.testbed@skoop.io',
-        coach: false,
-      }];
-    component.onAuthorizedUserRemoved(component.authorizedUsers[0]);
-    expect(component.authorizedUsers).toEqual([{
-      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-      userName: 'testbed',
-      firstName: 'Tabia',
-      lastName: 'Testbed',
-      email: 'tabia.testbed@skoop.io',
       coach: false,
     }]);
   });
 
   it('should update the list of authorized users', async(() => {
-    component.authorizedUsers.push({
+    component.authorizedSkillsUsers.push({
       id: '251c2a3b-b737-4622-8060-196d5e297ebc',
       userName: 'testbed',
       firstName: 'Tabia',
@@ -135,7 +116,7 @@ describe('PermissionsComponent', () => {
     component.savePermissions();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(component.authorizedUsers).toEqual([{
+      expect(component.authorizedSkillsUsers).toEqual([{
         id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
         userName: 'testing',
         firstName: 'Tina',
@@ -174,20 +155,4 @@ describe('PermissionsComponent', () => {
     });
   }));
 
-  it('should send getUserSuggestions request in 500 ms', fakeAsync(() => {
-    const usersService = TestBed.get(UsersService) as UsersService;
-    spyOn(usersService, 'getUserSuggestions').and.returnValue(of([]));
-
-    component.authorizedUsersControl.setValue('test');
-    tick(200);
-    fixture.detectChanges();
-
-    expect(usersService.getUserSuggestions).not.toHaveBeenCalled();
-
-    tick(300);
-    fixture.detectChanges();
-    expect(usersService.getUserSuggestions).toHaveBeenCalled();
-
-    discardPeriodicTasks();
-  }));
 });
