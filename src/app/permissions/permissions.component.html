@@ -1,0 +1,31 @@
+<div class="permissions-settings-section">
+  <p class="permissions-settings-explanation">All users listed in the following field will be able to view your
+    relationships to skills including the corresponding levels and priorities.</p>
+  <mat-form-field class="permissions-form-field">
+    <mat-chip-list #authorizedUsersChipList>
+      <mat-chip *ngFor="let authorizedUser of authorizedUsers"
+                selectable="true" removable="true"
+                (removed)="onAuthorizedUserRemoved(authorizedUser)">
+        {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="Users authorized to view my skills" #authorizedUsersInput
+             [formControl]="authorizedUsersControl"
+             [matAutocomplete]="authorizedUsersAutocomplete"
+             [matChipInputFor]="authorizedUsersChipList"
+             matChipInputAddOnBlur="true">
+    </mat-chip-list>
+    <mat-autocomplete #authorizedUsersAutocomplete="matAutocomplete"
+                      (optionSelected)="onAuthorizedUserSuggestionSelected($event)">
+      <mat-option *ngFor="let authorizedUser of authorizedUserSuggestions$ | async" [value]="authorizedUser">
+        {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>
+<mat-divider></mat-divider>
+<div class="permissions-actions">
+  <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save
+    permissions
+  </button>
+</div>

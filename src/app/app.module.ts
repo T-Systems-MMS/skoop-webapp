@@ -67,6 +67,7 @@ import { PublicationsEditComponent } from './publications/publications-edit.comp
 import { MembershipsComponent } from './memberships/memberships.component';
 import { MembershipsNewComponent } from './memberships/memberships-new.component';
 import { MembershipsEditComponent } from './memberships/memberships-edit.component';
+import { PermissionsComponent } from './permissions/permissions.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -127,7 +128,8 @@ export const CUSTOM_FORMATS = {
     PublicationsEditComponent,
     MembershipsComponent,
     MembershipsNewComponent,
-    MembershipsEditComponent
+    MembershipsEditComponent,
+    PermissionsComponent
   ],
   imports: [
     BrowserModule,

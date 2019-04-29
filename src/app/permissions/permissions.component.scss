@@ -1,0 +1,17 @@
+@import 'variables';
+
+.permissions-error {
+  @extend %base-error;
+}
+
+.permissions-settings-explanation {
+  margin-bottom: 16px;
+}
+
+.permissions-form-field {
+  width: 100%;
+}
+
+.permissions-actions {
+  margin-top: 16px;
+}
