@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UsersService } from '../../users/users.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-authorized-users-select',
@@ -17,8 +17,9 @@ export class AuthorizedUsersSelectComponent implements OnInit {
   authorizedUserSuggestions$: Observable<User[]>;
 
   @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
-  @Input('users') users: User[];
-  @Input('placeholder') placeholder: string;
+  @ViewChild('authorizedUsersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @Input() users: User[];
+  @Input() placeholder: string;
 
   constructor(private usersService: UsersService) {
     this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
@@ -33,7 +34,11 @@ export class AuthorizedUsersSelectComponent implements OnInit {
   }
 
   onAuthorizedUserSuggestionSelected(event: MatAutocompleteSelectedEvent): void {
-    this.users.push(event.option.value);
+    const user = event.option.value;
+    if (!this.users.some(item => item.id === user.id)) {
+      this.users.push(user);
+    }
+
     this.authorizedUsersInput.nativeElement.value = '';
     this.authorizedUsersControl.setValue(null);
   }

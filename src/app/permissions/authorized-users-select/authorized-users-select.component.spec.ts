@@ -9,6 +9,18 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../../app-material.module';
 import { User } from '../../users/user';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
+
+const userSuggestions: User[] = [
+  {
+    id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
+    userName: 'testing',
+    firstName: 'Tina',
+    lastName: 'Testing',
+    email: 'tina.testing@skoop.io',
+    coach: false,
+  }
+];
 
 describe('AuthorizedUsersSelectComponent', () => {
   let component: AuthorizedUsersSelectComponent;
@@ -38,16 +50,7 @@ describe('AuthorizedUsersSelectComponent', () => {
                 coach: false,
               }]
             ),
-          'getUserSuggestions': of<User[]>(
-            [{
-              id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-              userName: 'testing',
-              firstName: 'Tina',
-              lastName: 'Testing',
-              email: 'tina.testing@skoop.io',
-              coach: false,
-            }]
-          )})
+          'getUserSuggestions': of<User[]>(userSuggestions)})
         }
       ]
     })
@@ -57,6 +60,7 @@ describe('AuthorizedUsersSelectComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AuthorizedUsersSelectComponent);
     component = fixture.componentInstance;
+    component.users = [];
     fixture.detectChanges();
   });
 
@@ -108,4 +112,31 @@ describe('AuthorizedUsersSelectComponent', () => {
 
     discardPeriodicTasks();
   }));
+
+  it('should add user to the users list', fakeAsync(() => {
+    const event = {
+      option: {
+        value: userSuggestions[0]
+      }
+    } as MatAutocompleteSelectedEvent;
+
+    component.onAuthorizedUserSuggestionSelected(event);
+    expect(component.users.length).toBe(1);
+    expect(component.users[0]).toEqual(userSuggestions[0]);
+  }));
+
+  it('should not add duplicated user to the users list', fakeAsync(() => {
+    const event = {
+      option: {
+        value: userSuggestions[0]
+      }
+    } as MatAutocompleteSelectedEvent;
+
+    component.onAuthorizedUserSuggestionSelected(event);
+    component.onAuthorizedUserSuggestionSelected(event);
+
+    expect(component.users.length).toBe(1);
+    expect(component.users[0]).toEqual(userSuggestions[0]);
+  }));
+
 });

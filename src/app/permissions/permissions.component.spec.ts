@@ -65,8 +65,8 @@ const testPermissions: UserPermission[] = [
   template: ''
 })
 class AuthorizedUsersSelectStubComponent {
-  @Input('users') users = [];
-  @Input('placeholder') placeholder = '';
+  @Input() users = [];
+  @Input() placeholder = '';
 }
 
 describe('PermissionsComponent', () => {
