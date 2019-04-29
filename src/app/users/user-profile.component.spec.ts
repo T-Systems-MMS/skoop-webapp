@@ -5,24 +5,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule} from '@angular/forms';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
 import { UserProfileComponent } from './user-profile.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UsersService } from './users.service';
 import { User } from './user';
-import { UserPermissionScope } from './user-permission-scope';
 import { UserRequest } from './user-request';
 import { ENTER } from '@angular/cdk/keycodes';
-
-const usersServiceStub: Partial<UsersService> = {
-  getUser(): Observable<User> { return null; },
-  updateUser(userData: UserRequest): Observable<User> { return null; },
-  getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
-  updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
-  getUserSuggestions(search: string): Observable<User[]> { return null; }
-};
 
 @Component({
   selector: 'app-testimonials',
@@ -58,37 +49,6 @@ describe('UserProfileComponent', () => {
   let fixture: ComponentFixture<UserProfileComponent>;
 
   beforeEach(async(() => {
-    spyOn(usersServiceStub, 'getUser')
-      .and.returnValue(of<User>(
-        {
-          id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-          userName: 'tester',
-          firstName: 'Toni',
-          lastName: 'Tester',
-          email: 'toni.tester@skoop.io',
-          academicDegree: 'academic degree',
-          positionProfile: 'position profile',
-          summary: 'summary',
-          industrySectors: ['sector1', 'sector2', 'sector3'],
-          specializations: ['specialization1', 'specialization2', 'specialization3'],
-          certificates: ['certificate1', 'certificate2', 'certificate3'],
-          languages: ['language1', 'language2', 'language2'],
-          coach: false,
-        }
-      ));
-
-    spyOn(usersServiceStub, 'updateUser')
-      .and.returnValue(of<User>(
-        {
-          id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
-          userName: 'tester',
-          firstName: 'Toni',
-          lastName: 'Tester',
-          email: 'toni.tester@skoop.io',
-          coach: true,
-        }
-      ));
-
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -100,7 +60,38 @@ describe('UserProfileComponent', () => {
       declarations: [UserProfileComponent, TestimonialsStubComponent, PublicationsStubComponent, MembershipsStubComponent, PermissionsStubComponent],
       providers: [
         GlobalErrorHandlerService,
-        { provide: UsersService, useValue: usersServiceStub },
+        {
+          provide: UsersService,
+          useValue: jasmine.createSpyObj('userService', {
+            'getUser': of<User>(
+              {
+                id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+                userName: 'tester',
+                firstName: 'Toni',
+                lastName: 'Tester',
+                email: 'toni.tester@skoop.io',
+                academicDegree: 'academic degree',
+                positionProfile: 'position profile',
+                summary: 'summary',
+                industrySectors: ['sector1', 'sector2', 'sector3'],
+                specializations: ['specialization1', 'specialization2', 'specialization3'],
+                certificates: ['certificate1', 'certificate2', 'certificate3'],
+                languages: ['language1', 'language2', 'language2'],
+                coach: false,
+              }
+            ),
+            'updateUser': of<User>(
+              {
+                id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+                userName: 'tester',
+                firstName: 'Toni',
+                lastName: 'Tester',
+                email: 'toni.tester@skoop.io',
+                coach: true,
+              }
+            )
+          })
+        },
       ]
     }).compileComponents();
   }));
@@ -159,7 +150,8 @@ describe('UserProfileComponent', () => {
         coach: true
       };
 
-      expect(usersServiceStub.updateUser).toHaveBeenCalledWith(expectedRequestData);
+      const userService: UsersService = TestBed.get(UsersService) as UsersService;
+      expect(userService.updateUser).toHaveBeenCalledWith(expectedRequestData);
     });
   }));
 

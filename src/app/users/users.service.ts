@@ -8,6 +8,7 @@ import { User } from './user';
 import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UserRequest } from './user-request';
+import { UserPermissionRequest } from '../permissions/user-permission-request';
 
 @Injectable({
   providedIn: 'root'
@@ -52,42 +53,25 @@ export class UsersService {
       });
   }
 
-  getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> {
+  getPermissions(): Observable<UserPermission[]> {
     return this.userIdentityService.getUserIdentity()
       .pipe(
         switchMap(userIdentity => this.httpClient.get<UserPermission[]>(
           // TODO: Request permissions for given scope via specific API call, e.g.
           // GET /users/{userId}/permissions/{scope}
           this.userPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
-        ),
-        map(userPermissions => {
-          const permission = userPermissions.find(userPermission => userPermission.scope === scope);
-          return permission ? permission.authorizedUsers : [];
-        })
+        )
       );
   }
 
-  updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> {
+  updatePermissions(userPermissions: UserPermissionRequest[]): Observable<UserPermission[]> {
     return this.userIdentityService.getUserIdentity()
       .pipe(
         switchMap(userIdentity => this.httpClient.put<UserPermission[]>(
           // TODO: Update permissions for given scope via specific API call, e.g.
           // PUT /users/{userId}/permissions/{scope}
-          this.userPermissionsUrlPattern.replace('{userId}', userIdentity.userId),
-          [{
-            scope,
-            authorizedUserIds: authorizedUsers.map(user => user.id)
-          }],
-          {
-            headers: new HttpHeaders({
-              'Content-Type': 'application/json'
-            })
-          })
-        ),
-        map(userPermissions => {
-          const permission = userPermissions.find(userPermission => userPermission.scope === scope);
-          return permission ? permission.authorizedUsers : [];
-        })
+          this.userPermissionsUrlPattern.replace('{userId}', userIdentity.userId), userPermissions)
+        )
       );
   }
 

@@ -6,7 +6,7 @@
       {{ user.firstName }} {{ user.lastName }} ({{ user.userName }})
       <mat-icon matChipRemove>cancel</mat-icon>
     </mat-chip>
-    <input placeholder="Users authorized to view my skills" #authorizedUsersInput
+    <input placeholder="{{placeholder}}" #authorizedUsersInput
            [formControl]="authorizedUsersControl"
            [matAutocomplete]="authorizedUsersAutocomplete"
            [matChipInputFor]="authorizedUsersChipList"

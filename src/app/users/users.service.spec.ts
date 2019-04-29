@@ -210,8 +210,8 @@ describe('UsersService', () => {
       }
     ];
 
-    service.getAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS).subscribe((users) => {
-      expect(users).toEqual(testUsers);
+    service.getPermissions().subscribe((permissions) => {
+      expect(permissions).toEqual(testPermissions);
     });
 
     const request = httpTestingController.expectOne({

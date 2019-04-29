@@ -3,9 +3,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PermissionsComponent } from './permissions.component';
 import { UserPermissionScope } from '../users/user-permission-scope';
 import { UsersService } from '../users/users.service';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { User } from '../users/user';
-import { UserRequest } from '../users/user-request';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -13,14 +12,53 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { Component, Input } from '@angular/core';
+import { UserPermission } from '../users/user-permission';
+import { UserPermissionRequest } from './user-permission-request';
 
-const usersServiceStub: Partial<UsersService> = {
-  getUser(): Observable<User> { return null; },
-  updateUser(userData: UserRequest): Observable<User> { return null; },
-  getAuthorizedUsers(scope: UserPermissionScope): Observable<User[]> { return null; },
-  updateAuthorizedUsers(scope: UserPermissionScope, authorizedUsers: User[]): Observable<User[]> { return null; },
-  getUserSuggestions(search: string): Observable<User[]> { return null; }
-};
+const authorizedUsers: User[] = [
+  {
+    id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+    userName: 'owner1',
+    firstName: 'first',
+    lastName: 'owner',
+    email: 'first.owner@skoop.io',
+    coach: true,
+  },
+  {
+    id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+    userName: 'owner2',
+    firstName: 'second',
+    lastName: 'owner',
+    email: 'second.owner@skoop.io',
+    coach: true,
+  }
+];
+const testPermissions: UserPermission[] = [
+  {
+    owner: {
+      id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@skoop.io',
+      coach: true,
+    },
+    scope: UserPermissionScope.READ_USER_SKILLS,
+    authorizedUsers: [authorizedUsers[0]],
+  },
+  {
+    owner: {
+      id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+      userName: 'tester',
+      firstName: 'Toni',
+      lastName: 'Tester',
+      email: 'toni.tester@skoop.io',
+      coach: true,
+    },
+    scope: UserPermissionScope.READ_USER_PROFILE,
+    authorizedUsers: [authorizedUsers[1]],
+  }
+];
 
 @Component({
   selector: 'app-authorized-users-select',
@@ -28,6 +66,7 @@ const usersServiceStub: Partial<UsersService> = {
 })
 class AuthorizedUsersSelectStubComponent {
   @Input('users') users = [];
+  @Input('placeholder') placeholder = '';
 }
 
 describe('PermissionsComponent', () => {
@@ -35,37 +74,6 @@ describe('PermissionsComponent', () => {
   let fixture: ComponentFixture<PermissionsComponent>;
 
   beforeEach(async(() => {
-    spyOn(usersServiceStub, 'getAuthorizedUsers')
-      .and.returnValue(of<User[]>(
-      [{
-        id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-        userName: 'testing',
-        firstName: 'Tina',
-        lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
-      }]
-    ));
-
-    spyOn(usersServiceStub, 'updateAuthorizedUsers')
-      .and.returnValue(of<User[]>(
-      [{
-        id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-        userName: 'testing',
-        firstName: 'Tina',
-        lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
-      },
-        {
-          id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-          userName: 'testbed',
-          firstName: 'Tabia',
-          lastName: 'Testbed',
-          email: 'tabia.testbed@skoop.io',
-          coach: false,
-        }]
-    ));
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -77,7 +85,13 @@ describe('PermissionsComponent', () => {
       declarations: [ PermissionsComponent, AuthorizedUsersSelectStubComponent ],
       providers: [
         GlobalErrorHandlerService,
-        { provide: UsersService, useValue: usersServiceStub }
+        {
+          provide: UsersService,
+          useValue: jasmine.createSpyObj('userService', {
+            'getPermissions': of<UserPermission[]>(testPermissions),
+            'updatePermissions': of<UserPermission[]>(testPermissions)
+          })
+        }
       ]
     })
     .compileComponents();
@@ -94,64 +108,98 @@ describe('PermissionsComponent', () => {
   });
 
   it('should initialize the list of authorized users', () => {
-    expect(component.authorizedSkillsUsers).toEqual([{
-      id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-      userName: 'testing',
-      firstName: 'Tina',
-      lastName: 'Testing',
-      email: 'tina.testing@skoop.io',
-      coach: false,
-    }]);
+    expect(component.authorizedSkillsUsers).toEqual(testPermissions[0].authorizedUsers);
+    expect(component.authorizedProfileUsers).toEqual(testPermissions[1].authorizedUsers);
   });
 
-  it('should update the list of authorized users', async(() => {
-    component.authorizedSkillsUsers.push({
+  it('should update the list of authorized to view skills users', async(() => {
+    const newUser = {
       id: '251c2a3b-b737-4622-8060-196d5e297ebc',
       userName: 'testbed',
       firstName: 'Tabia',
       lastName: 'Testbed',
       email: 'tabia.testbed@skoop.io',
       coach: false,
-    });
+    };
+    component.authorizedSkillsUsers.push(newUser);
     component.savePermissions();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(component.authorizedSkillsUsers).toEqual([{
-        id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-        userName: 'testing',
-        firstName: 'Tina',
-        lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
-      },
+      expect(component.authorizedSkillsUsers).toEqual([authorizedUsers[0], newUser]);
+      const userService: UsersService = TestBed.get(UsersService) as UsersService;
+      const expectedRequest: UserPermissionRequest[] = [
         {
-          id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-          userName: 'testbed',
-          firstName: 'Tabia',
-          lastName: 'Testbed',
-          email: 'tabia.testbed@skoop.io',
-          coach: false,
-        }]);
-
-      expect(usersServiceStub.updateAuthorizedUsers).toHaveBeenCalledWith(
-        UserPermissionScope.READ_USER_SKILLS,
-        [{
-          id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-          userName: 'testing',
-          firstName: 'Tina',
-          lastName: 'Testing',
-          email: 'tina.testing@skoop.io',
-          coach: false,
+          scope: UserPermissionScope.READ_USER_SKILLS,
+          authorizedUserIds: [authorizedUsers[0].id, newUser.id]
         },
-          {
-            id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-            userName: 'testbed',
-            firstName: 'Tabia',
-            lastName: 'Testbed',
-            email: 'tabia.testbed@skoop.io',
-            coach: false,
-          }]
-      );
+        {
+          scope: UserPermissionScope.READ_USER_PROFILE,
+          authorizedUserIds: [authorizedUsers[1].id]
+        }
+      ];
+      expect(userService.updatePermissions).toHaveBeenCalledWith(expectedRequest);
+    });
+  }));
+
+  it('should update the list of authorized to view profile users', async(() => {
+    const newUser = {
+      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+      userName: 'testbed',
+      firstName: 'Tabia',
+      lastName: 'Testbed',
+      email: 'tabia.testbed@skoop.io',
+      coach: false,
+    };
+    component.authorizedSkillsUsers = [authorizedUsers[0]];
+    component.authorizedProfileUsers = [authorizedUsers[1], newUser];
+    component.savePermissions();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+
+      const userService: UsersService = TestBed.get(UsersService) as UsersService;
+      const expectedRequest: UserPermissionRequest[] = [
+        {
+          scope: UserPermissionScope.READ_USER_SKILLS,
+          authorizedUserIds: [authorizedUsers[0].id]
+        },
+        {
+          scope: UserPermissionScope.READ_USER_PROFILE,
+          authorizedUserIds: [authorizedUsers[1].id, newUser.id]
+        }
+      ];
+      expect(userService.updatePermissions).toHaveBeenCalledWith(expectedRequest);
+    });
+  }));
+
+
+  it('should not pass list of authorized to view profile user ids when \'allowAll\' is true', async(() => {
+    const newUser = {
+      id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+      userName: 'testbed',
+      firstName: 'Tabia',
+      lastName: 'Testbed',
+      email: 'tabia.testbed@skoop.io',
+      coach: false,
+    };
+    component.authorizedSkillsUsers = [authorizedUsers[0]];
+    component.authorizedProfileUsers = [authorizedUsers[1], newUser];
+    component.allowAll.setValue(true);
+    component.savePermissions();
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+
+      const userService: UsersService = TestBed.get(UsersService) as UsersService;
+      const expectedRequest: UserPermissionRequest[] = [
+        {
+          scope: UserPermissionScope.READ_USER_SKILLS,
+          authorizedUserIds: [authorizedUsers[0].id]
+        },
+        {
+          scope: UserPermissionScope.READ_USER_PROFILE,
+          allUsersAuthorized: true
+        }
+      ];
+      expect(userService.updatePermissions).toHaveBeenCalledWith(expectedRequest);
     });
   }));
 

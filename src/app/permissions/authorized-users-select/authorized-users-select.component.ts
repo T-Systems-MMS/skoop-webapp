@@ -18,6 +18,7 @@ export class AuthorizedUsersSelectComponent implements OnInit {
 
   @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
   @Input('users') users: User[];
+  @Input('placeholder') placeholder: string;
 
   constructor(private usersService: UsersService) {
     this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
