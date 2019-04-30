@@ -11,6 +11,7 @@ import { UsersService } from './users.service';
 import { UserRequest } from './user-request';
 import { GlobalUserPermission } from '../permissions/global-user-permission';
 import { GlobalUserPermissionResponse } from '../permissions/global-user-permission-response';
+import { UserPermissionRequest } from '../permissions/user-permission-request';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -259,6 +260,60 @@ describe('UsersService', () => {
     expect(request.request.responseType).toEqual('json');
 
     request.flush(testPermissions);
+  }));
+
+  it('should update list of users who have granted permission to the currently authenticated user', async(() => {
+    const users: User[] = [
+      {
+        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+        userName: 'owner1',
+        firstName: 'first',
+        lastName: 'owner',
+        email: 'first.owner@skoop.io'
+      },
+      {
+        id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+        userName: 'owner2',
+        firstName: 'second',
+        lastName: 'owner',
+        email: 'second.owner@skoop.io'
+      }
+    ];
+    const userPermissionRequests: UserPermissionRequest[] = [
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        authorizedUserIds: [users[0].id, users[1].id],
+      },
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        authorizedUserIds: [users[0].id, users[1].id],
+      }
+    ];
+    const expectedPermissions: UserPermission[] = [
+      {
+        owner: users[0],
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        authorizedUsers: users,
+      },
+      {
+        owner: users[0],
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        authorizedUsers: users,
+      }
+    ];
+
+    service.updatePermissions(userPermissionRequests).subscribe((permissions) => {
+      expect(permissions).toEqual(expectedPermissions);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/outbound-permissions`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(expectedPermissions);
   }));
 
   it('should provide list of global user permissions', async(() => {
