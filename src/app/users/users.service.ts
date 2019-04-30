@@ -9,6 +9,7 @@ import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UserRequest } from './user-request';
 import { UserPermissionRequest } from '../permissions/user-permission-request';
+import { GlobalUserPermission } from '../permissions/global-user-permission';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,7 @@ import { UserPermissionRequest } from '../permissions/user-permission-request';
 export class UsersService {
   private userUrlPattern = `${environment.serverApiUrl}/users/{userId}`;
   private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
+  private userGlobalPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/global-permissions`;
   private userInboundPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
@@ -89,6 +91,23 @@ export class UsersService {
           inboundUserPermissions.forEach(item => permissionOwners.push(item.owner));
           return permissionOwners;
         })
+      );
+  }
+
+  getGlobalUserPermissions(): Observable<GlobalUserPermission[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(
+        switchMap(userIdentity => this.httpClient.get<GlobalUserPermission[]>(
+          this.userGlobalPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
+        ));
+  }
+
+  updateGlobalUserPermissions(globalUserPermissions: GlobalUserPermission[]): Observable<GlobalUserPermission[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(
+        switchMap(userIdentity => this.httpClient.put<GlobalUserPermission[]>(
+          this.userGlobalPermissionsUrlPattern.replace('{userId}', userIdentity.userId), globalUserPermissions)
+        )
       );
   }
 }

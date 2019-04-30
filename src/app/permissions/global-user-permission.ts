@@ -1,6 +1,5 @@
 import { UserPermissionScope } from '../users/user-permission-scope';
 
-export interface UserPermissionRequest {
+export interface GlobalUserPermission {
   scope: UserPermissionScope;
-  authorizedUserIds?: string[];
 }

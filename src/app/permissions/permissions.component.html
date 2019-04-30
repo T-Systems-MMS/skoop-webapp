@@ -1,7 +1,10 @@
 <div class="permissions-settings-section">
   <p class="permissions-settings-explanation">All users listed in the following field will be able to view your
     relationships to skills including the corresponding levels and priorities.</p>
-<app-authorized-users-select [users]="authorizedSkillsUsers" [placeholder]="'Users authorized to view my skills'"></app-authorized-users-select>
+  <app-authorized-users-select [users]="authorizedSkillsUsers" [placeholder]="'Users authorized to view my skills'"></app-authorized-users-select>
+  <div class="permissions-allow-all">
+    <mat-checkbox [formControl]="allowAllToViewSkills">Allow my skills to be shown to all users</mat-checkbox>
+  </div>
 </div>
 <mat-divider></mat-divider>
 
@@ -10,7 +13,7 @@
     personal information.</p>
   <app-authorized-users-select [users]="authorizedProfileUsers" [placeholder]="'Users authorized to view my profile'"></app-authorized-users-select>
   <div class="permissions-allow-all">
-    <mat-checkbox [formControl]="allowAll">Allow show my profile to all users</mat-checkbox>
+    <mat-checkbox [formControl]="allowAllToViewProfile">Allow my profile to be shown to all users</mat-checkbox>
   </div>
 </div>
 

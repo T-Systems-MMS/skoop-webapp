@@ -172,7 +172,7 @@ describe('PermissionsComponent', () => {
   }));
 
 
-  it('should not pass list of authorized to view profile user ids when \'allowAll\' is true', async(() => {
+  it('should not pass list of authorized to view profile user ids when \'allowAllToViewProfile\' is true', async(() => {
     const newUser = {
       id: '251c2a3b-b737-4622-8060-196d5e297ebc',
       userName: 'testbed',
@@ -183,7 +183,7 @@ describe('PermissionsComponent', () => {
     };
     component.authorizedSkillsUsers = [authorizedUsers[0]];
     component.authorizedProfileUsers = [authorizedUsers[1], newUser];
-    component.allowAll.setValue(true);
+    component.allowAllToViewProfile.setValue(true);
     component.savePermissions();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
