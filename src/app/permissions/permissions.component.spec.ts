@@ -15,6 +15,7 @@ import { Component, Input } from '@angular/core';
 import { UserPermission } from '../users/user-permission';
 import { UserPermissionRequest } from './user-permission-request';
 import { GlobalUserPermission } from './global-user-permission';
+import { GlobalUserPermissionResponse } from './global-user-permission-response';
 
 const authorizedUsers: User[] = [
   {
@@ -57,12 +58,26 @@ const testPermissions: UserPermission[] = [
   }
 ];
 
-const globalPermissions: GlobalUserPermission[] = [
+const globalPermissions: GlobalUserPermissionResponse[] = [
   {
-    scope: UserPermissionScope.READ_USER_PROFILE
+    scope: UserPermissionScope.READ_USER_PROFILE,
+    owner: {
+      id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+      userName: 'owner2',
+      firstName: 'second',
+      lastName: 'owner',
+      email: 'second.owner@skoop.io'
+    }
   },
   {
-    scope: UserPermissionScope.READ_USER_SKILLS
+    scope: UserPermissionScope.READ_USER_SKILLS,
+    owner: {
+      id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+      userName: 'owner2',
+      firstName: 'second',
+      lastName: 'owner',
+      email: 'second.owner@skoop.io'
+    }
   }
 ];
 
@@ -96,8 +111,8 @@ describe('PermissionsComponent', () => {
           useValue: jasmine.createSpyObj('userService', {
             'getPermissions': of<UserPermission[]>(testPermissions),
             'updatePermissions': of<UserPermission[]>(testPermissions),
-            'getGlobalUserPermissions': of<GlobalUserPermission[]>(globalPermissions),
-            'updateGlobalUserPermissions': of<GlobalUserPermission[]>(globalPermissions)
+            'getGlobalUserPermissions': of<GlobalUserPermissionResponse[]>(globalPermissions),
+            'updateGlobalUserPermissions': of<GlobalUserPermissionResponse[]>(globalPermissions)
           })
         }
       ]

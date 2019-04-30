@@ -10,6 +10,7 @@ import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
 import { UserRequest } from './user-request';
 import { GlobalUserPermission } from '../permissions/global-user-permission';
+import { GlobalUserPermissionResponse } from '../permissions/global-user-permission-response';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -261,12 +262,26 @@ describe('UsersService', () => {
   }));
 
   it('should provide list of global user permissions', async(() => {
-    const expectedPermissions: GlobalUserPermission[] = [
+    const expectedPermissions: GlobalUserPermissionResponse[] = [
       {
-        scope: UserPermissionScope.READ_USER_PROFILE
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
       },
       {
-        scope: UserPermissionScope.READ_USER_SKILLS
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
       }
     ];
 
@@ -285,7 +300,7 @@ describe('UsersService', () => {
   }));
 
   it('should update list of global user permissions', async(() => {
-    const expectedPermissions: GlobalUserPermission[] = [
+    const globalPermissionsRequest: GlobalUserPermission[] = [
       {
         scope: UserPermissionScope.READ_USER_PROFILE
       },
@@ -294,7 +309,30 @@ describe('UsersService', () => {
       }
     ];
 
-    service.updateGlobalUserPermissions(expectedPermissions).subscribe((permissions) => {
+    const expectedPermissions: GlobalUserPermissionResponse[] = [
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
+      },
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
+      }
+    ];
+
+    service.updateGlobalUserPermissions(globalPermissionsRequest).subscribe((permissions) => {
       expect(permissions).toEqual(expectedPermissions);
     });
 
