@@ -9,6 +9,7 @@ import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
 import { UserRequest } from './user-request';
+import { GlobalUserPermission } from '../permissions/global-user-permission';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -257,5 +258,53 @@ describe('UsersService', () => {
     expect(request.request.responseType).toEqual('json');
 
     request.flush(testPermissions);
+  }));
+
+  it('should provide list of global user permissions', async(() => {
+    const expectedPermissions: GlobalUserPermission[] = [
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE
+      },
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS
+      }
+    ];
+
+    service.getGlobalUserPermissions().subscribe((permissions) => {
+      expect(permissions).toEqual(expectedPermissions);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/global-permissions`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(expectedPermissions);
+  }));
+
+  it('should update list of global user permissions', async(() => {
+    const expectedPermissions: GlobalUserPermission[] = [
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE
+      },
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS
+      }
+    ];
+
+    service.updateGlobalUserPermissions(expectedPermissions).subscribe((permissions) => {
+      expect(permissions).toEqual(expectedPermissions);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/global-permissions`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(expectedPermissions);
   }));
 });
