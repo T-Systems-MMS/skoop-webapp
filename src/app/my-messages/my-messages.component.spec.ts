@@ -194,8 +194,7 @@ const registrationResponse: CommunityUserRegistrationResponse = {
     userName: 'testbed',
     firstName: 'Tabia',
     lastName: 'Testbed',
-    email: 'tabia.testbed@skoop.io',
-    coach: false,
+    email: 'tabia.testbed@skoop.io'
   },
   approvedByUser: true,
   approvedByCommunity: true

@@ -43,16 +43,14 @@ describe('CommunityUserService', () => {
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
+        email: 'tina.testing@skoop.io'
       },
       {
         id: '251c2a3b-b737-4622-8060-196d5e297ebc',
         userName: 'testbed',
         firstName: 'Tabia',
         lastName: 'Testbed',
-        email: 'tabia.testbed@skoop.io',
-        coach: false,
+        email: 'tabia.testbed@skoop.io'
       }
     ];
 
@@ -73,16 +71,14 @@ describe('CommunityUserService', () => {
       userName: 'testing',
       firstName: 'Tina',
       lastName: 'Testing',
-      email: 'tina.testing@skoop.io',
-      coach: false,
+      email: 'tina.testing@skoop.io'
     },
       {
         id: '251c2a3b-b737-4622-8060-196d5e297ebc',
         userName: 'testbed',
         firstName: 'Tabia',
         lastName: 'Testbed',
-        email: 'tabia.testbed@skoop.io',
-        coach: false,
+        email: 'tabia.testbed@skoop.io'
       }];
 
     communityUserService.getRecommendedUsers(communityId).subscribe((users) => {

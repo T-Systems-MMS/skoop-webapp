@@ -21,16 +21,14 @@ const authorizedUsers: User[] = [
     userName: 'owner1',
     firstName: 'first',
     lastName: 'owner',
-    email: 'first.owner@skoop.io',
-    coach: true,
+    email: 'first.owner@skoop.io'
   },
   {
     id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
     userName: 'owner2',
     firstName: 'second',
     lastName: 'owner',
-    email: 'second.owner@skoop.io',
-    coach: true,
+    email: 'second.owner@skoop.io'
   }
 ];
 const testPermissions: UserPermission[] = [
@@ -40,8 +38,7 @@ const testPermissions: UserPermission[] = [
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@skoop.io',
-      coach: true,
+      email: 'toni.tester@skoop.io'
     },
     scope: UserPermissionScope.READ_USER_SKILLS,
     authorizedUsers: [authorizedUsers[0]],
@@ -52,8 +49,7 @@ const testPermissions: UserPermission[] = [
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@skoop.io',
-      coach: true,
+      email: 'toni.tester@skoop.io'
     },
     scope: UserPermissionScope.READ_USER_PROFILE,
     authorizedUsers: [authorizedUsers[1]],
@@ -178,8 +174,7 @@ describe('PermissionsComponent', () => {
       userName: 'testbed',
       firstName: 'Tabia',
       lastName: 'Testbed',
-      email: 'tabia.testbed@skoop.io',
-      coach: false,
+      email: 'tabia.testbed@skoop.io'
     };
     component.authorizedSkillsUsers = [authorizedUsers[0]];
     component.authorizedProfileUsers = [authorizedUsers[1], newUser];
@@ -195,8 +190,7 @@ describe('PermissionsComponent', () => {
           authorizedUserIds: [authorizedUsers[0].id]
         },
         {
-          scope: UserPermissionScope.READ_USER_PROFILE,
-          allUsersAuthorized: true
+          scope: UserPermissionScope.READ_USER_PROFILE
         }
       ];
       expect(userService.updatePermissions).toHaveBeenCalledWith(expectedRequest);

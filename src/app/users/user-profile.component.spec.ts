@@ -76,8 +76,7 @@ describe('UserProfileComponent', () => {
                 industrySectors: ['sector1', 'sector2', 'sector3'],
                 specializations: ['specialization1', 'specialization2', 'specialization3'],
                 certificates: ['certificate1', 'certificate2', 'certificate3'],
-                languages: ['language1', 'language2', 'language2'],
-                coach: false,
+                languages: ['language1', 'language2', 'language2']
               }
             ),
             'updateUser': of<User>(
@@ -86,8 +85,7 @@ describe('UserProfileComponent', () => {
                 userName: 'tester',
                 firstName: 'Toni',
                 lastName: 'Tester',
-                email: 'toni.tester@skoop.io',
-                coach: true,
+                email: 'toni.tester@skoop.io'
               }
             )
           })
@@ -124,11 +122,9 @@ describe('UserProfileComponent', () => {
     expect(component.userForm.get('specializations').value).toEqual(['specialization1', 'specialization2', 'specialization3']);
     expect(component.userForm.get('certificates').value).toEqual(['certificate1', 'certificate2', 'certificate3']);
     expect(component.userForm.get('languages').value).toEqual(['language1', 'language2', 'language2']);
-    expect(component.userForm.get('coach').value).toBeFalsy();
   });
 
   it('should update the user profile form', async(() => {
-    component.userForm.get('coach').setValue(true);
     component.saveUserDetails();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -136,7 +132,6 @@ describe('UserProfileComponent', () => {
       expect(component.userForm.get('lastName').value).toBe('Tester');
       expect(component.userForm.get('userName').value).toBe('tester');
       expect(component.userForm.get('email').value).toBe('toni.tester@skoop.io');
-      expect(component.userForm.get('coach').value).toBeTruthy();
 
       const expectedRequestData: UserRequest = {
         userName: 'tester',
@@ -146,8 +141,7 @@ describe('UserProfileComponent', () => {
         industrySectors: ['sector1', 'sector2', 'sector3'],
         specializations: ['specialization1', 'specialization2', 'specialization3'],
         certificates: ['certificate1', 'certificate2', 'certificate3'],
-        languages: ['language1', 'language2', 'language2'],
-        coach: true
+        languages: ['language1', 'language2', 'language2']
       };
 
       const userService: UsersService = TestBed.get(UsersService) as UsersService;
