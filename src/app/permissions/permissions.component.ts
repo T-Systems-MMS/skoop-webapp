@@ -23,6 +23,7 @@ export class PermissionsComponent implements OnInit {
 
   allowAllToViewProfile = new FormControl();
   allowAllToViewSkills = new FormControl();
+  allowToBeCoach = new FormControl();
 
   @Input() savingInProgress: boolean;
   private savingUsersPermissionInProgress = false;
@@ -132,6 +133,9 @@ export class PermissionsComponent implements OnInit {
     this.allowAllToViewSkills.setValue(permission != null);
 
     permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.READ_USER_PROFILE);
+    this.allowAllToViewProfile.setValue(permission != null);
+
+    permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.BE_COACH);
     this.allowAllToViewProfile.setValue(permission != null);
   }
 

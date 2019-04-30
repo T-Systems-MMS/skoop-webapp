@@ -44,8 +44,7 @@ export class UserProfileComponent implements OnInit {
       industrySectors: new FormControl([]),
       specializations: new FormControl([]),
       certificates: new FormControl([]),
-      languages: new FormControl([]),
-      coach: new FormControl(),
+      languages: new FormControl([])
     });
   }
 
@@ -77,8 +76,7 @@ export class UserProfileComponent implements OnInit {
       industrySectors: user.industrySectors || [],
       specializations: user.specializations || [],
       certificates: user.certificates || [],
-      languages: user.languages || [],
-      coach: user.coach,
+      languages: user.languages || []
     });
   }
 
@@ -130,8 +128,7 @@ export class UserProfileComponent implements OnInit {
       industrySectors: this.industrySectorsArray,
       specializations: this.specializationsArray,
       certificates: this.certificatesArray,
-      languages: this.languagesArray,
-      coach: this.userForm.get('coach').value
+      languages: this.languagesArray
     } as UserRequest;
   }
 

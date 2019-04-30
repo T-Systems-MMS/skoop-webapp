@@ -11,5 +11,4 @@ export interface User {
   specializations?: string[];
   certificates?: string[];
   languages?: string[];
-  coach?: boolean;
 }
