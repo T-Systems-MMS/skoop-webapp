@@ -11,7 +11,7 @@ import { AppMaterialModule } from '../../app-material.module';
 import { User } from '../../users/user';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 
-const userSuggestions: User[] = [
+const users: User[] = [
   {
     id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
     userName: 'testing',
@@ -40,17 +40,8 @@ describe('AuthorizedUsersSelectComponent', () => {
         {
           provide: UsersService,
           useValue: jasmine.createSpyObj('userService', {
-            'getAuthorizedUsers': of<User[]>(
-              [{
-                id: '2736a204-f3ab-4b65-8568-a1c8ce1db8ab',
-                userName: 'testing',
-                firstName: 'Tina',
-                lastName: 'Testing',
-                email: 'tina.testing@skoop.io',
-                coach: false,
-              }]
-            ),
-          'getUserSuggestions': of<User[]>(userSuggestions)})
+            'getAuthorizedUsers': of<User[]>(users),
+          'getUserSuggestions': of<User[]>(users)})
         }
       ]
     })
@@ -116,19 +107,19 @@ describe('AuthorizedUsersSelectComponent', () => {
   it('should add user to the users list', fakeAsync(() => {
     const event = {
       option: {
-        value: userSuggestions[0]
+        value: users[0]
       }
     } as MatAutocompleteSelectedEvent;
 
     component.onAuthorizedUserSuggestionSelected(event);
     expect(component.users.length).toBe(1);
-    expect(component.users[0]).toEqual(userSuggestions[0]);
+    expect(component.users[0]).toEqual(users[0]);
   }));
 
   it('should not add duplicated user to the users list', fakeAsync(() => {
     const event = {
       option: {
-        value: userSuggestions[0]
+        value: users[0]
       }
     } as MatAutocompleteSelectedEvent;
 
@@ -136,7 +127,7 @@ describe('AuthorizedUsersSelectComponent', () => {
     component.onAuthorizedUserSuggestionSelected(event);
 
     expect(component.users.length).toBe(1);
-    expect(component.users[0]).toEqual(userSuggestions[0]);
+    expect(component.users[0]).toEqual(users[0]);
   }));
 
 });
