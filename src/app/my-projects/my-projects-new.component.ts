@@ -73,8 +73,8 @@ export class MyProjectsNewComponent implements OnInit {
       skills: this.skillsArray || [],
       role: this.formGroup.controls.role.value,
       tasks: this.formGroup.controls.tasks.value,
-      startDate: this.formGroup.controls.startDate.value,
-      endDate: this.formGroup.controls.endDate.value
+      startDate: Util.ignoreTimezone(this.formGroup.controls.startDate.value),
+      endDate: Util.ignoreTimezone(this.formGroup.controls.endDate.value)
     };
     this.myProjectService.assignProjectToCurrentUser(request)
       .pipe(
