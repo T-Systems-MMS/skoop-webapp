@@ -85,7 +85,7 @@ export class PermissionsComponent implements OnInit {
       globalPermissions.push({scope: UserPermissionScope.READ_USER_PROFILE});
     }
     if (this.allowToBeCoach.value) {
-      globalPermissions.push({scope: UserPermissionScope.SEE_AS_COACH});
+      globalPermissions.push({scope: UserPermissionScope.FIND_AS_COACH});
     }
 
     this.usersService.updateGlobalUserPermissions(globalPermissions)
@@ -138,7 +138,7 @@ export class PermissionsComponent implements OnInit {
     permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.READ_USER_PROFILE);
     this.allowAllToViewProfile.setValue(permission != null);
 
-    permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.SEE_AS_COACH);
+    permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.FIND_AS_COACH);
     this.allowToBeCoach.setValue(permission != null);
   }
 

@@ -213,7 +213,7 @@ describe('PermissionsComponent', () => {
           scope: UserPermissionScope.READ_USER_PROFILE,
         },
         {
-          scope: UserPermissionScope.SEE_AS_COACH,
+          scope: UserPermissionScope.FIND_AS_COACH,
         }
       ];
       expect(userService.updateGlobalUserPermissions).toHaveBeenCalledWith(expectedRequest);
