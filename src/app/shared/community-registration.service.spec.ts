@@ -37,8 +37,7 @@ describe('CommunityRegistrationService', () => {
           userName: 'testing',
           firstName: 'Tina',
           lastName: 'Testing',
-          email: 'tina.testing@skoop.io',
-          coach: false,
+          email: 'tina.testing@skoop.io'
         },
         approvedByUser: false,
         approvedByCommunity: true
@@ -50,8 +49,7 @@ describe('CommunityRegistrationService', () => {
           userName: 'testbed',
           firstName: 'Tabia',
           lastName: 'Testbed',
-          email: 'tabia.testbed@skoop.io',
-          coach: false,
+          email: 'tabia.testbed@skoop.io'
         },
         approvedByUser: false,
         approvedByCommunity: true
@@ -83,8 +81,7 @@ describe('CommunityRegistrationService', () => {
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
+        email: 'tina.testing@skoop.io'
       },
       approvedByUser: false,
       approvedByCommunity: true

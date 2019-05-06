@@ -116,15 +116,6 @@
           </div>
         </div>
         <mat-divider></mat-divider>
-        <div class="user-profile-settings-section">
-          <p class="user-profile-settings-explanation">By enabling the following option you agree that other users can
-            find you as a potential coach for specific skills you have in your profile.</p>
-          <mat-checkbox formControlName="coach">I agree to be shown as coach to other users</mat-checkbox>
-        </div>
-        <div class="user-profile-testimonials-section">
-
-        </div>
-        <mat-divider></mat-divider>
         <div class="user-profile-actions">
           <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="saveUserDetails()">Save user
             details
@@ -163,36 +154,6 @@
         Permissions
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <div class="user-profile-settings-section">
-      <p class="user-profile-settings-explanation">All users listed in the following field will be able to view your
-        relationships to skills including the corresponding levels and priorities.</p>
-      <mat-form-field class="user-profile-form-field">
-        <mat-chip-list #authorizedUsersChipList>
-          <mat-chip *ngFor="let authorizedUser of authorizedUsers"
-                    selectable="true" removable="true"
-                    (removed)="onAuthorizedUserRemoved(authorizedUser)">
-            {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
-            <mat-icon matChipRemove>cancel</mat-icon>
-          </mat-chip>
-          <input placeholder="Users authorized to view my skills" #authorizedUsersInput
-                 [formControl]="authorizedUsersControl"
-                 [matAutocomplete]="authorizedUsersAutocomplete"
-                 [matChipInputFor]="authorizedUsersChipList"
-                 matChipInputAddOnBlur="true">
-        </mat-chip-list>
-        <mat-autocomplete #authorizedUsersAutocomplete="matAutocomplete"
-                          (optionSelected)="onAuthorizedUserSuggestionSelected($event)">
-          <mat-option *ngFor="let authorizedUser of authorizedUserSuggestions$ | async" [value]="authorizedUser">
-            {{ authorizedUser.firstName }} {{ authorizedUser.lastName }} ({{ authorizedUser.userName }})
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-    </div>
-    <mat-divider></mat-divider>
-    <div class="user-profile-actions">
-      <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save
-        permissions
-      </button>
-    </div>
+    <app-permissions [savingInProgress]="savingInProgress"></app-permissions>
   </mat-expansion-panel>
 </div>

@@ -1,0 +1,33 @@
+<div class="permissions-settings-section">
+  <div *ngIf="errorMessage" class="permissions-error">{{ errorMessage }}</div>
+  <p class="permissions-settings-explanation">All users listed in the following field will be able to view your
+    relationships to skills including the corresponding levels and priorities.</p>
+  <app-authorized-users-select [users]="authorizedSkillsUsers" [placeholder]="'Users authorized to view my skills'"></app-authorized-users-select>
+  <div class="permissions-allow-all">
+    <mat-checkbox [formControl]="allowAllToViewSkills">Allow my skills to be shown to all users</mat-checkbox>
+  </div>
+</div>
+<mat-divider></mat-divider>
+
+<div class="permissions-settings-section">
+  <p class="permissions-settings-explanation">All users listed in the following field will be able to view your
+    personal information.</p>
+  <app-authorized-users-select [users]="authorizedProfileUsers" [placeholder]="'Users authorized to view my profile'"></app-authorized-users-select>
+  <div class="permissions-allow-all">
+    <mat-checkbox [formControl]="allowAllToViewProfile">Allow my profile to be shown to all users</mat-checkbox>
+  </div>
+</div>
+<mat-divider></mat-divider>
+
+<div class="permissions-settings-section">
+  <p class="permissions-settings-explanation">By enabling the following option you agree that other users can
+    find you as a potential coach for specific skills you have in your profile.</p>
+  <mat-checkbox [formControl]="allowToBeCoach">I agree to be shown as coach to other users</mat-checkbox>
+</div>
+
+<mat-divider></mat-divider>
+<div class="permissions-actions">
+  <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save
+    permissions
+  </button>
+</div>

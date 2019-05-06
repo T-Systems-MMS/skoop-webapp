@@ -1,14 +1,11 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
-import { Observable } from 'rxjs';
+import { MatAutocomplete, MatChipInputEvent } from '@angular/material';
 import { finalize } from 'rxjs/operators';
-import { switchMap, filter, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { UserPermissionScope } from './user-permission-scope';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { UserRequest } from './user-request';
 
@@ -19,9 +16,7 @@ import { UserRequest } from './user-request';
 })
 export class UserProfileComponent implements OnInit {
   userForm: FormGroup = null;
-  authorizedUsers: User[] = [];
-  authorizedUsersControl = new FormControl();
-  authorizedUserSuggestions$: Observable<User[]>;
+
   errorMessage: string = null;
   dataAvailable = false;
 
@@ -32,7 +27,6 @@ export class UserProfileComponent implements OnInit {
   elemAddOnBlur = false;
   elemSeparatorKeysCodes = [ENTER, COMMA];
 
-  @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
   @ViewChild('authorizedUsersAutocomplete') matAutocomplete: MatAutocomplete;
 
   constructor(private usersService: UsersService,
@@ -50,20 +44,12 @@ export class UserProfileComponent implements OnInit {
       industrySectors: new FormControl([]),
       specializations: new FormControl([]),
       certificates: new FormControl([]),
-      languages: new FormControl([]),
-      coach: new FormControl(),
+      languages: new FormControl([])
     });
-    this.authorizedUserSuggestions$ = this.authorizedUsersControl.valueChanges.pipe(
-      filter(search => typeof search === 'string'),
-      debounceTime(500),
-      distinctUntilChanged(),
-      switchMap(search => this.usersService.getUserSuggestions(search))
-    );
   }
 
   ngOnInit(): void {
     this.loadUser();
-    this.loadAuthorizedUsers();
   }
 
   private loadUser(): void {
@@ -71,17 +57,6 @@ export class UserProfileComponent implements OnInit {
       .subscribe(user => {
         this.updateUserForm(user);
         this.dataAvailable = true;
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
-      });
-  }
-
-  private loadAuthorizedUsers(): void {
-    this.usersService.getAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS)
-      .subscribe(authorizedUsers => {
-        this.authorizedUsers = authorizedUsers;
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772
@@ -101,22 +76,8 @@ export class UserProfileComponent implements OnInit {
       industrySectors: user.industrySectors || [],
       specializations: user.specializations || [],
       certificates: user.certificates || [],
-      languages: user.languages || [],
-      coach: user.coach,
+      languages: user.languages || []
     });
-  }
-
-  onAuthorizedUserSuggestionSelected(event: MatAutocompleteSelectedEvent): void {
-    this.authorizedUsers.push(event.option.value);
-    this.authorizedUsersInput.nativeElement.value = '';
-    this.authorizedUsersControl.setValue(null);
-  }
-
-  onAuthorizedUserRemoved(user: User): void {
-    const index = this.authorizedUsers.indexOf(user);
-    if (index >= 0) {
-      this.authorizedUsers.splice(index, 1);
-    }
   }
 
   saveUserDetails() {
@@ -138,24 +99,6 @@ export class UserProfileComponent implements OnInit {
         this.changeDetector.markForCheck();
       }
     );
-  }
-
-  savePermissions() {
-    this.savingInProgress = true;
-    this.usersService.updateAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS, this.authorizedUsers)
-      .pipe(
-        finalize( () => {
-            this.savingInProgress = false;
-          }
-        )
-      )
-      .subscribe(authorizedUsers => {
-        this.authorizedUsers = authorizedUsers;
-      }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
-      });
   }
 
   addElem(event: MatChipInputEvent, arr: string[]) {
@@ -185,8 +128,7 @@ export class UserProfileComponent implements OnInit {
       industrySectors: this.industrySectorsArray,
       specializations: this.specializationsArray,
       certificates: this.certificatesArray,
-      languages: this.languagesArray,
-      coach: this.userForm.get('coach').value
+      languages: this.languagesArray
     } as UserRequest;
   }
 

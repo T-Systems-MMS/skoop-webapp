@@ -7,5 +7,4 @@ export interface UserRequest {
   specializations?: string[];
   certificates?: string[];
   languages?: string[];
-  coach?: boolean;
 }

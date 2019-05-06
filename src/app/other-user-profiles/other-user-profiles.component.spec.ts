@@ -18,16 +18,14 @@ const permissionOwners: User[] = [
     userName: 'fius',
     firstName: 'first',
     lastName: 'user',
-    email: 'first.user@skoop.io',
-    coach: true,
+    email: 'first.user@skoop.io'
   },
   {
     id: '666808eb-b6bd-447d-8dce-3e0d66b17666',
     userName: 'seus',
     firstName: 'second',
     lastName: 'user',
-    email: 'second.user@skoop.io',
-    coach: true,
+    email: 'second.user@skoop.io'
   }
 ];
 

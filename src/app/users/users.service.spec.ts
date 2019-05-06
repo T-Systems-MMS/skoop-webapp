@@ -9,6 +9,9 @@ import { UserPermission } from './user-permission';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
 import { UserRequest } from './user-request';
+import { GlobalUserPermission } from '../permissions/global-user-permission';
+import { GlobalUserPermissionResponse } from '../permissions/global-user-permission-response';
+import { UserPermissionRequest } from '../permissions/user-permission-request';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -31,8 +34,7 @@ const userRequestData: UserRequest = {
   industrySectors: ['sector1', 'sector2', 'sector3'],
   specializations: ['specialization1, specialization2, specialization3'],
   certificates: ['certificate1', 'certificate2', 'certificate3'],
-  languages: ['language1', 'language2', 'language2'],
-  coach: true
+  languages: ['language1', 'language2', 'language2']
 };
 
 describe('UsersService', () => {
@@ -68,8 +70,7 @@ describe('UsersService', () => {
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@skoop.io',
-      coach: true,
+      email: 'toni.tester@skoop.io'
     };
 
     service.getUser().subscribe(user => {
@@ -91,8 +92,7 @@ describe('UsersService', () => {
       userName: 'tester',
       firstName: 'Toni',
       lastName: 'Tester',
-      email: 'toni.tester@skoop.io',
-      coach: true,
+      email: 'toni.tester@skoop.io'
     };
 
     service.getUserById('e6b808eb-b6bd-447d-8dce-3e0d66b17759').subscribe(user => {
@@ -121,8 +121,7 @@ describe('UsersService', () => {
       industrySectors: ['sector1', 'sector2', 'sector3'],
       specializations: ['specialization1', 'specialization2', 'specialization3'],
       certificates: ['certificate1', 'certificate2', 'certificate3'],
-      languages: ['language1', 'language2', 'language2'],
-      coach: true,
+      languages: ['language1', 'language2', 'language2']
     };
 
     service.updateUser(userRequestData).subscribe(user => {
@@ -148,16 +147,14 @@ describe('UsersService', () => {
         userName: 'tester',
         firstName: 'Toni',
         lastName: 'Tester',
-        email: 'toni.tester@skoop.io',
-        coach: true,
+        email: 'toni.tester@skoop.io'
       },
       {
         id: '753cf4d3-863c-475d-8631-e68dffd1af2f',
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
+        email: 'tina.testing@skoop.io'
       }
     ];
 
@@ -183,16 +180,14 @@ describe('UsersService', () => {
         userName: 'testing',
         firstName: 'Tina',
         lastName: 'Testing',
-        email: 'tina.testing@skoop.io',
-        coach: false,
+        email: 'tina.testing@skoop.io'
       },
       {
         id: '95470c7b-bf76-412a-b747-4448f4e11cc3',
         userName: 'testbed',
         firstName: 'Tabia',
         lastName: 'Testbed',
-        email: 'tabia.testbed@skoop.io',
-        coach: true,
+        email: 'tabia.testbed@skoop.io'
       }
     ];
     const testPermissions: UserPermission[] = [
@@ -202,16 +197,15 @@ describe('UsersService', () => {
           userName: 'tester',
           firstName: 'Toni',
           lastName: 'Tester',
-          email: 'toni.tester@skoop.io',
-          coach: true,
+          email: 'toni.tester@skoop.io'
         },
         scope: UserPermissionScope.READ_USER_SKILLS,
         authorizedUsers: testUsers,
       }
     ];
 
-    service.getAuthorizedUsers(UserPermissionScope.READ_USER_SKILLS).subscribe((users) => {
-      expect(users).toEqual(testUsers);
+    service.getPermissions().subscribe((permissions) => {
+      expect(permissions).toEqual(testPermissions);
     });
 
     const request = httpTestingController.expectOne({
@@ -231,16 +225,14 @@ describe('UsersService', () => {
         userName: 'owner1',
         firstName: 'first',
         lastName: 'owner',
-        email: 'first.owner@skoop.io',
-        coach: true,
+        email: 'first.owner@skoop.io'
       },
       {
         id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
         userName: 'owner2',
         firstName: 'second',
         lastName: 'owner',
-        email: 'second.owner@skoop.io',
-        coach: true,
+        email: 'second.owner@skoop.io'
       }
     ];
     const testPermissions: UserPermission[] = [
@@ -268,5 +260,144 @@ describe('UsersService', () => {
     expect(request.request.responseType).toEqual('json');
 
     request.flush(testPermissions);
+  }));
+
+  it('should update list of users who have granted permission to the currently authenticated user', async(() => {
+    const users: User[] = [
+      {
+        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+        userName: 'owner1',
+        firstName: 'first',
+        lastName: 'owner',
+        email: 'first.owner@skoop.io'
+      },
+      {
+        id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+        userName: 'owner2',
+        firstName: 'second',
+        lastName: 'owner',
+        email: 'second.owner@skoop.io'
+      }
+    ];
+    const userPermissionRequests: UserPermissionRequest[] = [
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        authorizedUserIds: [users[0].id, users[1].id],
+      },
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        authorizedUserIds: [users[0].id, users[1].id],
+      }
+    ];
+    const expectedPermissions: UserPermission[] = [
+      {
+        owner: users[0],
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        authorizedUsers: users,
+      },
+      {
+        owner: users[0],
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        authorizedUsers: users,
+      }
+    ];
+
+    service.updatePermissions(userPermissionRequests).subscribe((permissions) => {
+      expect(permissions).toEqual(expectedPermissions);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/outbound-permissions`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(expectedPermissions);
+  }));
+
+  it('should provide list of global user permissions', async(() => {
+    const expectedPermissions: GlobalUserPermissionResponse[] = [
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
+      },
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
+      }
+    ];
+
+    service.getGlobalUserPermissions().subscribe((permissions) => {
+      expect(permissions).toEqual(expectedPermissions);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/global-permissions`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(expectedPermissions);
+  }));
+
+  it('should update list of global user permissions', async(() => {
+    const globalPermissionsRequest: GlobalUserPermission[] = [
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE
+      },
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS
+      }
+    ];
+
+    const expectedPermissions: GlobalUserPermissionResponse[] = [
+      {
+        scope: UserPermissionScope.READ_USER_PROFILE,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
+      },
+      {
+        scope: UserPermissionScope.READ_USER_SKILLS,
+        owner: {
+          id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+          userName: 'owner2',
+          firstName: 'second',
+          lastName: 'owner',
+          email: 'second.owner@skoop.io'
+        }
+      }
+    ];
+
+    service.updateGlobalUserPermissions(globalPermissionsRequest).subscribe((permissions) => {
+      expect(permissions).toEqual(expectedPermissions);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/global-permissions`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(expectedPermissions);
   }));
 });
