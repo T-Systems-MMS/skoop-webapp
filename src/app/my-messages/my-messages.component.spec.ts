@@ -23,6 +23,7 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
 import { CommunityRole } from '../communities/community-role.enum';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { TemplateLoaderService } from '../shared/template-loader.service';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -185,6 +186,11 @@ const expectedNotifications: any[] = [
     },
     communityDetails: ['NAME', 'TYPE', 'DESCRIPTION', 'SKILLS', 'LINKS']
   }),
+  Util.createNotificationInstance({
+    type: NotificationType.USER_WELCOME_NOTIFICATION,
+    id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
+    creationDatetime: new Date()
+  }),
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -231,6 +237,11 @@ describe('MyMessagesComponent', () => {
             'getUserIdentity': of(authenticatedUser)
           })
         },
+        {
+          provide: TemplateLoaderService, useValue: jasmine.createSpyObj('templateLoader', {
+            'loadTemplate': of('some html text')
+          })
+        },
         NotificationCounterService
       ]
     })
@@ -256,7 +267,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(8);
+    expect(notificationCards.length).toBe(9);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {

@@ -14,6 +14,8 @@ import { Util } from '../util/util';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { switchMap } from 'rxjs/operators';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
+import { TemplateLoaderService } from '../shared/template-loader.service';
 
 @Component({
   selector: 'app-my-messages',
@@ -30,6 +32,7 @@ export class MyMessagesComponent implements OnInit {
               private messageService: MessagesService,
               private userIdentityService: UserIdentityService,
               private notificationCounterService: NotificationCounterService,
+              private templateLoader: TemplateLoaderService,
               public dialog: MatDialog,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -101,6 +104,20 @@ export class MyMessagesComponent implements OnInit {
           });
       }
     });
+  }
+
+  openWelcomeNotificationDialog() {
+    this.templateLoader.loadTemplate('/assets/templates/welcome-notification.html')
+      .subscribe(html => {
+        this.dialog.open(InfoDialogComponent, {
+          width: '550px',
+          data: {
+            message: html
+          }
+        });
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 
   private buildAcceptanceRequest<T extends AbstractNotification>(notification: T, isAccepted: boolean) {
