@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 
 import { TemplateLoaderService } from './template-loader.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -25,4 +25,21 @@ describe('TemplateLoaderService', () => {
   it('should be created', () => {
     expect(templateLoaderService).toBeTruthy();
   });
+
+  it('should send request to load html template', async(() => {
+    const htmlTemplate = '<div>Some text</div>';
+    const path = '/some/path/to.html';
+    templateLoaderService.loadTemplate(path).subscribe(html => {
+      expect(html).toBe(htmlTemplate);
+    });
+
+    const request = httpTestingController.expectOne((req) =>
+      req.method === 'GET'
+    );
+
+    expect(request.request.url).toEqual(path);
+    expect(request.request.responseType).toEqual('text');
+
+    request.flush(htmlTemplate);
+  }));
 });

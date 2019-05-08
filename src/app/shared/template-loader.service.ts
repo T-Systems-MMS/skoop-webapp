@@ -11,6 +11,6 @@ export class TemplateLoaderService {
   }
 
   loadTemplate(path: string): Observable<string> {
-    return this.httpClient.get(path, {responseType: "text"});
+    return this.httpClient.get(path, {responseType: 'text'});
   }
 }
