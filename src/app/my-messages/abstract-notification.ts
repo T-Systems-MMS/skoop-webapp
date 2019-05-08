@@ -41,4 +41,8 @@ export abstract class AbstractNotification {
     return this.type === NotificationType.MEMBER_LEFT_COMMUNITY;
   }
 
+  hasUserWelcomeNotificationType(): boolean {
+    return this.type === NotificationType.USER_WELCOME_NOTIFICATION;
+  }
+
 }
