@@ -8,6 +8,7 @@ import { UsersService } from './users.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { UserRequest } from './user-request';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -32,6 +33,7 @@ export class UserProfileComponent implements OnInit {
   constructor(private usersService: UsersService,
     private formBuilder: FormBuilder,
     private changeDetector: ChangeDetectorRef,
+    private popupNotificationService: PopupNotificationService,
     private globalErrorHandlerService: GlobalErrorHandlerService) {
     this.userForm = this.formBuilder.group({
       userName: new FormControl(),
@@ -92,6 +94,7 @@ export class UserProfileComponent implements OnInit {
       .subscribe(
       user => {
         this.updateUserForm(user);
+        this.popupNotificationService.showSuccessMessage('User profile was saved successfully');
       },
       (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);

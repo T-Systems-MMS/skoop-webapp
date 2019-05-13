@@ -14,6 +14,7 @@ import { UsersService } from './users.service';
 import { User } from './user';
 import { UserRequest } from './user-request';
 import { ENTER } from '@angular/cdk/keycodes';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-testimonials',
@@ -90,6 +91,10 @@ describe('UserProfileComponent', () => {
             )
           })
         },
+        {
+          provide: PopupNotificationService,
+          useValue: jasmine.createSpyObj('popupNotificationService', {'showSuccessMessage': of<void>()})
+        }
       ]
     }).compileComponents();
   }));

@@ -6,7 +6,7 @@ import { MatSnackBar } from '@angular/material';
 })
 export class PopupNotificationService {
 
-  constructor(public snackBar: MatSnackBar) {
+  constructor(private snackBar: MatSnackBar) {
   }
 
   showSuccessMessage(message: string) {

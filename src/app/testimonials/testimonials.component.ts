@@ -10,6 +10,7 @@ import { catchError, filter } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { TestimonialsEditComponent } from './testimonials-edit.component';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-testimonials',
@@ -23,6 +24,7 @@ export class TestimonialsComponent implements OnInit {
 
   constructor(private testimonialService: TestimonialService,
               public dialog: MatDialog,
+              private popupNotificationService: PopupNotificationService,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               private bottomSheet: MatBottomSheet) {
@@ -37,6 +39,7 @@ export class TestimonialsComponent implements OnInit {
       .afterDismissed().subscribe((testimonial: Testimonial) => {
       if (testimonial) {
         this.loadTestimonials();
+        this.popupNotificationService.showSuccessMessage('A new testimonial was created successfully');
       }
     });
   }
@@ -49,7 +52,10 @@ export class TestimonialsComponent implements OnInit {
         comment: testimonial.comment,
         skills: testimonial.skills
       }
-    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadTestimonials());
+    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => {
+      this.loadTestimonials();
+      this.popupNotificationService.showSuccessMessage('The testimonial was updated successfully');
+    });
   }
 
   delete(testimonial: TestimonialResponse) {
@@ -62,6 +68,7 @@ export class TestimonialsComponent implements OnInit {
         this.testimonialService.deleteTestimonial(testimonial.id)
           .subscribe(() => {
             this.loadTestimonials();
+            this.popupNotificationService.showSuccessMessage('The testimonial was deleted successfully');
           }, (errorResponse: HttpErrorResponse) => {
             this.handleErrorResponse(errorResponse);
           });
