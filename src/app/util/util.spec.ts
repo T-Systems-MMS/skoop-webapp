@@ -11,6 +11,7 @@ import { JoinCommunityRequestNotification } from '../my-messages/join-community-
 import { MemberKickedOutNotification } from '../my-messages/member-kicked-out-notification';
 import { MemberLeftCommunityNotification } from '../my-messages/member-left-community-notification';
 import { Publication } from '../publications/publication';
+import { UserWelcomeNotification } from '../my-messages/user-welcome-notification';
 
 describe('Util', () => {
   beforeEach(() => {
@@ -121,6 +122,8 @@ describe('Util', () => {
           instanceof MemberKickedOutNotification).toBeTruthy();
         expect(Util.createNotificationInstance({type: NotificationType.MEMBER_LEFT_COMMUNITY})
           instanceof MemberLeftCommunityNotification).toBeTruthy();
+        expect(Util.createNotificationInstance({type: NotificationType.USER_WELCOME_NOTIFICATION})
+          instanceof UserWelcomeNotification).toBeTruthy();
       });
   });
 

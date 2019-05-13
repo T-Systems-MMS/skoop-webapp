@@ -12,6 +12,7 @@ import { JoinCommunityRequestNotification } from '../my-messages/join-community-
 import { MemberKickedOutNotification } from '../my-messages/member-kicked-out-notification';
 import { MemberLeftCommunityNotification } from '../my-messages/member-left-community-notification';
 import { Publication } from '../publications/publication';
+import { UserWelcomeNotification } from '../my-messages/user-welcome-notification';
 
 export class Util {
 
@@ -83,6 +84,8 @@ export class Util {
         return Object.assign(new MemberKickedOutNotification(), notification);
       case NotificationType.MEMBER_LEFT_COMMUNITY:
         return Object.assign(new MemberLeftCommunityNotification(), notification);
+      case NotificationType.USER_WELCOME_NOTIFICATION:
+        return Object.assign(new UserWelcomeNotification(), notification);
       default:
         return null;
     }

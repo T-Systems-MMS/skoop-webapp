@@ -23,6 +23,8 @@ import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
 import { CommunityRole } from '../communities/community-role.enum';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { TemplateLoaderService } from '../shared/template-loader.service';
+import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -185,6 +187,11 @@ const expectedNotifications: any[] = [
     },
     communityDetails: ['NAME', 'TYPE', 'DESCRIPTION', 'SKILLS', 'LINKS']
   }),
+  Util.createNotificationInstance({
+    type: NotificationType.USER_WELCOME_NOTIFICATION,
+    id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
+    creationDatetime: new Date()
+  }),
 ];
 
 const registrationResponse: CommunityUserRegistrationResponse = {
@@ -213,7 +220,7 @@ describe('MyMessagesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ MyMessagesComponent, DeleteConfirmationDialogComponent ],
+      declarations: [ MyMessagesComponent, DeleteConfirmationDialogComponent, InfoDialogComponent ],
       providers: [
         GlobalErrorHandlerService,
         {
@@ -231,12 +238,17 @@ describe('MyMessagesComponent', () => {
             'getUserIdentity': of(authenticatedUser)
           })
         },
+        {
+          provide: TemplateLoaderService, useValue: jasmine.createSpyObj('templateLoaderService', {
+            'loadTemplate': of('some html text')
+          })
+        },
         NotificationCounterService
       ]
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [DeleteConfirmationDialogComponent]
+          entryComponents: [DeleteConfirmationDialogComponent, InfoDialogComponent]
         }
       })
     .compileComponents();
@@ -256,7 +268,7 @@ describe('MyMessagesComponent', () => {
     fixture.detectChanges();
     const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
 
-    expect(notificationCards.length).toBe(8);
+    expect(notificationCards.length).toBe(9);
   }));
 
   it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
@@ -467,6 +479,28 @@ describe('MyMessagesComponent', () => {
     communityName = communityRow.nativeElement.innerText;
     expect(communityName).toBeDefined();
     expect(communityName).toBe(expectedNotifications[7].communityName);
+  }));
+
+  it('should contain link to open welcome-notification information', fakeAsync(() => {
+    fixture.detectChanges();
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const linkElem = notificationCards[8].query(By.css('div a'));
+    expect(linkElem).not.toBeNull();
+  }));
+
+  it('should load html template and open welcome notification dialog on link click', fakeAsync(() => {
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const linkElem = notificationCards[8].query(By.css('div a'));
+    linkElem.nativeElement.click();
+
+    fixture.whenStable().then(() => {
+      const templateLoader: TemplateLoaderService = TestBed.get(TemplateLoaderService);
+      expect(templateLoader.loadTemplate).toHaveBeenCalled();
+
+      const matDialog: MatDialog = TestBed.get(MatDialog);
+      expect(matDialog.openDialogs.length).toBe(1);
+      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
+    });
   }));
 
   function getCommunityInformation(notificationCard: DebugElement): DebugElement {

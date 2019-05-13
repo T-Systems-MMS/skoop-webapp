@@ -13,7 +13,7 @@
           <div class="messages-description-label">Date:</div>
           <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
         </div>
-        <div fxLayout="row" class="messages-community-information">
+        <div *ngIf="!notification.hasUserWelcomeNotificationType()" fxLayout="row" class="messages-community-information">
           <div class="messages-description-label">Community:</div>
           <div *ngIf="notification.hasJoinCommunityType() || notification.hasCommunityInvitationType() || notification.hasAcceptanceToCommunityType()">
             <div *ngIf="notification.registration.community; then registration_community_link; else community_name"></div>
@@ -58,6 +58,10 @@
           <ng-template #community_details_without_link>
             <strong>{{notification.communityName}}</strong>&nbsp;{{notification.getMessageText()}}
           </ng-template>
+        </div>
+        <div fxLayout="row" *ngIf="notification.hasUserWelcomeNotificationType()">
+          <div class="messages-description-label">Message:</div>
+          <div>Welcome to SKOOP. Click <a href="javascript:;" (click)="openWelcomeNotificationDialog()">here</a> to get more info about the system.</div>
         </div>
       </div>
       <div fxFlex="none">
