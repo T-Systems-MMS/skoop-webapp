@@ -9,6 +9,7 @@ import { UserPermissionRequest } from './user-permission-request';
 import { UserPermission } from '../users/user-permission';
 import { FormControl } from '@angular/forms';
 import { GlobalUserPermission } from './global-user-permission';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-permissions',
@@ -31,7 +32,8 @@ export class PermissionsComponent implements OnInit {
 
   constructor(private usersService: UsersService,
               private changeDetector: ChangeDetectorRef,
-              private globalErrorHandlerService: GlobalErrorHandlerService) {
+              private globalErrorHandlerService: GlobalErrorHandlerService,
+              private popupNotificationService: PopupNotificationService) {
 
   }
 
@@ -64,6 +66,7 @@ export class PermissionsComponent implements OnInit {
             this.savingUsersPermissionInProgress = false;
             if (!this.savingGlobalPermissionInProgress && !this.savingUsersPermissionInProgress) {
               this.savingInProgress = false;
+              this.popupNotificationService.showSuccessMessage('Permissions were saved successfully');
             }
           }
         )
@@ -94,6 +97,7 @@ export class PermissionsComponent implements OnInit {
             this.savingGlobalPermissionInProgress = false;
             if (!this.savingGlobalPermissionInProgress && !this.savingUsersPermissionInProgress) {
               this.savingInProgress = false;
+              this.popupNotificationService.showSuccessMessage('Permissions were saved successfully');
             }
           }
         )

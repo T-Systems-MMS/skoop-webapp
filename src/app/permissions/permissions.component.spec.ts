@@ -16,6 +16,7 @@ import { UserPermission } from '../users/user-permission';
 import { UserPermissionRequest } from './user-permission-request';
 import { GlobalUserPermission } from './global-user-permission';
 import { GlobalUserPermissionResponse } from './global-user-permission-response';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 const authorizedUsers: User[] = [
   {
@@ -114,6 +115,10 @@ describe('PermissionsComponent', () => {
             'getGlobalUserPermissions': of<GlobalUserPermissionResponse[]>(globalPermissions),
             'updateGlobalUserPermissions': of<GlobalUserPermissionResponse[]>(globalPermissions)
           })
+        },
+        {
+          provide: PopupNotificationService,
+          useValue: jasmine.createSpyObj('popupNotificationService', {'showSuccessMessage': of<void>()})
         }
       ]
     })
