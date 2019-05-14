@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
+import { PopupNotificationClassName } from './popup-notification-class-name.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -10,18 +11,18 @@ export class PopupNotificationService {
   }
 
   showSuccessMessage(message: string) {
-    this.openSnackBar(message, 'success-notification');
+    this.openSnackBar(message, PopupNotificationClassName.SUCCESS);
   }
 
   showWarningMessage(message: string) {
-    this.openSnackBar(message, 'warning-notification');
+    this.openSnackBar(message, PopupNotificationClassName.WARNING);
   }
 
   showErrorMessage(message: string) {
-    this.openSnackBar(message, 'error-notification');
+    this.openSnackBar(message, PopupNotificationClassName.ERROR);
   }
 
-  private openSnackBar(message: string, className: string) {
+  private openSnackBar(message: string, className: PopupNotificationClassName) {
     this.snackBar.open(message, '', {
       duration: 5000,
       panelClass: [className],
