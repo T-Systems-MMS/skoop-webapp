@@ -18,6 +18,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { of } from 'rxjs';
 import { PublicationResponse } from './publication-response';
 import { By } from '@angular/platform-browser';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -76,6 +77,10 @@ describe('PublicationsComponent', () => {
         {
           provide: PublicationService,
           useValue: jasmine.createSpyObj('publicationService', {'getPublications': of(publications)})
+        },
+        {
+          provide: PopupNotificationService,
+          useValue: jasmine.createSpyObj('popupNotificationService', {'showSuccessMessage': of<void>()})
         }
       ]
     })

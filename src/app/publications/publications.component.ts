@@ -9,6 +9,7 @@ import { Observable, of } from 'rxjs';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { PublicationsEditComponent } from './publications-edit.component';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-publications',
@@ -22,6 +23,7 @@ export class PublicationsComponent implements OnInit {
 
   constructor(private publicationService: PublicationService,
               public dialog: MatDialog,
+              private popupNotificationService: PopupNotificationService,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               private bottomSheet: MatBottomSheet) {
@@ -36,6 +38,7 @@ export class PublicationsComponent implements OnInit {
       .afterDismissed().subscribe((publication: PublicationResponse) => {
       if (publication) {
         this.loadPublications();
+        this.popupNotificationService.showSuccessMessage('A new publication was created successfully');
       }
     });
   }
@@ -43,7 +46,10 @@ export class PublicationsComponent implements OnInit {
   openEditDialog(publication: PublicationResponse) {
     this.bottomSheet.open(PublicationsEditComponent, {
       data: Object.assign({}, publication)
-    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadPublications());
+    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => {
+      this.loadPublications();
+      this.popupNotificationService.showSuccessMessage('The publication was updated successfully');
+    });
   }
 
   delete(publication: PublicationResponse) {
@@ -56,6 +62,7 @@ export class PublicationsComponent implements OnInit {
         this.publicationService.deletePublication(publication.id)
           .subscribe(() => {
             this.loadPublications();
+            this.popupNotificationService.showSuccessMessage('The publication was deleted successfully');
           }, (errorResponse: HttpErrorResponse) => {
             this.handleErrorResponse(errorResponse);
           });

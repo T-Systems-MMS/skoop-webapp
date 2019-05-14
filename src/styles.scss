@@ -2,3 +2,18 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: 'Roboto', sans-serif; }
+
+.success-notification {
+  background: #C8E6C9;
+  color: #000000;
+}
+
+.warning-notification {
+  background: #F0F4C3;
+  color: #000000;
+}
+
+.error-notification {
+  background: #FFCDD2;
+  color: #000000;
+}

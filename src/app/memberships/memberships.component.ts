@@ -9,6 +9,7 @@ import { catchError, filter } from 'rxjs/operators';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MembershipsEditComponent } from './memberships-edit.component';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-memberships',
@@ -22,6 +23,7 @@ export class MembershipsComponent implements OnInit {
 
   constructor(private membershipService: MembershipService,
               public dialog: MatDialog,
+              private popupNotificationService: PopupNotificationService,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService,
               private bottomSheet: MatBottomSheet) {
@@ -36,6 +38,7 @@ export class MembershipsComponent implements OnInit {
       .afterDismissed().subscribe((membership: MembershipResponse) => {
       if (membership) {
         this.loadMemberships();
+        this.popupNotificationService.showSuccessMessage('A new membership was created successfully');
       }
     });
   }
@@ -43,7 +46,10 @@ export class MembershipsComponent implements OnInit {
   openEditDialog(membership: MembershipResponse) {
     this.bottomSheet.open(MembershipsEditComponent, {
       data: Object.assign({}, membership)
-    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadMemberships());
+    }).afterDismissed().pipe(filter(Boolean)).subscribe(() => {
+      this.loadMemberships();
+      this.popupNotificationService.showSuccessMessage('The membership was updated successfully');
+    });
   }
 
   delete(membership: MembershipResponse) {
@@ -56,6 +62,7 @@ export class MembershipsComponent implements OnInit {
         this.membershipService.deleteMembership(membership.id)
           .subscribe(() => {
             this.loadMemberships();
+            this.popupNotificationService.showSuccessMessage('The membership was deleted successfully');
           }, (errorResponse: HttpErrorResponse) => {
             this.handleErrorResponse(errorResponse);
           });

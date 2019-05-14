@@ -18,6 +18,7 @@ import { MembershipService } from './membership.service';
 import { By } from '@angular/platform-browser';
 import { MatBottomSheet, MatDialog } from '@angular/material';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -74,6 +75,10 @@ describe('MembershipsComponent', () => {
         {
           provide: MembershipService,
           useValue: jasmine.createSpyObj('membershipService', {'getMemberships': of(membershipResponses)})
+        },
+        {
+          provide: PopupNotificationService,
+          useValue: jasmine.createSpyObj('popupNotificationService', {'showSuccessMessage': of<void>()})
         }
       ]
     })

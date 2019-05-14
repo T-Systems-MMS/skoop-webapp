@@ -17,6 +17,7 @@ import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/t
 import { TestimonialsEditComponent } from './testimonials-edit.component';
 import { TestimonialsNewComponent } from './testimonials-new.component';
 import { Component, Input } from '@angular/core';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 const testimonialsResponse: TestimonialResponse[] = [
   {
@@ -77,6 +78,10 @@ describe('TestimonialsComponent', () => {
         {
           provide: TestimonialService,
           useValue: jasmine.createSpyObj('testimonialService', {'getTestimonials': of(testimonialsResponse)})
+        },
+        {
+          provide: PopupNotificationService,
+          useValue: jasmine.createSpyObj('popupNotificationService', {'showSuccessMessage': of<void>()})
         }
       ]
     })
