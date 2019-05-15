@@ -14,7 +14,7 @@ export class AcceptanceToCommunityNotification extends AbstractCommunityNotifica
   }
 
   getCommunityInfo(): string {
-    return this.registration.community ?`<a href="/communities/${this.registration.community.id}">${this.registration.community.title}</a>`
+    return this.registration.community ? `<a href="/communities/${this.registration.community.id}">${this.registration.community.title}</a>`
       : this.communityName;
   }
 }

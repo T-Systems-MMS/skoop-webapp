@@ -26,7 +26,7 @@ export class JoinCommunityRequestNotification extends AbstractCommunityNotificat
   }
 
   getCommunityInfo(): string {
-    return this.registration.community ?`<a href="/communities/${this.registration.community.id}">${this.registration.community.title}</a>`
+    return this.registration.community ? `<a href="/communities/${this.registration.community.id}">${this.registration.community.title}</a>`
       : this.communityName;
   }
 

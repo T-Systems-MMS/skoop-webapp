@@ -9,7 +9,7 @@
   </div>
   <div fxLayout="row">
     <div class="messages-description-label">Community:</div>
-    <div [innerHTML]="notification.getCommunityInfo()"></div>
+    <div [innerHTML]="notification.getCommunityInfo()" class="messages-community-information"></div>
   </div>
   <div fxLayout="row" *ngIf="notification.hasJoinCommunityType() || notification.hasMemberLeftType()">
     <div class="messages-description-label">User:</div>
@@ -21,7 +21,7 @@
   </div>
   <div fxLayout="row">
     <div class="messages-description-label">Message:</div>
-    <div [innerHTML]="notification.getHtmlMessageText()"></div>
+    <div [innerHTML]="notification.getHtmlMessageText()" class="messages-notification-text"></div>
   </div>
 </div>
 <div fxFlex="none">

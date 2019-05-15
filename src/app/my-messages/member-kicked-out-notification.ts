@@ -14,7 +14,7 @@ export class MemberKickedOutNotification extends AbstractCommunityNotification {
   }
 
   getCommunityInfo(): string {
-    return this.community ?`<a href="/communities/${this.community.id}">${this.community.title}</a>`
+    return this.community ? `<a href="/communities/${this.community.id}">${this.community.title}</a>`
       : this.communityName;
   }
 }

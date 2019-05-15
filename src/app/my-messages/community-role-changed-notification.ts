@@ -13,7 +13,7 @@ export class CommunityRoleChangedNotification extends AbstractCommunityNotificat
     return `Your role was changed to ${this.role}`;
   }
 
-  getCommunityInfo(): string{
+  getCommunityInfo(): string {
     return this.communityName;
   }
 }
