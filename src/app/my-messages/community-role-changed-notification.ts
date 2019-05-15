@@ -1,4 +1,3 @@
-import { AbstractNotification } from './abstract-notification';
 import { CommunityRole } from '../communities/community-role.enum';
 import { AbstractCommunityNotification } from './abstract-community-notification';
 
@@ -10,15 +9,11 @@ export class CommunityRoleChangedNotification extends AbstractCommunityNotificat
     return 'The community role changed.';
   }
 
-  getMessageText(): string {
+  getHtmlMessageText(): string {
     return `Your role was changed to ${this.role}`;
   }
 
-  isToDoType(): boolean {
-    return false;
-  }
-
-  getHtmlMessageText(): string {
-    return '';
+  getCommunityInfo(): string{
+    return this.communityName;
   }
 }

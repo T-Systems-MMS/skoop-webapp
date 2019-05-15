@@ -1,4 +1,3 @@
-import { AbstractNotification } from './abstract-notification';
 import { AbstractCommunityNotification } from './abstract-community-notification';
 
 export class CommunityDeletedNotification extends AbstractCommunityNotification {
@@ -8,11 +7,11 @@ export class CommunityDeletedNotification extends AbstractCommunityNotification 
     return 'Deletion of a community';
   }
 
-  isToDoType(): boolean {
-    return false;
+  getHtmlMessageText(): string {
+    return 'Community was deleted';
   }
 
-  getHtmlMessageText(): string {
-    return '';
+  getCommunityInfo(): string {
+    return this.communityName;
   }
 }

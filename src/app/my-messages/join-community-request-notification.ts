@@ -1,4 +1,3 @@
-import { AbstractNotification } from './abstract-notification';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 import { AbstractCommunityNotification } from './abstract-community-notification';
 
@@ -18,15 +17,20 @@ export class JoinCommunityRequestNotification extends AbstractCommunityNotificat
     return 'Pending';
   }
 
-  isToDoType(): boolean {
-    return true;
-  }
-
   getTypeText(): string {
     return 'Request to join a community';
   }
 
   getHtmlMessageText(): string {
-    return '';
+    return 'Request to join a community';
+  }
+
+  getCommunityInfo(): string {
+    return this.registration.community ?`<a href="/communities/${this.registration.community.id}">${this.registration.community.title}</a>`
+      : this.communityName;
+  }
+
+  getUser(): string {
+    return `${this.registration.user.firstName} ${this.registration.user.lastName}`;
   }
 }

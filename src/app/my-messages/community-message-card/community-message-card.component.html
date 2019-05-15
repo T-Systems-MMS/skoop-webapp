@@ -1,3 +1,37 @@
-<p>
-  community-message-card works!
-</p>
+<div fxFlex>
+  <div fxLayout="row">
+    <div class="messages-description-label">Type:</div>
+    <div>{{notification.getTypeText()}}</div>
+  </div>
+  <div fxLayout="row">
+    <div class="messages-description-label">Date:</div>
+    <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
+  </div>
+  <div fxLayout="row">
+    <div class="messages-description-label">Community:</div>
+    <div [innerHTML]="notification.getCommunityInfo()"></div>
+  </div>
+  <div fxLayout="row" *ngIf="notification.hasJoinCommunityType() || notification.hasMemberLeftType()">
+    <div class="messages-description-label">User:</div>
+    <div>{{notification.getUser()}}</div>
+  </div>
+  <div fxLayout="row" *ngIf="hasJoinRequestType(notification)">
+    <div class="messages-description-label">Status:</div>
+    <div>{{notification.getStatusText()}}</div>
+  </div>
+  <div fxLayout="row">
+    <div class="messages-description-label">Message:</div>
+    <div [innerHTML]="notification.getHtmlMessageText()"></div>
+  </div>
+</div>
+<div fxFlex="none">
+  <ng-content select="[buttonContent]"></ng-content>
+  <span *ngIf="showAcceptDeclineButtons(notification)">
+    <button mat-icon-button (click)="onAccept(notification)" title="Accept" aria-label="Accept">
+      <mat-icon>done_outline</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onDecline(notification)" title="Decline" aria-label="Decline">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </span>
+</div>

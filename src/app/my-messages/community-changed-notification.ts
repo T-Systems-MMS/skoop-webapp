@@ -1,4 +1,3 @@
-import { AbstractNotification } from './abstract-notification';
 import { Community } from '../communities/community';
 import { CommunityDetails } from './community-details.enum';
 import { AbstractCommunityNotification } from './abstract-community-notification';
@@ -12,15 +11,17 @@ export class CommunityChangedNotification extends AbstractCommunityNotification 
     return 'Changes in the community details';
   }
 
-  isToDoType(): boolean {
-    return false;
-  }
-
-  getMessageText() {
+  private getChanges() {
     return `${this.communityDetails.map(item => CommunityDetails[item]).join(', ')} changed`;
   }
 
   getHtmlMessageText(): string {
-    return '';
+    return this.community ? `<a href="/communities/${this.community.id}">${this.community.title}</a> ${this.getChanges()}`
+      : `<strong>${this.communityName}</strong> ${this.getChanges()}`;
+  }
+
+  getCommunityInfo(): string {
+    return this.community ? `<a href="/communities/${this.community.id}">${this.community.title}</a>`
+      : this.communityName;
   }
 }

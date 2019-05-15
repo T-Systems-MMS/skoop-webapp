@@ -1,0 +1,5 @@
+@import "variables";
+
+.messages-description-label {
+  @extend %base-description-label;
+}

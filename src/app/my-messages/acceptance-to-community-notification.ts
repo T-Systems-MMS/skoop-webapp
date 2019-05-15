@@ -1,4 +1,3 @@
-import { AbstractNotification } from './abstract-notification';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 import { AbstractCommunityNotification } from './abstract-community-notification';
 
@@ -10,11 +9,12 @@ export class AcceptanceToCommunityNotification extends AbstractCommunityNotifica
     return 'Acceptance to a community';
   }
 
-  isToDoType(): boolean {
-    return false;
+  getHtmlMessageText(): string {
+    return 'Your request to community was accepted';
   }
 
-  getHtmlMessageText(): string {
-    return '';
+  getCommunityInfo(): string {
+    return this.registration.community ?`<a href="/communities/${this.registration.community.id}">${this.registration.community.title}</a>`
+      : this.communityName;
   }
 }
