@@ -16,6 +16,7 @@ import { switchMap } from 'rxjs/operators';
 import { NotificationCounterService } from '../shared/notification-counter.service';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { TemplateLoaderService } from '../shared/template-loader.service';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
 @Component({
   selector: 'app-my-messages',
@@ -79,11 +80,11 @@ export class MyMessagesComponent implements OnInit {
   }
 
   showDeleteButton<T extends AbstractNotification>(notification: T): boolean {
-    return !notification.isToDoType();
+    return !this.isToDoType(notification);
   }
 
   delete<T extends AbstractNotification>(notification: T) {
-    if (notification.isToDoType()) {
+    if (this.isToDoType(notification)) {
       throw new Error('Invalid type of notification to delete');
     }
 
@@ -164,6 +165,10 @@ export class MyMessagesComponent implements OnInit {
     this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
+  }
+
+  private isToDoType<T extends AbstractNotification>(notification: T): boolean {
+    return (notification instanceof AbstractCommunityNotification) && (notification.hasCommunityInvitationType() || notification.hasJoinCommunityType());
   }
 
 }

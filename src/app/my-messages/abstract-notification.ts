@@ -7,7 +7,7 @@ export abstract class AbstractNotification {
 
   abstract getTypeText(): string;
 
-  abstract isToDoType(): boolean;
+  abstract getHtmlMessageText(): string;
 
   hasAcceptanceToCommunityType(): boolean {
     return this.type === NotificationType.ACCEPTANCE_TO_COMMUNITY;

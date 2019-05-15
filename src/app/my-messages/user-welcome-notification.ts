@@ -6,7 +6,8 @@ export class UserWelcomeNotification extends AbstractNotification {
     return 'Welcome notification';
   }
 
-  isToDoType(): boolean {
-    return false;
+  getHtmlMessageText(): string {
+    return '';
   }
+
 }

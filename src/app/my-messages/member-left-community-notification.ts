@@ -1,8 +1,9 @@
 import { AbstractNotification } from './abstract-notification';
 import { Community } from '../communities/community';
 import { User } from '../users/user';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
-export class MemberLeftCommunityNotification extends AbstractNotification {
+export class MemberLeftCommunityNotification extends AbstractCommunityNotification {
   community: Community;
   communityName: string;
   user: User;
@@ -13,5 +14,9 @@ export class MemberLeftCommunityNotification extends AbstractNotification {
 
   isToDoType(): boolean {
     return false;
+  }
+
+  getHtmlMessageText(): string {
+    return '';
   }
 }

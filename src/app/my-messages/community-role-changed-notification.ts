@@ -1,7 +1,8 @@
 import { AbstractNotification } from './abstract-notification';
 import { CommunityRole } from '../communities/community-role.enum';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
-export class CommunityRoleChangedNotification extends AbstractNotification {
+export class CommunityRoleChangedNotification extends AbstractCommunityNotification {
   communityName: string;
   role: CommunityRole;
 
@@ -15,5 +16,9 @@ export class CommunityRoleChangedNotification extends AbstractNotification {
 
   isToDoType(): boolean {
     return false;
+  }
+
+  getHtmlMessageText(): string {
+    return '';
   }
 }

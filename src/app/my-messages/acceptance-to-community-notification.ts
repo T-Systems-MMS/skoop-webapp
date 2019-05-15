@@ -1,7 +1,8 @@
 import { AbstractNotification } from './abstract-notification';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
-export class AcceptanceToCommunityNotification extends AbstractNotification {
+export class AcceptanceToCommunityNotification extends AbstractCommunityNotification {
   registration: CommunityUserRegistrationResponse;
   communityName: string;
 
@@ -11,5 +12,9 @@ export class AcceptanceToCommunityNotification extends AbstractNotification {
 
   isToDoType(): boolean {
     return false;
+  }
+
+  getHtmlMessageText(): string {
+    return '';
   }
 }

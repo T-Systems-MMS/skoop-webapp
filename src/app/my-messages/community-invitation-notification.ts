@@ -1,7 +1,8 @@
 import { AbstractNotification } from './abstract-notification';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
-export class CommunityInvitationNotification extends AbstractNotification {
+export class CommunityInvitationNotification extends AbstractCommunityNotification {
   registration: CommunityUserRegistrationResponse;
   communityName: string;
 
@@ -23,5 +24,9 @@ export class CommunityInvitationNotification extends AbstractNotification {
 
   getTypeText(): string {
     return 'Invitation to a community';
+  }
+
+  getHtmlMessageText(): string {
+    return '';
   }
 }

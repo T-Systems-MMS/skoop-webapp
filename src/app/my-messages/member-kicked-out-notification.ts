@@ -1,7 +1,8 @@
 import { AbstractNotification } from './abstract-notification';
 import { Community } from '../communities/community';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
-export class MemberKickedOutNotification extends AbstractNotification {
+export class MemberKickedOutNotification extends AbstractCommunityNotification {
   community: Community;
   communityName: string;
 
@@ -11,5 +12,9 @@ export class MemberKickedOutNotification extends AbstractNotification {
 
   isToDoType(): boolean {
     return false;
+  }
+
+  getHtmlMessageText(): string {
+    return '';
   }
 }

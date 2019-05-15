@@ -1,6 +1,7 @@
 import { AbstractNotification } from './abstract-notification';
+import { AbstractCommunityNotification } from './abstract-community-notification';
 
-export class CommunityDeletedNotification extends AbstractNotification {
+export class CommunityDeletedNotification extends AbstractCommunityNotification {
   communityName: string;
 
   getTypeText(): string {
@@ -9,5 +10,9 @@ export class CommunityDeletedNotification extends AbstractNotification {
 
   isToDoType(): boolean {
     return false;
+  }
+
+  getHtmlMessageText(): string {
+    return '';
   }
 }
