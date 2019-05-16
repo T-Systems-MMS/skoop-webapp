@@ -1,17 +1,7 @@
 import * as moment from 'moment';
 import {Util} from './util';
 import { UserProject } from '../user-projects/user-project';
-import { NotificationType } from '../my-messages/notification-type.enum';
-import { AcceptanceToCommunityNotification } from '../my-messages/community-acceptance-message-card/acceptance-to-community-notification';
-import { CommunityChangedNotification } from '../my-messages/community-changed-message-card/community-changed-notification';
-import { CommunityDeletedNotification } from '../my-messages/community-deleted-message-card/community-deleted-notification';
-import { CommunityInvitationNotification } from '../my-messages/community-invitation-message-card/community-invitation-notification';
-import { CommunityRoleChangedNotification } from '../my-messages/community-role-changed-message-card/community-role-changed-notification';
-import { JoinCommunityRequestNotification } from '../my-messages/community-join-request-message-card/join-community-request-notification';
-import { MemberKickedOutNotification } from '../my-messages/community-kick-out-message-card/member-kicked-out-notification';
-import { MemberLeftCommunityNotification } from '../my-messages/community-left-message-card/member-left-community-notification';
 import { Publication } from '../publications/publication';
-import { UserWelcomeNotification } from '../my-messages/welcome-message-card/user-welcome-notification';
 
 describe('Util', () => {
   beforeEach(() => {
@@ -97,34 +87,6 @@ describe('Util', () => {
       userProject.endDate = moment('2000-01-03');
       expect(Util.datesAreConsistent(userProject)).toBe(true);
     });
-  });
-
-  describe('.createNotificationInstance()', () => {
-    it('returns null on undefined notification type', () => {
-      expect(Util.createNotificationInstance({type: 'strange type'})).toBeNull();
-    });
-
-    it('creates instance of Notification by its type',
-      () => {
-        expect(Util.createNotificationInstance({type: NotificationType.ACCEPTANCE_TO_COMMUNITY})
-          instanceof AcceptanceToCommunityNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.COMMUNITY_CHANGED})
-          instanceof CommunityChangedNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.COMMUNITY_DELETED})
-          instanceof CommunityDeletedNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.INVITATION_TO_JOIN_COMMUNITY})
-          instanceof CommunityInvitationNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.COMMUNITY_ROLE_CHANGED})
-          instanceof CommunityRoleChangedNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.REQUEST_TO_JOIN_COMMUNITY})
-          instanceof JoinCommunityRequestNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY})
-          instanceof MemberKickedOutNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.MEMBER_LEFT_COMMUNITY})
-          instanceof MemberLeftCommunityNotification).toBeTruthy();
-        expect(Util.createNotificationInstance({type: NotificationType.USER_WELCOME_NOTIFICATION})
-          instanceof UserWelcomeNotification).toBeTruthy();
-      });
   });
 
   describe('.dateIsInPast()', () => {

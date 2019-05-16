@@ -1,13 +1,4 @@
 import { AbstractNotification } from '../abstract-notification';
 
-export class UserWelcomeNotification extends AbstractNotification {
-
-  getTypeText(): string {
-    return 'Welcome notification';
-  }
-
-  getHtmlMessageText(): string {
-    return '';
-  }
-
+export interface UserWelcomeNotification extends AbstractNotification {
 }

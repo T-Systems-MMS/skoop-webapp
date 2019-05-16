@@ -2,12 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AbstractNotification } from '../abstract-notification';
-import { CommunityInvitationNotification } from '../community-invitation-message-card/community-invitation-notification';
-import { Util } from '../../util/util';
-import { JoinCommunityRequestNotification } from '../community-join-request-message-card/join-community-request-notification';
 import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { CommunityUserRegistration } from '../../shared/community-user-registration';
+import { NotificationType } from '../notification-type.enum';
+import { TodoNotification } from './todo-notification';
 
 @Component({
   selector: 'app-todo-notification',
@@ -15,6 +13,7 @@ import { CommunityUserRegistration } from '../../shared/community-user-registrat
 })
 export class TodoNotificationComponent implements OnInit {
 
+  @Input() notification: TodoNotification;
   @Input() currentUserId: string;
   @Output() processed: EventEmitter<HttpErrorResponse> = new EventEmitter();
   @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
@@ -26,25 +25,40 @@ export class TodoNotificationComponent implements OnInit {
   ngOnInit() {
   }
 
-  showAcceptDeclineButtons<T extends AbstractNotification>(notification: T) {
-    if (notification.hasCommunityInvitationType()) {
-      const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
-      return invitationNotification.registration.user.id === this.currentUserId &&
-        (invitationNotification.registration.approvedByUser === null || invitationNotification.registration.approvedByCommunity === null);
-    } else if (notification.hasJoinCommunityType()) {
-      const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
-      return joinRequestNotification.registration.user.id !== this.currentUserId &&
-        (joinRequestNotification.registration.approvedByUser === null || joinRequestNotification.registration.approvedByCommunity === null);
+  getStatusText(): string {
+    if (this.notification.registration.approvedByUser && this.notification.registration.approvedByCommunity) {
+      return 'Accepted';
+    }
+
+    if (this.notification.registration.approvedByCommunity === false || this.notification.registration.approvedByUser === false) {
+      return 'Declined';
+    }
+
+    return 'Pending';
+  }
+
+  getCommunityInfo(): string {
+    return this.notification.registration.community ? `<a href="/communities/${this.notification.registration.community.id}">${this.notification.registration.community.title}</a>`
+      : `<strong>${this.notification.communityName}</strong>`;
+  }
+
+  showAcceptDeclineButtons(notification: TodoNotification) {
+    if (notification.type === NotificationType.INVITATION_TO_JOIN_COMMUNITY) {
+      return notification.registration.user.id === this.currentUserId &&
+        (notification.registration.approvedByUser === null || notification.registration.approvedByCommunity === null);
+    } else if (notification.type === NotificationType.REQUEST_TO_JOIN_COMMUNITY) {
+      return notification.registration.user.id !== this.currentUserId &&
+        (notification.registration.approvedByUser === null || notification.registration.approvedByCommunity === null);
     } else {
       return false;
     }
   }
 
-  onAccept<T extends AbstractNotification>(notification: T) {
+  onAccept(notification: TodoNotification) {
     this.buildAcceptanceRequest(notification, true);
   }
 
-  onDecline<T extends AbstractNotification>(notification: T) {
+  onDecline(notification: TodoNotification) {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -58,25 +72,23 @@ export class TodoNotificationComponent implements OnInit {
     });
   }
 
-  private buildAcceptanceRequest<T extends AbstractNotification>(notification: T, isAccepted: boolean) {
-    if (notification.hasCommunityInvitationType()) {
-      const invitationNotification: CommunityInvitationNotification = Util.createNotificationInstance(notification);
+  private buildAcceptanceRequest(notification: TodoNotification, isAccepted: boolean) {
+    if (notification.type === NotificationType.INVITATION_TO_JOIN_COMMUNITY) {
       const requestData = {
-        id: invitationNotification.registration.id,
+        id: notification.registration.id,
         approvedByUser: isAccepted,
         approvedByCommunity: null
       };
 
-      this.updateRegistration(invitationNotification.registration.community.id, requestData);
-    } else if (notification.hasJoinCommunityType()) {
-      const joinRequestNotification: JoinCommunityRequestNotification = Util.createNotificationInstance(notification);
+      this.updateRegistration(notification.registration.community.id, requestData);
+    } else if (notification.type === NotificationType.REQUEST_TO_JOIN_COMMUNITY) {
       const requestData = {
-        id: joinRequestNotification.registration.id,
+        id: notification.registration.id,
         approvedByUser: null,
         approvedByCommunity: isAccepted
       };
 
-      this.updateRegistration(joinRequestNotification.registration.community.id, requestData);
+      this.updateRegistration(notification.registration.community.id, requestData);
     }
   }
 
