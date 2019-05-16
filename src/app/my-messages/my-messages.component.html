@@ -4,26 +4,43 @@
 
   <div *ngFor="let notification of notifications$ | async">
     <div [ngSwitch]="notification.type">
+      <div *ngSwitchCase="'InvitationToJoinCommunityNotification'">
+        <app-community-invitation-message-card [notification]="notification" [currentUserId]="currentUserId"
+                                               (processed)="onSuccessDeleted()"
+                                               (error)="handleErrorResponse($event)"></app-community-invitation-message-card>
+      </div>
+      <div *ngSwitchCase="'RequestToJoinCommunityNotification'">
+        <app-community-join-request-message-card [notification]="notification" [currentUserId]="currentUserId"
+                                                 (processed)="onSuccessDeleted()"
+                                                 (error)="handleErrorResponse($event)"></app-community-join-request-message-card>
+      </div>
       <div *ngSwitchCase="'UserLeftCommunityNotification'">
-        <app-community-left-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-left-message-card>
+        <app-community-left-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                         (error)="handleErrorResponse($event)"></app-community-left-message-card>
       </div>
       <div *ngSwitchCase="'CommunityUserRoleChangedNotification'">
-        <app-community-role-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-role-changed-message-card>
+        <app-community-role-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                                 (error)="handleErrorResponse($event)"></app-community-role-changed-message-card>
       </div>
       <div *ngSwitchCase="'CommunityChangedNotification'">
-        <app-community-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-changed-message-card>
+        <app-community-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                            (error)="handleErrorResponse($event)"></app-community-changed-message-card>
       </div>
       <div *ngSwitchCase="'UserKickedOutFromCommunityNotification'">
-        <app-community-kick-out-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-kick-out-message-card>
+        <app-community-kick-out-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                             (error)="handleErrorResponse($event)"></app-community-kick-out-message-card>
       </div>
       <div *ngSwitchCase="'CommunityDeletedNotification'">
-        <app-community-deleted-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-deleted-message-card>
+        <app-community-deleted-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                            (error)="handleErrorResponse($event)"></app-community-deleted-message-card>
       </div>
       <div *ngSwitchCase="'AcceptanceToCommunityNotification'">
-        <app-community-acceptance-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-acceptance-message-card>
+        <app-community-acceptance-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                               (error)="handleErrorResponse($event)"></app-community-acceptance-message-card>
       </div>
       <div *ngSwitchCase="'UserWelcomeNotification'">
-        <app-welcome-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-welcome-message-card>
+        <app-welcome-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                  (error)="handleErrorResponse($event)"></app-welcome-message-card>
       </div>
     </div>
   </div>

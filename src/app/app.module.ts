@@ -81,6 +81,8 @@ import { CommunityLeftMessageCardComponent } from './my-messages/community-left-
 import { CommunityKickOutMessageCardComponent } from './my-messages/community-kick-out-message-card/community-kick-out-message-card.component';
 import { CommunityRoleChangedMessageCardComponent } from './my-messages/community-role-changed-message-card/community-role-changed-message-card.component';
 import { CommunityAcceptanceMessageCardComponent } from './my-messages/community-acceptance-message-card/community-acceptance-message-card.component';
+import { CommunityInvitationMessageCardComponent } from './my-messages/community-invitation-message-card/community-invitation-message-card.component';
+import { CommunityJoinRequestMessageCardComponent } from './my-messages/community-join-request-message-card/community-join-request-message-card.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -155,7 +157,9 @@ export const CUSTOM_FORMATS = {
     CommunityLeftMessageCardComponent,
     CommunityKickOutMessageCardComponent,
     CommunityRoleChangedMessageCardComponent,
-    CommunityAcceptanceMessageCardComponent
+    CommunityAcceptanceMessageCardComponent,
+    CommunityInvitationMessageCardComponent,
+    CommunityJoinRequestMessageCardComponent
   ],
   imports: [
     BrowserModule,
