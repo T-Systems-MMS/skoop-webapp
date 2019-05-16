@@ -14,15 +14,15 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div [innerHTML]="notification.registration.user.firstName + ' '+ notification.registration.user.lastName + ' wants to join the community ' + getCommunityInfo()"></div>
+      <div [innerHTML]="'The user ' + notification.registration.user.firstName + ' ' + notification.registration.user.lastName + ' has requested to join community ' + getCommunityInfo()"></div>
     </div>
   </div>
   <div buttonContent>
-   <span *ngIf="showAcceptDeclineButtons(notification)">
-    <button mat-icon-button (click)="onAccept(notification)" title="Accept" aria-label="Accept">
+   <span *ngIf="showAcceptDeclineButtons()">
+    <button mat-icon-button (click)="onAccept()" title="Accept" aria-label="Accept">
       <mat-icon>done_outline</mat-icon>
     </button>
-    <button mat-icon-button (click)="onDecline(notification)" title="Decline" aria-label="Decline">
+    <button mat-icon-button (click)="onDecline()" title="Decline" aria-label="Decline">
       <mat-icon>cancel</mat-icon>
     </button>
   </span>

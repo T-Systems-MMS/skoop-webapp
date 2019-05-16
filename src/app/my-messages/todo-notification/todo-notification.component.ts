@@ -42,23 +42,23 @@ export class TodoNotificationComponent implements OnInit {
       : `<strong>${this.notification.communityName}</strong>`;
   }
 
-  showAcceptDeclineButtons(notification: TodoNotification) {
-    if (notification.type === NotificationType.INVITATION_TO_JOIN_COMMUNITY) {
-      return notification.registration.user.id === this.currentUserId &&
-        (notification.registration.approvedByUser === null || notification.registration.approvedByCommunity === null);
-    } else if (notification.type === NotificationType.REQUEST_TO_JOIN_COMMUNITY) {
-      return notification.registration.user.id !== this.currentUserId &&
-        (notification.registration.approvedByUser === null || notification.registration.approvedByCommunity === null);
+  showAcceptDeclineButtons() {
+    if (this.notification.type === NotificationType.INVITATION_TO_JOIN_COMMUNITY) {
+      return this.notification.registration.user.id === this.currentUserId &&
+        (this.notification.registration.approvedByUser === null || this.notification.registration.approvedByCommunity === null);
+    } else if (this.notification.type === NotificationType.REQUEST_TO_JOIN_COMMUNITY) {
+      return this.notification.registration.user.id !== this.currentUserId &&
+        (this.notification.registration.approvedByUser === null || this.notification.registration.approvedByCommunity === null);
     } else {
       return false;
     }
   }
 
-  onAccept(notification: TodoNotification) {
-    this.buildAcceptanceRequest(notification, true);
+  onAccept() {
+    this.buildAcceptanceRequest(this.notification, true);
   }
 
-  onDecline(notification: TodoNotification) {
+  onDecline() {
     const dialogRef = this.dialog.open(DeleteConfirmationDialogComponent, {
       width: '350px',
       data: {
@@ -67,7 +67,7 @@ export class TodoNotificationComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.buildAcceptanceRequest(notification, false);
+        this.buildAcceptanceRequest(this.notification, false);
       }
     });
   }

@@ -6,7 +6,6 @@ import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
-import { Util } from '../../util/util';
 import { NotificationType } from '../notification-type.enum';
 import { UserWelcomeNotification } from './user-welcome-notification';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
@@ -15,12 +14,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { MessageCardComponent } from '../message-card/message-card.component';
+import { MessagesService } from '../messages.service';
 
-const welcomeNotification: UserWelcomeNotification =  Util.createNotificationInstance({
+const welcomeNotification: UserWelcomeNotification =  {
   type: NotificationType.USER_WELCOME_NOTIFICATION,
   id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
   creationDatetime: new Date()
-});
+};
 
 describe('WelcomeMessageCardComponent', () => {
   let component: WelcomeMessageCardComponent;
@@ -35,12 +36,15 @@ describe('WelcomeMessageCardComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ WelcomeMessageCardComponent, InfoDialogComponent ],
+      declarations: [ WelcomeMessageCardComponent, InfoDialogComponent, MessageCardComponent ],
       providers: [
         {
           provide: TemplateLoaderService, useValue: jasmine.createSpyObj('templateLoaderService', {
             'loadTemplate': of('some html text')
           })
+        },
+        {
+          provide: MessagesService, useValue: jasmine.createSpy()
         }
       ]
     })

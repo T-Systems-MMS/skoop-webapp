@@ -8,13 +8,9 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessagesService } from './messages.service';
-import { Util } from '../util/util';
 import { NotificationType } from './notification-type.enum';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
@@ -32,7 +28,7 @@ const authenticatedUser: UserIdentity = {
 };
 
 const expectedNotifications: any[] = [
-  Util.createNotificationInstance({
+  {
     type: NotificationType.INVITATION_TO_JOIN_COMMUNITY,
     id: '76887802-f12f-47b0-bf8d-6d69fbcc77e5',
     creationDatetime: new Date(),
@@ -59,8 +55,8 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.REQUEST_TO_JOIN_COMMUNITY,
     id: 'e84cacac-4fba-4cea-b7e6-7e3d9841b0a6',
     creationDatetime: new Date(),
@@ -87,8 +83,8 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.ACCEPTANCE_TO_COMMUNITY,
     id: '7019db9c-b658-4531-aa6c-d1e8e60b5ec3',
     creationDatetime: '2019-03-26T13:33:32.790655',
@@ -115,14 +111,14 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.COMMUNITY_DELETED,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
     communityName: 'deleted community'
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.MEMBER_LEFT_COMMUNITY,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
@@ -144,8 +140,8 @@ const expectedNotifications: any[] = [
       email: 'toni.tester@skoop.io',
       coach: false
     },
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
@@ -159,15 +155,15 @@ const expectedNotifications: any[] = [
       managers: [],
       skills: []
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.COMMUNITY_ROLE_CHANGED,
     id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
     communityName: 'Super group',
     creationDatetime: new Date(),
     role: CommunityRole.MEMBER
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.COMMUNITY_CHANGED,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
@@ -182,31 +178,94 @@ const expectedNotifications: any[] = [
       skills: []
     },
     communityDetails: ['NAME', 'TYPE', 'DESCRIPTION', 'SKILLS', 'LINKS']
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.USER_WELCOME_NOTIFICATION,
     id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
     creationDatetime: new Date()
-  })
+  }
 ];
 
 @Component({
-  selector: 'app-common-message-card',
+  selector: 'app-community-acceptance-message-card',
   template: ''
 })
-class CommonMessageCardStubComponent {
+class CommunityAcceptanceMessageCardStubComponent {
   @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 }
 
 @Component({
-  selector: 'app-community-message-card',
-  template: '<ng-content select="[buttonContent]"></ng-content>'
+  selector: 'app-community-changed-message-card',
+  template: ''
 })
-class CommunityMessageCardStubComponent {
+class CommunityChangedMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-deleted-message-card',
+  template: ''
+})
+class CommunityDeletedMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-invitation-message-card',
+  template: ''
+})
+class CommunityInvitationMessageCardStubComponent {
   @Input() notification;
   @Input() currentUserId;
-  @Output() onSuccess: EventEmitter<void> = new EventEmitter();
-  @Output() onErrorResponse: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-join-request-message-card',
+  template: ''
+})
+class CommunityJoinRequestMessageCardStubComponent {
+  @Input() notification;
+  @Input() currentUserId;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-kick-out-message-card',
+  template: ''
+})
+class CommunityKickOutMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-left-message-card',
+  template: ''
+})
+class CommunityLeftMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-role-changed-message-card',
+  template: ''
+})
+class CommunityRoleChangedMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 }
 
 @Component({
@@ -215,7 +274,8 @@ class CommunityMessageCardStubComponent {
 })
 class WelcomeMessageCardStubComponent {
   @Input() notification;
-  @Output() onErrorResponse: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 }
 
 describe('MyMessagesComponent', () => {
@@ -233,9 +293,14 @@ describe('MyMessagesComponent', () => {
       ],
       declarations: [
         MyMessagesComponent,
-        DeleteConfirmationDialogComponent,
-        CommonMessageCardStubComponent,
-        CommunityMessageCardStubComponent,
+        CommunityAcceptanceMessageCardStubComponent,
+        CommunityChangedMessageCardStubComponent,
+        CommunityDeletedMessageCardStubComponent,
+        CommunityInvitationMessageCardStubComponent,
+        CommunityJoinRequestMessageCardStubComponent,
+        CommunityKickOutMessageCardStubComponent,
+        CommunityLeftMessageCardStubComponent,
+        CommunityRoleChangedMessageCardStubComponent,
         WelcomeMessageCardStubComponent
       ],
       providers: [
@@ -251,17 +316,12 @@ describe('MyMessagesComponent', () => {
           })
         },
         {
-          provide: NotificationCounterService, useValue: jasmine.createSpyObj('NotificationCounterService', {
+          provide: NotificationCounterService, useValue: jasmine.createSpyObj('notificationCounterService', {
             'decrementCount': of()
           })
         }
       ]
     })
-      .overrideModule(BrowserDynamicTestingModule, {
-        set: {
-          entryComponents: [DeleteConfirmationDialogComponent]
-        }
-      })
     .compileComponents();
   }));
 
@@ -276,30 +336,36 @@ describe('MyMessagesComponent', () => {
   });
 
   it('should initialize the list of notifications', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.message-card')));
 
     expect(notificationCards.length).toBe(9);
   }));
 
-  it('should throw an exception in case of deleting message of To-Do type', fakeAsync(() => {
-    fixture.detectChanges();
-    expect(function () {
-      component.delete(expectedNotifications[0]);
-    }).toThrow();
+  it('should reload notifications and decrement count after deletion a notification', fakeAsync(() => {
+    const welcomeMessageFixture = fixture.debugElement.query(By.directive(WelcomeMessageCardStubComponent));
+    const welcomeMessageComponent: WelcomeMessageCardStubComponent = welcomeMessageFixture.componentInstance;
+    welcomeMessageComponent.deleted.emit();
+
+    const messageService: MessagesService = TestBed.get(MessagesService);
+    expect(messageService.getUserNotifications).toHaveBeenCalled();
+    const notificationCounterService: NotificationCounterService = TestBed.get(NotificationCounterService);
+    expect(notificationCounterService.decrementCount).toHaveBeenCalled();
   }));
 
-  it('should open confirmation dialog on delete button click', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const buttons = notificationCards[3].query(By.css('button'));
-
-    buttons.nativeElement.click();
-    fixture.whenStable().then(() => {
-      const matDialog: MatDialog = TestBed.get(MatDialog);
-      expect(matDialog.openDialogs.length).toBe(1);
-      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+  it('should show error on error in a child component', fakeAsync(() => {
+    const welcomeMessageFixture = fixture.debugElement.query(By.directive(WelcomeMessageCardStubComponent));
+    const welcomeMessageComponent: WelcomeMessageCardStubComponent = welcomeMessageFixture.componentInstance;
+    const message = 'expected text';
+    const errorEvent = new ErrorEvent('', {
+      message: message
     });
+    const err: HttpErrorResponse = new HttpErrorResponse({
+      error: errorEvent
+    });
+    welcomeMessageComponent.error.emit(err);
+
+
+    expect(component.errorMessage).toBe(message);
   }));
 
 });
