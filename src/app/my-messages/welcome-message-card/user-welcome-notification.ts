@@ -1,4 +1,4 @@
-import { AbstractNotification } from './abstract-notification';
+import { AbstractNotification } from '../abstract-notification';
 
 export class UserWelcomeNotification extends AbstractNotification {
 

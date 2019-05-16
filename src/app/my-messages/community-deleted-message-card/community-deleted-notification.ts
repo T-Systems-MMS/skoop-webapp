@@ -1,6 +1,6 @@
-import { AbstractCommunityNotification } from './abstract-community-notification';
+import { AbstractNotification } from '../abstract-notification';
 
-export class CommunityDeletedNotification extends AbstractCommunityNotification {
+export class CommunityDeletedNotification extends AbstractNotification {
   communityName: string;
 
   getTypeText(): string {

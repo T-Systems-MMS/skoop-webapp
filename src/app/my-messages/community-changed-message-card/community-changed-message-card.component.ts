@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
-import { CommunityChangedNotification } from '../community-changed-notification';
-import { CommunityDetails } from '../community-details.enum';
+import { CommunityChangedNotification } from './community-changed-notification';
+import { CommunityDetails } from './community-details.enum';
 
 @Component({
   selector: 'app-community-changed-message-card',

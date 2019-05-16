@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
-import { AcceptanceToCommunityNotification } from '../acceptance-to-community-notification';
+import { AcceptanceToCommunityNotification } from './acceptance-to-community-notification';
 
 @Component({
   selector: 'app-community-acceptance-message-card',

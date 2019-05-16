@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AbstractNotification } from '../abstract-notification';
-import { CommunityInvitationNotification } from '../community-invitation-notification';
+import { CommunityInvitationNotification } from '../community-invitation-message-card/community-invitation-notification';
 import { Util } from '../../util/util';
-import { JoinCommunityRequestNotification } from '../join-community-request-notification';
+import { JoinCommunityRequestNotification } from '../community-join-request-message-card/join-community-request-notification';
 import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { CommunityUserRegistration } from '../../shared/community-user-registration';
 

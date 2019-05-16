@@ -1,7 +1,7 @@
-import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
-import { AbstractCommunityNotification } from './abstract-community-notification';
+import { CommunityUserRegistrationResponse } from '../../shared/community-user-registration-response';
+import { AbstractNotification } from '../abstract-notification';
 
-export class AcceptanceToCommunityNotification extends AbstractCommunityNotification {
+export class AcceptanceToCommunityNotification extends AbstractNotification {
   registration: CommunityUserRegistrationResponse;
   communityName: string;
 

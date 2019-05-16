@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
-import { MemberKickedOutNotification } from '../member-kicked-out-notification';
+import { MemberKickedOutNotification } from './member-kicked-out-notification';
 import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
 
 @Component({

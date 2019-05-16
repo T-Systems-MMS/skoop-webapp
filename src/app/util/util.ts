@@ -3,16 +3,16 @@ import { Moment } from 'moment';
 import { UserProject } from '../user-projects/user-project';
 import { AbstractNotification } from '../my-messages/abstract-notification';
 import { NotificationType } from '../my-messages/notification-type.enum';
-import { AcceptanceToCommunityNotification } from '../my-messages/acceptance-to-community-notification';
-import { CommunityChangedNotification } from '../my-messages/community-changed-notification';
-import { CommunityDeletedNotification } from '../my-messages/community-deleted-notification';
-import { CommunityInvitationNotification } from '../my-messages/community-invitation-notification';
-import { CommunityRoleChangedNotification } from '../my-messages/community-role-changed-notification';
-import { JoinCommunityRequestNotification } from '../my-messages/join-community-request-notification';
-import { MemberKickedOutNotification } from '../my-messages/member-kicked-out-notification';
-import { MemberLeftCommunityNotification } from '../my-messages/member-left-community-notification';
+import { AcceptanceToCommunityNotification } from '../my-messages/community-acceptance-message-card/acceptance-to-community-notification';
+import { CommunityChangedNotification } from '../my-messages/community-changed-message-card/community-changed-notification';
+import { CommunityDeletedNotification } from '../my-messages/community-deleted-message-card/community-deleted-notification';
+import { CommunityInvitationNotification } from '../my-messages/community-invitation-message-card/community-invitation-notification';
+import { CommunityRoleChangedNotification } from '../my-messages/community-role-changed-message-card/community-role-changed-notification';
+import { JoinCommunityRequestNotification } from '../my-messages/community-join-request-message-card/join-community-request-notification';
+import { MemberKickedOutNotification } from '../my-messages/community-kick-out-message-card/member-kicked-out-notification';
+import { MemberLeftCommunityNotification } from '../my-messages/community-left-message-card/member-left-community-notification';
 import { Publication } from '../publications/publication';
-import { UserWelcomeNotification } from '../my-messages/user-welcome-notification';
+import { UserWelcomeNotification } from '../my-messages/welcome-message-card/user-welcome-notification';
 
 export class Util {
 

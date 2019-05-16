@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TodoNotificationComponent } from '../todo-notification/todo-notification.component';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
 import { MatDialog } from '@angular/material';
-import { CommunityInvitationNotification } from '../community-invitation-notification';
+import { CommunityInvitationNotification } from './community-invitation-notification';
 
 @Component({
   selector: 'app-community-invitation-message-card',

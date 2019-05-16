@@ -1,8 +1,8 @@
-import { Community } from '../communities/community';
+import { Community } from '../../communities/community';
 import { CommunityDetails } from './community-details.enum';
-import { AbstractCommunityNotification } from './abstract-community-notification';
+import { AbstractNotification } from '../abstract-notification';
 
-export class CommunityChangedNotification extends AbstractCommunityNotification {
+export class CommunityChangedNotification extends AbstractNotification {
   community: Community;
   communityName: string;
   communityDetails: CommunityDetails[];

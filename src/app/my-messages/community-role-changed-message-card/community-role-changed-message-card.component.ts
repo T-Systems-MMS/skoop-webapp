@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
-import { CommunityRoleChangedNotification } from '../community-role-changed-notification';
+import { CommunityRoleChangedNotification } from './community-role-changed-notification';
 
 @Component({
   selector: 'app-community-role-changed-message-card',

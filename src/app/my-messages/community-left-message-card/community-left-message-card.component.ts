@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
-import { MemberLeftCommunityNotification } from '../member-left-community-notification';
+import { MemberLeftCommunityNotification } from './member-left-community-notification';
 
 @Component({
   selector: 'app-community-left-message-card',

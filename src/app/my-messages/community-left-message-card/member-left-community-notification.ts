@@ -1,8 +1,8 @@
-import { Community } from '../communities/community';
-import { User } from '../users/user';
-import { AbstractCommunityNotification } from './abstract-community-notification';
+import { Community } from '../../communities/community';
+import { User } from '../../users/user';
+import { AbstractNotification } from '../abstract-notification';
 
-export class MemberLeftCommunityNotification extends AbstractCommunityNotification {
+export class MemberLeftCommunityNotification extends AbstractNotification {
   community: Community;
   communityName: string;
   user: User;

@@ -4,7 +4,7 @@ import { TemplateLoaderService } from '../../shared/template-loader.service';
 import { MatDialog } from '@angular/material';
 import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
 import { MessagesService } from '../messages.service';
-import { UserWelcomeNotification } from '../user-welcome-notification';
+import { UserWelcomeNotification } from './user-welcome-notification';
 
 @Component({
   selector: 'app-welcome-message-card',

@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
 import { Util } from '../../util/util';
 import { NotificationType } from '../notification-type.enum';
-import { UserWelcomeNotification } from '../user-welcome-notification';
+import { UserWelcomeNotification } from './user-welcome-notification';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { AppMaterialModule } from '../../app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
