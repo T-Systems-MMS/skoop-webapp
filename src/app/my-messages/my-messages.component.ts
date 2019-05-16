@@ -66,7 +66,7 @@ export class MyMessagesComponent implements OnInit {
     });
   }
 
-  public loadMessages() {
+  private loadMessages() {
     this.notifications$ = this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity => {
         this.currentUserId = userIdentity.userId;
@@ -78,6 +78,11 @@ export class MyMessagesComponent implements OnInit {
     this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
+  }
+
+  public onSuccessDeleted() {
+    this.loadMessages();
+    this.notificationCounterService.decrementCount();
   }
 
   private isToDoType<T extends AbstractNotification>(notification: T): boolean {

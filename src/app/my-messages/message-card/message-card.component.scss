@@ -1,0 +1,5 @@
+@import "variables";
+
+.messages-card {
+  @extend %base-card;
+}

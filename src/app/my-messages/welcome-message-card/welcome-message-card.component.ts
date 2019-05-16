@@ -1,22 +1,25 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { UserWelcomeNotification } from '../user-welcome-notification';
+import { Component, Input, OnInit } from '@angular/core';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
 import { TemplateLoaderService } from '../../shared/template-loader.service';
 import { MatDialog } from '@angular/material';
-import { HttpErrorResponse } from '@angular/common/http';
+import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
+import { MessagesService } from '../messages.service';
+import { UserWelcomeNotification } from '../user-welcome-notification';
 
 @Component({
   selector: 'app-welcome-message-card',
   templateUrl: './welcome-message-card.component.html',
-  styleUrls: ['./welcome-message-card.component.scss']
+  styleUrls: ['./welcome-message-card.component.scss', '../my-messages.component.scss']
 })
-export class WelcomeMessageCardComponent implements OnInit {
+export class WelcomeMessageCardComponent extends DeletableNotificationComponent implements OnInit {
 
   @Input() notification: UserWelcomeNotification;
-  @Output() onErrorResponse: EventEmitter<HttpErrorResponse> = new EventEmitter();
 
   constructor(private templateLoader: TemplateLoaderService,
-              public dialog: MatDialog) { }
+              protected messageService: MessagesService,
+              public dialog: MatDialog) {
+    super(messageService, dialog);
+  }
 
   ngOnInit() {
   }
@@ -31,7 +34,7 @@ export class WelcomeMessageCardComponent implements OnInit {
           }
         });
       }, errorResponse => {
-        this.onErrorResponse.emit(errorResponse);
+        this.error.emit(errorResponse);
       });
   }
 

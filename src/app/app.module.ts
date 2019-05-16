@@ -72,6 +72,15 @@ import { AuthorizedUsersSelectComponent } from './permissions/authorized-users-s
 import { CommonMessageCardComponent } from './my-messages/common-message-card/common-message-card.component';
 import { CommunityMessageCardComponent } from './my-messages/community-message-card/community-message-card.component';
 import { WelcomeMessageCardComponent } from './my-messages/welcome-message-card/welcome-message-card.component';
+import { MessageCardComponent } from './my-messages/message-card/message-card.component';
+import { DeletableNotificationComponent } from './my-messages/deletable-notification/deletable-notification.component';
+import { TodoNotificationComponent } from './my-messages/todo-notification/todo-notification.component';
+import { CommunityDeletedMessageCardComponent } from './my-messages/community-deleted-message-card/community-deleted-message-card.component';
+import { CommunityChangedMessageCardComponent } from './my-messages/community-changed-message-card/community-changed-message-card.component';
+import { CommunityLeftMessageCardComponent } from './my-messages/community-left-message-card/community-left-message-card.component';
+import { CommunityKickOutMessageCardComponent } from './my-messages/community-kick-out-message-card/community-kick-out-message-card.component';
+import { CommunityRoleChangedMessageCardComponent } from './my-messages/community-role-changed-message-card/community-role-changed-message-card.component';
+import { CommunityAcceptanceMessageCardComponent } from './my-messages/community-acceptance-message-card/community-acceptance-message-card.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -137,7 +146,16 @@ export const CUSTOM_FORMATS = {
     AuthorizedUsersSelectComponent,
     CommonMessageCardComponent,
     CommunityMessageCardComponent,
-    WelcomeMessageCardComponent
+    WelcomeMessageCardComponent,
+    MessageCardComponent,
+    DeletableNotificationComponent,
+    TodoNotificationComponent,
+    CommunityDeletedMessageCardComponent,
+    CommunityChangedMessageCardComponent,
+    CommunityLeftMessageCardComponent,
+    CommunityKickOutMessageCardComponent,
+    CommunityRoleChangedMessageCardComponent,
+    CommunityAcceptanceMessageCardComponent
   ],
   imports: [
     BrowserModule,

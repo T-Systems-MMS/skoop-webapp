@@ -2,39 +2,29 @@
   <h1>My messages</h1>
   <div *ngIf="errorMessage" class="messages-error-message">{{errorMessage}}</div>
 
-  <mat-card *ngFor="let notification of notifications$ | async" class="messages-card">
-    <div fxFlex>
-      <ng-container *ngIf="isCommunityNotification(notification); else welcome_message">
-        <app-community-message-card [notification]="notification" [currentUserId]="currentUserId"
-                                    (onErrorResponse)="handleErrorResponse($event)" (onSuccess)="loadMessages()">
-          <div buttonContent>
-            <button *ngIf="showDeleteButton(notification)" mat-icon-button (click)="delete(notification)" title="Delete"
-                    aria-label="Delete">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </app-community-message-card>
-      </ng-container>
-      <ng-template #welcome_message>
-        <ng-container *ngIf="notification.hasUserWelcomeNotificationType(); else common_message">
-          <app-welcome-message-card [notification]="notification" (onErrorResponse)="handleErrorResponse($event)">
-            <div buttonContent>
-              <button mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </div>
-          </app-welcome-message-card>
-        </ng-container>
-      </ng-template>
-      <ng-template #common_message>
-        <app-common-message-card [notification]="notification">
-          <div buttonContent>
-            <button mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </app-common-message-card>
-      </ng-template>
+  <div *ngFor="let notification of notifications$ | async">
+    <div [ngSwitch]="notification.type">
+      <div *ngSwitchCase="'UserLeftCommunityNotification'">
+        <app-community-left-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-left-message-card>
+      </div>
+      <div *ngSwitchCase="'CommunityUserRoleChangedNotification'">
+        <app-community-role-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-role-changed-message-card>
+      </div>
+      <div *ngSwitchCase="'CommunityChangedNotification'">
+        <app-community-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-changed-message-card>
+      </div>
+      <div *ngSwitchCase="'UserKickedOutFromCommunityNotification'">
+        <app-community-kick-out-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-kick-out-message-card>
+      </div>
+      <div *ngSwitchCase="'CommunityDeletedNotification'">
+        <app-community-deleted-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-deleted-message-card>
+      </div>
+      <div *ngSwitchCase="'AcceptanceToCommunityNotification'">
+        <app-community-acceptance-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-community-acceptance-message-card>
+      </div>
+      <div *ngSwitchCase="'UserWelcomeNotification'">
+        <app-welcome-message-card [notification]="notification" (deleted)="onSuccessDeleted()" (error)="handleErrorResponse($event)"></app-welcome-message-card>
+      </div>
     </div>
-  </mat-card>
+  </div>
 </div>

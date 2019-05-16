@@ -2,7 +2,7 @@
   <div textContent>
     <div fxLayout="row">
       <div class="messages-description-label">Type:</div>
-      <div>Welcome notification</div>
+      <div>Acceptance to a community</div>
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Date:</div>
@@ -10,9 +10,7 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div>Welcome to SKOOP. Click <a href="javascript:;" (click)="openWelcomeNotificationDialog()">here</a> to get more
-        info about the system.
-      </div>
+      <div [innerHTML]="'Your request to the community ' + getCommunityInfo() + ' was accepted'"></div>
     </div>
   </div>
   <div buttonContent>

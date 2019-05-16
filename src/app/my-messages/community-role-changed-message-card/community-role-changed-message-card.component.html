@@ -2,7 +2,7 @@
   <div textContent>
     <div fxLayout="row">
       <div class="messages-description-label">Type:</div>
-      <div>Welcome notification</div>
+      <div>The community role changed.</div>
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Date:</div>
@@ -10,9 +10,7 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div>Welcome to SKOOP. Click <a href="javascript:;" (click)="openWelcomeNotificationDialog()">here</a> to get more
-        info about the system.
-      </div>
+      <div>Your role in the community <strong>{{notification.communityName}}</strong> was changed to {{notification.role}}</div>
     </div>
   </div>
   <div buttonContent>
