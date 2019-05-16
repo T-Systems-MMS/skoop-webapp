@@ -69,8 +69,6 @@ import { MembershipsNewComponent } from './memberships/memberships-new.component
 import { MembershipsEditComponent } from './memberships/memberships-edit.component';
 import { PermissionsComponent } from './permissions/permissions.component';
 import { AuthorizedUsersSelectComponent } from './permissions/authorized-users-select/authorized-users-select.component';
-import { CommonMessageCardComponent } from './my-messages/common-message-card/common-message-card.component';
-import { CommunityMessageCardComponent } from './my-messages/community-message-card/community-message-card.component';
 import { WelcomeMessageCardComponent } from './my-messages/welcome-message-card/welcome-message-card.component';
 import { MessageCardComponent } from './my-messages/message-card/message-card.component';
 import { DeletableNotificationComponent } from './my-messages/deletable-notification/deletable-notification.component';
@@ -146,8 +144,6 @@ export const CUSTOM_FORMATS = {
     MembershipsEditComponent,
     PermissionsComponent,
     AuthorizedUsersSelectComponent,
-    CommonMessageCardComponent,
-    CommunityMessageCardComponent,
     WelcomeMessageCardComponent,
     MessageCardComponent,
     DeletableNotificationComponent,
