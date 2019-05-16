@@ -12,7 +12,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
 import { CommunityUserRegistrationResponse } from '../../shared/community-user-registration-response';
 import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 import { CommunityUserRegistration } from '../../shared/community-user-registration';
 import { MatDialog } from '@angular/material';
 import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
@@ -101,7 +100,7 @@ describe('TodoNotificationComponent', () => {
   });
 
   it('should send an accept request on accept button click', fakeAsync(() => {
-    component.onAccept(notification);
+    component.onAccept();
     fixture.whenStable().then(() => {
       const expectedRequestData: CommunityUserRegistration = {
         id: notification.registration.id,
@@ -115,7 +114,7 @@ describe('TodoNotificationComponent', () => {
   }));
 
   it('should open confirmation dialog on decline button click', fakeAsync(() => {
-    component.onDecline(notification);
+    component.onDecline();
     fixture.whenStable().then(() => {
       const matDialog: MatDialog = TestBed.get(MatDialog);
       expect(matDialog.openDialogs.length).toBe(1);
