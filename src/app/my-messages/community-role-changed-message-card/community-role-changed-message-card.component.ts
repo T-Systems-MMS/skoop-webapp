@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
+import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
 import { CommunityRoleChangedNotification } from './community-role-changed-notification';
@@ -7,9 +7,9 @@ import { CommunityRoleChangedNotification } from './community-role-changed-notif
 @Component({
   selector: 'app-community-role-changed-message-card',
   templateUrl: './community-role-changed-message-card.component.html',
-  styleUrls: ['./community-role-changed-message-card.component.scss', '../my-messages.component.scss']
+  styleUrls: ['./community-role-changed-message-card.component.scss']
 })
-export class CommunityRoleChangedMessageCardComponent extends DeletableNotificationComponent implements OnInit {
+export class CommunityRoleChangedMessageCardComponent extends DeletableNotificationComponentTrait implements OnInit {
 
   @Input() notification: CommunityRoleChangedNotification;
 

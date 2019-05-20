@@ -1,24 +1,17 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MessagesService } from '../messages.service';
+import { EventEmitter, Output } from '@angular/core';
+import { MessagesService } from './messages.service';
 import { MatDialog } from '@angular/material';
-import { AbstractNotification } from '../abstract-notification';
-import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { AbstractNotification } from './abstract-notification';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';
 
-@Component({
-  selector: 'app-deletable-notification',
-  template: ''
-})
-export class DeletableNotificationComponent implements OnInit {
+export abstract class DeletableNotificationComponentTrait {
 
   @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
   @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 
-  constructor(protected messageService: MessagesService,
+  protected constructor(protected messageService: MessagesService,
               public dialog: MatDialog) {
-  }
-
-  ngOnInit() {
   }
 
   delete<T extends AbstractNotification>(notification: T) {
@@ -34,7 +27,7 @@ export class DeletableNotificationComponent implements OnInit {
           .subscribe(() => {
             this.deleted.emit();
           }, errorResponse => {
-            this.error.emit(errorResponse)
+            this.error.emit(errorResponse);
           });
       }
     });

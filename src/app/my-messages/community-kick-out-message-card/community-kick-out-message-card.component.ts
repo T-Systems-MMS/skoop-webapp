@@ -2,14 +2,14 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
 import { MemberKickedOutNotification } from './member-kicked-out-notification';
-import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
+import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 
 @Component({
   selector: 'app-community-kick-out-message-card',
   templateUrl: './community-kick-out-message-card.component.html',
-  styleUrls: ['./community-kick-out-message-card.component.scss', '../my-messages.component.scss']
+  styleUrls: ['./community-kick-out-message-card.component.scss']
 })
-export class CommunityKickOutMessageCardComponent extends DeletableNotificationComponent implements OnInit {
+export class CommunityKickOutMessageCardComponent extends DeletableNotificationComponentTrait implements OnInit {
 
   @Input() notification: MemberKickedOutNotification;
 

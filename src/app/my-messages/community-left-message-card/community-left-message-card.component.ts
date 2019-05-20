@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
+import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
 import { MemberLeftCommunityNotification } from './member-left-community-notification';
@@ -7,9 +7,9 @@ import { MemberLeftCommunityNotification } from './member-left-community-notific
 @Component({
   selector: 'app-community-left-message-card',
   templateUrl: './community-left-message-card.component.html',
-  styleUrls: ['./community-left-message-card.component.scss', '../my-messages.component.scss']
+  styleUrls: ['./community-left-message-card.component.scss']
 })
-export class CommunityLeftMessageCardComponent extends DeletableNotificationComponent implements OnInit {
+export class CommunityLeftMessageCardComponent extends DeletableNotificationComponentTrait implements OnInit {
 
   @Input() notification: MemberLeftCommunityNotification;
 

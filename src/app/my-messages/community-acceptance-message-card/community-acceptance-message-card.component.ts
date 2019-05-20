@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
+import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
 import { MatDialog } from '@angular/material';
 import { AcceptanceToCommunityNotification } from './acceptance-to-community-notification';
@@ -7,9 +7,9 @@ import { AcceptanceToCommunityNotification } from './acceptance-to-community-not
 @Component({
   selector: 'app-community-acceptance-message-card',
   templateUrl: './community-acceptance-message-card.component.html',
-  styleUrls: ['./community-acceptance-message-card.component.scss', '../my-messages.component.scss']
+  styleUrls: ['./community-acceptance-message-card.component.scss']
 })
-export class CommunityAcceptanceMessageCardComponent extends DeletableNotificationComponent implements OnInit {
+export class CommunityAcceptanceMessageCardComponent extends DeletableNotificationComponentTrait implements OnInit {
 
   @Input() notification: AcceptanceToCommunityNotification;
 

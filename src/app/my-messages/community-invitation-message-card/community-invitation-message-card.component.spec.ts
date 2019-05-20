@@ -1,8 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { CommunityInvitationMessageCardComponent } from './community-invitation-message-card.component';
 import { NotificationType } from '../notification-type.enum';
-import { TodoNotification } from '../todo-notification/todo-notification';
+import { TodoNotification } from '../todo-notification';
 import { CommunityType } from '../../communities/community-type.enum';
 import { AppMaterialModule } from '../../app-material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +11,25 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageCardComponent } from '../message-card/message-card.component';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
+import { CommunityUserRegistration } from '../../shared/community-user-registration';
+import { MatDialog } from '@angular/material';
+import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
+import { of } from 'rxjs';
+import { CommunityUserRegistrationResponse } from '../../shared/community-user-registration-response';
+
+const registrationResponse: CommunityUserRegistrationResponse = {
+  id: '567890',
+  user: {
+    id: '251c2a3b-b737-4622-8060-196d5e297ebc',
+    userName: 'testbed',
+    firstName: 'Tabia',
+    lastName: 'Testbed',
+    email: 'tabia.testbed@skoop.io'
+  },
+  approvedByUser: true,
+  approvedByCommunity: true
+};
 
 const currentUserId = 'e6b808eb-b6bd-447d-8dce-3e0d66b17759';
 const notification: TodoNotification = {
@@ -52,13 +71,20 @@ describe('CommunityInvitationMessageCardComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ CommunityInvitationMessageCardComponent, MessageCardComponent ],
+      declarations: [ CommunityInvitationMessageCardComponent, MessageCardComponent, DeleteConfirmationDialogComponent ],
       providers: [
         {
-          provide: CommunityRegistrationService, useValue: jasmine.createSpy()
+          provide: CommunityRegistrationService, useValue: jasmine.createSpyObj('communityRegistrationService', {
+            'updateRegistration': of(registrationResponse)
+          })
         }
       ]
     })
+      .overrideModule(BrowserDynamicTestingModule, {
+        set: {
+          entryComponents: [ DeleteConfirmationDialogComponent ]
+        }
+      })
     .compileComponents();
   }));
 
@@ -73,4 +99,27 @@ describe('CommunityInvitationMessageCardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should send an accept request on accept button click', fakeAsync(() => {
+    component.onAccept();
+    fixture.whenStable().then(() => {
+      const expectedRequestData: CommunityUserRegistration = {
+        id: notification.registration.id,
+        approvedByUser: true,
+        approvedByCommunity: null
+      };
+      const registrationService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
+      expect(registrationService.updateRegistration)
+        .toHaveBeenCalledWith(notification.registration.community.id, expectedRequestData);
+    });
+  }));
+
+  it('should open confirmation dialog on decline button click', fakeAsync(() => {
+    component.onDecline();
+    fixture.whenStable().then(() => {
+      const matDialog: MatDialog = TestBed.get(MatDialog);
+      expect(matDialog.openDialogs.length).toBe(1);
+      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+    });
+  }));
 });

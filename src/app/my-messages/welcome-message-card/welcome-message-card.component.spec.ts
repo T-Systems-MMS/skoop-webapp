@@ -16,6 +16,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageCardComponent } from '../message-card/message-card.component';
 import { MessagesService } from '../messages.service';
+import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 
 const welcomeNotification: UserWelcomeNotification =  {
   type: NotificationType.USER_WELCOME_NOTIFICATION,
@@ -36,7 +37,7 @@ describe('WelcomeMessageCardComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ WelcomeMessageCardComponent, InfoDialogComponent, MessageCardComponent ],
+      declarations: [ WelcomeMessageCardComponent, InfoDialogComponent, MessageCardComponent, DeleteConfirmationDialogComponent ],
       providers: [
         {
           provide: TemplateLoaderService, useValue: jasmine.createSpyObj('templateLoaderService', {
@@ -50,7 +51,7 @@ describe('WelcomeMessageCardComponent', () => {
     })
       .overrideModule(BrowserDynamicTestingModule, {
         set: {
-          entryComponents: [ InfoDialogComponent ]
+          entryComponents: [ InfoDialogComponent, DeleteConfirmationDialogComponent ]
         }
       })
     .compileComponents();
@@ -84,6 +85,15 @@ describe('WelcomeMessageCardComponent', () => {
       const matDialog: MatDialog = TestBed.get(MatDialog);
       expect(matDialog.openDialogs.length).toBe(1);
       expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
+    });
+  }));
+
+  it('should open confirmation dialog on delete button click', fakeAsync(() => {
+    component.delete(welcomeNotification);
+    fixture.whenStable().then(() => {
+      const matDialog: MatDialog = TestBed.get(MatDialog);
+      expect(matDialog.openDialogs.length).toBe(1);
+      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
     });
   }));
 });

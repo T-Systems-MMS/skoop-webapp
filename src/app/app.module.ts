@@ -71,8 +71,6 @@ import { PermissionsComponent } from './permissions/permissions.component';
 import { AuthorizedUsersSelectComponent } from './permissions/authorized-users-select/authorized-users-select.component';
 import { WelcomeMessageCardComponent } from './my-messages/welcome-message-card/welcome-message-card.component';
 import { MessageCardComponent } from './my-messages/message-card/message-card.component';
-import { DeletableNotificationComponent } from './my-messages/deletable-notification/deletable-notification.component';
-import { TodoNotificationComponent } from './my-messages/todo-notification/todo-notification.component';
 import { CommunityDeletedMessageCardComponent } from './my-messages/community-deleted-message-card/community-deleted-message-card.component';
 import { CommunityChangedMessageCardComponent } from './my-messages/community-changed-message-card/community-changed-message-card.component';
 import { CommunityLeftMessageCardComponent } from './my-messages/community-left-message-card/community-left-message-card.component';
@@ -146,8 +144,6 @@ export const CUSTOM_FORMATS = {
     AuthorizedUsersSelectComponent,
     WelcomeMessageCardComponent,
     MessageCardComponent,
-    DeletableNotificationComponent,
-    TodoNotificationComponent,
     CommunityDeletedMessageCardComponent,
     CommunityChangedMessageCardComponent,
     CommunityLeftMessageCardComponent,

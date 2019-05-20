@@ -2,16 +2,16 @@ import { Component, Input, OnInit } from '@angular/core';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
 import { TemplateLoaderService } from '../../shared/template-loader.service';
 import { MatDialog } from '@angular/material';
-import { DeletableNotificationComponent } from '../deletable-notification/deletable-notification.component';
+import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
 import { UserWelcomeNotification } from './user-welcome-notification';
 
 @Component({
   selector: 'app-welcome-message-card',
   templateUrl: './welcome-message-card.component.html',
-  styleUrls: ['./welcome-message-card.component.scss', '../my-messages.component.scss']
+  styleUrls: ['./welcome-message-card.component.scss']
 })
-export class WelcomeMessageCardComponent extends DeletableNotificationComponent implements OnInit {
+export class WelcomeMessageCardComponent extends DeletableNotificationComponentTrait implements OnInit {
 
   @Input() notification: UserWelcomeNotification;
 

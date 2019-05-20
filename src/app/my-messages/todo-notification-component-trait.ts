@@ -1,28 +1,21 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material';
-import { CommunityRegistrationService } from '../../shared/community-registration.service';
+import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { CommunityUserRegistration } from '../../shared/community-user-registration';
-import { NotificationType } from '../notification-type.enum';
+import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
+import { CommunityUserRegistration } from '../shared/community-user-registration';
+import { NotificationType } from './notification-type.enum';
 import { TodoNotification } from './todo-notification';
 
-@Component({
-  selector: 'app-todo-notification',
-  template: ''
-})
-export class TodoNotificationComponent implements OnInit {
+export abstract class TodoNotificationComponentTrait {
 
   @Input() notification: TodoNotification;
   @Input() currentUserId: string;
   @Output() processed: EventEmitter<HttpErrorResponse> = new EventEmitter();
   @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 
-  constructor(protected communityRegistrationService: CommunityRegistrationService,
+  protected constructor(protected communityRegistrationService: CommunityRegistrationService,
               protected dialog: MatDialog) {
-  }
-
-  ngOnInit() {
   }
 
   getStatusText(): string {
