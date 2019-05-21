@@ -4,11 +4,12 @@
   @extend %base-card;
 }
 
+.messages-description-label {
+  @extend %base-description-label;
+}
+
 .messages-error-message {
   @extend %base-error;
 }
 
-.messages-description-label {
-  @extend %base-description-label;
-}
 

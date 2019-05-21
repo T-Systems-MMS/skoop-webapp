@@ -1,18 +1,7 @@
 import * as moment from 'moment';
 import { Moment } from 'moment';
 import { UserProject } from '../user-projects/user-project';
-import { AbstractNotification } from '../my-messages/abstract-notification';
-import { NotificationType } from '../my-messages/notification-type.enum';
-import { AcceptanceToCommunityNotification } from '../my-messages/acceptance-to-community-notification';
-import { CommunityChangedNotification } from '../my-messages/community-changed-notification';
-import { CommunityDeletedNotification } from '../my-messages/community-deleted-notification';
-import { CommunityInvitationNotification } from '../my-messages/community-invitation-notification';
-import { CommunityRoleChangedNotification } from '../my-messages/community-role-changed-notification';
-import { JoinCommunityRequestNotification } from '../my-messages/join-community-request-notification';
-import { MemberKickedOutNotification } from '../my-messages/member-kicked-out-notification';
-import { MemberLeftCommunityNotification } from '../my-messages/member-left-community-notification';
 import { Publication } from '../publications/publication';
-import { UserWelcomeNotification } from '../my-messages/user-welcome-notification';
 
 export class Util {
 
@@ -61,34 +50,6 @@ export class Util {
 
     const tomorrow: Moment = Util.now().startOf('day').add(1, 'day');
     return tomorrow.isAfter(publicationDate);
-  }
-
-  /**
-   * Creates notification instance according to its type
-   */
-  public static createNotificationInstance<T extends AbstractNotification>(notification: any): T {
-    switch (notification.type) {
-      case NotificationType.ACCEPTANCE_TO_COMMUNITY:
-        return Object.assign(new AcceptanceToCommunityNotification(), notification);
-      case NotificationType.COMMUNITY_CHANGED:
-        return Object.assign(new CommunityChangedNotification(), notification);
-      case NotificationType.COMMUNITY_DELETED:
-        return Object.assign(new CommunityDeletedNotification(), notification);
-      case NotificationType.INVITATION_TO_JOIN_COMMUNITY:
-        return Object.assign(new CommunityInvitationNotification(), notification);
-      case NotificationType.COMMUNITY_ROLE_CHANGED:
-        return Object.assign(new CommunityRoleChangedNotification(), notification);
-      case NotificationType.REQUEST_TO_JOIN_COMMUNITY:
-        return Object.assign(new JoinCommunityRequestNotification(), notification);
-      case NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY:
-        return Object.assign(new MemberKickedOutNotification(), notification);
-      case NotificationType.MEMBER_LEFT_COMMUNITY:
-        return Object.assign(new MemberLeftCommunityNotification(), notification);
-      case NotificationType.USER_WELCOME_NOTIFICATION:
-        return Object.assign(new UserWelcomeNotification(), notification);
-      default:
-        return null;
-    }
   }
 
 }

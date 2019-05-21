@@ -2,81 +2,46 @@
   <h1>My messages</h1>
   <div *ngIf="errorMessage" class="messages-error-message">{{errorMessage}}</div>
 
-  <mat-card *ngFor="let notification of notifications$ | async" class="messages-card">
-    <div>
-      <div fxFlex>
-        <div fxLayout="row">
-          <div class="messages-description-label">Type:</div>
-          <div>{{notification.getTypeText()}}</div>
-        </div>
-        <div fxLayout="row">
-          <div class="messages-description-label">Date:</div>
-          <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
-        </div>
-        <div *ngIf="!notification.hasUserWelcomeNotificationType()" fxLayout="row" class="messages-community-information">
-          <div class="messages-description-label">Community:</div>
-          <div *ngIf="notification.hasJoinCommunityType() || notification.hasCommunityInvitationType() || notification.hasAcceptanceToCommunityType()">
-            <div *ngIf="notification.registration.community; then registration_community_link; else community_name"></div>
-          </div>
-          <div *ngIf="notification.hasCommunityDeletedType() || notification.hasCommunityRoleChangedType(); then community_name">
-          </div>
-          <div *ngIf="notification.hasCommunityChangedType() || notification.hasMemberKickedOutType() || notification.hasMemberLeftType()">
-            <div *ngIf="notification.community; then community_link; else community_name"></div>
-          </div>
-          <ng-template #community_name>
-            <div>{{notification.communityName}}</div>
-          </ng-template>
-          <ng-template #community_link>
-            <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>
-          </ng-template>
-          <ng-template #registration_community_link>
-            <a [routerLink]="['/communities', notification.registration.community.id]">{{notification.registration.community.title}}</a>
-          </ng-template>
-
-        </div>
-        <div fxLayout="row" *ngIf="notification.hasJoinCommunityType()">
-          <div class="messages-description-label">User:</div>
-          <div>{{notification.registration.user.firstName}} {{notification.registration.user.lastName}}</div>
-        </div>
-        <div fxLayout="row" *ngIf="notification.hasMemberLeftType()">
-          <div class="messages-description-label">User:</div>
-          <div>{{notification.user.firstName}} {{notification.user.lastName}}</div>
-        </div>
-        <div fxLayout="row" *ngIf="hasJoinRequestType(notification)">
-          <div class="messages-description-label">Status:</div>
-          <div>{{notification.getStatusText()}}</div>
-        </div>
-        <div fxLayout="row" *ngIf="notification.hasCommunityRoleChangedType()">
-          <div class="messages-description-label">Message:</div>
-          <div>{{notification.getMessageText()}}</div>
-        </div>
-        <div fxLayout="row" *ngIf="notification.hasCommunityChangedType()">
-          <div class="messages-description-label">Message:</div>
-          <div *ngIf="notification.community; else community_details_without_link" class="messages-notification-text">
-            <a [routerLink]="['/communities', notification.community.id]">{{notification.community.title}}</a>&nbsp;{{notification.getMessageText()}}
-          </div>
-          <ng-template #community_details_without_link>
-            <strong>{{notification.communityName}}</strong>&nbsp;{{notification.getMessageText()}}
-          </ng-template>
-        </div>
-        <div fxLayout="row" *ngIf="notification.hasUserWelcomeNotificationType()">
-          <div class="messages-description-label">Message:</div>
-          <div>Welcome to SKOOP. Click <a href="javascript:;" (click)="openWelcomeNotificationDialog()">here</a> to get more info about the system.</div>
-        </div>
+  <div *ngFor="let notification of notifications$ | async">
+    <div [ngSwitch]="notification.type">
+      <div *ngSwitchCase="'InvitationToJoinCommunityNotification'" class="message-card">
+        <app-community-invitation-message-card [notification]="notification" [currentUserId]="currentUserId"
+                                               (processed)="onSuccessDeleted()"
+                                               (error)="handleErrorResponse($event)"></app-community-invitation-message-card>
       </div>
-      <div fxFlex="none">
-        <button *ngIf="showDeleteButton(notification)" mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
-          <mat-icon>delete</mat-icon>
-        </button>
-        <span *ngIf="showAcceptDeclineButtons(notification)">
-          <button mat-icon-button (click)="onAccept(notification)" title="Accept" aria-label="Accept">
-            <mat-icon>done_outline</mat-icon>
-          </button>
-          <button mat-icon-button (click)="onDecline(notification)" title="Decline" aria-label="Decline">
-            <mat-icon>cancel</mat-icon>
-          </button>
-        </span>
+      <div *ngSwitchCase="'RequestToJoinCommunityNotification'" class="message-card">
+        <app-community-join-request-message-card [notification]="notification" [currentUserId]="currentUserId"
+                                                 (processed)="onSuccessDeleted()"
+                                                 (error)="handleErrorResponse($event)"></app-community-join-request-message-card>
+      </div>
+      <div *ngSwitchCase="'UserLeftCommunityNotification'" class="message-card">
+        <app-community-left-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                         (error)="handleErrorResponse($event)"></app-community-left-message-card>
+      </div>
+      <div *ngSwitchCase="'CommunityUserRoleChangedNotification'" class="message-card">
+        <app-community-role-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                                 (error)="handleErrorResponse($event)"></app-community-role-changed-message-card>
+      </div>
+      <div *ngSwitchCase="'CommunityChangedNotification'" class="message-card">
+        <app-community-changed-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                            (error)="handleErrorResponse($event)"></app-community-changed-message-card>
+      </div>
+      <div *ngSwitchCase="'UserKickedOutFromCommunityNotification'" class="message-card">
+        <app-community-kick-out-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                             (error)="handleErrorResponse($event)"></app-community-kick-out-message-card>
+      </div>
+      <div *ngSwitchCase="'CommunityDeletedNotification'" class="message-card">
+        <app-community-deleted-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                            (error)="handleErrorResponse($event)"></app-community-deleted-message-card>
+      </div>
+      <div *ngSwitchCase="'AcceptanceToCommunityNotification'" class="message-card">
+        <app-community-acceptance-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                               (error)="handleErrorResponse($event)"></app-community-acceptance-message-card>
+      </div>
+      <div *ngSwitchCase="'UserWelcomeNotification'" class="message-card">
+        <app-welcome-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                  (error)="handleErrorResponse($event)"></app-welcome-message-card>
       </div>
     </div>
-  </mat-card>
+  </div>
 </div>

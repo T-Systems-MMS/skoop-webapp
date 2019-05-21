@@ -1,0 +1,30 @@
+<app-message-card>
+  <div textContent>
+    <div fxLayout="row">
+      <div class="messages-description-label">Type:</div>
+      <div>Invitation to a community</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Date:</div>
+      <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Status:</div>
+      <div>{{getStatusText()}}</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Message:</div>
+      <div [innerHTML]="'Invitation to the community ' + getCommunityInfo()"></div>
+    </div>
+  </div>
+  <div buttonContent>
+   <span *ngIf="showAcceptDeclineButtons()">
+    <button mat-icon-button (click)="onAccept()" title="Accept" aria-label="Accept">
+      <mat-icon>done_outline</mat-icon>
+    </button>
+    <button mat-icon-button (click)="onDecline()" title="Decline" aria-label="Decline">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </span>
+  </div>
+</app-message-card>

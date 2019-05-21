@@ -1,0 +1,21 @@
+<app-message-card>
+  <div textContent>
+    <div fxLayout="row">
+      <div class="messages-description-label">Type:</div>
+      <div>The user was kicked out of the community</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Date:</div>
+      <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Message:</div>
+      <div [innerHTML]="'You were kicked out of the community ' + getCommunityInfo()"></div>
+    </div>
+  </div>
+  <div buttonContent>
+    <button mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</app-message-card>

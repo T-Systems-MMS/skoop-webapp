@@ -1,0 +1,21 @@
+<app-message-card>
+  <div textContent>
+    <div fxLayout="row">
+      <div class="messages-description-label">Type:</div>
+      <div>The community role changed</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Date:</div>
+      <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Message:</div>
+      <div>Your role in the community <strong>{{notification.communityName}}</strong> was changed to {{notification.role}}</div>
+    </div>
+  </div>
+  <div buttonContent>
+    <button mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</app-message-card>

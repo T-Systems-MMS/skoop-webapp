@@ -7,24 +7,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { MessagesService } from './messages.service';
-import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
-import { Util } from '../util/util';
 import { NotificationType } from './notification-type.enum';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { By } from '@angular/platform-browser';
-import { CommunityUserRegistration } from '../shared/community-user-registration';
-import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
-import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
-import { DebugElement } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { UserIdentity } from '../shared/user-identity';
 import { CommunityRole } from '../communities/community-role.enum';
 import { NotificationCounterService } from '../shared/notification-counter.service';
-import { TemplateLoaderService } from '../shared/template-loader.service';
-import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -36,7 +28,7 @@ const authenticatedUser: UserIdentity = {
 };
 
 const expectedNotifications: any[] = [
-  Util.createNotificationInstance({
+  {
     type: NotificationType.INVITATION_TO_JOIN_COMMUNITY,
     id: '76887802-f12f-47b0-bf8d-6d69fbcc77e5',
     creationDatetime: new Date(),
@@ -63,8 +55,8 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.REQUEST_TO_JOIN_COMMUNITY,
     id: 'e84cacac-4fba-4cea-b7e6-7e3d9841b0a6',
     creationDatetime: new Date(),
@@ -91,8 +83,8 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.ACCEPTANCE_TO_COMMUNITY,
     id: '7019db9c-b658-4531-aa6c-d1e8e60b5ec3',
     creationDatetime: '2019-03-26T13:33:32.790655',
@@ -119,14 +111,14 @@ const expectedNotifications: any[] = [
         skills: []
       }
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.COMMUNITY_DELETED,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
     communityName: 'deleted community'
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.MEMBER_LEFT_COMMUNITY,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
@@ -148,8 +140,8 @@ const expectedNotifications: any[] = [
       email: 'toni.tester@skoop.io',
       coach: false
     },
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
@@ -163,15 +155,15 @@ const expectedNotifications: any[] = [
       managers: [],
       skills: []
     }
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.COMMUNITY_ROLE_CHANGED,
     id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
     communityName: 'Super group',
     creationDatetime: new Date(),
     role: CommunityRole.MEMBER
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.COMMUNITY_CHANGED,
     id: '12398802-f12f-47b0-bf8d-6d69aabb77d3',
     creationDatetime: new Date(),
@@ -186,26 +178,105 @@ const expectedNotifications: any[] = [
       skills: []
     },
     communityDetails: ['NAME', 'TYPE', 'DESCRIPTION', 'SKILLS', 'LINKS']
-  }),
-  Util.createNotificationInstance({
+  },
+  {
     type: NotificationType.USER_WELCOME_NOTIFICATION,
     id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
     creationDatetime: new Date()
-  }),
+  }
 ];
 
-const registrationResponse: CommunityUserRegistrationResponse = {
-  id: '567890',
-  user: {
-    id: '251c2a3b-b737-4622-8060-196d5e297ebc',
-    userName: 'testbed',
-    firstName: 'Tabia',
-    lastName: 'Testbed',
-    email: 'tabia.testbed@skoop.io'
-  },
-  approvedByUser: true,
-  approvedByCommunity: true
-};
+@Component({
+  selector: 'app-community-acceptance-message-card',
+  template: ''
+})
+class CommunityAcceptanceMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-changed-message-card',
+  template: ''
+})
+class CommunityChangedMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-deleted-message-card',
+  template: ''
+})
+class CommunityDeletedMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-invitation-message-card',
+  template: ''
+})
+class CommunityInvitationMessageCardStubComponent {
+  @Input() notification;
+  @Input() currentUserId;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-join-request-message-card',
+  template: ''
+})
+class CommunityJoinRequestMessageCardStubComponent {
+  @Input() notification;
+  @Input() currentUserId;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-kick-out-message-card',
+  template: ''
+})
+class CommunityKickOutMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-left-message-card',
+  template: ''
+})
+class CommunityLeftMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-community-role-changed-message-card',
+  template: ''
+})
+class CommunityRoleChangedMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
+@Component({
+  selector: 'app-welcome-message-card',
+  template: ''
+})
+class WelcomeMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
 
 describe('MyMessagesComponent', () => {
   let component: MyMessagesComponent;
@@ -220,7 +291,18 @@ describe('MyMessagesComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule
       ],
-      declarations: [ MyMessagesComponent, DeleteConfirmationDialogComponent, InfoDialogComponent ],
+      declarations: [
+        MyMessagesComponent,
+        CommunityAcceptanceMessageCardStubComponent,
+        CommunityChangedMessageCardStubComponent,
+        CommunityDeletedMessageCardStubComponent,
+        CommunityInvitationMessageCardStubComponent,
+        CommunityJoinRequestMessageCardStubComponent,
+        CommunityKickOutMessageCardStubComponent,
+        CommunityLeftMessageCardStubComponent,
+        CommunityRoleChangedMessageCardStubComponent,
+        WelcomeMessageCardStubComponent
+      ],
       providers: [
         GlobalErrorHandlerService,
         {
@@ -229,28 +311,17 @@ describe('MyMessagesComponent', () => {
           })
         },
         {
-          provide: CommunityRegistrationService, useValue: jasmine.createSpyObj('communityRegistrationService', {
-            'updateRegistration': of(registrationResponse)
-          })
-        },
-        {
           provide: UserIdentityService, useValue: jasmine.createSpyObj('userIdentityService', {
             'getUserIdentity': of(authenticatedUser)
           })
         },
         {
-          provide: TemplateLoaderService, useValue: jasmine.createSpyObj('templateLoaderService', {
-            'loadTemplate': of('some html text')
+          provide: NotificationCounterService, useValue: jasmine.createSpyObj('notificationCounterService', {
+            'decrementCount': of()
           })
-        },
-        NotificationCounterService
+        }
       ]
     })
-      .overrideModule(BrowserDynamicTestingModule, {
-        set: {
-          entryComponents: [DeleteConfirmationDialogComponent, InfoDialogComponent]
-        }
-      })
     .compileComponents();
   }));
 
@@ -265,247 +336,36 @@ describe('MyMessagesComponent', () => {
   });
 
   it('should initialize the list of notifications', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+    const notificationCards = fixture.debugElement.queryAll(By.css(('.message-card')));
 
     expect(notificationCards.length).toBe(9);
   }));
 
-  it('should display accept/decline buttons for INVITATION_TO_JOIN_COMMUNITY notification in pending status', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
+  it('should reload notifications and decrement count after deletion a notification', fakeAsync(() => {
+    const welcomeMessageFixture = fixture.debugElement.query(By.directive(WelcomeMessageCardStubComponent));
+    const welcomeMessageComponent: WelcomeMessageCardStubComponent = welcomeMessageFixture.componentInstance;
+    welcomeMessageComponent.deleted.emit();
 
-    const buttons = notificationCards[0].queryAll(By.css('button'));
-    expect(buttons.length).toBe(2);
-    expect(buttons[0].nativeElement.textContent).toContain('done_outline');
-    expect(buttons[1].nativeElement.textContent).toContain('cancel');
+    const messageService: MessagesService = TestBed.get(MessagesService);
+    expect(messageService.getUserNotifications).toHaveBeenCalled();
+    const notificationCounterService: NotificationCounterService = TestBed.get(NotificationCounterService);
+    expect(notificationCounterService.decrementCount).toHaveBeenCalled();
   }));
 
-  it('should not display accept/decline buttons in case of REQUEST_TO_JOIN_COMMUNITY for user who sent the request', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-
-    const buttons = notificationCards[1].queryAll(By.css('button'));
-    expect(buttons.length).toBe(0);
-  }));
-
-  it('should send an accept request on accept button click', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const acceptButton = notificationCards[0].nativeElement.querySelector('button');
-
-    acceptButton.click();
-    fixture.whenStable().then(() => {
-      const expectedRequestData: CommunityUserRegistration = {
-        id: expectedNotifications[0].registration.id,
-        approvedByUser: true,
-        approvedByCommunity: null
-      };
-      const registrationService: CommunityRegistrationService = TestBed.get(CommunityRegistrationService);
-      expect(registrationService.updateRegistration)
-        .toHaveBeenCalledWith(expectedNotifications[0].registration.community.id, expectedRequestData);
+  it('should show error on error in a child component', fakeAsync(() => {
+    const welcomeMessageFixture = fixture.debugElement.query(By.directive(WelcomeMessageCardStubComponent));
+    const welcomeMessageComponent: WelcomeMessageCardStubComponent = welcomeMessageFixture.componentInstance;
+    const message = 'expected text';
+    const errorEvent = new ErrorEvent('', {
+      message: message
     });
-  }));
-
-  it('should open confirmation dialog on decline button click', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const buttons = notificationCards[0].queryAll(By.css('button'));
-
-    buttons[1].nativeElement.click();
-    fixture.whenStable().then(() => {
-      const matDialog: MatDialog = TestBed.get(MatDialog);
-      expect(matDialog.openDialogs.length).toBe(1);
-      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
+    const err: HttpErrorResponse = new HttpErrorResponse({
+      error: errorEvent
     });
+    welcomeMessageComponent.error.emit(err);
+
+
+    expect(component.errorMessage).toBe(message);
   }));
-
-  it('should show changed community fields', fakeAsync(() => {
-    const expectedText = 'name, type, description, skills, links changed';
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const notificationText = notificationCards[7].query(By.css('.messages-notification-text'));
-
-    expect(notificationText.nativeElement.innerText).toContain(expectedText);
-  }));
-
-  it('should throw an exception in case of deleting message of To-Do type', fakeAsync(() => {
-    fixture.detectChanges();
-    expect(function () {
-      component.delete(expectedNotifications[0]);
-    }).toThrow();
-  }));
-
-  it('should open confirmation dialog on delete button click', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const buttons = notificationCards[3].query(By.css('button'));
-
-    buttons.nativeElement.click();
-    fixture.whenStable().then(() => {
-      const matDialog: MatDialog = TestBed.get(MatDialog);
-      expect(matDialog.openDialogs.length).toBe(1);
-      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
-    });
-  }));
-
-  it('should display community information regarding to the notification type', fakeAsync(() => {
-    fixture.detectChanges();
-
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    let communityRow = getCommunityInformation(notificationCards[0]);
-
-    // INVITATION_TO_JOIN_COMMUNITY -> link to the community from a registration object
-    let linkToCommunity = communityRow.nativeElement.querySelector('a');
-    expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[0].registration.community.id}`);
-    expect(linkToCommunity.text).toBe(expectedNotifications[0].registration.community.title);
-
-    // REQUEST_TO_JOIN_COMMUNITY -> link to the community from a registration object
-    communityRow = getCommunityInformation(notificationCards[1]);
-    linkToCommunity = communityRow.nativeElement.querySelector('a');
-    expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
-    expect(linkToCommunity.text).toBe(expectedNotifications[1].registration.community.title);
-
-    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
-    communityRow = getCommunityInformation(notificationCards[2]);
-    linkToCommunity = communityRow.nativeElement.querySelector('a');
-    expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[1].registration.community.id}`);
-    expect(linkToCommunity.text).toBe(expectedNotifications[2].registration.community.title);
-
-    // COMMUNITY_DELETED -> community name
-    communityRow = getCommunityInformation(notificationCards[3]);
-    let communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[3].communityName);
-
-    // MEMBER_LEFT_COMMUNITY -> link to the community from a notification object
-    communityRow = getCommunityInformation(notificationCards[4]);
-    linkToCommunity = communityRow.nativeElement.querySelector('a');
-    expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[4].community.id}`);
-    expect(linkToCommunity.text).toBe(expectedNotifications[4].community.title);
-
-    // MEMBER_KICKED_OUT_OF_COMMUNITY -> link to the community from a notification object
-    communityRow = getCommunityInformation(notificationCards[5]);
-    linkToCommunity = communityRow.nativeElement.querySelector('a');
-    expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[5].community.id}`);
-    expect(linkToCommunity.text).toBe(expectedNotifications[5].community.title);
-
-    // COMMUNITY_ROLE_CHANGED -> community name
-    communityRow = getCommunityInformation(notificationCards[6]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[6].communityName);
-
-    // COMMUNITY_CHANGED -> link to the community from a notification object
-    communityRow = getCommunityInformation(notificationCards[7]);
-    linkToCommunity = communityRow.nativeElement.querySelector('a');
-    expect(linkToCommunity).toBeDefined();
-    expect(linkToCommunity.href).toContain(`/communities/${expectedNotifications[7].community.id}`);
-    expect(linkToCommunity.text).toBe(expectedNotifications[7].community.title);
-  }));
-
-
-  it('should display community name (without link) when community was deleted', fakeAsync(() => {
-    const notificationsWithoutCommunity = Object.assign({}, expectedNotifications);
-    notificationsWithoutCommunity[0].registration.community = null;
-    notificationsWithoutCommunity[0].communityName = 'Name of deleted community';
-    notificationsWithoutCommunity[1].registration.community = null;
-    notificationsWithoutCommunity[1].communityName = 'Name of deleted community';
-    notificationsWithoutCommunity[2].registration.community = null;
-    notificationsWithoutCommunity[2].communityName = 'Name of deleted community';
-    notificationsWithoutCommunity[4].community = null;
-    notificationsWithoutCommunity[4].communityName = 'Name of deleted community';
-    notificationsWithoutCommunity[5].community = null;
-    notificationsWithoutCommunity[5].communityName = 'Name of deleted community';
-    notificationsWithoutCommunity[7].community = null;
-    notificationsWithoutCommunity[7].communityName = 'Name of deleted community';
-
-
-    const messagesService = TestBed.get(MessagesService) as MessagesService;
-    messagesService.getUserNotifications = jasmine.createSpy().and.returnValue(of(notificationsWithoutCommunity));
-    fixture.detectChanges();
-
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    let communityRow = getCommunityInformation(notificationCards[0]);
-
-    // INVITATION_TO_JOIN_COMMUNITY -> link to the community from a registration object
-    let communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[0].communityName);
-
-    // REQUEST_TO_JOIN_COMMUNITY -> link to the community from a registration object
-    communityRow = getCommunityInformation(notificationCards[1]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[1].communityName);
-
-    // ACCEPTANCE_TO_COMMUNITY -> link to the community from a registration object
-    communityRow = getCommunityInformation(notificationCards[2]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[2].communityName);
-
-    // COMMUNITY_DELETED -> community name
-    communityRow = getCommunityInformation(notificationCards[3]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[3].communityName);
-
-    // MEMBER_LEFT_COMMUNITY -> link to the community from a notification object
-    communityRow = getCommunityInformation(notificationCards[4]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[4].communityName);
-
-    // MEMBER_KICKED_OUT_OF_COMMUNITY -> link to the community from a notification object
-    communityRow = getCommunityInformation(notificationCards[5]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[5].communityName);
-
-    // COMMUNITY_ROLE_CHANGED -> community name
-    communityRow = getCommunityInformation(notificationCards[6]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[6].communityName);
-
-    // COMMUNITY_CHANGED -> community name
-    communityRow = getCommunityInformation(notificationCards[7]);
-    communityName = communityRow.nativeElement.innerText;
-    expect(communityName).toBeDefined();
-    expect(communityName).toBe(expectedNotifications[7].communityName);
-  }));
-
-  it('should contain link to open welcome-notification information', fakeAsync(() => {
-    fixture.detectChanges();
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const linkElem = notificationCards[8].query(By.css('div a'));
-    expect(linkElem).not.toBeNull();
-  }));
-
-  it('should load html template and open welcome notification dialog on link click', fakeAsync(() => {
-    const notificationCards = fixture.debugElement.queryAll(By.css(('.messages-card')));
-    const linkElem = notificationCards[8].query(By.css('div a'));
-    linkElem.nativeElement.click();
-
-    fixture.whenStable().then(() => {
-      const templateLoader: TemplateLoaderService = TestBed.get(TemplateLoaderService);
-      expect(templateLoader.loadTemplate).toHaveBeenCalled();
-
-      const matDialog: MatDialog = TestBed.get(MatDialog);
-      expect(matDialog.openDialogs.length).toBe(1);
-      expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(InfoDialogComponent));
-    });
-  }));
-
-  function getCommunityInformation(notificationCard: DebugElement): DebugElement {
-    const communityDebugElement = notificationCard.query(By.css(('.messages-community-information')));
-    return communityDebugElement.children[1];
-  }
 
 });
