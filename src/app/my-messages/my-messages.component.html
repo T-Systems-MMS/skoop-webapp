@@ -42,6 +42,10 @@
         <app-welcome-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
                                   (error)="handleErrorResponse($event)"></app-welcome-message-card>
       </div>
+      <div *ngSwitchCase="'UserSkillsEstimationNotification'" class="message-card">
+        <app-skills-estimation-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                  (error)="handleErrorResponse($event)"></app-skills-estimation-message-card>
+      </div>
     </div>
   </div>
 </div>

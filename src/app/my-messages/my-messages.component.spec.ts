@@ -183,6 +183,21 @@ const expectedNotifications: any[] = [
     type: NotificationType.USER_WELCOME_NOTIFICATION,
     id: '997f8c9e-4655-47f7-8cf0-b6021b25405c',
     creationDatetime: new Date()
+  },
+  {
+    type: NotificationType.SKILLS_ESTIMATION_NOTIFICATION,
+    id: '888f8c9e-4655-47f7-8cf0-b6021b254acc',
+    creationDatetime: new Date(),
+    skills: [
+      {
+        id: '22c1ad17-4044-45a7-940c-22f1beeb7992',
+        name: 'Java'
+      },
+      {
+        id: '44c1ad17-4044-45a7-940c-22f1beeb7123',
+        name: 'JavaScript'
+      }
+    ]
   }
 ];
 
@@ -278,6 +293,16 @@ class WelcomeMessageCardStubComponent {
   @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 }
 
+@Component({
+  selector: 'app-skills-estimation-message-card',
+  template: ''
+})
+class SkillsEstimationMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
 describe('MyMessagesComponent', () => {
   let component: MyMessagesComponent;
   let fixture: ComponentFixture<MyMessagesComponent>;
@@ -301,7 +326,8 @@ describe('MyMessagesComponent', () => {
         CommunityKickOutMessageCardStubComponent,
         CommunityLeftMessageCardStubComponent,
         CommunityRoleChangedMessageCardStubComponent,
-        WelcomeMessageCardStubComponent
+        WelcomeMessageCardStubComponent,
+        SkillsEstimationMessageCardStubComponent
       ],
       providers: [
         GlobalErrorHandlerService,
@@ -338,7 +364,7 @@ describe('MyMessagesComponent', () => {
   it('should initialize the list of notifications', fakeAsync(() => {
     const notificationCards = fixture.debugElement.queryAll(By.css(('.message-card')));
 
-    expect(notificationCards.length).toBe(9);
+    expect(notificationCards.length).toBe(10);
   }));
 
   it('should reload notifications and decrement count after deletion a notification', fakeAsync(() => {
