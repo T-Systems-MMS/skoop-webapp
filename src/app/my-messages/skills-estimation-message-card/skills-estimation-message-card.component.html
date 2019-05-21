@@ -1,0 +1,22 @@
+<app-message-card>
+  <div textContent>
+    <div fxLayout="row">
+      <div class="messages-description-label">Type:</div>
+      <div>Skills estimation notification</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Date:</div>
+      <div>{{notification.creationDatetime | date:'dd.MM.yyyy HH:mm:ss'}}</div>
+    </div>
+    <div fxLayout="row">
+      <div class="messages-description-label">Message:</div>
+      <div [innerHTML]="'You need to estimate the skills ' + buildSkillsText() + ' used in your project. You can do this on <a href=\'/my-skills\'>My skill profile</a> page'"></div>
+    </div>
+    <a href="/my-skills"></a>
+  </div>
+  <div buttonContent>
+    <button mat-icon-button (click)="delete(notification)" title="Delete" aria-label="Delete">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </div>
+</app-message-card>

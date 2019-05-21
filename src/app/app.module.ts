@@ -79,6 +79,7 @@ import { CommunityRoleChangedMessageCardComponent } from './my-messages/communit
 import { CommunityAcceptanceMessageCardComponent } from './my-messages/community-acceptance-message-card/community-acceptance-message-card.component';
 import { CommunityInvitationMessageCardComponent } from './my-messages/community-invitation-message-card/community-invitation-message-card.component';
 import { CommunityJoinRequestMessageCardComponent } from './my-messages/community-join-request-message-card/community-join-request-message-card.component';
+import { SkillsEstimationMessageCardComponent } from './my-messages/skills-estimation-message-card/skills-estimation-message-card.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -151,7 +152,8 @@ export const CUSTOM_FORMATS = {
     CommunityRoleChangedMessageCardComponent,
     CommunityAcceptanceMessageCardComponent,
     CommunityInvitationMessageCardComponent,
-    CommunityJoinRequestMessageCardComponent
+    CommunityJoinRequestMessageCardComponent,
+    SkillsEstimationMessageCardComponent
   ],
   imports: [
     BrowserModule,
