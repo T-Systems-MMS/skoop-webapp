@@ -1,0 +1,17 @@
+<div *ngIf="(manager$ |async) != null; else no_manager_content" class="manager-content">
+  <div fxLayout="row">
+    <div class="manager-description-label">Manager:</div>
+    <div>{{(manager$ |async).firstName}} {{(manager$ |async).lastName}}</div>
+  </div>
+  <div fxLayout="row">
+    <div class="manager-description-label">Phone:</div>
+    <div>{{(manager$ |async).phoneNumber}}</div>
+  </div>
+  <div fxLayout="row">
+    <div class="manager-description-label">Email:</div>
+    <div><a href="mailto:{{(manager$ |async).email}}">{{(manager$ |async).email}}</a></div>
+  </div>
+</div>
+<ng-template #no_manager_content>
+  There is no manager for the current user.
+</ng-template>
