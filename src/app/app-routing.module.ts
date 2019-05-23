@@ -20,11 +20,13 @@ import { OtherUserSkillsComponent } from './other-user-skills/other-user-skills.
 import { CommunitiesComponent } from './communities/communities.component';
 import { CommunityViewComponent } from './community-view/community-view.component';
 import { MyMessagesComponent } from './my-messages/my-messages.component';
+import { MySubordinatesComponent } from './my-subordinates/my-subordinates.component';
 
 export const routes: Routes = [
   { path: 'my-messages', component: MyMessagesComponent },
   { path: 'my-skills', component: MySkillsComponent },
   { path: 'my-projects', component: MyProjectsComponent },
+  { path: 'my-subordinates', component: MySubordinatesComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },
   {
     path: 'reports/skill-priority-reports',

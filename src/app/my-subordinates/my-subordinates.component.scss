@@ -1,0 +1,13 @@
+@import 'variables';
+
+.my-subordinates-error {
+  @extend %base-error;
+}
+
+.my-subordinates-card {
+  @extend %base-card;
+}
+
+.my-subordinates-description-label {
+  @extend %base-description-label;
+}
