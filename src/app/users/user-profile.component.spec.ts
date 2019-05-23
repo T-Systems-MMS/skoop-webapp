@@ -44,6 +44,12 @@ class MembershipsStubComponent {
 class PermissionsStubComponent {
   @Input() savingInProgress = false;
 }
+@Component({
+  selector: 'app-user-manager',
+  template: ''
+})
+class ManagerStubComponent {
+}
 
 describe('UserProfileComponent', () => {
   let component: UserProfileComponent;
@@ -58,7 +64,14 @@ describe('UserProfileComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [UserProfileComponent, TestimonialsStubComponent, PublicationsStubComponent, MembershipsStubComponent, PermissionsStubComponent],
+      declarations: [
+        UserProfileComponent,
+        TestimonialsStubComponent,
+        PublicationsStubComponent,
+        MembershipsStubComponent,
+        PermissionsStubComponent,
+        ManagerStubComponent
+      ],
       providers: [
         GlobalErrorHandlerService,
         {

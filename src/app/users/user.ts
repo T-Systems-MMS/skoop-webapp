@@ -4,6 +4,7 @@ export interface User {
   firstName?: string;
   lastName?: string;
   email?: string;
+  phoneNumber?: string;
   academicDegree?: string;
   positionProfile?: string;
   summary?: string;

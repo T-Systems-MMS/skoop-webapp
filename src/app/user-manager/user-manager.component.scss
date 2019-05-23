@@ -1,0 +1,5 @@
+@import 'variables';
+
+.manager-description-label {
+  @extend %base-description-label;
+}
