@@ -2,7 +2,7 @@
   <mat-card-content>
     <div fxLayout="row">
       <div fxFlex>
-        <h2 class="my-projects-card__heading">{{ userProject.project.name }}</h2>
+        <h2 class="user-projects-card__heading">{{ userProject.project.name }}</h2>
       </div>
       <div fxFlex="none">
         <ng-content select="[buttonContent]"></ng-content>
@@ -10,23 +10,23 @@
     </div>
     <div fxLayout="column" fxLayoutGap="10px">
       <div fxLayout="row">
-        <div class="my-projects-description-label">Role:</div>
+        <div class="user-projects-description-label">Role:</div>
         <div>{{ userProject.role ? userProject.role : 'N/A' }}</div>
       </div>
       <div fxLayout="row">
-        <div class="my-projects-description-label">Tasks:</div>
+        <div class="user-projects-description-label">Tasks:</div>
         <div>{{ userProject.tasks ? userProject.tasks : 'N/A' }}</div>
       </div>
       <div fxLayout="row">
-        <div class="my-projects-description-label">Start date:</div>
+        <div class="user-projects-description-label">Start date:</div>
         <div>{{ userProject.startDate | date : 'dd/MM/yyyy' }}</div>
       </div>
       <div fxLayout="row">
-        <div class="my-projects-description-label">End date:</div>
+        <div class="user-projects-description-label">End date:</div>
         <div>{{ userProject.endDate ? (userProject.endDate | date : 'dd/MM/yyyy') : 'N/A' }}</div>
       </div>
       <div fxLayout="row">
-        <div class="my-projects-description-label my-projects-skill-label">Skills:</div>
+        <div class="user-projects-description-label user-projects-skill-label">Skills:</div>
         <mat-chip-list>
           <mat-chip *ngFor="let skill of userProject.skills">{{ skill.name }}</mat-chip>
         </mat-chip-list>

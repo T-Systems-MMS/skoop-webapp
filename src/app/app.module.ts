@@ -83,6 +83,7 @@ import { SkillsEstimationMessageCardComponent } from './my-messages/skills-estim
 import { MySubordinatesComponent } from './my-subordinates/my-subordinates.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 import { UserProjectCardComponent } from './shared/user-project-card/user-project-card.component';
+import { ProjectMembershipsComponent } from './project-memberships/project-memberships.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -159,7 +160,8 @@ export const CUSTOM_FORMATS = {
     SkillsEstimationMessageCardComponent,
     UserManagerComponent,
     MySubordinatesComponent,
-    UserProjectCardComponent
+    UserProjectCardComponent,
+    ProjectMembershipsComponent
   ],
   imports: [
     BrowserModule,
