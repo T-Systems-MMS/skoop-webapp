@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserManagerComponent } from './user-manager.component';
-import { ManagerService } from './manager.service';
+import { ManagerService } from '../shared/manager.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 

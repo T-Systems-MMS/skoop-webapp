@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ManagerService } from './manager.service';
+import { ManagerService } from '../shared/manager.service';
 import { Observable, of } from 'rxjs';
 import { User } from '../users/user';
 

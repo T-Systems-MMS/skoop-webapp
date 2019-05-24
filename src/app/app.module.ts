@@ -80,6 +80,7 @@ import { CommunityAcceptanceMessageCardComponent } from './my-messages/community
 import { CommunityInvitationMessageCardComponent } from './my-messages/community-invitation-message-card/community-invitation-message-card.component';
 import { CommunityJoinRequestMessageCardComponent } from './my-messages/community-join-request-message-card/community-join-request-message-card.component';
 import { SkillsEstimationMessageCardComponent } from './my-messages/skills-estimation-message-card/skills-estimation-message-card.component';
+import { MySubordinatesComponent } from './my-subordinates/my-subordinates.component';
 import { UserManagerComponent } from './user-manager/user-manager.component';
 
 export const CUSTOM_FORMATS = {
@@ -155,7 +156,8 @@ export const CUSTOM_FORMATS = {
     CommunityInvitationMessageCardComponent,
     CommunityJoinRequestMessageCardComponent,
     SkillsEstimationMessageCardComponent,
-    UserManagerComponent
+    UserManagerComponent,
+    MySubordinatesComponent
   ],
   imports: [
     BrowserModule,

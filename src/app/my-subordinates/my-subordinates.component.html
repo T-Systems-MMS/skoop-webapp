@@ -1,0 +1,24 @@
+<div class="mat-typography">
+  <h1>My subordinates</h1>
+  <div *ngIf="errorMessage" class="my-subordinates-error">{{errorMessage}}</div>
+
+  <div *ngIf="(subordinates$ | async)?.length > 0; else no_subordinates_content" class="my-subordinates-wrapper">
+    <mat-card *ngFor="let subordinate of subordinates$ | async" class="my-subordinates-card">
+      <mat-card-content>
+        <div>
+          <div fxLayout="row">
+            <div class="my-subordinates-description-label">Full name:</div>
+            <div>{{subordinate.firstName}} {{subordinate.lastName}}</div>
+          </div>
+          <div fxLayout="row">
+            <div class="my-subordinates-description-label">Username:</div>
+            <div>{{subordinate.userName}}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+<ng-template #no_subordinates_content>
+  You have no subordinates.
+</ng-template>
