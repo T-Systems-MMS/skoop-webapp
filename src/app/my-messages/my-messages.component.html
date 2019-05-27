@@ -46,6 +46,10 @@
         <app-skills-estimation-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
                                   (error)="handleErrorResponse($event)"></app-skills-estimation-message-card>
       </div>
+      <div *ngSwitchCase="'UserProjectNeedsApprovalNotification'" class="message-card">
+        <app-approve-project-message-card [notification]="notification" (deleted)="onSuccessDeleted()"
+                                  (error)="handleErrorResponse($event)"></app-approve-project-message-card>
+      </div>
     </div>
   </div>
 </div>

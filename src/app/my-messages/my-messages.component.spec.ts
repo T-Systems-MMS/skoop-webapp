@@ -17,6 +17,7 @@ import { UserIdentity } from '../shared/user-identity';
 import { CommunityRole } from '../communities/community-role.enum';
 import { NotificationCounterService } from '../shared/notification-counter.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import * as moment from 'moment';
 
 const authenticatedUser: UserIdentity = {
   userId: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -198,6 +199,39 @@ const expectedNotifications: any[] = [
         name: 'JavaScript'
       }
     ]
+  },
+  {
+    type: NotificationType.PROJECT_NEEDS_APPROVAL,
+    id: '888f8c9e-4655-47f7-8cf0-b6021b254acc',
+    creationDatetime: new Date(),
+    userProjects: [
+      {
+        id: 1,
+        role: 'developer',
+        tasks: 'development',
+        startDate: moment(),
+        endDate: moment(),
+        creationDate: moment(),
+        lastModifiedDate: moment(),
+        user: {
+          id: '123',
+          userName: 'username',
+          firstName: 'John',
+          lastName: 'Smith'
+        },
+        project: {
+          id: '456',
+          name: 'Project',
+          creationDate: new Date(),
+          customer: 'Customer',
+          description: null,
+          industrySector: 'Software development',
+          lastModifiedDate: new Date()
+        },
+        skills: [],
+        approved: false
+      }
+    ]
   }
 ];
 
@@ -303,6 +337,16 @@ class SkillsEstimationMessageCardStubComponent {
   @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
 }
 
+@Component({
+  selector: 'app-approve-project-message-card',
+  template: ''
+})
+class ApproveProjectMessageCardStubComponent {
+  @Input() notification;
+  @Output() deleted: EventEmitter<HttpErrorResponse> = new EventEmitter();
+  @Output() error: EventEmitter<HttpErrorResponse> = new EventEmitter();
+}
+
 describe('MyMessagesComponent', () => {
   let component: MyMessagesComponent;
   let fixture: ComponentFixture<MyMessagesComponent>;
@@ -327,7 +371,8 @@ describe('MyMessagesComponent', () => {
         CommunityLeftMessageCardStubComponent,
         CommunityRoleChangedMessageCardStubComponent,
         WelcomeMessageCardStubComponent,
-        SkillsEstimationMessageCardStubComponent
+        SkillsEstimationMessageCardStubComponent,
+        ApproveProjectMessageCardStubComponent
       ],
       providers: [
         GlobalErrorHandlerService,
@@ -364,7 +409,7 @@ describe('MyMessagesComponent', () => {
   it('should initialize the list of notifications', fakeAsync(() => {
     const notificationCards = fixture.debugElement.queryAll(By.css(('.message-card')));
 
-    expect(notificationCards.length).toBe(10);
+    expect(notificationCards.length).toBe(11);
   }));
 
   it('should reload notifications and decrement count after deletion a notification', fakeAsync(() => {
