@@ -56,7 +56,8 @@ describe('MyProjectsEditComponent', () => {
         description: 'Java programming language.',
         skillGroups: null
       }
-    ]
+    ],
+    approved: true
   };
 
   beforeEach(async(() => {

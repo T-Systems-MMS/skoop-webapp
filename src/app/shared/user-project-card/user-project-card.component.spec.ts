@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { UserProject } from '../../user-projects/user-project';
 import * as moment from 'moment';
+import { By } from '@angular/platform-browser';
 
 const userProject: UserProject = {
   id: 1,
@@ -36,7 +37,8 @@ const userProject: UserProject = {
       description: 'Java programming language.',
       skillGroups: null
     }
-  ]
+  ],
+  approved: true
 };
 
 describe('UserProjectCardComponent', () => {
@@ -65,5 +67,12 @@ describe('UserProjectCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should show "require approval" icon when project is not approved', () => {
+    component.userProject.approved = false;
+    fixture.detectChanges();
+    const icon = fixture.debugElement.query(By.css('.user-projects-require-approval'));
+    expect(icon).not.toBeNull();
   });
 });
