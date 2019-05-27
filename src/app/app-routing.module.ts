@@ -21,12 +21,14 @@ import { CommunitiesComponent } from './communities/communities.component';
 import { CommunityViewComponent } from './community-view/community-view.component';
 import { MyMessagesComponent } from './my-messages/my-messages.component';
 import { MySubordinatesComponent } from './my-subordinates/my-subordinates.component';
+import { ProjectMembershipsComponent } from './project-memberships/project-memberships.component';
 
 export const routes: Routes = [
   { path: 'my-messages', component: MyMessagesComponent },
   { path: 'my-skills', component: MySkillsComponent },
   { path: 'my-projects', component: MyProjectsComponent },
   { path: 'my-subordinates', component: MySubordinatesComponent },
+  { path: 'my-subordinates/:userId/project-memberships', component: ProjectMembershipsComponent },
   { path: 'statistics/skill-priority', component: SkillPriorityStatisticsComponent },
   {
     path: 'reports/skill-priority-reports',

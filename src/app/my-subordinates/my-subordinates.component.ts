@@ -1,10 +1,11 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { User } from '../users/user';
 import { catchError } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { ManagerService } from '../shared/manager.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-subordinates',
@@ -17,6 +18,7 @@ export class MySubordinatesComponent implements OnInit {
   subordinates$: Observable<User[]> = of([]);
 
   constructor(private managerService: ManagerService,
+              private router: Router, public activatedRoute: ActivatedRoute,
               private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
   ngOnInit() {
@@ -27,6 +29,10 @@ export class MySubordinatesComponent implements OnInit {
         return of([]);
       })
     );
+  }
+
+  openProjectMemberships(userId: string) {
+    this.router.navigate([userId, 'project-memberships'], { relativeTo: this.activatedRoute });
   }
 
 }

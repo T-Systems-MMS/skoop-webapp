@@ -9,6 +9,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { ManagerService } from '../shared/manager.service';
+import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
 
 const subordinates = [
   {
@@ -39,7 +41,8 @@ describe('MySubordinatesComponent', () => {
         AppMaterialModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        MatMomentDateModule
+        MatMomentDateModule,
+        RouterTestingModule
       ],
       declarations: [ MySubordinatesComponent ],
       providers: [
@@ -77,5 +80,16 @@ describe('MySubordinatesComponent', () => {
 
     const content = fixture.debugElement.query(By.css('.my-subordinates-wrapper'));
     expect(content).toBeNull();
+  });
+
+  it('should redirect to the ProjectMemberships page', () => {
+    const userId = '123456789';
+    fixture.detectChanges();
+    const router: Router = TestBed.get(Router);
+
+    const navigateSpy = spyOn(router, 'navigate');
+
+    component.openProjectMemberships(userId);
+    expect(navigateSpy.calls.mostRecent().args[0]).toContain(userId);
   });
 });

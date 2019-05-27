@@ -1,0 +1,8 @@
+<div class="mat-typography">
+  <h1 *ngIf="user != null">Project Memberships of {{user.firstName}} {{user.lastName}}</h1>
+
+  <div *ngIf="errorMessage" class="project-memberships-error-message">{{errorMessage}}</div>
+
+  <app-user-project-card [userProject]="userProject" *ngFor="let userProject of userProjects$ | async" class="project-memberships-card">
+  </app-user-project-card>
+</div>

@@ -5,7 +5,7 @@
   <div *ngIf="(subordinates$ | async)?.length > 0; else no_subordinates_content" class="my-subordinates-wrapper">
     <mat-card *ngFor="let subordinate of subordinates$ | async" class="my-subordinates-card">
       <mat-card-content>
-        <div>
+        <div fxFlex="90%">
           <div fxLayout="row">
             <div class="my-subordinates-description-label">Full name:</div>
             <div>{{subordinate.firstName}} {{subordinate.lastName}}</div>
@@ -14,6 +14,10 @@
             <div class="my-subordinates-description-label">Username:</div>
             <div>{{subordinate.userName}}</div>
           </div>
+        </div>
+        <div fxFlex>
+          <a mat-raised-button title="Open project memberships" aria-label="Open project memberships"
+             (click)="openProjectMemberships(subordinate.id)">Project memberships</a>
         </div>
       </mat-card-content>
     </mat-card>

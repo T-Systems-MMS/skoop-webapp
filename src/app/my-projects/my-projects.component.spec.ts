@@ -18,6 +18,7 @@ import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { Component, Input } from '@angular/core';
+import { UserProjectCardComponent } from '../shared/user-project-card/user-project-card.component';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -71,7 +72,8 @@ describe('MyProjectsComponent', () => {
         MyProjectsEditComponent,
         MyProjectsNewComponent,
         DeleteConfirmationDialogComponent,
-        SkillSelectInputStubComponent
+        SkillSelectInputStubComponent,
+        UserProjectCardComponent
       ],
       imports: [
         AppMaterialModule,

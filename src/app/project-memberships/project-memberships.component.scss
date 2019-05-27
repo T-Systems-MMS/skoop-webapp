@@ -1,0 +1,9 @@
+@import "variables";
+
+.project-memberships-card {
+  @extend %base-card;
+}
+
+.project-memberships-error-message {
+  @extend %base-error;
+}
