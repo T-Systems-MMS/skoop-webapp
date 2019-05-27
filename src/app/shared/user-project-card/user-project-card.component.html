@@ -4,7 +4,7 @@
       <div fxFlex>
         <div class="user-projects-card__heading">
           <h2>{{ userProject.project.name }}</h2>
-          <span *ngIf="!userProject.approved" class="material-icons user-projects-require-approval" title="Requires approval">error_outline</span>
+          <span *ngIf="!userProject.approved" class="material-icons user-projects-require-approval" matTooltip="Requires approval">error_outline</span>
         </div>
       </div>
       <div fxFlex="none">
