@@ -54,7 +54,8 @@ describe('MyProjectsService', () => {
         description: 'Java programming language.',
         skillGroups: null
       }
-    ]
+    ],
+    approved: true
   };
 
   const userProjects: UserProject[] = [ userProject ];

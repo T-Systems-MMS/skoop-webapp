@@ -36,7 +36,8 @@ describe('Util', () => {
         role: null,
         id: 1,
         user: null,
-        skills: []
+        skills: [],
+        approved: true
       };
     });
 

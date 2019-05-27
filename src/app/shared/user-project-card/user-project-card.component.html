@@ -2,7 +2,11 @@
   <mat-card-content>
     <div fxLayout="row">
       <div fxFlex>
-        <h2 class="user-projects-card__heading">{{ userProject.project.name }}</h2>
+        <div class="user-projects-card__heading">
+          <h2>{{ userProject.project.name }}</h2>
+          <span *ngIf="!userProject.approved" class="material-icons user-projects-require-approval"
+                matTooltip="Requires approval" matTooltipPosition="after">error_outline</span>
+        </div>
       </div>
       <div fxFlex="none">
         <ng-content select="[buttonContent]"></ng-content>

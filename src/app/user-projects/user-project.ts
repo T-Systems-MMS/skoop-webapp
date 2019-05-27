@@ -14,4 +14,5 @@ export interface UserProject {
   user: User;
   project: Project;
   skills: Skill[];
+  approved: boolean;
 }
