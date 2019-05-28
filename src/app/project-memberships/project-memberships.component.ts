@@ -43,6 +43,10 @@ export class ProjectMembershipsComponent implements OnInit {
       });
   }
 
+  onApprove(userProject: UserProject) {
+
+  }
+
   private loadSubordinate(userId: string) {
     this.usersService.getUserById(userId).subscribe(user => {
       this.user = user;
