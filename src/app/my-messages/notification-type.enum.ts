@@ -8,5 +8,6 @@ export enum NotificationType {
   COMMUNITY_DELETED = 'CommunityDeletedNotification',
   ACCEPTANCE_TO_COMMUNITY = 'AcceptanceToCommunityNotification',
   USER_WELCOME_NOTIFICATION = 'UserWelcomeNotification',
-  SKILLS_ESTIMATION_NOTIFICATION = 'UserSkillsEstimationNotification'
+  SKILLS_ESTIMATION_NOTIFICATION = 'UserSkillsEstimationNotification',
+  PROJECT_NEEDS_APPROVAL = 'UserProjectNeedsApprovalNotification'
 }

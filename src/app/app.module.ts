@@ -84,6 +84,7 @@ import { MySubordinatesComponent } from './my-subordinates/my-subordinates.compo
 import { UserManagerComponent } from './user-manager/user-manager.component';
 import { UserProjectCardComponent } from './shared/user-project-card/user-project-card.component';
 import { ProjectMembershipsComponent } from './project-memberships/project-memberships.component';
+import { ApproveProjectMessageCardComponent } from './my-messages/approve-project-message-card/approve-project-message-card.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -161,7 +162,8 @@ export const CUSTOM_FORMATS = {
     UserManagerComponent,
     MySubordinatesComponent,
     UserProjectCardComponent,
-    ProjectMembershipsComponent
+    ProjectMembershipsComponent,
+    ApproveProjectMessageCardComponent
   ],
   imports: [
     BrowserModule,
