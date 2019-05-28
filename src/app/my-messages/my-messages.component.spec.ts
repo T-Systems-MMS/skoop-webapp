@@ -204,34 +204,32 @@ const expectedNotifications: any[] = [
     type: NotificationType.PROJECT_NEEDS_APPROVAL,
     id: '888f8c9e-4655-47f7-8cf0-b6021b254acc',
     creationDatetime: new Date(),
-    userProjects: [
-      {
-        id: 1,
-        role: 'developer',
-        tasks: 'development',
-        startDate: moment(),
-        endDate: moment(),
-        creationDate: moment(),
-        lastModifiedDate: moment(),
-        user: {
-          id: '123',
-          userName: 'username',
-          firstName: 'John',
-          lastName: 'Smith'
-        },
-        project: {
-          id: '456',
-          name: 'Project',
-          creationDate: new Date(),
-          customer: 'Customer',
-          description: null,
-          industrySector: 'Software development',
-          lastModifiedDate: new Date()
-        },
-        skills: [],
-        approved: false
-      }
-    ]
+    userProject: {
+      id: 1,
+      role: 'developer',
+      tasks: 'development',
+      startDate: moment(),
+      endDate: moment(),
+      creationDate: moment(),
+      lastModifiedDate: moment(),
+      user: {
+        id: '123',
+        userName: 'username',
+        firstName: 'John',
+        lastName: 'Smith'
+      },
+      project: {
+        id: '456',
+        name: 'Project',
+        creationDate: new Date(),
+        customer: 'Customer',
+        description: null,
+        industrySector: 'Software development',
+        lastModifiedDate: new Date()
+      },
+      skills: [],
+      approved: false
+    }
   }
 ];
 

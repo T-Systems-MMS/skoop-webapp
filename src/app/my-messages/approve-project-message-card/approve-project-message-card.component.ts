@@ -23,9 +23,7 @@ export class ApproveProjectMessageCardComponent extends DeletableNotificationCom
 
   public buildMessageText(): string {
     return 'You need to approve project memberships of '
-      + this.notification.userProjects
-        .map(item => `<a href="my-subordinates/${item.user.id}/project-memberships">${item.user.firstName} ${item.user.lastName}</a>`)
-        .join(', ');
+      + `<a href="my-subordinates/${this.notification.userProject.user.id}/project-memberships">${this.notification.userProject.user.firstName} ${this.notification.userProject.user.lastName}</a>`;
   }
 
 }
