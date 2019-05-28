@@ -8,6 +8,7 @@ import { User } from '../users/user';
 import { UsersService } from '../users/users.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 
 @Component({
   selector: 'app-project-memberships',
@@ -17,7 +18,6 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 export class ProjectMembershipsComponent implements OnInit {
 
   errorMessage: string;
-  userId: string;
   user: User = null;
   userProjects$: Observable<UserProject[]> = of([]);
 
@@ -32,19 +32,27 @@ export class ProjectMembershipsComponent implements OnInit {
     this.activatedRoute.paramMap
       .pipe(map(params => params.get('userId')))
       .subscribe(userId => {
-        this.userProjects$ = this.userProjectService.getUserProjects(userId)
-          .pipe(
-            catchError((err: HttpErrorResponse, caught: Observable<UserProject[]>) => {
-              this.handleErrorResponse(err);
-              return of([]);
-            })
-          );
+        this.loadSubordinateProjects(userId);
         this.loadSubordinate(userId);
       });
   }
 
   onApprove(userProject: UserProject) {
+    const request: UpdateUserProjectRequest = {
+      role: userProject.role,
+      skills: userProject.skills.map(item => item.name),
+      tasks: userProject.tasks,
+      startDate: userProject.startDate,
+      endDate: userProject.endDate,
+      approved: true
+    };
 
+    this.userProjectService.updateUserProject(this.user.id, userProject.project.id, request)
+      .subscribe(()=> {
+        this.loadSubordinateProjects(this.user.id);
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+      });
   }
 
   private loadSubordinate(userId: string) {
@@ -53,6 +61,16 @@ export class ProjectMembershipsComponent implements OnInit {
     }, errorResponse => {
       this.handleErrorResponse(errorResponse);
     });
+  }
+
+  private loadSubordinateProjects(userId: string) {
+    this.userProjects$ = this.userProjectService.getUserProjects(userId)
+      .pipe(
+        catchError((err: HttpErrorResponse, caught: Observable<UserProject[]>) => {
+          this.handleErrorResponse(err);
+          return of([]);
+        })
+      );
   }
 
   public handleErrorResponse(errorResponse: HttpErrorResponse) {
