@@ -4,5 +4,10 @@
   <div *ngIf="errorMessage" class="project-memberships-error-message">{{errorMessage}}</div>
 
   <app-user-project-card [userProject]="userProject" *ngFor="let userProject of userProjects$ | async" class="project-memberships-card">
+    <div buttonContent>
+      <button *ngIf="!userProject.approved" mat-icon-button (click)="onApprove(userProject)" title="Approve" aria-label="Approve">
+        <mat-icon>done_outline</mat-icon>
+      </button>
+    </div>
   </app-user-project-card>
 </div>

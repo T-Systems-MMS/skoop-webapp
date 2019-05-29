@@ -6,4 +6,5 @@ export interface UpdateUserProjectRequest {
   startDate: Moment;
   endDate: Moment;
   skills?: string[];
+  approved?: boolean;
 }
