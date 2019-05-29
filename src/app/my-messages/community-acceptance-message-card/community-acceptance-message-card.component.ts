@@ -21,9 +21,4 @@ export class CommunityAcceptanceMessageCardComponent extends DeletableNotificati
   ngOnInit() {
   }
 
-  getCommunityInfo(): string {
-    return this.notification.registration.community ? `<a href="/communities/${this.notification.registration.community.id}">${this.notification.registration.community.title}</a>`
-      : `<strong>${this.notification.communityName}</strong>`;
-  }
-
 }

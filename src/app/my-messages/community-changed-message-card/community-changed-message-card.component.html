@@ -10,7 +10,13 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div [innerHTML]="'The community ' + getCommunityInfo() + ' '  + getChanges() + ' changed'"></div>
+      <div *ngIf="notification.community != null; else no_community_link_content">The community <a
+        routerLink="/communities/{{notification.community.id}}">{{notification.community.title}}</a> {{getChanges()}}
+        changed
+      </div>
+      <ng-template #no_community_link_content>
+        <div>The community <strong>{{notification.communityName}}</strong> {{getChanges()}} changed</div>
+      </ng-template>
     </div>
   </div>
   <div buttonContent>

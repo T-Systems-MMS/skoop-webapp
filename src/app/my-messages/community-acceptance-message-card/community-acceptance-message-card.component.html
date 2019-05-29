@@ -10,7 +10,12 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div [innerHTML]="'Your request to join the community ' + getCommunityInfo() + ' was accepted'"></div>
+      <div *ngIf="notification.registration.community != null; else no_community_link_content">Your request to join the community <a
+          routerLink="/communities/{{notification.registration.community.id}}">{{notification.registration.community.title}}</a> was accepted
+      </div>
+      <ng-template #no_community_link_content>
+        <div>Your request to join the community <strong>{{notification.communityName}}</strong> was accepted</div>
+      </ng-template>
     </div>
   </div>
   <div buttonContent>

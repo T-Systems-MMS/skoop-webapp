@@ -10,7 +10,10 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div [innerHTML]="buildSkillsText()" class="messages-message-text"></div>
+      <div class="messages-message-text">You need to estimate
+        the {{notification.skills.length > 1 ? 'skills' : 'skill'}} <strong>{{getAffectedSkills()}}</strong>. You can do
+        this on the <a routerLink="/my-skills">My skill profile</a> page
+      </div>
     </div>
   </div>
   <div buttonContent>

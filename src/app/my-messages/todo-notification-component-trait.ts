@@ -30,11 +30,6 @@ export abstract class TodoNotificationComponentTrait {
     return 'Pending';
   }
 
-  getCommunityInfo(): string {
-    return this.notification.registration.community ? `<a href="/communities/${this.notification.registration.community.id}">${this.notification.registration.community.title}</a>`
-      : `<strong>${this.notification.communityName}</strong>`;
-  }
-
   showAcceptDeclineButtons() {
     if (this.notification.type === NotificationType.INVITATION_TO_JOIN_COMMUNITY) {
       return this.notification.registration.user.id === this.currentUserId &&
