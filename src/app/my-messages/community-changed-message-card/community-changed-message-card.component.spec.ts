@@ -12,6 +12,7 @@ import { NotificationType } from '../notification-type.enum';
 import { CommunityChangedNotification } from './community-changed-notification';
 import { CommunityType } from '../../communities/community-type.enum';
 import { CommunityDetails } from './community-details.enum';
+import { By } from '@angular/platform-browser';
 
 const notification: CommunityChangedNotification = {
   type: NotificationType.COMMUNITY_CHANGED,
@@ -60,5 +61,20 @@ describe('CommunityChangedMessageCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should contain community link when community is defined', () => {
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeDefined();
+    expect(linkElem.properties.href).toBe(`/communities/${notification.community.id}`);
+  });
+
+  it('should not contain community link when community is not defined', () => {
+    component.notification.community = null;
+    fixture.detectChanges();
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeNull();
   });
 });

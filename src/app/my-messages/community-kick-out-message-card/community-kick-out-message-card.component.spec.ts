@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MessageCardComponent } from '../message-card/message-card.component';
 import { MessagesService } from '../messages.service';
+import { By } from '@angular/platform-browser';
 
 const notification: MemberKickedOutNotification = {
   type: NotificationType.MEMBER_KICKED_OUT_OF_COMMUNITY,
@@ -58,5 +59,20 @@ describe('CommunityKickOutMessageCardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should contain community link when community is defined', () => {
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeDefined();
+    expect(linkElem.properties.href).toBe(`/communities/${notification.community.id}`);
+  });
+
+  it('should not contain community link when community is not defined', () => {
+    component.notification.community = null;
+    fixture.detectChanges();
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeNull();
   });
 });

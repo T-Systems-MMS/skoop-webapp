@@ -10,12 +10,14 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div *ngIf="notification.community != null; else no_community_link_content">You were kicked out of the community
+      <div *ngIf="notification.community != null; else no_community_link_content" class="messages-message-text">You were
+        kicked out of the community
         <a
           routerLink="/communities/{{notification.community.id}}">{{notification.community.title}}</a>
       </div>
       <ng-template #no_community_link_content>
-        <div>You were kicked out of the community <strong>{{notification.communityName}}</strong></div>
+        <div class="messages-message-text">You were kicked out of the community
+          <strong>{{notification.communityName}}</strong></div>
       </ng-template>
     </div>
   </div>

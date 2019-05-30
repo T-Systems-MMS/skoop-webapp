@@ -17,6 +17,7 @@ import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmat
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { CommunityUserRegistrationResponse } from '../../shared/community-user-registration-response';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 const registrationResponse: CommunityUserRegistrationResponse = {
   id: '567890',
@@ -122,4 +123,19 @@ describe('CommunityJoinRequestMessageCardComponent', () => {
       expect(matDialog.openDialogs[0].componentInstance).toEqual(jasmine.any(DeleteConfirmationDialogComponent));
     });
   }));
+
+  it('should contain community link when community is defined', () => {
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeDefined();
+    expect(linkElem.properties.href).toBe(`/communities/${notification.registration.community.id}`);
+  });
+
+  it('should not contain community link when community is not defined', () => {
+    component.notification.registration.community = null;
+    fixture.detectChanges();
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeNull();
+  });
 });

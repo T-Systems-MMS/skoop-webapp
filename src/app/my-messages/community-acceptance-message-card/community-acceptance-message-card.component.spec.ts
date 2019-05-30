@@ -11,6 +11,7 @@ import { MessagesService } from '../messages.service';
 import { NotificationType } from '../notification-type.enum';
 import { AcceptanceToCommunityNotification } from './acceptance-to-community-notification';
 import { CommunityType } from '../../communities/community-type.enum';
+import { By } from '@angular/platform-browser';
 
 const notification: AcceptanceToCommunityNotification = {
   type: NotificationType.ACCEPTANCE_TO_COMMUNITY,
@@ -71,4 +72,20 @@ describe('CommunityAcceptanceMessageCardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should contain community link when community is defined', () => {
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeDefined();
+    expect(linkElem.properties.href).toBe(`/communities/${notification.registration.community.id}`);
+  });
+
+  it('should not contain community link when community is not defined', () => {
+    component.notification.registration.community = null;
+    fixture.detectChanges();
+    const messageElem = fixture.debugElement.query(By.css('.messages-message-text'));
+    const linkElem = messageElem.query(By.css('a'));
+    expect(linkElem).toBeNull();
+  });
+
 });
