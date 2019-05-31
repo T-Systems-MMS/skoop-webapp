@@ -64,7 +64,7 @@ describe('SkillsEstimationMessageCardComponent', () => {
 
   it('should build message for multiple skills', () => {
     const element = fixture.debugElement.query(By.css('.messages-message-text'));
-    expect(element.nativeElement.innerText).toBe('You need to estimate the skills Java, JavaScript. You can do this on My skill profile page');
+    expect(element.nativeElement.innerText).toBe('You need to estimate the skills Java, JavaScript. You can do this in the My skill profile page');
   });
 
   it('should build message for one skill', () => {
@@ -81,6 +81,6 @@ describe('SkillsEstimationMessageCardComponent', () => {
     };
     fixture.detectChanges();
     const element = fixture.debugElement.query(By.css('.messages-message-text'));
-    expect(element.nativeElement.innerText).toBe('You need to estimate the skill Java. You can do this on My skill profile page');
+    expect(element.nativeElement.innerText).toBe('You need to estimate the skill Java. You can do this in the My skill profile page');
   });
 });

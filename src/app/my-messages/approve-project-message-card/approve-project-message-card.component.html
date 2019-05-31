@@ -10,7 +10,9 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div [innerHTML]="buildMessageText()" class="messages-message-text"></div>
+      <div class="messages-message-text">You need to approve project memberships of <a
+        routerLink="/my-subordinates/{{notification.userProject.user.id}}/project-memberships">{{notification.userProject.user.firstName}} {{notification.userProject.user.lastName}}</a>
+      </div>
     </div>
   </div>
   <div buttonContent>

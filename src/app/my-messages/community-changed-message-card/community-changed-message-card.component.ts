@@ -22,11 +22,6 @@ export class CommunityChangedMessageCardComponent extends DeletableNotificationC
   ngOnInit() {
   }
 
-  public getCommunityInfo(): string {
-    return this.notification.community ? `<a href="/communities/${this.notification.community.id}">${this.notification.community.title}</a>`
-      : `<strong>${this.notification.communityName}</strong>`;
-  }
-
   public getChanges(): string {
     return this.notification.communityDetails.map(item => CommunityDetails[item]).join(', ');
   }

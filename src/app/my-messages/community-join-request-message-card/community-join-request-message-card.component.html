@@ -14,7 +14,17 @@
     </div>
     <div fxLayout="row">
       <div class="messages-description-label">Message:</div>
-      <div [innerHTML]="'The user ' + notification.registration.user.firstName + ' ' + notification.registration.user.lastName + ' has requested to join community ' + getCommunityInfo()"></div>
+      <div *ngIf="notification.registration.community != null; else no_community_link_content"
+           class="messages-message-text">The
+        user {{notification.registration.user.firstName}} {{notification.registration.user.lastName}} has requested to
+        join the community <a
+          routerLink="/communities/{{notification.registration.community.id}}">{{notification.registration.community.title}}</a>
+      </div>
+      <ng-template #no_community_link_content>
+        <div class="messages-message-text">The
+          user {{notification.registration.user.firstName}} {{notification.registration.user.firstName}} has
+          requested to join the community <strong>{{notification.communityName}}</strong></div>
+      </ng-template>
     </div>
   </div>
   <div buttonContent>

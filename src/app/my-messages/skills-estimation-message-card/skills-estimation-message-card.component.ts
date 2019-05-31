@@ -21,10 +21,8 @@ export class SkillsEstimationMessageCardComponent extends DeletableNotificationC
   ngOnInit() {
   }
 
-  buildSkillsText(): string {
-    return `You need to estimate the ${this.notification.skills.length > 1 ? 'skills': 'skill'} `
-      + this.notification.skills.map(item => `<strong>${item.name}</strong>`).join(', ')
-      + '. You can do this on <a href="/my-skills">My skill profile</a> page';
+  getAffectedSkills(): string {
+    return this.notification.skills.map(item => item.name).join(', ');
   }
 
 }
