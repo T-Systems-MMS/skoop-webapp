@@ -10,4 +10,7 @@
       </button>
     </div>
   </app-user-project-card>
+  <div *ngIf="(userProjects$ | async).length == 0 && user != null">
+    There are no projects for {{user.firstName}} {{user.lastName}}
+  </div>
 </div>
