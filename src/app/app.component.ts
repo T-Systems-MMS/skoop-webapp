@@ -1,7 +1,7 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserIdentity } from './shared/user-identity';
 import { UserIdentityService } from './shared/user-identity.service';
@@ -25,7 +25,9 @@ export class AppComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver,
               private userIdentityService: UserIdentityService,
               private authService: OAuthService,
-              private notificationCounterService: NotificationCounterService) { }
+              private notificationCounterService: NotificationCounterService) {
+    this.notificationCounterService.loadCount();
+  }
 
   ngOnInit(): void {
   }
