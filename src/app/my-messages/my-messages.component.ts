@@ -47,7 +47,7 @@ export class MyMessagesComponent implements OnInit {
 
   public onSuccessDeleted() {
     this.loadMessages();
-    this.notificationCounterService.decrementCount();
+    this.notificationCounterService.loadCount();
   }
 
 }

@@ -13,6 +13,7 @@ import * as moment from 'moment';
 import { UserProjectCardComponent } from '../shared/user-project-card/user-project-card.component';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
+import { NotificationCounterService } from '../shared/notification-counter.service';
 
 const userProjects = [
   {
@@ -86,6 +87,11 @@ describe('ProjectMembershipsComponent', () => {
         {
           provide: UsersService,
           useValue: jasmine.createSpyObj('usersService', {'getUserById': of(user)})
+        },
+        {
+          provide: NotificationCounterService, useValue: jasmine.createSpyObj('notificationCounterService', {
+            'loadCount': of()
+          })
         },
         GlobalErrorHandlerService
       ]

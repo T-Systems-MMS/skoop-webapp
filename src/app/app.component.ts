@@ -25,7 +25,9 @@ export class AppComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver,
               private userIdentityService: UserIdentityService,
               private authService: OAuthService,
-              private notificationCounterService: NotificationCounterService) { }
+              private notificationCounterService: NotificationCounterService) {
+    this.notificationCounterService.loadCount();
+  }
 
   ngOnInit(): void {
   }

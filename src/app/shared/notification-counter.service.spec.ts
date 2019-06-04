@@ -47,10 +47,9 @@ describe('NotificationCounterService', () => {
     });
   });
 
-  it('should decrement count of notifications', () => {
-    notificationCounterService.decrementCount();
-    notificationCounterService.getCount().subscribe(data => {
-      expect(data).toBe(messageCount - 1);
-    });
+  it('should call messageService.getUserNotificationCounter method', () => {
+    notificationCounterService.loadCount();
+    const messageService = TestBed.get(MessagesService);
+    expect(messageService.getUserNotificationCounter).toHaveBeenCalled()
   });
 });

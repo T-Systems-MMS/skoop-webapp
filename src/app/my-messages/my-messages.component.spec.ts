@@ -386,7 +386,7 @@ describe('MyMessagesComponent', () => {
         },
         {
           provide: NotificationCounterService, useValue: jasmine.createSpyObj('notificationCounterService', {
-            'decrementCount': of()
+            'loadCount': of()
           })
         }
       ]
@@ -418,7 +418,7 @@ describe('MyMessagesComponent', () => {
     const messageService: MessagesService = TestBed.get(MessagesService);
     expect(messageService.getUserNotifications).toHaveBeenCalled();
     const notificationCounterService: NotificationCounterService = TestBed.get(NotificationCounterService);
-    expect(notificationCounterService.decrementCount).toHaveBeenCalled();
+    expect(notificationCounterService.loadCount).toHaveBeenCalled();
   }));
 
   it('should show error on error in a child component', fakeAsync(() => {

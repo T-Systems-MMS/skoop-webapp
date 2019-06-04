@@ -15,12 +15,7 @@ export class NotificationCounterService {
               private userIdentityService: UserIdentityService) {
   }
 
-  decrementCount() {
-    this.notificationCount--;
-    this.subject.next(this.notificationCount);
-  }
-
-  getCount(): Observable<number> {
+  loadCount() {
     this.userIdentityService.getUserIdentity().subscribe(userIdentity => {
       this.messagesService.getUserNotificationCounter(userIdentity.userId)
         .subscribe(counter => {
@@ -28,7 +23,9 @@ export class NotificationCounterService {
           this.subject.next(counter);
         });
     });
+  }
 
+  getCount(): Observable<number> {
     return this.subject.asObservable();
   }
 }
