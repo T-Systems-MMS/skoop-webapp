@@ -1,0 +1,6 @@
+#!/bin/bash
+npm run build
+docker build -t skoop-webapp:latest .
+docker tag skoop-webapp:latest $DOCKER_USERNAME/skoop-webapp:latest
+echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+docker push $DOCKER_USERNAME/skoop-webapp:latest
