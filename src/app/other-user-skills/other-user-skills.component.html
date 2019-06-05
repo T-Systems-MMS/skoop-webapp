@@ -1,5 +1,10 @@
 <div class="user-skills mat-typography">
-  <h1>Skill profile of {{user?.firstName}} {{user?.lastName}}</h1>
+  <h1>Skill profile of {{user?.firstName}} {{user?.lastName}}
+  <button matTooltip="Copy the skills profile link to clipboard" matTooltipPosition="after"
+          (click)="copyToClipboard()">
+    <mat-icon>file_copy</mat-icon>
+  </button>
+</h1>
   <div *ngIf="errorMessage" class="other-user-skills-error">{{errorMessage}}</div>
 
   <app-skill-card *ngFor="let userSkill of userSkills" [userSkill]="userSkill"></app-skill-card>

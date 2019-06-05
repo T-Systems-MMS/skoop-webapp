@@ -15,6 +15,8 @@ import { UserSkill } from '../user-skills/user-skill';
 import { User } from '../users/user';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { ClipboardService } from 'ngx-clipboard';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({selector: 'app-skill-card', template: ''})
 class SkillCardStubComponent {
@@ -74,6 +76,15 @@ describe('OtherUserSkillsComponent', () => {
           provide: UsersService, useValue: jasmine.createSpyObj('userService', {
             'getUserById': of<User>(user)
           })
+        },
+        {
+          provide: ClipboardService, useValue: jasmine.createSpyObj('clipboardService', {
+            'copyFromContent': true
+          })
+        },
+        {
+          provide: PopupNotificationService,
+          useValue: jasmine.createSpyObj('popupNotificationService', {'showSuccessMessage': of<void>()})
         }
       ]
     })
@@ -101,5 +112,11 @@ describe('OtherUserSkillsComponent', () => {
     expect(skillCards.length).toBe(2);
     expect(skillCards[0].componentInstance.userSkill).toEqual(expectedSkills[0]);
     expect(skillCards[1].componentInstance.userSkill).toEqual(expectedSkills[1]);
+  });
+
+  it('should call clipboardService.copyFromContent', () => {
+    component.copyToClipboard();
+    const clipboardService: ClipboardService = TestBed.get(ClipboardService);
+    expect(clipboardService.copyFromContent).toHaveBeenCalledWith(location.href);
   });
 });
