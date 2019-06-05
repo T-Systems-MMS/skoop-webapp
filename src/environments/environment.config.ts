@@ -7,6 +7,7 @@ export interface EnvironmentConfig {
     redirectUri: string;
     silentRefreshRedirectUri: string;
     requireHttps: boolean | 'remoteOnly';
+    postLogoutRedirectUri: string;
   };
   serverApiUrl: string;
 }
