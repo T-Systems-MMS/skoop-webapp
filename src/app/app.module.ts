@@ -228,12 +228,11 @@ export function initAuthentication(moduleConfig: OAuthModuleConfig, oauthService
       issuer: environment.authentication.issuer,
       clientId: environment.authentication.clientId,
       scope: environment.authentication.scope,
-      redirectUri: environment.authentication.redirectUri ? environment.authentication.redirectUri : window.location.origin + '/',
+      redirectUri: window.location.href,
       silentRefreshRedirectUri: environment.authentication.silentRefreshRedirectUri,
       oidc: true,
       requireHttps: environment.authentication.requireHttps,
-      postLogoutRedirectUri: environment.authentication.postLogoutRedirectUri ?
-        environment.authentication.postLogoutRedirectUri : window.location.origin + '/',
+      postLogoutRedirectUri: window.location.origin + '/',
     });
     oauthService.tokenValidationHandler = new JwksValidationHandler();
     oauthService.setupAutomaticSilentRefresh();
