@@ -11,6 +11,7 @@ import { UserRequest } from './user-request';
 import { UserPermissionRequest } from '../permissions/user-permission-request';
 import { GlobalUserPermission } from '../permissions/global-user-permission';
 import { GlobalUserPermissionResponse } from '../permissions/global-user-permission-response';
+import { CommonPermissionResponse } from '../permissions/common-permission-response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,7 @@ export class UsersService {
   private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
   private userGlobalPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/global-permissions`;
   private userInboundPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
+  private userInboundPermissionsByScopeUrlPattern = `${environment.serverApiUrl}/users/{userId}/permissions/{scope}`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
   constructor(private httpClient: HttpClient,
@@ -92,6 +94,16 @@ export class UsersService {
           inboundUserPermissions.forEach(item => permissionOwners.push(item.owner));
           return permissionOwners;
         })
+      );
+  }
+
+  getPermissionOwnersByScope<T extends CommonPermissionResponse>(scope: UserPermissionScope): Observable<User[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(
+        switchMap(userIdentity => this.httpClient.get<T[]>(
+          this.userInboundPermissionsByScopeUrlPattern.replace('{userId}', userIdentity.userId).replace('{scope}', scope))
+        ),
+        map(userPermissions => userPermissions.map(item => item.owner))
       );
   }
 

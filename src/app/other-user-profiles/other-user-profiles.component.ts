@@ -24,7 +24,7 @@ export class OtherUserProfilesComponent implements OnInit {
   }
 
   private loadPermissionOwners(): void {
-    this.usersService.getPermissionOwners(UserPermissionScope.READ_USER_SKILLS)
+    this.usersService.getPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS)
       .subscribe(users => {
         this.permissionOwners = users;
       }, (errorResponse: HttpErrorResponse) => {

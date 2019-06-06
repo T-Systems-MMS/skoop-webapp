@@ -262,6 +262,51 @@ describe('UsersService', () => {
     request.flush(testPermissions);
   }));
 
+  it('should provide the users who have granted permission for the certain scope to the currently authenticated user', async(() => {
+    const expectedOwners: User[] = [
+      {
+        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+        userName: 'owner1',
+        firstName: 'first',
+        lastName: 'owner',
+        email: 'first.owner@skoop.io'
+      },
+      {
+        id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+        userName: 'owner2',
+        firstName: 'second',
+        lastName: 'owner',
+        email: 'second.owner@skoop.io'
+      }
+    ];
+    const scope = UserPermissionScope.READ_USER_SKILLS;
+    const testPermissions: UserPermission[] = [
+      {
+        owner: expectedOwners[0],
+        scope: scope,
+        authorizedUsers: [],
+      },
+      {
+        owner: expectedOwners[1],
+        scope: scope,
+        authorizedUsers: [],
+      }
+    ];
+
+    service.getPermissionOwnersByScope(scope).subscribe((owners) => {
+      expect(owners).toEqual(expectedOwners);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/permissions/${scope}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(testPermissions);
+  }));
+
   it('should update list of users who have granted permission to the currently authenticated user', async(() => {
     const users: User[] = [
       {

@@ -1,6 +1,4 @@
-import { GlobalUserPermission } from './global-user-permission';
-import { User } from '../users/user';
+import { CommonPermissionResponse } from './common-permission-response';
 
-export interface GlobalUserPermissionResponse extends GlobalUserPermission {
-  owner: User;
+export interface GlobalUserPermissionResponse extends CommonPermissionResponse {
 }

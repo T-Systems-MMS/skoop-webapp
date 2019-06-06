@@ -1,8 +1,6 @@
 import { User } from './user';
-import { UserPermissionScope } from './user-permission-scope';
+import { CommonPermissionResponse } from '../permissions/common-permission-response';
 
-export interface UserPermission {
-  owner: User;
-  scope: UserPermissionScope;
+export interface UserPermission extends CommonPermissionResponse {
   authorizedUsers: User[];
 }

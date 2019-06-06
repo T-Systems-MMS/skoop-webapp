@@ -48,7 +48,7 @@ describe('OtherUserProfilesComponent', () => {
         GlobalErrorHandlerService,
         {
           provide: UsersService, useValue: jasmine.createSpyObj('usersService', {
-            'getPermissionOwners': of<User[]>(permissionOwners)
+            'getPermissionOwnersByScope': of<User[]>(permissionOwners)
           })
         }
       ]
