@@ -4,7 +4,6 @@ export interface EnvironmentConfig {
     issuer: string;
     clientId: string;
     scope: string;
-    redirectUri: string;
     silentRefreshRedirectUri: string;
     requireHttps: boolean | 'remoteOnly';
   };

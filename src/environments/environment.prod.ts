@@ -8,7 +8,6 @@ export const environment: EnvironmentConfig = {
       .getAttribute('content'),
     clientId: 'skoop',
     scope: 'openid profile email',
-    redirectUri: null,
     silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
     requireHttps: document
       .querySelector('meta[name="skoop-config-authentication-insecure"]')

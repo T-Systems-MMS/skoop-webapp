@@ -10,7 +10,6 @@ export const environment: EnvironmentConfig = {
     issuer: 'http://localhost:9000/auth/realms/SKOOP',
     clientId: 'skoop',
     scope: 'openid profile email',
-    redirectUri: null,
     silentRefreshRedirectUri: window.location.origin + '/silent-refresh.html',
     requireHttps: false
   },
