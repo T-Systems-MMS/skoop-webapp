@@ -4,6 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
+import { combineLatest } from 'rxjs';
 
 @Component({
   selector: 'app-other-user-profiles',
@@ -17,16 +18,28 @@ export class OtherUserProfilesComponent implements OnInit {
 
   constructor(private usersService: UsersService,
               private changeDetector: ChangeDetectorRef,
-              private globalErrorHandlerService: GlobalErrorHandlerService) { }
+              private globalErrorHandlerService: GlobalErrorHandlerService) {
+  }
 
   ngOnInit() {
     this.loadPermissionOwners();
   }
 
   private loadPermissionOwners(): void {
-    this.usersService.getPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS)
-      .subscribe(users => {
-        this.permissionOwners = users;
+    combineLatest(
+      this.usersService.getGlobalPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS),
+      this.usersService.getPersonalPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS)
+    )
+      .subscribe(compoundObject => {
+        this.permissionOwners = compoundObject[0]; // copy all global permissions owners
+
+        // add personal permissions owners, which don't exist in global permissions owners
+        compoundObject[1].forEach(ownerPersonalPermission => {
+          if (!this.permissionOwners.find(owner => owner.id === ownerPersonalPermission.id)) {
+            this.permissionOwners.push(ownerPersonalPermission);
+          }
+        });
+
       }, (errorResponse: HttpErrorResponse) => {
         this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
         // Dirty fix because of: https://github.com/angular/angular/issues/17772

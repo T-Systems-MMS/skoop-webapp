@@ -236,31 +236,69 @@ describe('UsersService', () => {
       }
     ];
     const scope = UserPermissionScope.READ_USER_SKILLS;
-    const testPermissions = [
+    const testPermissions: UserPermission[] = [
       {
         owner: expectedOwners[0],
         scope: scope,
         authorizedUsers: [],
-      } as UserPermission,
-      {
-        owner: expectedOwners[0],
-        scope: scope,
-        authorizedUsers: []
-      } as GlobalUserPermissionResponse,
+      },
       {
         owner: expectedOwners[1],
         scope: scope,
         authorizedUsers: [],
-      } as GlobalUserPermission
+      }
     ];
 
-    service.getPermissionOwnersByScope(scope).subscribe((owners) => {
+    service.getPersonalPermissionOwnersByScope(scope).subscribe((owners) => {
       expect(owners).toEqual(expectedOwners);
     });
 
     const request = httpTestingController.expectOne({
       method: 'GET',
       url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/inbound-permissions?scope=${scope}`
+    });
+
+    expect(request.request.responseType).toEqual('json');
+
+    request.flush(testPermissions);
+  }));
+
+  it('should provide the users who have granted global permission for the certain scope to the currently authenticated user', async(() => {
+    const expectedOwners: User[] = [
+      {
+        id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+        userName: 'owner1',
+        firstName: 'first',
+        lastName: 'owner',
+        email: 'first.owner@skoop.io'
+      },
+      {
+        id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
+        userName: 'owner2',
+        firstName: 'second',
+        lastName: 'owner',
+        email: 'second.owner@skoop.io'
+      }
+    ];
+    const scope = UserPermissionScope.READ_USER_SKILLS;
+    const testPermissions: GlobalUserPermissionResponse[] = [
+      {
+        owner: expectedOwners[0],
+        scope: scope
+      },
+      {
+        owner: expectedOwners[1],
+        scope: scope
+      }
+    ];
+
+    service.getGlobalPermissionOwnersByScope(scope).subscribe((owners) => {
+      expect(owners).toEqual(expectedOwners);
+    });
+
+    const request = httpTestingController.expectOne({
+      method: 'GET',
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/inbound-global-permissions?scope=${scope}`
     });
 
     expect(request.request.responseType).toEqual('json');
@@ -352,7 +390,7 @@ describe('UsersService', () => {
 
     const request = httpTestingController.expectOne({
       method: 'GET',
-      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/global-permissions`
+      url: `${environment.serverApiUrl}/users/${authenticatedUser.userId}/outbound-global-permissions`
     });
 
     expect(request.request.responseType).toEqual('json');
