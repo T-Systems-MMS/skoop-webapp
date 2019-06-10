@@ -20,8 +20,7 @@ export class UsersService {
   private userUrlPattern = `${environment.serverApiUrl}/users/{userId}`;
   private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
   private userGlobalPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/global-permissions`;
-  private userInboundPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
-  private userInboundPermissionsByScopeUrlPattern = `${environment.serverApiUrl}/users/{userId}/permissions/{scope}`;
+  private userInboundPermissionsByScopeUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
   constructor(private httpClient: HttpClient,
@@ -80,30 +79,25 @@ export class UsersService {
       );
   }
 
-  getPermissionOwners(scope: UserPermissionScope): Observable<User[]> {
-    return this.userIdentityService.getUserIdentity()
-      .pipe(
-        switchMap(userIdentity => this.httpClient.get<UserPermission[]>(
-          // TODO: Request permissions for given scope via specific API call, e.g.
-          // GET /users/{userId}/permissions/{scope}
-          this.userInboundPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
-        ),
-        map(userPermissions => {
-          const inboundUserPermissions = userPermissions.filter(userPermission => userPermission.scope === scope);
-          const permissionOwners = [];
-          inboundUserPermissions.forEach(item => permissionOwners.push(item.owner));
-          return permissionOwners;
-        })
-      );
-  }
-
   getPermissionOwnersByScope<T extends CommonPermissionResponse>(scope: UserPermissionScope): Observable<User[]> {
     return this.userIdentityService.getUserIdentity()
       .pipe(
         switchMap(userIdentity => this.httpClient.get<T[]>(
-          this.userInboundPermissionsByScopeUrlPattern.replace('{userId}', userIdentity.userId).replace('{scope}', scope))
+          this.userInboundPermissionsByScopeUrlPattern.replace('{userId}', userIdentity.userId).replace('{scope}', scope),
+          {
+            params: new HttpParams().set('scope', scope)
+          })
         ),
-        map(userPermissions => userPermissions.map(item => item.owner))
+        map(userPermissions => {
+          const permissionOwners: User[] = [];
+
+          userPermissions.forEach(userPermission => {
+            if (!permissionOwners.find(item => item.id === userPermission.owner.id)) {
+              permissionOwners.push(userPermission.owner);
+            }
+          });
+          return permissionOwners;
+        })
       );
   }
 
