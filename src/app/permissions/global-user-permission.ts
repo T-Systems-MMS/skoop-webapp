@@ -1,5 +1,5 @@
-import { UserPermissionScope } from '../users/user-permission-scope';
+import { GlobalPermissionScope } from './global-permission-scope.enum';
 
 export interface GlobalUserPermission {
-  scope: UserPermissionScope;
+  scope: GlobalPermissionScope;
 }

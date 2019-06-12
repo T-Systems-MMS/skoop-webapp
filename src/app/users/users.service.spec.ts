@@ -5,13 +5,14 @@ import { environment } from '../../environments/environment';
 import { UserIdentity } from '../shared/user-identity';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from './user';
-import { UserPermission } from './user-permission';
+import { UserPermissionResponse } from './user-permission-response';
 import { UserPermissionScope } from './user-permission-scope';
 import { UsersService } from './users.service';
 import { UserRequest } from './user-request';
 import { GlobalUserPermission } from '../permissions/global-user-permission';
 import { GlobalUserPermissionResponse } from '../permissions/global-user-permission-response';
 import { UserPermissionRequest } from '../permissions/user-permission-request';
+import { GlobalPermissionScope } from '../permissions/global-permission-scope.enum';
 
 const userIdentityServiceStub: Partial<UserIdentityService> = {
   getUserIdentity(): Observable<UserIdentity> { return null; }
@@ -190,7 +191,7 @@ describe('UsersService', () => {
         email: 'tabia.testbed@skoop.io'
       }
     ];
-    const testPermissions: UserPermission[] = [
+    const testPermissions: UserPermissionResponse[] = [
       {
         owner: {
           id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -236,7 +237,7 @@ describe('UsersService', () => {
       }
     ];
     const scope = UserPermissionScope.READ_USER_SKILLS;
-    const testPermissions: UserPermission[] = [
+    const testPermissions: UserPermissionResponse[] = [
       {
         owner: expectedOwners[0],
         scope: scope,
@@ -280,7 +281,7 @@ describe('UsersService', () => {
         email: 'second.owner@skoop.io'
       }
     ];
-    const scope = UserPermissionScope.READ_USER_SKILLS;
+    const scope = GlobalPermissionScope.READ_USER_SKILLS;
     const testPermissions: GlobalUserPermissionResponse[] = [
       {
         owner: expectedOwners[0],
@@ -333,7 +334,7 @@ describe('UsersService', () => {
         authorizedUserIds: [users[0].id, users[1].id],
       }
     ];
-    const expectedPermissions: UserPermission[] = [
+    const expectedPermissions: UserPermissionResponse[] = [
       {
         owner: users[0],
         scope: UserPermissionScope.READ_USER_SKILLS,
@@ -363,7 +364,7 @@ describe('UsersService', () => {
   it('should provide list of global user permissions', async(() => {
     const expectedPermissions: GlobalUserPermissionResponse[] = [
       {
-        scope: UserPermissionScope.READ_USER_PROFILE,
+        scope: GlobalPermissionScope.READ_USER_PROFILE,
         owner: {
           id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
           userName: 'owner2',
@@ -373,7 +374,7 @@ describe('UsersService', () => {
         }
       },
       {
-        scope: UserPermissionScope.READ_USER_SKILLS,
+        scope: GlobalPermissionScope.READ_USER_SKILLS,
         owner: {
           id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
           userName: 'owner2',
@@ -401,16 +402,16 @@ describe('UsersService', () => {
   it('should update list of global user permissions', async(() => {
     const globalPermissionsRequest: GlobalUserPermission[] = [
       {
-        scope: UserPermissionScope.READ_USER_PROFILE
+        scope: GlobalPermissionScope.READ_USER_PROFILE
       },
       {
-        scope: UserPermissionScope.READ_USER_SKILLS
+        scope: GlobalPermissionScope.READ_USER_SKILLS
       }
     ];
 
     const expectedPermissions: GlobalUserPermissionResponse[] = [
       {
-        scope: UserPermissionScope.READ_USER_PROFILE,
+        scope: GlobalPermissionScope.READ_USER_PROFILE,
         owner: {
           id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
           userName: 'owner2',
@@ -420,7 +421,7 @@ describe('UsersService', () => {
         }
       },
       {
-        scope: UserPermissionScope.READ_USER_SKILLS,
+        scope: GlobalPermissionScope.READ_USER_SKILLS,
         owner: {
           id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
           userName: 'owner2',

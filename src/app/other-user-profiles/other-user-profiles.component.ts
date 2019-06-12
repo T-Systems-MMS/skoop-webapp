@@ -5,6 +5,7 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { combineLatest } from 'rxjs';
+import { GlobalPermissionScope } from '../permissions/global-permission-scope.enum';
 
 @Component({
   selector: 'app-other-user-profiles',
@@ -27,7 +28,7 @@ export class OtherUserProfilesComponent implements OnInit {
 
   private loadPermissionOwners(): void {
     combineLatest(
-      this.usersService.getGlobalPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS),
+      this.usersService.getGlobalPermissionOwnersByScope(GlobalPermissionScope.READ_USER_SKILLS),
       this.usersService.getPersonalPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS)
     )
       .subscribe(compoundObject => {
