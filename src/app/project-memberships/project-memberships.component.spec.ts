@@ -14,6 +14,7 @@ import { UserProjectCardComponent } from '../shared/user-project-card/user-proje
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { ProjectMembershipService } from './project-membership.service';
 
 const userProjects = [
   {
@@ -121,6 +122,10 @@ describe('ProjectMembershipsComponent', () => {
             'loadCount': of()
           })
         },
+        {
+          provide: ProjectMembershipService,
+          useValue: jasmine.createSpyObj('projectMembershipService', {'approveAll': of()})
+        },
         GlobalErrorHandlerService
       ]
     })
@@ -157,6 +162,14 @@ describe('ProjectMembershipsComponent', () => {
   it('should show Approve All button when there is at least one unapproved project', () => {
     expect(component.showApproveAll()).toBeTruthy();
   });
+
+  it('should call ProjectMembershipService.approveAll with expected subordinate id', fakeAsync(() => {
+    component.approveAll();
+    fixture.detectChanges();
+
+    const projectMembershipService: ProjectMembershipService = TestBed.get(ProjectMembershipService);
+    expect(projectMembershipService.approveAll).toHaveBeenCalledWith(user.id);
+  }));
 
   it('should hide Approve All button when all projects are approved', () => {
     userProjects[0].approved = true;

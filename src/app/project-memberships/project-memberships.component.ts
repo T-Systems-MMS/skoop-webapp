@@ -9,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { ProjectMembershipService } from './project-membership.service';
 
 @Component({
   selector: 'app-project-memberships',
@@ -24,6 +25,7 @@ export class ProjectMembershipsComponent implements OnInit {
   constructor(private userProjectService: UserProjectsService,
               private usersService: UsersService,
               private notificationCounterService: NotificationCounterService,
+              private projectMembershipsService: ProjectMembershipService,
               public activatedRoute: ActivatedRoute,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -49,7 +51,7 @@ export class ProjectMembershipsComponent implements OnInit {
     };
 
     this.userProjectService.updateUserProject(this.user.id, userProject.project.id, request)
-      .subscribe(()=> {
+      .subscribe(() => {
         this.loadSubordinateProjects(this.user.id);
         this.notificationCounterService.loadCount();
       }, errorResponse => {
@@ -59,6 +61,15 @@ export class ProjectMembershipsComponent implements OnInit {
 
   showApproveAll(): boolean {
     return this.userProjects.length > 0 && this.userProjects.some(item => !item.approved);
+  }
+
+  approveAll() {
+    this.projectMembershipsService.approveAll(this.user.id).subscribe(() => {
+      this.loadSubordinateProjects(this.user.id);
+      this.notificationCounterService.loadCount();
+    }, errorResponse => {
+      this.handleErrorResponse(errorResponse);
+    });
   }
 
   private loadSubordinate(userId: string) {
@@ -72,7 +83,7 @@ export class ProjectMembershipsComponent implements OnInit {
   private loadSubordinateProjects(userId: string) {
     this.userProjectService.getUserProjects(userId)
       .subscribe(projects => {
-        this.userProjects = projects
+        this.userProjects = projects;
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
     });
@@ -83,6 +94,4 @@ export class ProjectMembershipsComponent implements OnInit {
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
   }
-
-
 }

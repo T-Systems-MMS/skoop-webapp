@@ -4,7 +4,9 @@
   <div *ngIf="errorMessage" class="project-memberships-error-message">{{errorMessage}}</div>
 
   <div *ngIf="showApproveAll()">
-    <button *ngIf="showApproveAll()" mat-raised-button title="Approve all project memberships" aria-label="Approve all project memberships">Approve all</button>
+    <button mat-raised-button (click)="approveAll()" title="Approve all project memberships"
+            aria-label="Approve all project memberships">Approve all
+    </button>
   </div>
 
   <app-user-project-card [userProject]="userProject" *ngFor="let userProject of userProjects" class="project-memberships-card">
