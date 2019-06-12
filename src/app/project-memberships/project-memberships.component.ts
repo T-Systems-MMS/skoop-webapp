@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { UserProjectsService } from '../user-projects/user-projects.service';
-import { Observable, of } from 'rxjs';
 import { UserProject } from '../user-projects/user-project';
 import { User } from '../users/user';
 import { UsersService } from '../users/users.service';
@@ -20,7 +19,7 @@ export class ProjectMembershipsComponent implements OnInit {
 
   errorMessage: string;
   user: User = null;
-  userProjects$: Observable<UserProject[]> = of([]);
+  userProjects: UserProject[] = [];
 
   constructor(private userProjectService: UserProjectsService,
               private usersService: UsersService,
@@ -58,6 +57,10 @@ export class ProjectMembershipsComponent implements OnInit {
       });
   }
 
+  showApproveAll(): boolean {
+    return this.userProjects.length > 0 && this.userProjects.some(item => !item.approved);
+  }
+
   private loadSubordinate(userId: string) {
     this.usersService.getUserById(userId).subscribe(user => {
       this.user = user;
@@ -67,13 +70,12 @@ export class ProjectMembershipsComponent implements OnInit {
   }
 
   private loadSubordinateProjects(userId: string) {
-    this.userProjects$ = this.userProjectService.getUserProjects(userId)
-      .pipe(
-        catchError((err: HttpErrorResponse, caught: Observable<UserProject[]>) => {
-          this.handleErrorResponse(err);
-          return of([]);
-        })
-      );
+    this.userProjectService.getUserProjects(userId)
+      .subscribe(projects => {
+        this.userProjects = projects
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+    });
   }
 
   public handleErrorResponse(errorResponse: HttpErrorResponse) {

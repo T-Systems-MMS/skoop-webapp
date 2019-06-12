@@ -50,6 +50,34 @@ const userProjects = [
       }
     ],
     approved: false
+  },
+  {
+    id: 2,
+    role: 'test',
+    tasks: 'testing',
+    startDate: moment(),
+    endDate: moment(),
+    creationDate: moment(),
+    lastModifiedDate: moment(),
+    user:  {
+      id: '111285af-df9d-4e61-8e56-1b9895b36321',
+      userName: 'user1',
+      firstName: 'Name1',
+      lastName: 'Surname1',
+      email: 'user1@mail.com',
+      phoneNumber: '1234567890'
+    },
+    project: {
+      id: '12345678',
+      name: 'Project2',
+      creationDate: new Date(),
+      customer: 'Customer',
+      description: null,
+      industrySector: 'Software development and testing',
+      lastModifiedDate: new Date()
+    },
+    skills: [],
+    approved: true
   }
 ];
 
@@ -125,4 +153,15 @@ describe('ProjectMembershipsComponent', () => {
     const userProjectsService: UserProjectsService = TestBed.get(UserProjectsService);
     expect(userProjectsService.updateUserProject).toHaveBeenCalledWith(user.id, userProjects[0].project.id, expectedResponse);
   }));
+
+  it('should show Approve All button when there is at least one unapproved project', () => {
+    expect(component.showApproveAll()).toBeTruthy();
+  });
+
+  it('should hide Approve All button when all projects are approved', () => {
+    userProjects[0].approved = true;
+    fixture.detectChanges();
+
+    expect(component.showApproveAll()).toBeFalsy();
+  });
 });

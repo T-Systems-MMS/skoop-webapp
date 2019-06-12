@@ -3,14 +3,18 @@
 
   <div *ngIf="errorMessage" class="project-memberships-error-message">{{errorMessage}}</div>
 
-  <app-user-project-card [userProject]="userProject" *ngFor="let userProject of userProjects$ | async" class="project-memberships-card">
+  <div *ngIf="showApproveAll()">
+    <button *ngIf="showApproveAll()" mat-raised-button title="Approve all project memberships" aria-label="Approve all project memberships">Approve all</button>
+  </div>
+
+  <app-user-project-card [userProject]="userProject" *ngFor="let userProject of userProjects" class="project-memberships-card">
     <div buttonContent>
       <button *ngIf="!userProject.approved" mat-icon-button (click)="onApprove(userProject)" title="Approve" aria-label="Approve">
         <mat-icon>done_outline</mat-icon>
       </button>
     </div>
   </app-user-project-card>
-  <div *ngIf="(userProjects$ | async)?.length == 0 && user != null">
+  <div *ngIf="userProjects.length == 0 && user != null">
     There are no projects for {{user.firstName}} {{user.lastName}}
   </div>
 </div>
