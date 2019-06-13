@@ -10,6 +10,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
 import { ProjectMembershipService } from './project-membership.service';
+import { ApproveUserProjectRequest } from './approve-user-project-request';
 
 @Component({
   selector: 'app-project-memberships',
@@ -64,7 +65,10 @@ export class ProjectMembershipsComponent implements OnInit {
   }
 
   approveAll() {
-    this.projectMembershipsService.approveAll(this.user.id).subscribe(() => {
+    const projectsToApprove: ApproveUserProjectRequest[] = this.userProjects
+      .filter(userProject => !userProject.approved)
+      .map(unapprovedUserProject => this.buildRequest(unapprovedUserProject));
+    this.projectMembershipsService.approveAll(this.user.id, projectsToApprove).subscribe(() => {
       this.loadSubordinateProjects(this.user.id);
       this.notificationCounterService.loadCount();
     }, errorResponse => {
@@ -89,7 +93,19 @@ export class ProjectMembershipsComponent implements OnInit {
     });
   }
 
-  public handleErrorResponse(errorResponse: HttpErrorResponse) {
+  private buildRequest(userProject: UserProject): ApproveUserProjectRequest {
+    return {
+      projectId: userProject.project.id,
+      role: userProject.role,
+      skills: userProject.skills.map(item => item.name),
+      tasks: userProject.tasks,
+      startDate: userProject.startDate,
+      endDate: userProject.endDate,
+      approved: true
+    };
+  }
+
+  private handleErrorResponse(errorResponse: HttpErrorResponse) {
     this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();

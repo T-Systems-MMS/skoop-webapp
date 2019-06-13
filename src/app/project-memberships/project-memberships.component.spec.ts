@@ -15,6 +15,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
 import { ProjectMembershipService } from './project-membership.service';
+import { ApproveUserProjectRequest } from './approve-user-project-request';
 
 const userProjects = [
   {
@@ -163,12 +164,23 @@ describe('ProjectMembershipsComponent', () => {
     expect(component.showApproveAll()).toBeTruthy();
   });
 
-  it('should call ProjectMembershipService.approveAll with expected subordinate id', fakeAsync(() => {
+  it('should call ProjectMembershipService.approveAll with expected subordinate id and list of projects', fakeAsync(() => {
+    const expectedRequestBody: ApproveUserProjectRequest[] = [
+      {
+        projectId: userProjects[0].project.id,
+        role: userProjects[0].role,
+        skills: ['Java'],
+        tasks: userProjects[0].tasks,
+        startDate: userProjects[0].startDate,
+        endDate: userProjects[0].endDate,
+        approved: true
+      }
+    ];
     component.approveAll();
     fixture.detectChanges();
 
     const projectMembershipService: ProjectMembershipService = TestBed.get(ProjectMembershipService);
-    expect(projectMembershipService.approveAll).toHaveBeenCalledWith(user.id);
+    expect(projectMembershipService.approveAll).toHaveBeenCalledWith(user.id, expectedRequestBody);
   }));
 
   it('should hide Approve All button when all projects are approved', () => {
