@@ -6,6 +6,8 @@ import { UsersService } from '../users/users.service';
 import { User } from '../users/user';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
+import { ClipboardService } from 'ngx-clipboard';
+import { PopupNotificationService } from '../shared/popup-notification.service';
 
 @Component({
   selector: 'app-other-user-skills',
@@ -20,6 +22,8 @@ export class OtherUserSkillsComponent implements OnInit {
 
   constructor(private userSkillsService: UserSkillsService,
               private userService: UsersService,
+              private clipboardService: ClipboardService,
+              private popupNotificationService: PopupNotificationService,
               private activatedRoute: ActivatedRoute,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -32,6 +36,12 @@ export class OtherUserSkillsComponent implements OnInit {
         this.loadUser(userId);
         this.loadUserSkills(userId);
       });
+  }
+
+  copyToClipboard() {
+    if (this.clipboardService.copyFromContent(location.href)) {
+      this.popupNotificationService.showSuccessMessage('The skills profile link was copied to clipboard successfully');
+    }
   }
 
   private loadUser(userId: string) {

@@ -6,10 +6,11 @@ import { UserPermissionScope } from '../users/user-permission-scope';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserPermissionRequest } from './user-permission-request';
-import { UserPermission } from '../users/user-permission';
+import { UserPermissionResponse } from '../users/user-permission-response';
 import { FormControl } from '@angular/forms';
 import { GlobalUserPermission } from './global-user-permission';
 import { PopupNotificationService } from '../shared/popup-notification.service';
+import { GlobalPermissionScope } from './global-permission-scope.enum';
 
 @Component({
   selector: 'app-permissions',
@@ -82,13 +83,13 @@ export class PermissionsComponent implements OnInit {
     this.savingGlobalPermissionInProgress = true;
     const globalPermissions: GlobalUserPermission[] = [];
     if (this.allowAllToViewSkills.value) {
-      globalPermissions.push({scope: UserPermissionScope.READ_USER_SKILLS});
+      globalPermissions.push({scope: GlobalPermissionScope.READ_USER_SKILLS});
     }
     if (this.allowAllToViewProfile.value) {
-      globalPermissions.push({scope: UserPermissionScope.READ_USER_PROFILE});
+      globalPermissions.push({scope: GlobalPermissionScope.READ_USER_PROFILE});
     }
     if (this.allowToBeCoach.value) {
-      globalPermissions.push({scope: UserPermissionScope.FIND_AS_COACH});
+      globalPermissions.push({scope: GlobalPermissionScope.FIND_AS_COACH});
     }
 
     this.usersService.updateGlobalUserPermissions(globalPermissions)
@@ -127,7 +128,7 @@ export class PermissionsComponent implements OnInit {
       });
   }
 
-  private detectUserPermissions(userPermissions: UserPermission[]) {
+  private detectUserPermissions(userPermissions: UserPermissionResponse[]) {
     let permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.READ_USER_PROFILE);
     this.authorizedProfileUsers = permission ? permission.authorizedUsers : [];
 
@@ -136,13 +137,13 @@ export class PermissionsComponent implements OnInit {
   }
 
   private detectGlobalPermissions(userPermissions: GlobalUserPermission[]) {
-    let permission = userPermissions.find(globalPermission => globalPermission.scope === UserPermissionScope.READ_USER_SKILLS);
+    let permission = userPermissions.find(globalPermission => globalPermission.scope === GlobalPermissionScope.READ_USER_SKILLS);
     this.allowAllToViewSkills.setValue(permission != null);
 
-    permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.READ_USER_PROFILE);
+    permission = userPermissions.find(userPermission => userPermission.scope === GlobalPermissionScope.READ_USER_PROFILE);
     this.allowAllToViewProfile.setValue(permission != null);
 
-    permission = userPermissions.find(userPermission => userPermission.scope === UserPermissionScope.FIND_AS_COACH);
+    permission = userPermissions.find(userPermission => userPermission.scope === GlobalPermissionScope.FIND_AS_COACH);
     this.allowToBeCoach.setValue(permission != null);
   }
 

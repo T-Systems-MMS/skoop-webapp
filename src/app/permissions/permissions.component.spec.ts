@@ -12,11 +12,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { Component, Input } from '@angular/core';
-import { UserPermission } from '../users/user-permission';
+import { UserPermissionResponse } from '../users/user-permission-response';
 import { UserPermissionRequest } from './user-permission-request';
 import { GlobalUserPermission } from './global-user-permission';
 import { GlobalUserPermissionResponse } from './global-user-permission-response';
 import { PopupNotificationService } from '../shared/popup-notification.service';
+import { GlobalPermissionScope } from './global-permission-scope.enum';
 
 const authorizedUsers: User[] = [
   {
@@ -34,7 +35,7 @@ const authorizedUsers: User[] = [
     email: 'second.owner@skoop.io'
   }
 ];
-const testPermissions: UserPermission[] = [
+const testPermissions: UserPermissionResponse[] = [
   {
     owner: {
       id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
@@ -61,7 +62,7 @@ const testPermissions: UserPermission[] = [
 
 const globalPermissions: GlobalUserPermissionResponse[] = [
   {
-    scope: UserPermissionScope.READ_USER_PROFILE,
+    scope: GlobalPermissionScope.READ_USER_PROFILE,
     owner: {
       id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
       userName: 'owner2',
@@ -71,7 +72,7 @@ const globalPermissions: GlobalUserPermissionResponse[] = [
     }
   },
   {
-    scope: UserPermissionScope.READ_USER_SKILLS,
+    scope: GlobalPermissionScope.READ_USER_SKILLS,
     owner: {
       id: '666808eb-b6bd-447d-8dce-3e0d66b16666',
       userName: 'owner2',
@@ -110,8 +111,8 @@ describe('PermissionsComponent', () => {
         {
           provide: UsersService,
           useValue: jasmine.createSpyObj('userService', {
-            'getPermissions': of<UserPermission[]>(testPermissions),
-            'updatePermissions': of<UserPermission[]>(testPermissions),
+            'getPermissions': of<UserPermissionResponse[]>(testPermissions),
+            'updatePermissions': of<UserPermissionResponse[]>(testPermissions),
             'getGlobalUserPermissions': of<GlobalUserPermissionResponse[]>(globalPermissions),
             'updateGlobalUserPermissions': of<GlobalUserPermissionResponse[]>(globalPermissions)
           })
@@ -212,13 +213,13 @@ describe('PermissionsComponent', () => {
       const userService: UsersService = TestBed.get(UsersService) as UsersService;
       const expectedRequest: GlobalUserPermission[] = [
         {
-          scope: UserPermissionScope.READ_USER_SKILLS,
+          scope: GlobalPermissionScope.READ_USER_SKILLS,
         },
         {
-          scope: UserPermissionScope.READ_USER_PROFILE,
+          scope: GlobalPermissionScope.READ_USER_PROFILE,
         },
         {
-          scope: UserPermissionScope.FIND_AS_COACH,
+          scope: GlobalPermissionScope.FIND_AS_COACH,
         }
       ];
       expect(userService.updateGlobalUserPermissions).toHaveBeenCalledWith(expectedRequest);

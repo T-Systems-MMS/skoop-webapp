@@ -181,7 +181,7 @@ describe('UserProfileComponent', () => {
     } as KeyboardEventInit);
     inputNativeElement.dispatchEvent(event);
 
-    expect(component.languagesArray.indexOf(value)).not.toBe(-1);
+    expect(component.languagesArray.indexOf(value)).not.toEqual(-1);
   });
 
   it('should not add a duplicate elem to the language array', () => {

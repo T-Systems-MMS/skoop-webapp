@@ -5,21 +5,24 @@ import { map, switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from './user';
-import { UserPermission } from './user-permission';
+import { UserPermissionResponse } from './user-permission-response';
 import { UserPermissionScope } from './user-permission-scope';
 import { UserRequest } from './user-request';
 import { UserPermissionRequest } from '../permissions/user-permission-request';
 import { GlobalUserPermission } from '../permissions/global-user-permission';
 import { GlobalUserPermissionResponse } from '../permissions/global-user-permission-response';
+import { GlobalPermissionScope } from '../permissions/global-permission-scope.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
   private userUrlPattern = `${environment.serverApiUrl}/users/{userId}`;
-  private userPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
+  private personalPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-permissions`;
+  private globalPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/outbound-global-permissions`;
   private userGlobalPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/global-permissions`;
-  private userInboundPermissionsUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
+  private personalInboundPermissionsByScopeUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-permissions`;
+  private globalInboundPermissionsByScopeUrlPattern = `${environment.serverApiUrl}/users/{userId}/inbound-global-permissions`;
   private userSuggestionsUrl = `${environment.serverApiUrl}/user-suggestions`;
 
   constructor(private httpClient: HttpClient,
@@ -56,42 +59,47 @@ export class UsersService {
       });
   }
 
-  getPermissions(): Observable<UserPermission[]> {
+  getPermissions(): Observable<UserPermissionResponse[]> {
     return this.userIdentityService.getUserIdentity()
       .pipe(
-        switchMap(userIdentity => this.httpClient.get<UserPermission[]>(
-          // TODO: Request permissions for given scope via specific API call, e.g.
-          // GET /users/{userId}/permissions/{scope}
-          this.userPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
+        switchMap(userIdentity => this.httpClient.get<UserPermissionResponse[]>(
+          this.personalPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
         )
       );
   }
 
-  updatePermissions(userPermissions: UserPermissionRequest[]): Observable<UserPermission[]> {
+  updatePermissions(userPermissions: UserPermissionRequest[]): Observable<UserPermissionResponse[]> {
     return this.userIdentityService.getUserIdentity()
       .pipe(
-        switchMap(userIdentity => this.httpClient.put<UserPermission[]>(
-          // TODO: Update permissions for given scope via specific API call, e.g.
-          // PUT /users/{userId}/permissions/{scope}
-          this.userPermissionsUrlPattern.replace('{userId}', userIdentity.userId), userPermissions)
+        switchMap(userIdentity => this.httpClient.put<UserPermissionResponse[]>(
+          this.personalPermissionsUrlPattern.replace('{userId}', userIdentity.userId), userPermissions)
         )
       );
   }
 
-  getPermissionOwners(scope: UserPermissionScope): Observable<User[]> {
+  getPersonalPermissionOwnersByScope(scope: UserPermissionScope): Observable<User[]> {
     return this.userIdentityService.getUserIdentity()
       .pipe(
-        switchMap(userIdentity => this.httpClient.get<UserPermission[]>(
-          // TODO: Request permissions for given scope via specific API call, e.g.
-          // GET /users/{userId}/permissions/{scope}
-          this.userInboundPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
+        switchMap(userIdentity => this.httpClient.get<UserPermissionResponse[]>(
+          this.personalInboundPermissionsByScopeUrlPattern.replace('{userId}', userIdentity.userId),
+          {
+            params: new HttpParams().set('scope', scope)
+          })
         ),
-        map(userPermissions => {
-          const inboundUserPermissions = userPermissions.filter(userPermission => userPermission.scope === scope);
-          const permissionOwners = [];
-          inboundUserPermissions.forEach(item => permissionOwners.push(item.owner));
-          return permissionOwners;
-        })
+        map(userPermissions => userPermissions.map(item => item.owner))
+      );
+  }
+
+  getGlobalPermissionOwnersByScope(scope: GlobalPermissionScope): Observable<User[]> {
+    return this.userIdentityService.getUserIdentity()
+      .pipe(
+        switchMap(userIdentity => this.httpClient.get<GlobalUserPermissionResponse[]>(
+          this.globalInboundPermissionsByScopeUrlPattern.replace('{userId}', userIdentity.userId),
+          {
+            params: new HttpParams().set('scope', scope)
+          })
+        ),
+        map(userPermissions => userPermissions.map(item => item.owner))
       );
   }
 
@@ -99,7 +107,7 @@ export class UsersService {
     return this.userIdentityService.getUserIdentity()
       .pipe(
         switchMap(userIdentity => this.httpClient.get<GlobalUserPermissionResponse[]>(
-          this.userGlobalPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
+          this.globalPermissionsUrlPattern.replace('{userId}', userIdentity.userId))
         ));
   }
 
