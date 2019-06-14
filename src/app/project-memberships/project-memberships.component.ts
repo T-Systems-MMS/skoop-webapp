@@ -1,8 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { UserProjectsService } from '../user-projects/user-projects.service';
-import { Observable, of } from 'rxjs';
 import { UserProject } from '../user-projects/user-project';
 import { User } from '../users/user';
 import { UsersService } from '../users/users.service';
@@ -10,6 +9,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { ApproveUserProjectRequest } from './approve-user-project-request';
 
 @Component({
   selector: 'app-project-memberships',
@@ -20,11 +20,12 @@ export class ProjectMembershipsComponent implements OnInit {
 
   errorMessage: string;
   user: User = null;
-  userProjects$: Observable<UserProject[]> = of([]);
+  userProjects: UserProject[] = [];
 
   constructor(private userProjectService: UserProjectsService,
               private usersService: UsersService,
               private notificationCounterService: NotificationCounterService,
+              private userProjectsService: UserProjectsService,
               public activatedRoute: ActivatedRoute,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -50,12 +51,28 @@ export class ProjectMembershipsComponent implements OnInit {
     };
 
     this.userProjectService.updateUserProject(this.user.id, userProject.project.id, request)
-      .subscribe(()=> {
+      .subscribe(() => {
         this.loadSubordinateProjects(this.user.id);
         this.notificationCounterService.loadCount();
       }, errorResponse => {
         this.handleErrorResponse(errorResponse);
       });
+  }
+
+  showApproveAll(): boolean {
+    return this.userProjects.length > 0 && this.userProjects.some(item => !item.approved);
+  }
+
+  approveAll() {
+    const projectsToApprove: ApproveUserProjectRequest[] = this.userProjects
+      .filter(userProject => !userProject.approved)
+      .map(unapprovedUserProject => this.buildRequest(unapprovedUserProject));
+    this.userProjectsService.updateUserProjects(this.user.id, projectsToApprove).subscribe(() => {
+      this.loadSubordinateProjects(this.user.id);
+      this.notificationCounterService.loadCount();
+    }, errorResponse => {
+      this.handleErrorResponse(errorResponse);
+    });
   }
 
   private loadSubordinate(userId: string) {
@@ -67,20 +84,29 @@ export class ProjectMembershipsComponent implements OnInit {
   }
 
   private loadSubordinateProjects(userId: string) {
-    this.userProjects$ = this.userProjectService.getUserProjects(userId)
-      .pipe(
-        catchError((err: HttpErrorResponse, caught: Observable<UserProject[]>) => {
-          this.handleErrorResponse(err);
-          return of([]);
-        })
-      );
+    this.userProjectService.getUserProjects(userId)
+      .subscribe(projects => {
+        this.userProjects = projects;
+      }, errorResponse => {
+        this.handleErrorResponse(errorResponse);
+    });
   }
 
-  public handleErrorResponse(errorResponse: HttpErrorResponse) {
+  private buildRequest(userProject: UserProject): ApproveUserProjectRequest {
+    return {
+      projectId: userProject.project.id,
+      role: userProject.role,
+      skills: userProject.skills.map(item => item.name),
+      tasks: userProject.tasks,
+      startDate: userProject.startDate,
+      endDate: userProject.endDate,
+      approved: true
+    };
+  }
+
+  private handleErrorResponse(errorResponse: HttpErrorResponse) {
     this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
     // Dirty fix because of: https://github.com/angular/angular/issues/17772
     this.changeDetector.markForCheck();
   }
-
-
 }

@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 
 import { UserProjectsService } from './user-projects.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import * as moment from 'moment';
 import { UpdateUserProjectRequest } from './update-user-project-request';
 import { AssignUserProjectRequest } from './assign-user-project-request';
+import { ApproveUserProjectRequest } from '../project-memberships/approve-user-project-request';
 
 describe('UserProjectsService', () => {
 
@@ -130,5 +131,31 @@ describe('UserProjectsService', () => {
     expect(request.request.responseType).toEqual('json');
     request.flush(null);
   });
+
+  it('should return data of updated projects', async(() => {
+    const userId = 'd11235de-f13e-4fd6-b5d6-9c4c4e18aa4f';
+    const unapprovedProjects: ApproveUserProjectRequest[] = [
+      {
+        projectId: '123456',
+        role: 'Developer',
+        skills: ['Java'],
+        tasks: 'Development',
+        startDate: moment(),
+        endDate: moment(),
+        approved: true
+      }
+    ];
+    service.updateUserProjects(userId, unapprovedProjects).subscribe((data: any) => {
+      expect(data).toBe(userProjects);
+    });
+
+    const req = httpTestingController.expectOne({
+      method: 'PUT',
+      url: `${environment.serverApiUrl}/users/${userId}/projects`
+    });
+    expect(req.request.responseType).toEqual('json');
+
+    req.flush(userProjects);
+  }));
 
 });

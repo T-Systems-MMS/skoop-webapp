@@ -14,6 +14,7 @@ import { UserProjectCardComponent } from '../shared/user-project-card/user-proje
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
+import { ApproveUserProjectRequest } from './approve-user-project-request';
 
 const userProjects = [
   {
@@ -50,6 +51,34 @@ const userProjects = [
       }
     ],
     approved: false
+  },
+  {
+    id: 2,
+    role: 'test',
+    tasks: 'testing',
+    startDate: moment(),
+    endDate: moment(),
+    creationDate: moment(),
+    lastModifiedDate: moment(),
+    user:  {
+      id: '111285af-df9d-4e61-8e56-1b9895b36321',
+      userName: 'user1',
+      firstName: 'Name1',
+      lastName: 'Surname1',
+      email: 'user1@mail.com',
+      phoneNumber: '1234567890'
+    },
+    project: {
+      id: '12345678',
+      name: 'Project2',
+      creationDate: new Date(),
+      customer: 'Customer',
+      description: null,
+      industrySector: 'Software development and testing',
+      lastModifiedDate: new Date()
+    },
+    skills: [],
+    approved: true
   }
 ];
 
@@ -81,7 +110,8 @@ describe('ProjectMembershipsComponent', () => {
           provide: UserProjectsService,
           useValue: jasmine.createSpyObj('userProjectService', {
             'getUserProjects': of(userProjects),
-            'updateUserProject': of(userProjects[0])
+            'updateUserProject': of(userProjects[0]),
+            'updateUserProjects': of()
           })
         },
         {
@@ -125,4 +155,34 @@ describe('ProjectMembershipsComponent', () => {
     const userProjectsService: UserProjectsService = TestBed.get(UserProjectsService);
     expect(userProjectsService.updateUserProject).toHaveBeenCalledWith(user.id, userProjects[0].project.id, expectedResponse);
   }));
+
+  it('should show Approve All button when there is at least one unapproved project', () => {
+    expect(component.showApproveAll()).toBeTruthy();
+  });
+
+  it('should call UserProjectsService.updateUserProjects with expected subordinate id and list of projects', fakeAsync(() => {
+    const expectedRequestBody: ApproveUserProjectRequest[] = [
+      {
+        projectId: userProjects[0].project.id,
+        role: userProjects[0].role,
+        skills: ['Java'],
+        tasks: userProjects[0].tasks,
+        startDate: userProjects[0].startDate,
+        endDate: userProjects[0].endDate,
+        approved: true
+      }
+    ];
+    component.approveAll();
+    fixture.detectChanges();
+
+    const userProjectsService: UserProjectsService = TestBed.get(UserProjectsService);
+    expect(userProjectsService.updateUserProjects).toHaveBeenCalledWith(user.id, expectedRequestBody);
+  }));
+
+  it('should hide Approve All button when all projects are approved', () => {
+    userProjects[0].approved = true;
+    fixture.detectChanges();
+
+    expect(component.showApproveAll()).toBeFalsy();
+  });
 });
