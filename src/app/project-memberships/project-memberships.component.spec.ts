@@ -14,7 +14,6 @@ import { UserProjectCardComponent } from '../shared/user-project-card/user-proje
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
-import { ProjectMembershipService } from './project-membership.service';
 import { ApproveUserProjectRequest } from './approve-user-project-request';
 
 const userProjects = [
@@ -111,7 +110,8 @@ describe('ProjectMembershipsComponent', () => {
           provide: UserProjectsService,
           useValue: jasmine.createSpyObj('userProjectService', {
             'getUserProjects': of(userProjects),
-            'updateUserProject': of(userProjects[0])
+            'updateUserProject': of(userProjects[0]),
+            'updateUserProjects': of()
           })
         },
         {
@@ -122,10 +122,6 @@ describe('ProjectMembershipsComponent', () => {
           provide: NotificationCounterService, useValue: jasmine.createSpyObj('notificationCounterService', {
             'loadCount': of()
           })
-        },
-        {
-          provide: ProjectMembershipService,
-          useValue: jasmine.createSpyObj('projectMembershipService', {'approveAll': of()})
         },
         GlobalErrorHandlerService
       ]
@@ -164,7 +160,7 @@ describe('ProjectMembershipsComponent', () => {
     expect(component.showApproveAll()).toBeTruthy();
   });
 
-  it('should call ProjectMembershipService.approveAll with expected subordinate id and list of projects', fakeAsync(() => {
+  it('should call UserProjectsService.updateUserProjects with expected subordinate id and list of projects', fakeAsync(() => {
     const expectedRequestBody: ApproveUserProjectRequest[] = [
       {
         projectId: userProjects[0].project.id,
@@ -179,8 +175,8 @@ describe('ProjectMembershipsComponent', () => {
     component.approveAll();
     fixture.detectChanges();
 
-    const projectMembershipService: ProjectMembershipService = TestBed.get(ProjectMembershipService);
-    expect(projectMembershipService.approveAll).toHaveBeenCalledWith(user.id, expectedRequestBody);
+    const userProjectsService: UserProjectsService = TestBed.get(UserProjectsService);
+    expect(userProjectsService.updateUserProjects).toHaveBeenCalledWith(user.id, expectedRequestBody);
   }));
 
   it('should hide Approve All button when all projects are approved', () => {

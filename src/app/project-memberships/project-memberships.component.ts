@@ -9,7 +9,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UpdateUserProjectRequest } from '../user-projects/update-user-project-request';
 import { NotificationCounterService } from '../shared/notification-counter.service';
-import { ProjectMembershipService } from './project-membership.service';
 import { ApproveUserProjectRequest } from './approve-user-project-request';
 
 @Component({
@@ -26,7 +25,7 @@ export class ProjectMembershipsComponent implements OnInit {
   constructor(private userProjectService: UserProjectsService,
               private usersService: UsersService,
               private notificationCounterService: NotificationCounterService,
-              private projectMembershipsService: ProjectMembershipService,
+              private userProjectsService: UserProjectsService,
               public activatedRoute: ActivatedRoute,
               private changeDetector: ChangeDetectorRef,
               private globalErrorHandlerService: GlobalErrorHandlerService) {
@@ -68,7 +67,7 @@ export class ProjectMembershipsComponent implements OnInit {
     const projectsToApprove: ApproveUserProjectRequest[] = this.userProjects
       .filter(userProject => !userProject.approved)
       .map(unapprovedUserProject => this.buildRequest(unapprovedUserProject));
-    this.projectMembershipsService.approveAll(this.user.id, projectsToApprove).subscribe(() => {
+    this.userProjectsService.updateUserProjects(this.user.id, projectsToApprove).subscribe(() => {
       this.loadSubordinateProjects(this.user.id);
       this.notificationCounterService.loadCount();
     }, errorResponse => {

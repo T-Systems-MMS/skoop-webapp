@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { UserProject } from './user-project';
 import { AssignUserProjectRequest } from './assign-user-project-request';
 import { UpdateUserProjectRequest } from './update-user-project-request';
+import { ApproveUserProjectRequest } from '../project-memberships/approve-user-project-request';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class UserProjectsService {
   updateUserProject(userId: string, projectId: string, request: UpdateUserProjectRequest): Observable<UserProject> {
     return this.httpClient.put<UserProject>(this.userProjectUrlPattern.replace('{userId}', userId).replace('{projectId}', projectId),
       request);
+  }
+
+  updateUserProjects(userId: string, projects: ApproveUserProjectRequest[]): Observable<UserProject[]> {
+    return this.httpClient.put<UserProject[]>(this.userProjectsUrlPattern.replace('{userId}', userId), projects);
   }
 
   deleteUserProject(userId: string, projectId: string): Observable<void> {
