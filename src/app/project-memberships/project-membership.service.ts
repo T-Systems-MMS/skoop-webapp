@@ -10,12 +10,12 @@ import { UserProject } from '../user-projects/user-project';
 })
 export class ProjectMembershipService {
 
-  private approveAllUrlPattern = `${environment.serverApiUrl}/projects/{userId}/projects`;
+  private approveAllUrlPattern = `${environment.serverApiUrl}/users/{userId}/projects`;
 
   constructor(private httpClient: HttpClient) {
   }
 
   approveAll(userId: string, projects: ApproveUserProjectRequest[]): Observable<UserProject[]> {
-    return this.httpClient.put<UserProject[]>(this.approveAllUrlPattern.replace('{userId}', userId), {projects: projects});
+    return this.httpClient.put<UserProject[]>(this.approveAllUrlPattern.replace('{userId}', userId), projects);
   }
 }

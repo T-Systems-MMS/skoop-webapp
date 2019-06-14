@@ -82,7 +82,7 @@ describe('ProjectMembershipService', () => {
 
     const req = httpTestingController.expectOne({
       method: 'PUT',
-      url: `${environment.serverApiUrl}/projects/${userId}/projects`
+      url: `${environment.serverApiUrl}/users/${userId}/projects`
     });
     expect(req.request.responseType).toEqual('json');
 
