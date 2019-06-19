@@ -28,7 +28,7 @@ export class UserProfileComponent implements OnInit {
   elemAddOnBlur = false;
   elemSeparatorKeysCodes = [ENTER, COMMA];
 
-  @ViewChild('authorizedUsersAutocomplete') matAutocomplete: MatAutocomplete;
+  @ViewChild('authorizedUsersAutocomplete', { static: false }) matAutocomplete: MatAutocomplete;
 
   constructor(private usersService: UsersService,
     private formBuilder: FormBuilder,

@@ -24,8 +24,8 @@ import { UsersService } from '../users/users.service';
 })
 export class CommunitiesNewComponent implements OnInit {
 
-  @ViewChild('usersInput') usersAutocompleteInput: ElementRef<HTMLInputElement>;
-  @ViewChild('usersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @ViewChild('usersInput', { static: true }) usersAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('usersAutocomplete', { static: true }) usersMatAutocomplete: MatAutocomplete;
 
   communityForm: FormGroup;
   errorMessage: string = null;

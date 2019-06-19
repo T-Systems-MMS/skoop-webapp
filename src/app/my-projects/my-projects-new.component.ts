@@ -28,10 +28,10 @@ export class MyProjectsNewComponent implements OnInit {
   errorMessage: string = null;
   formGroup: FormGroup;
 
-  @ViewChild(MatAutocompleteTrigger) trigger;
+  @ViewChild(MatAutocompleteTrigger, { static: true }) trigger;
 
-  @ViewChild('projectAutoComplete') projectsMatAutocomplete: MatAutocomplete;
-  @ViewChild('projectInput') projectAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('projectAutoComplete', { static: true }) projectsMatAutocomplete: MatAutocomplete;
+  @ViewChild('projectInput', { static: true }) projectAutocompleteInput: ElementRef<HTMLInputElement>;
 
   projects$: Observable<Project[]>;
   allAvailableProjects: Project[];

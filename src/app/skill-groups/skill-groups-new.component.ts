@@ -17,7 +17,7 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy, AfterViewInit
     Validators.minLength(3),
   ]);
   groupDescription: FormControl = new FormControl('');
-  @ViewChild('skillGroupNameInput') skillGroupNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillGroupNameInput', { static: true }) skillGroupNameInput: ElementRef<HTMLInputElement>;
 
   addedGroupsCount = 0;
   operationInProgress = false;

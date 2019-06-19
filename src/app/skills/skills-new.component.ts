@@ -22,7 +22,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedGroups: Set<string> = new Set([]);
   groupSuggestions$: Observable<string[]>;
   groupCtrl = new FormControl();
-  @ViewChild('groupInput') groupInput: ElementRef<HTMLInputElement>;
+  @ViewChild('groupInput', { static: true }) groupInput: ElementRef<HTMLInputElement>;
 
   addedSkillsCount = 0;
   operationInProgress = false;
@@ -32,7 +32,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl('');
-  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(private skillsService: SkillsService,
     private skillGroupsService: SkillGroupsService,

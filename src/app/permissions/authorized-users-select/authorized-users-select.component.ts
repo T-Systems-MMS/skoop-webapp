@@ -16,8 +16,8 @@ export class AuthorizedUsersSelectComponent implements OnInit {
   authorizedUsersControl = new FormControl();
   authorizedUserSuggestions$: Observable<User[]>;
 
-  @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
-  @ViewChild('authorizedUsersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @ViewChild('authorizedUsersInput', { static: true }) authorizedUsersInput: ElementRef<HTMLInputElement>;
+  @ViewChild('authorizedUsersAutocomplete', { static: true }) usersMatAutocomplete: MatAutocomplete;
   @Input() users: User[];
   @Input() placeholder: string;
 

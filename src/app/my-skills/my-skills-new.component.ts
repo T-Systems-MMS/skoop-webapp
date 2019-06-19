@@ -26,7 +26,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   addedSkillsCount = 0;
   errorMessage: string = null;
   skillSuggestions$: Observable<string[]>;
-  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(private mySkillsService: MySkillsService,
     private bottomSheet: MatBottomSheetRef,

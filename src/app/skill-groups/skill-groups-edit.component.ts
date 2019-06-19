@@ -18,7 +18,7 @@ export class SkillGroupsEditComponent implements OnInit, AfterViewInit {
     Validators.minLength(3),
   ]);
   groupDescription: FormControl = new FormControl(this.skillGroup.description);
-  @ViewChild('skillGroupNameInput') skillGroupNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillGroupNameInput', { static: true }) skillGroupNameInput: ElementRef<HTMLInputElement>;
 
   addedGroupsCount = 0;
   operationInProgress = false;

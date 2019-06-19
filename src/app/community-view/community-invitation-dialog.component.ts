@@ -21,8 +21,8 @@ import { CommunityUserService } from '../shared/community-user.service';
 })
 export class CommunityInvitationDialogComponent implements OnInit {
 
-  @ViewChild('usersInput') usersAutocompleteInput: ElementRef<HTMLInputElement>;
-  @ViewChild('usersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @ViewChild('usersInput', { static: true }) usersAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('usersAutocomplete', { static: true }) usersMatAutocomplete: MatAutocomplete;
 
   errorMessage: string = null;
   invitationForm: FormGroup;

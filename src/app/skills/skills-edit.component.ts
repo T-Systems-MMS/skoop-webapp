@@ -23,7 +23,7 @@ export class SkillsEditComponent implements OnInit, AfterViewInit {
   selectedGroups: Set<string> = new Set([]);
   groupSuggestions$: Observable<string[]>;
   groupCtrl = new FormControl(this.skill.skillGroups);
-  @ViewChild('groupInput') groupInput: ElementRef<HTMLInputElement>;
+  @ViewChild('groupInput', { static: true }) groupInput: ElementRef<HTMLInputElement>;
 
   addedSkillsCount = 0;
   operationInProgress = false;
@@ -34,7 +34,7 @@ export class SkillsEditComponent implements OnInit, AfterViewInit {
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl(this.skill.description);
-  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public skill: Skill,
     private skillsService: SkillsService,

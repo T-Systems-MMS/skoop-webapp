@@ -16,8 +16,8 @@ export class SkillSelectInputComponent implements OnInit {
 
   @Input() parentForm: FormGroup;
 
-  @ViewChild('skillsAutoComplete') skillsMatAutocomplete: MatAutocomplete;
-  @ViewChild('skillInput') skillAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillsAutoComplete', { static: true }) skillsMatAutocomplete: MatAutocomplete;
+  @ViewChild('skillInput', { static: true }) skillAutocompleteInput: ElementRef<HTMLInputElement>;
 
   errorMessage: string = null;
   skills$: Observable<Skill[]> = of([]);
