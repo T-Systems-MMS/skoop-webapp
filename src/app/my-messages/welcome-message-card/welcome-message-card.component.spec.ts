@@ -1,7 +1,7 @@
 import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 
 import { WelcomeMessageCardComponent } from './welcome-message-card.component';
-import { TemplateLoaderService } from '../../shared/template-loader.service';
+import { ExternalAssetsService } from '../../shared/external-assets.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material/dialog';
@@ -40,7 +40,7 @@ describe('WelcomeMessageCardComponent', () => {
       declarations: [ WelcomeMessageCardComponent, InfoDialogComponent, MessageCardComponent, DeleteConfirmationDialogComponent ],
       providers: [
         {
-          provide: TemplateLoaderService, useValue: jasmine.createSpyObj('templateLoaderService', {
+          provide: ExternalAssetsService, useValue: jasmine.createSpyObj('templateLoaderService', {
             'loadTemplate': of('some html text')
           })
         },
@@ -79,8 +79,8 @@ describe('WelcomeMessageCardComponent', () => {
     linkElem.nativeElement.click();
 
     fixture.whenStable().then(() => {
-      const templateLoader: TemplateLoaderService = TestBed.get(TemplateLoaderService);
-      expect(templateLoader.loadTemplate).toHaveBeenCalled();
+      const templateLoader: ExternalAssetsService = TestBed.get(ExternalAssetsService);
+      expect(templateLoader.getText).toHaveBeenCalled();
 
       const matDialog: MatDialog = TestBed.get(MatDialog);
       expect(matDialog.openDialogs.length).toBe(1);

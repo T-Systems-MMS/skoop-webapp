@@ -6,7 +6,16 @@
       <label for="currentLevel">Current level:</label>
     </div>
     <div fxFlex>
-      <mat-slider id="currentLevel" min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="currentLevel" class="my-skills-edit-form-field"></mat-slider>
+      <mat-slider id="currentLevel"
+                  min="0"
+                  max="4"
+                  step="1"
+                  thumbLabel
+                  tickInterval="1"
+                  [formControl]="currentLevel"
+                  (change)="onLevelValueChanged($event)"
+                  #currentLevelSlider
+                  class="my-skills-edit-form-field"></mat-slider>
     </div>
   </div>
   <div fxLayout="row">
@@ -14,7 +23,15 @@
       <label for="desiredLevel">Desired level:</label>
     </div>
     <div fxFlex>
-      <mat-slider id="desiredLevel" min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="desiredLevel" class="my-skills-edit-form-field"></mat-slider>
+      <mat-slider id="desiredLevel"
+                  min="0" max="4"
+                  step="1"
+                  thumbLabel
+                  tickInterval="1"
+                  [formControl]="desiredLevel"
+                  (change)="onLevelValueChanged($event)"
+                  #desiredLevelSlider
+                  class="my-skills-edit-form-field"></mat-slider>
     </div>
   </div>
   <div fxLayout="row">

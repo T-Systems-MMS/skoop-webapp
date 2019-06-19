@@ -31,6 +31,7 @@
         thumbLabel
         tickInterval="1"
         [formControl]="currentLevel"
+        (change)="onLevelValueChanged($event)"
         class="mySkillsNewDialog__formField">
       </mat-slider>
     </div>
@@ -48,6 +49,7 @@
         thumbLabel
         tickInterval="1"
         [formControl]="desiredLevel"
+        (change)="onLevelValueChanged($event)"
         class="mySkillsNewDialog__formField">
       </mat-slider>
     </div>

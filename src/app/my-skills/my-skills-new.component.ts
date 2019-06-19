@@ -6,6 +6,9 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MySkillsService } from './my-skills.service';
+import { MatSlider, MatSliderChange } from '@angular/material';
+import { ExternalAssetsService } from '../shared/external-assets.service';
+import { StepDescription } from './step-description';
 
 @Component({
   selector: 'app-my-skills-new',
@@ -28,7 +31,10 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   skillSuggestions$: Observable<string[]>;
   @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
+  private levelDescription: StepDescription;
+
   constructor(private mySkillsService: MySkillsService,
+    private externalAssetsService: ExternalAssetsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
@@ -38,6 +44,10 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(debounceTime(500),
         distinctUntilChanged(),
         switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
+    this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
+      .subscribe(data => {
+        this.levelDescription = data;
+      });
   }
 
   ngAfterViewInit(): void {
@@ -83,6 +93,24 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   onKeyPress(event: KeyboardEvent): void {
     if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addUserSkill();
+    }
+  }
+
+  onLevelValueChanged(event: MatSliderChange) {
+    this.updateLabel(event.source, this.levelDescription, event.value);
+  }
+
+  private updateLabel(slider: MatSlider, description: StepDescription, step: number) {
+    if (step === null) {
+      return;
+    }
+
+    const title = description[Object.keys(description)[step]];
+    slider._elementRef.nativeElement.querySelector('.mat-slider-thumb').setAttribute('title', title);
+
+    const stepLabel = slider._elementRef.nativeElement.querySelector('.mat-slider-thumb-label');
+    if (stepLabel) {
+      stepLabel.setAttribute('title', title);
     }
   }
 

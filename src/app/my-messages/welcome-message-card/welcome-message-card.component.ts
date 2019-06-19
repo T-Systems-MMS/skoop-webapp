@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
-import { TemplateLoaderService } from '../../shared/template-loader.service';
+import { ExternalAssetsService } from '../../shared/external-assets.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
@@ -15,7 +15,7 @@ export class WelcomeMessageCardComponent extends DeletableNotificationComponentT
 
   @Input() notification: UserWelcomeNotification;
 
-  constructor(private templateLoader: TemplateLoaderService,
+  constructor(private templateLoader: ExternalAssetsService,
               protected messageService: MessagesService,
               public dialog: MatDialog) {
     super(messageService, dialog);
@@ -25,7 +25,7 @@ export class WelcomeMessageCardComponent extends DeletableNotificationComponentT
   }
 
   openWelcomeNotificationDialog() {
-    this.templateLoader.loadTemplate('/assets/templates/welcome-notification.html')
+    this.templateLoader.getText('/assets/templates/welcome-notification.html')
       .subscribe(html => {
         this.dialog.open(InfoDialogComponent, {
           width: '550px',

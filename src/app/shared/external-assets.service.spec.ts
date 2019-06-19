@@ -1,12 +1,12 @@
 import { async, TestBed } from '@angular/core/testing';
 
-import { TemplateLoaderService } from './template-loader.service';
+import { ExternalAssetsService } from './external-assets.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MessagesService } from '../my-messages/messages.service';
 
-describe('TemplateLoaderService', () => {
+describe('ExternalAssetsService', () => {
   let httpTestingController: HttpTestingController;
-  let templateLoaderService: TemplateLoaderService;
+  let templateLoaderService: ExternalAssetsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -15,7 +15,7 @@ describe('TemplateLoaderService', () => {
     });
 
     httpTestingController = TestBed.get(HttpTestingController);
-    templateLoaderService = TestBed.get(TemplateLoaderService);
+    templateLoaderService = TestBed.get(ExternalAssetsService);
   });
 
   afterEach(() => {
@@ -29,7 +29,7 @@ describe('TemplateLoaderService', () => {
   it('should send request to load html template', async(() => {
     const htmlTemplate = '<div>Some text</div>';
     const path = '/some/path/to.html';
-    templateLoaderService.loadTemplate(path).subscribe(html => {
+    templateLoaderService.getText(path).subscribe(html => {
       expect(html).toBe(htmlTemplate);
     });
 

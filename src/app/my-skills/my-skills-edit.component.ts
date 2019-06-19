@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
@@ -6,6 +6,9 @@ import { MySkillsService } from './my-skills.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
+import { MatSlider, MatSliderChange } from '@angular/material';
+import { StepDescription } from './step-description';
+import { ExternalAssetsService } from '../shared/external-assets.service';
 
 @Component({
   selector: 'app-my-skills-edit',
@@ -19,13 +22,27 @@ export class MySkillsEditComponent implements OnInit {
   operationInProgress = false;
   errorMessage: string = null;
 
+  private levelDescription: StepDescription;
+
+  @ViewChild('currentLevelSlider', { static: true }) currentLevelSlider: MatSlider;
+  @ViewChild('desiredLevelSlider', { static: true }) desiredLevelSlider: MatSlider;
+
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView,
     private mySkillsService: MySkillsService,
+    private externalAssetsService: ExternalAssetsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
     private globalErrorHandlerService: GlobalErrorHandlerService) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
+      .subscribe(data => {
+        this.levelDescription = data;
+
+        this.updateLabel(this.currentLevelSlider, this.levelDescription, this.userSkill.currentLevel);
+        this.updateLabel(this.desiredLevelSlider, this.levelDescription, this.userSkill.desiredLevel);
+      });
+  }
 
   saveUserSkill(): void {
     this.operationInProgress = true;
@@ -51,6 +68,24 @@ export class MySkillsEditComponent implements OnInit {
   onKeyPress(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       this.saveUserSkill();
+    }
+  }
+
+  onLevelValueChanged(event: MatSliderChange) {
+    this.updateLabel(event.source, this.levelDescription, event.value);
+  }
+
+  private updateLabel(slider: MatSlider, description: StepDescription, step: number) {
+    if (step === null) {
+      return;
+    }
+
+    const title = description[Object.keys(description)[step]];
+    slider._elementRef.nativeElement.querySelector('.mat-slider-thumb').setAttribute('title', title);
+
+    const stepLabel = slider._elementRef.nativeElement.querySelector('.mat-slider-thumb-label');
+    if (stepLabel) {
+      stepLabel.setAttribute('title', title);
     }
   }
 }
