@@ -28,8 +28,8 @@ export class OtherUserProfilesComponent implements OnInit {
 
   private loadPermissionOwners(): void {
     combineLatest(
-      this.usersService.getGlobalPermissionOwnersByScope(GlobalPermissionScope.READ_USER_SKILLS),
-      this.usersService.getPersonalPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS)
+      [this.usersService.getGlobalPermissionOwnersByScope(GlobalPermissionScope.READ_USER_SKILLS),
+      this.usersService.getPersonalPermissionOwnersByScope(UserPermissionScope.READ_USER_SKILLS)]
     )
       .subscribe(compoundObject => {
         this.permissionOwners = compoundObject[0]; // copy all global permissions owners

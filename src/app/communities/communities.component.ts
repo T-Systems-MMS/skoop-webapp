@@ -108,8 +108,8 @@ export class CommunitiesComponent implements OnInit {
 
   private loadCommunities() {
     combineLatest(
-      this.userIdentityService.getUserIdentity(),
-      this.communityService.getCommunities()
+      [this.userIdentityService.getUserIdentity(),
+      this.communityService.getCommunities()]
     ).subscribe(compoundObject => {
       const userIdentity = compoundObject[0];
       const communities = compoundObject[1];

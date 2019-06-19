@@ -50,6 +50,6 @@ describe('NotificationCounterService', () => {
   it('should call messageService.getUserNotificationCounter method', () => {
     notificationCounterService.loadCount();
     const messageService = TestBed.get(MessagesService);
-    expect(messageService.getUserNotificationCounter).toHaveBeenCalled()
+    expect(messageService.getUserNotificationCounter).toHaveBeenCalled();
   });
 });
