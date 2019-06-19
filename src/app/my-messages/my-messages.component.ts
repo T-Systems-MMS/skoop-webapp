@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { MessagesService } from './messages.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { switchMap } from 'rxjs/operators';

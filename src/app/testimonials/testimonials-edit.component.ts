@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TestimonialService } from './testimonial.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { TestimonialResponse } from './testimonial-response';
 import { TestimonialRequest } from './testimonial-request';
 import { HttpErrorResponse } from '@angular/common/http';

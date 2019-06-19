@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { TestimonialsNewComponent } from './testimonials-new.component';
 import { Testimonial } from './testimonial';
 import { TestimonialService } from './testimonial.service';

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';

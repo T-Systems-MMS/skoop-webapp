@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {
-  MatAutocomplete,
-  MatAutocompleteTrigger,
-  MatBottomSheetRef
-} from '@angular/material';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';

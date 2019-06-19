@@ -1,10 +1,7 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  MAT_BOTTOM_SHEET_DATA,
-  MatBottomSheetRef,
-  MatDialog
-} from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { finalize } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';

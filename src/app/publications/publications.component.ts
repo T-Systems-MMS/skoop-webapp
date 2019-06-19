@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { PublicationService } from './publication.service';
 import { PublicationsNewComponent } from './publications-new.component';
 import { PublicationResponse } from './publication-response';

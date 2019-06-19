@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ProjectsNewComponent } from './projects-new.component';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ProjectsService } from './projects.service';
 import { Project } from './project';
 import { of } from 'rxjs';

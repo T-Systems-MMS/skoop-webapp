@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoNotificationComponentTrait } from '../todo-notification-component-trait';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-community-invitation-message-card',

@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { PublicationService } from './publication.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicationRequest } from './publication-request';

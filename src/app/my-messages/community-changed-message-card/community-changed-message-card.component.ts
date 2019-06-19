@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { CommunityChangedNotification } from './community-changed-notification';
 import { CommunityDetails } from './community-details.enum';
 

@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
-import { MatAutocomplete, MatChipInputEvent } from '@angular/material';
+import { MatAutocomplete } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { finalize } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';

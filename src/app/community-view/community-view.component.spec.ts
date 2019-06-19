@@ -16,7 +16,7 @@ import { CommunitiesService } from '../communities/communities.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { CommunityUserResponse } from '../communities/community-user-response';
 import { CommunityRole } from '../communities/community-role.enum';

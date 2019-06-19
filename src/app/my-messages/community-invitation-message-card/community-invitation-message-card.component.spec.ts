@@ -12,7 +12,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MessageCardComponent } from '../message-card/message-card.component';
 import { CommunityRegistrationService } from '../../shared/community-registration.service';
 import { CommunityUserRegistration } from '../../shared/community-user-registration';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from '../../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { of } from 'rxjs';

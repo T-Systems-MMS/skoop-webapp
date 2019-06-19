@@ -1,7 +1,8 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Skill } from './skill';
 import { SkillsService } from './skills.service';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { map, filter } from 'rxjs/operators';

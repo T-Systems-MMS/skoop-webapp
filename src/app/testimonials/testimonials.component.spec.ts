@@ -10,7 +10,8 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { TestimonialService } from './testimonial.service';
 import { TestimonialResponse } from './testimonial-response';
 import { of } from 'rxjs';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { By } from '@angular/platform-browser';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';

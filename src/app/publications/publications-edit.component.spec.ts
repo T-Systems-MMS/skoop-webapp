@@ -10,7 +10,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { of } from 'rxjs';
 import { PublicationService } from './publication.service';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';

@@ -9,7 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../../app-material.module';
 import { User } from '../../users/user';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 const users: User[] = [
   {

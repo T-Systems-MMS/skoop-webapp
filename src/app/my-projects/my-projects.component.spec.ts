@@ -7,7 +7,8 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UserProject } from '../user-projects/user-project';
 import { of } from 'rxjs';
 import * as moment from 'moment';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MyProjectsEditComponent } from './my-projects-edit.component';
 import { MyProjectsNewComponent } from './my-projects-new.component';

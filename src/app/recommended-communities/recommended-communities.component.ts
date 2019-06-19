@@ -4,7 +4,7 @@ import { CommunityResponse } from '../communities/community-response';
 import { CommunityType } from '../communities/community-type.enum';
 import { HttpErrorResponse } from '@angular/common/http';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { UserIdentityService } from '../shared/user-identity.service';

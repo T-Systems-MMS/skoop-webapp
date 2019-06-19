@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import { MatBottomSheetRef} from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TestimonialService } from './testimonial.service';
 import { HttpErrorResponse } from '@angular/common/http';

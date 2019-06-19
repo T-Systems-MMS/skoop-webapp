@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UsersService } from '../../users/users.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-authorized-users-select',

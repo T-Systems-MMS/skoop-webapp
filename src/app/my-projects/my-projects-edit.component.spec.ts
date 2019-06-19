@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyProjectsEditComponent } from './my-projects-edit.component';
 import { AppMaterialModule } from '../app-material.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MyProjectsService } from './my-projects.service';
 import { of } from 'rxjs';
 import { UserProject } from '../user-projects/user-project';

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PublicationService } from './publication.service';
 import { FormsService } from '../shared/forms.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material';
+import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Util } from '../util/util';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PublicationRequest } from './publication-request';

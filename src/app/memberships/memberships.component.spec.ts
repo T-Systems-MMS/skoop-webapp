@@ -16,7 +16,8 @@ import { MembershipsNewComponent } from './memberships-new.component';
 import { MembershipsEditComponent } from './memberships-edit.component';
 import { MembershipService } from './membership.service';
 import { By } from '@angular/platform-browser';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { PopupNotificationService } from '../shared/popup-notification.service';
 

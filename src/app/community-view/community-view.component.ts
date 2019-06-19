@@ -7,7 +7,7 @@ import { CommunityResponse } from '../communities/community-response';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { User } from '../users/user';
 import { CommunityType } from '../communities/community-type.enum';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';

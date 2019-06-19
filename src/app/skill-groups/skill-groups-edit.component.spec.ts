@@ -4,7 +4,7 @@ import { SkillGroupsEditComponent } from './skill-groups-edit.component';
 import { SkillGroupsService } from './skill-groups.service';
 import { Observable } from 'rxjs';
 import { SkillGroup } from './skill-group';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';

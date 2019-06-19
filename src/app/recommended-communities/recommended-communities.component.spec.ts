@@ -14,7 +14,7 @@ import { CommunitiesService } from '../communities/communities.service';
 import { of } from 'rxjs';
 import { Community } from '../communities/community';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { CommunityUserResponse } from '../communities/community-user-response';
