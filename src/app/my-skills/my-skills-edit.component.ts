@@ -80,7 +80,7 @@ export class MySkillsEditComponent implements OnInit {
       return;
     }
 
-    const title = description[Object.keys(description)[step]];
+    const title = description['step' + step];
     slider._elementRef.nativeElement.querySelector('.mat-slider-thumb').setAttribute('title', title);
 
     const stepLabel = slider._elementRef.nativeElement.querySelector('.mat-slider-thumb-label');

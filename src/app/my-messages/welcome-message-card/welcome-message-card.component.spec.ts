@@ -41,7 +41,7 @@ describe('WelcomeMessageCardComponent', () => {
       providers: [
         {
           provide: ExternalAssetsService, useValue: jasmine.createSpyObj('templateLoaderService', {
-            'loadTemplate': of('some html text')
+            'getText': of('some html text')
           })
         },
         {

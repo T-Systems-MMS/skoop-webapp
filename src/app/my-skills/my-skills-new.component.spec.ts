@@ -12,6 +12,9 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UserSkill } from '../user-skills/user-skill';
 import { MySkillsNewComponent } from './my-skills-new.component';
 import { MySkillsService } from './my-skills.service';
+import { ExternalAssetsService } from '../shared/external-assets.service';
+import { StepDescription } from './step-description';
+import { MatSliderChange } from '@angular/material';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   getCurrentUserSkillSuggestions(search: string): Observable<string[]> { return null; },
@@ -21,6 +24,14 @@ const mySkillsServiceStub: Partial<MySkillsService> = {
 
 const bottomSheetStub: Partial<MatBottomSheetRef> = {
   dismiss(result?: any): void { }
+};
+
+const levelDescription: StepDescription = {
+  step0: 'zero',
+  step1: 'one',
+  step2: 'two',
+  step3: 'three',
+  step4: 'four'
 };
 
 describe('MySkillsNewComponent', () => {
@@ -40,7 +51,12 @@ describe('MySkillsNewComponent', () => {
       providers: [
         GlobalErrorHandlerService,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
-        { provide: MatBottomSheetRef, useValue: bottomSheetStub }
+        { provide: MatBottomSheetRef, useValue: bottomSheetStub },
+        {
+          provide: ExternalAssetsService, useValue: jasmine.createSpyObj('externalAssetsService', {
+            'getJSON': of(levelDescription)
+          })
+        }
       ]
     }).compileComponents();
   }));
@@ -195,6 +211,17 @@ describe('MySkillsNewComponent', () => {
       expect(component.savingInProgress).toBeFalsy();
     });
     discardPeriodicTasks();
+  }));
+
+  it('should update title for current level when current level changed', async (() => {
+    const event: MatSliderChange = {
+      source: component.currentLevelSlider,
+      value: 0
+    };
+
+    component.onLevelValueChanged(event);
+    expect(component.currentLevelSlider._elementRef.nativeElement.querySelector('.mat-slider-thumb').getAttribute('title'))
+      .toBe(levelDescription.step0);
   }));
 
 });

@@ -31,6 +31,9 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   skillSuggestions$: Observable<string[]>;
   @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
+  @ViewChild('currentLevelSlider', { static: true }) currentLevelSlider: MatSlider;
+  @ViewChild('desiredLevelSlider', { static: true }) desiredLevelSlider: MatSlider;
+
   private levelDescription: StepDescription;
 
   constructor(private mySkillsService: MySkillsService,
@@ -105,7 +108,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const title = description[Object.keys(description)[step]];
+    const title = description['step' + step];
     slider._elementRef.nativeElement.querySelector('.mat-slider-thumb').setAttribute('title', title);
 
     const stepLabel = slider._elementRef.nativeElement.querySelector('.mat-slider-thumb-label');

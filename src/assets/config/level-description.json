@@ -1,7 +1,7 @@
 {
-  "zero": "no or very little knowledge or not applicable",
-  "one": "basic skills/knowledge",
-  "two": "advanced skills/knowledge",
-  "three": "expert skills/knowledge",
-  "four": "outstanding skills/knowledge"
+  "step0": "no or very little knowledge or not applicable",
+  "step1": "basic skills/knowledge",
+  "step2": "advanced skills/knowledge",
+  "step3": "expert skills/knowledge",
+  "step4": "outstanding skills/knowledge"
 }

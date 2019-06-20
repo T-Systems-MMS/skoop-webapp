@@ -32,6 +32,7 @@
         tickInterval="1"
         [formControl]="currentLevel"
         (change)="onLevelValueChanged($event)"
+        #currentLevelSlider
         class="mySkillsNewDialog__formField">
       </mat-slider>
     </div>
@@ -50,6 +51,7 @@
         tickInterval="1"
         [formControl]="desiredLevel"
         (change)="onLevelValueChanged($event)"
+        #desiredLevelSlider
         class="mySkillsNewDialog__formField">
       </mat-slider>
     </div>
