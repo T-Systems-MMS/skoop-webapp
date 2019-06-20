@@ -4,7 +4,8 @@ import { combineLatest, Observable, of } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { CommunitiesNewComponent } from './communities-new.component';
 import { CommunitiesEditComponent } from './communities-edit.component';
@@ -107,8 +108,8 @@ export class CommunitiesComponent implements OnInit {
 
   private loadCommunities() {
     combineLatest(
-      this.userIdentityService.getUserIdentity(),
-      this.communityService.getCommunities()
+      [this.userIdentityService.getUserIdentity(),
+      this.communityService.getCommunities()]
     ).subscribe(compoundObject => {
       const userIdentity = compoundObject[0];
       const communities = compoundObject[1];

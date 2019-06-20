@@ -3,7 +3,7 @@ import { async, ComponentFixture, discardPeriodicTasks, fakeAsync, inject, TestB
 import { MyProjectsNewComponent } from './my-projects-new.component';
 import { AppMaterialModule } from '../app-material.module';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MyProjectsService } from './my-projects.service';
 import { of } from 'rxjs';
 import { UserProject } from '../user-projects/user-project';

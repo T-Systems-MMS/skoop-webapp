@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClosedCommunityConfirmDialogComponent } from './closed-community-confirm-dialog.component';
-import { MatDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material/dialog';
 
 describe('ClosedCommunityConfirmDialogComponent', () => {
   let component: ClosedCommunityConfirmDialogComponent;

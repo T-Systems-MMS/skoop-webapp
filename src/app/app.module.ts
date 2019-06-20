@@ -36,7 +36,7 @@ import { ProjectsEditComponent } from './projects/projects-edit.component';
 import { ProjectsFilterPipe } from './projects/projects-filter.pipe';
 import { MyProjectsComponent } from './my-projects/my-projects.component';
 import { MyProjectsNewComponent } from './my-projects/my-projects-new.component';
-import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
+import { DateAdapter, MAT_DATE_FORMATS } from '@angular/material/core';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MyProjectsEditComponent } from './my-projects/my-projects-edit.component';
 import { OtherUserProfilesComponent } from './other-user-profiles/other-user-profiles.component';

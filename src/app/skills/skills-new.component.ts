@@ -2,7 +2,9 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatBottomSheetRef, MatChipInputEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -22,7 +24,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   selectedGroups: Set<string> = new Set([]);
   groupSuggestions$: Observable<string[]>;
   groupCtrl = new FormControl();
-  @ViewChild('groupInput') groupInput: ElementRef<HTMLInputElement>;
+  @ViewChild('groupInput', { static: true }) groupInput: ElementRef<HTMLInputElement>;
 
   addedSkillsCount = 0;
   operationInProgress = false;
@@ -32,7 +34,7 @@ export class SkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     Validators.minLength(3),
   ]);
   skillDescription: FormControl = new FormControl('');
-  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(private skillsService: SkillsService,
     private skillGroupsService: SkillGroupsService,

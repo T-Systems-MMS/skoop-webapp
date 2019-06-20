@@ -4,7 +4,7 @@ import { SkillsEditComponent } from './skills-edit.component';
 import { Skill } from './skill';
 import { Observable, of } from 'rxjs';
 import { SkillsService } from './skills.service';
-import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
+import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';

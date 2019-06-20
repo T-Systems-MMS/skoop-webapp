@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
@@ -26,7 +26,7 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   addedSkillsCount = 0;
   errorMessage: string = null;
   skillSuggestions$: Observable<string[]>;
-  @ViewChild('skillNameInput') skillNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
   constructor(private mySkillsService: MySkillsService,
     private bottomSheet: MatBottomSheetRef,

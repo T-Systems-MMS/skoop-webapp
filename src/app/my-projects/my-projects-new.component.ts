@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {
-  MatAutocomplete,
-  MatAutocompleteTrigger,
-  MatBottomSheetRef
-} from '@angular/material';
+import { MatAutocomplete, MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { ProjectsService } from '../projects/projects.service';
 import { Project } from '../projects/project';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -28,10 +25,10 @@ export class MyProjectsNewComponent implements OnInit {
   errorMessage: string = null;
   formGroup: FormGroup;
 
-  @ViewChild(MatAutocompleteTrigger) trigger;
+  @ViewChild(MatAutocompleteTrigger, { static: true }) trigger;
 
-  @ViewChild('projectAutoComplete') projectsMatAutocomplete: MatAutocomplete;
-  @ViewChild('projectInput') projectAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('projectAutoComplete', { static: true }) projectsMatAutocomplete: MatAutocomplete;
+  @ViewChild('projectInput', { static: true }) projectAutocompleteInput: ElementRef<HTMLInputElement>;
 
   projects$: Observable<Project[]>;
   allAvailableProjects: Project[];

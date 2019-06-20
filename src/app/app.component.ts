@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserIdentity } from './shared/user-identity';
@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     Breakpoints.TabletPortrait
   ]).pipe(map(result => result.matches));
   userIdentity$: Observable<UserIdentity> = this.userIdentityService.getUserIdentity();
-  @ViewChild('drawer') drawer: MatSidenav;
+  @ViewChild('drawer', { static: true }) drawer: MatSidenav;
   notificationCount$: Observable<number> = this.notificationCounterService.getCount();
 
   constructor(private breakpointObserver: BreakpointObserver,

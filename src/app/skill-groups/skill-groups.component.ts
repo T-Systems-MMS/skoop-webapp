@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
-import { MatBottomSheet, MatDialog } from '@angular/material';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { map, filter } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';

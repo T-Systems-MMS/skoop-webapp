@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { PopupNotificationService } from './popup-notification.service';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
 
 const expectedSettings = {

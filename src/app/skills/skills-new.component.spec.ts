@@ -10,7 +10,7 @@ import { AppMaterialModule } from '../app-material.module';
 import { SkillsService } from './skills.service';
 import { Observable, of } from 'rxjs';
 import { Skill } from './skill';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { SkillGroupsService } from '../skill-groups/skill-groups.service';
 
 const skillsServiceStub: Partial<SkillsService> = {

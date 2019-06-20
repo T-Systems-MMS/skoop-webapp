@@ -1,6 +1,6 @@
 import { EventEmitter, Output } from '@angular/core';
 import { MessagesService } from './messages.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { AbstractNotification } from './abstract-notification';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { HttpErrorResponse } from '@angular/common/http';

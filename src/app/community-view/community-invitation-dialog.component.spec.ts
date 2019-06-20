@@ -10,7 +10,7 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { of } from 'rxjs';
 import { CommunityUserRegistrationResponse } from '../shared/community-user-registration-response';
 import { User } from '../users/user';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CommunityRegistrationService } from '../shared/community-registration.service';
 import { By } from '@angular/platform-browser';
 import { CommunityUserService } from '../shared/community-user.service';

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { SkillGroupsService } from './skill-groups.service';
@@ -17,7 +17,7 @@ export class SkillGroupsNewComponent implements OnInit, OnDestroy, AfterViewInit
     Validators.minLength(3),
   ]);
   groupDescription: FormControl = new FormControl('');
-  @ViewChild('skillGroupNameInput') skillGroupNameInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillGroupNameInput', { static: true }) skillGroupNameInput: ElementRef<HTMLInputElement>;
 
   addedGroupsCount = 0;
   operationInProgress = false;

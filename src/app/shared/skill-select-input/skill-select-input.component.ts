@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { MatAutocomplete, MatAutocompleteSelectedEvent, MatChipInputEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable, of } from 'rxjs';
 import { Skill } from '../../skills/skill';
@@ -16,8 +17,8 @@ export class SkillSelectInputComponent implements OnInit {
 
   @Input() parentForm: FormGroup;
 
-  @ViewChild('skillsAutoComplete') skillsMatAutocomplete: MatAutocomplete;
-  @ViewChild('skillInput') skillAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('skillsAutoComplete', { static: true }) skillsMatAutocomplete: MatAutocomplete;
+  @ViewChild('skillInput', { static: true }) skillAutocompleteInput: ElementRef<HTMLInputElement>;
 
   errorMessage: string = null;
   skills$: Observable<Skill[]> = of([]);

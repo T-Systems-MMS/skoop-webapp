@@ -12,7 +12,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { AppMaterialModule } from '../app-material.module';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { of } from 'rxjs';
-import { MatBottomSheetRef } from '@angular/material';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MembershipService } from './membership.service';
 
 @Component({

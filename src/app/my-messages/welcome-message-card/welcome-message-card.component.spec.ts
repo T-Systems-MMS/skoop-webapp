@@ -4,7 +4,7 @@ import { WelcomeMessageCardComponent } from './welcome-message-card.component';
 import { TemplateLoaderService } from '../../shared/template-loader.service';
 import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
 import { NotificationType } from '../notification-type.enum';
 import { UserWelcomeNotification } from './user-welcome-notification';

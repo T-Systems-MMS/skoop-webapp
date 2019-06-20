@@ -1,10 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
-import {
-  MAT_DIALOG_DATA,
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-  MatDialogRef
-} from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { User } from '../users/user';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -21,8 +17,8 @@ import { CommunityUserService } from '../shared/community-user.service';
 })
 export class CommunityInvitationDialogComponent implements OnInit {
 
-  @ViewChild('usersInput') usersAutocompleteInput: ElementRef<HTMLInputElement>;
-  @ViewChild('usersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @ViewChild('usersInput', { static: true }) usersAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('usersAutocomplete', { static: true }) usersMatAutocomplete: MatAutocomplete;
 
   errorMessage: string = null;
   invitationForm: FormGroup;

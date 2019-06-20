@@ -19,7 +19,7 @@ import { User } from '../users/user';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { InfoDialogComponent } from '../shared/info-dialog/info-dialog.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { CommunityUserResponse } from './community-user-response';
 import { CommunityRole } from './community-role.enum';
 import { CommunityCardComponent } from '../shared/community-card/community-card.component';

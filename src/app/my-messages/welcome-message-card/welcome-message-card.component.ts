@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { InfoDialogComponent } from '../../shared/info-dialog/info-dialog.component';
 import { TemplateLoaderService } from '../../shared/template-loader.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { DeletableNotificationComponentTrait } from '../deletable-notification-component-trait';
 import { MessagesService } from '../messages.service';
 import { UserWelcomeNotification } from './user-welcome-notification';

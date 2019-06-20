@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormControl, FormGroup, FormBuilder} from '@angular/forms';
-import { MatAutocomplete, MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { finalize } from 'rxjs/operators';
 import { User } from './user';
 import { UsersService } from './users.service';
@@ -27,8 +27,6 @@ export class UserProfileComponent implements OnInit {
   elemRemovable = true;
   elemAddOnBlur = false;
   elemSeparatorKeysCodes = [ENTER, COMMA];
-
-  @ViewChild('authorizedUsersAutocomplete') matAutocomplete: MatAutocomplete;
 
   constructor(private usersService: UsersService,
     private formBuilder: FormBuilder,

@@ -4,7 +4,7 @@ import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { UsersService } from '../../users/users.service';
 import { debounceTime, distinctUntilChanged, filter, switchMap } from 'rxjs/operators';
-import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-authorized-users-select',
@@ -16,8 +16,8 @@ export class AuthorizedUsersSelectComponent implements OnInit {
   authorizedUsersControl = new FormControl();
   authorizedUserSuggestions$: Observable<User[]>;
 
-  @ViewChild('authorizedUsersInput') authorizedUsersInput: ElementRef<HTMLInputElement>;
-  @ViewChild('authorizedUsersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @ViewChild('authorizedUsersInput', { static: true }) authorizedUsersInput: ElementRef<HTMLInputElement>;
+  @ViewChild('authorizedUsersAutocomplete', { static: true }) usersMatAutocomplete: MatAutocomplete;
   @Input() users: User[];
   @Input() placeholder: string;
 

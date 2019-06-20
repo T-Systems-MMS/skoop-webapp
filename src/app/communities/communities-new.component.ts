@@ -1,11 +1,8 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  MatAutocomplete,
-  MatAutocompleteSelectedEvent,
-  MatBottomSheetRef,
-  MatDialog
-} from '@angular/material';
+import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { CommunitiesService } from './communities.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -24,8 +21,8 @@ import { UsersService } from '../users/users.service';
 })
 export class CommunitiesNewComponent implements OnInit {
 
-  @ViewChild('usersInput') usersAutocompleteInput: ElementRef<HTMLInputElement>;
-  @ViewChild('usersAutocomplete') usersMatAutocomplete: MatAutocomplete;
+  @ViewChild('usersInput', { static: true }) usersAutocompleteInput: ElementRef<HTMLInputElement>;
+  @ViewChild('usersAutocomplete', { static: true }) usersMatAutocomplete: MatAutocomplete;
 
   communityForm: FormGroup;
   errorMessage: string = null;
