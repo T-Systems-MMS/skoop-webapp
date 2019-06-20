@@ -71,6 +71,18 @@ export class MySkillsEditComponent implements OnInit {
     }
   }
 
+  getLevelsHint(): string {
+    if (!this.levelDescription) {
+      return '';
+    }
+
+    return '0 - ' + this.levelDescription.step0 + '\n' +
+      '1 - ' + this.levelDescription.step1 + '\n' +
+      '2 - ' + this.levelDescription.step2 + '\n' +
+      '3 - ' + this.levelDescription.step3 + '\n' +
+      '4 - ' + this.levelDescription.step4;
+  }
+
   onLevelValueChanged(event: MatSliderChange) {
     this.updateLabel(event.source, this.levelDescription, event.value);
   }

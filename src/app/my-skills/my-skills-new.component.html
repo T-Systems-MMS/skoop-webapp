@@ -20,7 +20,7 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="mySkillsNewDialog__currentLevelInput">Current level:</label>
+      <label for="mySkillsNewDialog__currentLevelInput" [title]="getLevelsHint()">Current level:</label>
     </div>
     <div fxFlex>
       <mat-slider
@@ -39,7 +39,7 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="mySkillsNewDialog__desiredLevelInput">Desired level:</label>
+      <label for="mySkillsNewDialog__desiredLevelInput" [title]="getLevelsHint()">Desired level:</label>
     </div>
     <div fxFlex>
       <mat-slider

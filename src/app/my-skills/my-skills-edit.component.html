@@ -3,7 +3,7 @@
   <h2>{{ userSkill.skill.name }}</h2>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="currentLevel">Current level:</label>
+      <label for="currentLevel" [title]="getLevelsHint()">Current level:</label>
     </div>
     <div fxFlex>
       <mat-slider id="currentLevel"
@@ -20,7 +20,7 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="desiredLevel">Desired level:</label>
+      <label for="desiredLevel" [title]="getLevelsHint()">Desired level:</label>
     </div>
     <div fxFlex>
       <mat-slider id="desiredLevel"
