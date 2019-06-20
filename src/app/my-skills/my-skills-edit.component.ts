@@ -23,6 +23,7 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
   errorMessage: string = null;
 
   public levelDescription: StepDescription;
+  public priorityDescription: StepDescription;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView,
     private mySkillsService: MySkillsService,
@@ -37,6 +38,11 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
     this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
       .subscribe(data => {
         this.levelDescription = data;
+      });
+
+    this.externalAssetsService.getJSON<StepDescription>('/assets/config/priority-description.json')
+      .subscribe(data => {
+        this.priorityDescription = data;
       });
   }
 
@@ -73,6 +79,14 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
     }
 
     return this.resolveStepsDescription(this.levelDescription);
+  }
+
+  getPriorityHint(): string {
+    if (!this.priorityDescription) {
+      return '';
+    }
+
+    return this.resolveStepsDescription(this.priorityDescription);
   }
 
 }
