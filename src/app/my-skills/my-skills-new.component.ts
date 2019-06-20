@@ -9,13 +9,14 @@ import { MySkillsService } from './my-skills.service';
 import { MatSlider, MatSliderChange } from '@angular/material';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
+import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
 
 @Component({
   selector: 'app-my-skills-new',
   templateUrl: './my-skills-new.component.html',
   styleUrls: ['./my-skills-new.component.scss']
 })
-export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MySkillsNewComponent extends MySkillsDialogComponentTrait implements OnInit, OnDestroy, AfterViewInit {
 
   private _savingInProgress: boolean = false;
 
@@ -40,7 +41,9 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     private externalAssetsService: ExternalAssetsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private globalErrorHandlerService: GlobalErrorHandlerService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.skillSuggestions$ = this.skillName.valueChanges
@@ -103,30 +106,12 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     this.updateLabel(event.source, this.levelDescription, event.value);
   }
 
-  private updateLabel(slider: MatSlider, description: StepDescription, step: number) {
-    if (step === null) {
-      return;
-    }
-
-    const title = description['step' + step];
-    slider._elementRef.nativeElement.querySelector('.mat-slider-thumb').setAttribute('title', title);
-
-    const stepLabel = slider._elementRef.nativeElement.querySelector('.mat-slider-thumb-label');
-    if (stepLabel) {
-      stepLabel.setAttribute('title', title);
-    }
-  }
-
   getLevelsHint(): string {
     if (!this.levelDescription) {
       return '';
     }
 
-    return '0 - ' + this.levelDescription.step0 + '\n' +
-      '1 - ' + this.levelDescription.step1 + '\n' +
-      '2 - ' + this.levelDescription.step2 + '\n' +
-      '3 - ' + this.levelDescription.step3 + '\n' +
-      '4 - ' + this.levelDescription.step4;
+    return this.getLabelHint(this.levelDescription);
   }
 
   get savingInProgress(): boolean {

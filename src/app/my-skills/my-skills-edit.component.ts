@@ -9,13 +9,14 @@ import { UserSkillView } from '../shared/skill-card/user-skill-view';
 import { MatSlider, MatSliderChange } from '@angular/material';
 import { StepDescription } from './step-description';
 import { ExternalAssetsService } from '../shared/external-assets.service';
+import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
 
 @Component({
   selector: 'app-my-skills-edit',
   templateUrl: './my-skills-edit.component.html',
   styleUrls: ['./my-skills-edit.component.scss']
 })
-export class MySkillsEditComponent implements OnInit {
+export class MySkillsEditComponent extends MySkillsDialogComponentTrait implements OnInit {
   currentLevel: FormControl = new FormControl(this.userSkill.currentLevel);
   desiredLevel: FormControl = new FormControl(this.userSkill.desiredLevel);
   priority: FormControl = new FormControl(this.userSkill.priority);
@@ -32,7 +33,9 @@ export class MySkillsEditComponent implements OnInit {
     private externalAssetsService: ExternalAssetsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private globalErrorHandlerService: GlobalErrorHandlerService) {
+    super();
+  }
 
   ngOnInit() {
     this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
@@ -76,29 +79,12 @@ export class MySkillsEditComponent implements OnInit {
       return '';
     }
 
-    return '0 - ' + this.levelDescription.step0 + '\n' +
-      '1 - ' + this.levelDescription.step1 + '\n' +
-      '2 - ' + this.levelDescription.step2 + '\n' +
-      '3 - ' + this.levelDescription.step3 + '\n' +
-      '4 - ' + this.levelDescription.step4;
+    return this.getLabelHint(this.levelDescription);
   }
 
   onLevelValueChanged(event: MatSliderChange) {
     this.updateLabel(event.source, this.levelDescription, event.value);
   }
 
-  private updateLabel(slider: MatSlider, description: StepDescription, step: number) {
-    if (step === null) {
-      return;
-    }
-
-    const title = description['step' + step];
-    slider._elementRef.nativeElement.querySelector('.mat-slider-thumb').setAttribute('title', title);
-
-    const stepLabel = slider._elementRef.nativeElement.querySelector('.mat-slider-thumb-label');
-    if (stepLabel) {
-      stepLabel.setAttribute('title', title);
-    }
-  }
 }
 
