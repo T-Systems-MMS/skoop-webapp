@@ -15,7 +15,7 @@ import { DebugElement } from '@angular/core';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
-import { MatSliderChange } from '@angular/material';
+import { SelectedValueTitleDirective } from './selected-value-title.directive';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
@@ -59,9 +59,9 @@ describe('MySkillsEditComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsEditComponent],
+      declarations: [MySkillsEditComponent, SelectedValueTitleDirective],
       providers: [
-        GlobalErrorHandlerService,
+        GlobalErrorHandlerService, SelectedValueTitleDirective,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData },
@@ -99,21 +99,4 @@ describe('MySkillsEditComponent', () => {
     expect(h2.textContent).toEqual('Angular');
   }));
 
-  it('should set title for current and desired levels', async(() => {
-    expect(component.currentLevelSlider._elementRef.nativeElement.querySelector('.mat-slider-thumb').getAttribute('title'))
-      .toBe(levelDescription.step2);
-    expect(component.desiredLevelSlider._elementRef.nativeElement.querySelector('.mat-slider-thumb').getAttribute('title'))
-      .toBe(levelDescription.step3);
-  }));
-
-  it('should update title for current level when current level changed', async (() => {
-    const event: MatSliderChange = {
-      source: component.currentLevelSlider,
-      value: 0
-    };
-
-    component.onLevelValueChanged(event);
-    expect(component.currentLevelSlider._elementRef.nativeElement.querySelector('.mat-slider-thumb').getAttribute('title'))
-      .toBe(levelDescription.step0);
-  }));
 });

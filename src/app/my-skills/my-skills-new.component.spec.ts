@@ -14,7 +14,7 @@ import { MySkillsNewComponent } from './my-skills-new.component';
 import { MySkillsService } from './my-skills.service';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
-import { MatSliderChange } from '@angular/material';
+import { SelectedValueTitleDirective } from './selected-value-title.directive';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   getCurrentUserSkillSuggestions(search: string): Observable<string[]> { return null; },
@@ -47,9 +47,9 @@ describe('MySkillsNewComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsNewComponent],
+      declarations: [MySkillsNewComponent, SelectedValueTitleDirective],
       providers: [
-        GlobalErrorHandlerService,
+        GlobalErrorHandlerService, SelectedValueTitleDirective,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
         {
@@ -211,17 +211,6 @@ describe('MySkillsNewComponent', () => {
       expect(component.savingInProgress).toBeFalsy();
     });
     discardPeriodicTasks();
-  }));
-
-  it('should update title for current level when current level changed', async (() => {
-    const event: MatSliderChange = {
-      source: component.currentLevelSlider,
-      value: 0
-    };
-
-    component.onLevelValueChanged(event);
-    expect(component.currentLevelSlider._elementRef.nativeElement.querySelector('.mat-slider-thumb').getAttribute('title'))
-      .toBe(levelDescription.step0);
   }));
 
 });

@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MySkillsService } from './my-skills.service';
-import { MatSlider, MatSliderChange } from '@angular/material';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
 import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
@@ -32,10 +31,7 @@ export class MySkillsNewComponent extends MySkillsDialogComponentTrait implement
   skillSuggestions$: Observable<string[]>;
   @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
-  @ViewChild('currentLevelSlider', { static: true }) currentLevelSlider: MatSlider;
-  @ViewChild('desiredLevelSlider', { static: true }) desiredLevelSlider: MatSlider;
-
-  private levelDescription: StepDescription;
+  public levelDescription: StepDescription;
 
   constructor(private mySkillsService: MySkillsService,
     private externalAssetsService: ExternalAssetsService,
@@ -100,10 +96,6 @@ export class MySkillsNewComponent extends MySkillsDialogComponentTrait implement
     if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addUserSkill();
     }
-  }
-
-  onLevelValueChanged(event: MatSliderChange) {
-    this.updateLabel(event.source, this.levelDescription, event.value);
   }
 
   getLevelsHint(): string {

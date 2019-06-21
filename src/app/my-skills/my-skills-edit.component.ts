@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
 
@@ -6,7 +6,6 @@ import { MySkillsService } from './my-skills.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
-import { MatSlider, MatSliderChange } from '@angular/material';
 import { StepDescription } from './step-description';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
@@ -23,10 +22,7 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
   operationInProgress = false;
   errorMessage: string = null;
 
-  private levelDescription: StepDescription;
-
-  @ViewChild('currentLevelSlider', { static: true }) currentLevelSlider: MatSlider;
-  @ViewChild('desiredLevelSlider', { static: true }) desiredLevelSlider: MatSlider;
+  public levelDescription: StepDescription;
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView,
     private mySkillsService: MySkillsService,
@@ -41,9 +37,6 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
     this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
       .subscribe(data => {
         this.levelDescription = data;
-
-        this.updateLabel(this.currentLevelSlider, this.levelDescription, this.userSkill.currentLevel);
-        this.updateLabel(this.desiredLevelSlider, this.levelDescription, this.userSkill.desiredLevel);
       });
   }
 
@@ -80,10 +73,6 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
     }
 
     return this.getLabelHint(this.levelDescription);
-  }
-
-  onLevelValueChanged(event: MatSliderChange) {
-    this.updateLabel(event.source, this.levelDescription, event.value);
   }
 
 }
