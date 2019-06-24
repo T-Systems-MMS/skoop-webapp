@@ -26,6 +26,12 @@ const bottomSheetStub: Partial<MatBottomSheetRef> = {
   dismiss(result?: any): void { }
 };
 
+const externalAssetsServiceStub: Partial<ExternalAssetsService> = {
+  getJSON<T>(filePath: string): Observable<T> {
+    return null;
+  }
+};
+
 const levelDescription: StepDescription = {
   step0: 'zero',
   step1: 'one',
@@ -37,6 +43,7 @@ const levelDescription: StepDescription = {
 describe('MySkillsNewComponent', () => {
   let component: MySkillsNewComponent;
   let fixture: ComponentFixture<MySkillsNewComponent>;
+  let externalAssetsServiceSpy;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -52,17 +59,15 @@ describe('MySkillsNewComponent', () => {
         GlobalErrorHandlerService, SelectedValueTitleDirective,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
-        {
-          provide: ExternalAssetsService, useValue: jasmine.createSpyObj('externalAssetsService', {
-            'getJSON': of(levelDescription)
-          })
-        }
+        { provide: ExternalAssetsService, useValue: externalAssetsServiceStub }
       ]
     }).compileComponents();
+    externalAssetsServiceSpy = spyOn(TestBed.get(ExternalAssetsService) as ExternalAssetsService, 'getJSON');
   }));
 
   beforeEach(() => {
     spyOn(TestBed.get(MatBottomSheetRef) as MatBottomSheetRef, 'dismiss').and.callThrough();
+    externalAssetsServiceSpy.and.returnValue(of(levelDescription));
 
     fixture = TestBed.createComponent(MySkillsNewComponent);
     component = fixture.componentInstance;
@@ -211,6 +216,25 @@ describe('MySkillsNewComponent', () => {
       expect(component.savingInProgress).toBeFalsy();
     });
     discardPeriodicTasks();
+  }));
+
+  it('should fill in title attribute for the skill priority label', async(() => {
+    const label = fixture.debugElement.query(By.css('label[for=mySkillsNewDialog__priorityInput]'));
+
+    expect(label.nativeElement.title).toContain(levelDescription.step0);
+    expect(label.nativeElement.title).toContain(levelDescription.step1);
+    expect(label.nativeElement.title).toContain(levelDescription.step2);
+    expect(label.nativeElement.title).toContain(levelDescription.step3);
+    expect(label.nativeElement.title).toContain(levelDescription.step4);
+  }));
+
+  it('should return empty title when there is no step description', async(() => {
+    externalAssetsServiceSpy.and.returnValue(of(null));
+    const fixtureForTest = TestBed.createComponent(MySkillsNewComponent);
+    fixtureForTest.detectChanges();
+
+    const label = fixtureForTest.debugElement.query(By.css('label[for=mySkillsNewDialog__priorityInput]'));
+    expect(label.nativeElement.title).toBe('');
   }));
 
 });
