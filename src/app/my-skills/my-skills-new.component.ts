@@ -103,7 +103,7 @@ export class MySkillsNewComponent extends MySkillsDialogComponentTrait implement
       return '';
     }
 
-    return this.getLabelHint(this.levelDescription);
+    return this.resolveStepsDescription(this.levelDescription);
   }
 
   get savingInProgress(): boolean {

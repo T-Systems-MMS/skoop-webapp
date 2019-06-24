@@ -72,7 +72,7 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
       return '';
     }
 
-    return this.getLabelHint(this.levelDescription);
+    return this.resolveStepsDescription(this.levelDescription);
   }
 
 }
