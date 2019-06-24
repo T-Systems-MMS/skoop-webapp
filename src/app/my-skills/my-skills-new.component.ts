@@ -6,13 +6,16 @@ import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, finalize, switchMap } from 'rxjs/operators';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MySkillsService } from './my-skills.service';
+import { ExternalAssetsService } from '../shared/external-assets.service';
+import { StepDescription } from './step-description';
+import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
 
 @Component({
   selector: 'app-my-skills-new',
   templateUrl: './my-skills-new.component.html',
   styleUrls: ['./my-skills-new.component.scss']
 })
-export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
+export class MySkillsNewComponent extends MySkillsDialogComponentTrait implements OnInit, OnDestroy, AfterViewInit {
 
   private _savingInProgress: boolean = false;
 
@@ -28,16 +31,25 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
   skillSuggestions$: Observable<string[]>;
   @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
+  public levelDescription: StepDescription;
+
   constructor(private mySkillsService: MySkillsService,
+    private externalAssetsService: ExternalAssetsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private globalErrorHandlerService: GlobalErrorHandlerService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.skillSuggestions$ = this.skillName.valueChanges
       .pipe(debounceTime(500),
         distinctUntilChanged(),
         switchMap(search => this.mySkillsService.getCurrentUserSkillSuggestions(search)));
+    this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
+      .subscribe(data => {
+        this.levelDescription = data;
+      });
   }
 
   ngAfterViewInit(): void {
@@ -84,6 +96,14 @@ export class MySkillsNewComponent implements OnInit, OnDestroy, AfterViewInit {
     if (event.key === 'Enter' && this.skillName.value.length > 2) {
       this.addUserSkill();
     }
+  }
+
+  getLevelsHint(): string {
+    if (!this.levelDescription) {
+      return '';
+    }
+
+    return this.resolveStepsDescription(this.levelDescription);
   }
 
   get savingInProgress(): boolean {

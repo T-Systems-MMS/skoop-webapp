@@ -12,6 +12,9 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { UserSkill } from '../user-skills/user-skill';
 import { MySkillsNewComponent } from './my-skills-new.component';
 import { MySkillsService } from './my-skills.service';
+import { ExternalAssetsService } from '../shared/external-assets.service';
+import { StepDescription } from './step-description';
+import { SelectedValueTitleDirective } from './selected-value-title.directive';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   getCurrentUserSkillSuggestions(search: string): Observable<string[]> { return null; },
@@ -21,6 +24,14 @@ const mySkillsServiceStub: Partial<MySkillsService> = {
 
 const bottomSheetStub: Partial<MatBottomSheetRef> = {
   dismiss(result?: any): void { }
+};
+
+const levelDescription: StepDescription = {
+  step0: 'zero',
+  step1: 'one',
+  step2: 'two',
+  step3: 'three',
+  step4: 'four'
 };
 
 describe('MySkillsNewComponent', () => {
@@ -36,11 +47,16 @@ describe('MySkillsNewComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsNewComponent],
+      declarations: [MySkillsNewComponent, SelectedValueTitleDirective],
       providers: [
-        GlobalErrorHandlerService,
+        GlobalErrorHandlerService, SelectedValueTitleDirective,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
-        { provide: MatBottomSheetRef, useValue: bottomSheetStub }
+        { provide: MatBottomSheetRef, useValue: bottomSheetStub },
+        {
+          provide: ExternalAssetsService, useValue: jasmine.createSpyObj('externalAssetsService', {
+            'getJSON': of(levelDescription)
+          })
+        }
       ]
     }).compileComponents();
   }));

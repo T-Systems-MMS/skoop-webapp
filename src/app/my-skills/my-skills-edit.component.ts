@@ -6,26 +6,39 @@ import { MySkillsService } from './my-skills.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
+import { StepDescription } from './step-description';
+import { ExternalAssetsService } from '../shared/external-assets.service';
+import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
 
 @Component({
   selector: 'app-my-skills-edit',
   templateUrl: './my-skills-edit.component.html',
   styleUrls: ['./my-skills-edit.component.scss']
 })
-export class MySkillsEditComponent implements OnInit {
+export class MySkillsEditComponent extends MySkillsDialogComponentTrait implements OnInit {
   currentLevel: FormControl = new FormControl(this.userSkill.currentLevel);
   desiredLevel: FormControl = new FormControl(this.userSkill.desiredLevel);
   priority: FormControl = new FormControl(this.userSkill.priority);
   operationInProgress = false;
   errorMessage: string = null;
 
+  public levelDescription: StepDescription;
+
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public userSkill: UserSkillView,
     private mySkillsService: MySkillsService,
+    private externalAssetsService: ExternalAssetsService,
     private bottomSheet: MatBottomSheetRef,
     private changeDetector: ChangeDetectorRef,
-    private globalErrorHandlerService: GlobalErrorHandlerService) { }
+    private globalErrorHandlerService: GlobalErrorHandlerService) {
+    super();
+  }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
+      .subscribe(data => {
+        this.levelDescription = data;
+      });
+  }
 
   saveUserSkill(): void {
     this.operationInProgress = true;
@@ -53,5 +66,14 @@ export class MySkillsEditComponent implements OnInit {
       this.saveUserSkill();
     }
   }
+
+  getLevelsHint(): string {
+    if (!this.levelDescription) {
+      return '';
+    }
+
+    return this.resolveStepsDescription(this.levelDescription);
+  }
+
 }
 

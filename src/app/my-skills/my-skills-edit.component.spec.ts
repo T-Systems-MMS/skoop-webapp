@@ -4,16 +4,18 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatBottomSheetRef, MAT_BOTTOM_SHEET_DATA } from '@angular/material/bottom-sheet';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 import { AppMaterialModule } from '../app-material.module';
 import { MySkillsEditComponent } from './my-skills-edit.component';
 import { MySkillsService } from './my-skills.service';
 import { UserSkill } from '../user-skills/user-skill';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
-import { By } from '@angular/platform-browser';
 import { DebugElement } from '@angular/core';
 import { UserSkillView } from '../shared/skill-card/user-skill-view';
+import { ExternalAssetsService } from '../shared/external-assets.service';
+import { StepDescription } from './step-description';
+import { SelectedValueTitleDirective } from './selected-value-title.directive';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
@@ -34,6 +36,14 @@ const userSkillTestData: UserSkillView = {
   priority: 4
 };
 
+const levelDescription: StepDescription = {
+  step0: 'zero',
+  step1: 'one',
+  step2: 'two',
+  step3: 'three',
+  step4: 'four'
+};
+
 describe('MySkillsEditComponent', () => {
   let component: MySkillsEditComponent;
   let fixture: ComponentFixture<MySkillsEditComponent>;
@@ -49,12 +59,17 @@ describe('MySkillsEditComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [MySkillsEditComponent],
+      declarations: [MySkillsEditComponent, SelectedValueTitleDirective],
       providers: [
-        GlobalErrorHandlerService,
+        GlobalErrorHandlerService, SelectedValueTitleDirective,
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
-        { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData }
+        { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData },
+        {
+          provide: ExternalAssetsService, useValue: jasmine.createSpyObj('externalAssetsService', {
+            'getJSON': of(levelDescription)
+          })
+        }
       ]
     }).compileComponents();
   }));
@@ -83,4 +98,5 @@ describe('MySkillsEditComponent', () => {
     const h2 = mySkillEditEl.querySelector('h2');
     expect(h2.textContent).toEqual('Angular');
   }));
+
 });

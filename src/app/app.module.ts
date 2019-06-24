@@ -85,6 +85,7 @@ import { UserManagerComponent } from './user-manager/user-manager.component';
 import { UserProjectCardComponent } from './shared/user-project-card/user-project-card.component';
 import { ProjectMembershipsComponent } from './project-memberships/project-memberships.component';
 import { ApproveProjectMessageCardComponent } from './my-messages/approve-project-message-card/approve-project-message-card.component';
+import { SelectedValueTitleDirective } from './my-skills/selected-value-title.directive';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -163,7 +164,8 @@ export const CUSTOM_FORMATS = {
     MySubordinatesComponent,
     UserProjectCardComponent,
     ProjectMembershipsComponent,
-    ApproveProjectMessageCardComponent
+    ApproveProjectMessageCardComponent,
+    SelectedValueTitleDirective
   ],
   imports: [
     BrowserModule,
