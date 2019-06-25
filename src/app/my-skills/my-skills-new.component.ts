@@ -32,6 +32,7 @@ export class MySkillsNewComponent extends MySkillsDialogComponentTrait implement
   @ViewChild('skillNameInput', { static: true }) skillNameInput: ElementRef<HTMLInputElement>;
 
   public levelDescription: StepDescription;
+  public priorityDescription: StepDescription;
 
   constructor(private mySkillsService: MySkillsService,
     private externalAssetsService: ExternalAssetsService,
@@ -49,6 +50,10 @@ export class MySkillsNewComponent extends MySkillsDialogComponentTrait implement
     this.externalAssetsService.getJSON<StepDescription>('/assets/config/level-description.json')
       .subscribe(data => {
         this.levelDescription = data;
+      });
+    this.externalAssetsService.getJSON<StepDescription>('/assets/config/priority-description.json')
+      .subscribe(data => {
+        this.priorityDescription = data;
       });
   }
 
@@ -104,6 +109,14 @@ export class MySkillsNewComponent extends MySkillsDialogComponentTrait implement
     }
 
     return this.resolveStepsDescription(this.levelDescription);
+  }
+
+  getPriorityHint(): string {
+    if (!this.priorityDescription) {
+      return '';
+    }
+
+    return this.resolveStepsDescription(this.priorityDescription);
   }
 
   get savingInProgress(): boolean {

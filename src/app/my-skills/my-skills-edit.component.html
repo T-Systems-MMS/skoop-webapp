@@ -34,10 +34,18 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="priority">Priority:</label>
+      <label for="priority" [title]="getPriorityHint()">Priority:</label>
     </div>
     <div fxFlex>
-      <mat-slider id="priority" min="0" max="4" step="1" thumbLabel tickInterval="1" [formControl]="priority" class="my-skills-edit-form-field"></mat-slider>
+      <mat-slider id="priority"
+                  min="0"
+                  max="4"
+                  step="1"
+                  thumbLabel
+                  tickInterval="1"
+                  [formControl]="priority"
+                  appSelectedValueTitle [stepDescription]="priorityDescription" [initialValue]="userSkill.priority"
+                  class="my-skills-edit-form-field"></mat-slider>
     </div>
   </div>
   <div>

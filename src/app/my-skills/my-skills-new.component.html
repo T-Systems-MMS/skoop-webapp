@@ -56,7 +56,7 @@
   </div>
   <div fxLayout="row">
     <div fxFlex="30%" fxLayout="column" fxLayoutAlign="center">
-      <label for="mySkillsNewDialog__priorityInput">Priority:</label>
+      <label for="mySkillsNewDialog__priorityInput" [title]="getPriorityHint()">Priority:</label>
     </div>
     <div fxFlex>
       <mat-slider
@@ -67,6 +67,7 @@
         thumbLabel
         tickInterval="1"
         [formControl]="priority"
+        appSelectedValueTitle [stepDescription]="priorityDescription"
         class="mySkillsNewDialog__formField">
       </mat-slider>
     </div>

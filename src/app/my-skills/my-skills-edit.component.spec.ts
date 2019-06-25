@@ -16,6 +16,7 @@ import { UserSkillView } from '../shared/skill-card/user-skill-view';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
 import { SelectedValueTitleDirective } from './selected-value-title.directive';
+import { By } from '@angular/platform-browser';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
   updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
@@ -24,6 +25,13 @@ const mySkillsServiceStub: Partial<MySkillsService> = {
 
 const bottomSheetStub: Partial<MatBottomSheetRef> = {
   dismiss(result?: any): void { }
+};
+
+
+const externalAssetsServiceStub: Partial<ExternalAssetsService> = {
+  getJSON<T>(filePath: string): Observable<T> {
+    return null;
+  }
 };
 
 const userSkillTestData: UserSkillView = {
@@ -47,6 +55,7 @@ const levelDescription: StepDescription = {
 describe('MySkillsEditComponent', () => {
   let component: MySkillsEditComponent;
   let fixture: ComponentFixture<MySkillsEditComponent>;
+  let externalAssetsServiceSpy;
 
   beforeEach(async(() => {
     spyOn(mySkillsServiceStub, 'updateCurrentUserSkill');
@@ -65,16 +74,16 @@ describe('MySkillsEditComponent', () => {
         { provide: MySkillsService, useValue: mySkillsServiceStub },
         { provide: MatBottomSheetRef, useValue: bottomSheetStub },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData },
-        {
-          provide: ExternalAssetsService, useValue: jasmine.createSpyObj('externalAssetsService', {
-            'getJSON': of(levelDescription)
-          })
-        }
+        { provide: ExternalAssetsService, useValue: externalAssetsServiceStub }
       ]
     }).compileComponents();
+
+    externalAssetsServiceSpy = spyOn(TestBed.get(ExternalAssetsService) as ExternalAssetsService, 'getJSON');
   }));
 
   beforeEach(() => {
+    externalAssetsServiceSpy.and.returnValue(of(levelDescription));
+
     fixture = TestBed.createComponent(MySkillsEditComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -97,6 +106,25 @@ describe('MySkillsEditComponent', () => {
     const mySkillEditEl: HTMLElement = mySkillEditDe.nativeElement;
     const h2 = mySkillEditEl.querySelector('h2');
     expect(h2.textContent).toEqual('Angular');
+  }));
+
+  it('should fill in title attribute for the skill priority label', async(() => {
+    const label = fixture.debugElement.query(By.css('label[for=priority]'));
+
+    expect(label.nativeElement.title).toContain(levelDescription.step0);
+    expect(label.nativeElement.title).toContain(levelDescription.step1);
+    expect(label.nativeElement.title).toContain(levelDescription.step2);
+    expect(label.nativeElement.title).toContain(levelDescription.step3);
+    expect(label.nativeElement.title).toContain(levelDescription.step4);
+  }));
+
+  it('should return empty title when there is no step description', async(() => {
+    externalAssetsServiceSpy.and.returnValue(of(null));
+    const fixtureForTest = TestBed.createComponent(MySkillsEditComponent);
+    fixtureForTest.detectChanges();
+
+    const label = fixtureForTest.debugElement.query(By.css('label[for=priority]'));
+    expect(label.nativeElement.title).toBe('');
   }));
 
 });
