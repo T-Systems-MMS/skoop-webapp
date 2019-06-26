@@ -1,0 +1,21 @@
+<div class="mat-typography">
+  <h1>Sales search</h1>
+  <div fxLayout="row">
+    <mat-form-field class="sales-search-input">
+      <mat-chip-list #termsChipList>
+        <mat-chip *ngFor="let term of terms" [selectable]="false"
+                  [removable]="true" (removed)="remove(term)">
+          {{term}}
+          <mat-icon matChipRemove>cancel</mat-icon>
+        </mat-chip>
+        <input id="search-input"
+               placeholder="Enter terms delimited by a space; double quotes (&quot;&quot;) can be used to define search phrases containing spaces"
+               [matChipInputFor]="termsChipList"
+               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+               [matChipInputAddOnBlur]="false"
+               (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+    </mat-form-field>
+    <button mat-raised-button color="primary" class="sales-search-button" (click)="search()">Search</button>
+  </div>
+</div>
