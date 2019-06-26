@@ -3,8 +3,8 @@
   <div fxLayout="row">
     <mat-form-field class="sales-search-input">
       <mat-chip-list #termsChipList>
-        <mat-chip *ngFor="let term of terms" [selectable]="false"
-                  [removable]="true" (removed)="remove(term)">
+        <mat-chip *ngFor="let term of terms; let i = index;" [selectable]="false"
+                  [removable]="true" (removed)="remove(i)">
           {{term}}
           <mat-icon matChipRemove>cancel</mat-icon>
         </mat-chip>

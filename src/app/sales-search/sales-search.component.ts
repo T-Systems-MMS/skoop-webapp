@@ -38,16 +38,13 @@ export class SalesSearchComponent implements OnInit {
     }
   }
 
-  remove(term: string): void {
-    const index = this.terms.indexOf(term);
-
+  remove(index: number): void {
     if (index >= 0) {
       this.terms.splice(index, 1);
     }
   }
 
   search() {
-
   }
 
   private canBeAdded(term): boolean {
