@@ -8,10 +8,23 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../app-material.module';
 import { By } from '@angular/platform-browser';
 import { SPACE } from '@angular/cdk/keycodes';
+import { Component, Input } from '@angular/core';
+import { UserProfileSearchResult } from './user-profile-search-result';
+import { UserProfileSearchService } from './user-profile-search.service';
+import { of } from 'rxjs';
+import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
 describe('UserProfileSearchComponent', () => {
   let component: UserProfileSearchComponent;
   let fixture: ComponentFixture<UserProfileSearchComponent>;
+
+  @Component({
+    selector: 'app-user-profile-search-result',
+    template: ''
+  })
+  class UserProfileSearchResultStubComponent {
+    @Input() foundUsers: UserProfileSearchResult[];
+  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,7 +35,14 @@ describe('UserProfileSearchComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ UserProfileSearchComponent ]
+      declarations: [ UserProfileSearchComponent, UserProfileSearchResultStubComponent ],
+      providers: [
+        {
+          provide: UserProfileSearchService,
+          useValue: jasmine.createSpyObj('searchService', {'search': of<UserProfileSearchResult[]>([])})
+        },
+        GlobalErrorHandlerService
+      ]
     })
     .compileComponents();
   }));
@@ -97,6 +117,16 @@ describe('UserProfileSearchComponent', () => {
     component.remove(0);
     expect(component.terms).toContain('Java');
     expect(component.terms).not.toContain('JavaScript');
+  });
+
+  it('should call searchService.search method with expected parameters', () => {
+    enterValueAndClickSpace('Javascript');
+    enterValueAndClickSpace('Java');
+
+    component.search();
+
+    const searchService: UserProfileSearchService = TestBed.get(UserProfileSearchService);
+    expect(searchService.search).toHaveBeenCalledWith(['Javascript', 'Java']);
   });
 
   function enterValueAndClickSpace(value) {
