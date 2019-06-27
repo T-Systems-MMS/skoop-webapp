@@ -1,5 +1,6 @@
 <div class="mat-typography">
   <h1>User profile search</h1>
+  <div *ngIf="errorMessage" class="user-profile-search-error">{{errorMessage}}</div>
   <div fxLayout="row">
     <mat-form-field class="user-profile-search-input">
       <mat-chip-list #termsChipList>
@@ -16,6 +17,9 @@
                (matChipInputTokenEnd)="add($event)">
       </mat-chip-list>
     </mat-form-field>
-    <button mat-raised-button color="primary" class="user-profile-search-button" (click)="search()">Search</button>
+    <button mat-raised-button color="primary" class="user-profile-search-button" [disabled]="terms.length === 0" (click)="search()">Search</button>
+  </div>
+  <div *ngIf="searchResult">
+    <app-user-profile-search-result [foundUsers]="searchResult"></app-user-profile-search-result>
   </div>
 </div>

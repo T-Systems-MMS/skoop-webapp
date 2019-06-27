@@ -1,0 +1,9 @@
+@import "variables";
+
+.user-profile-search-result-card {
+  @extend %base-card;
+}
+
+.user-profile-search-result-description-label {
+  @extend %base-description-label;
+}
