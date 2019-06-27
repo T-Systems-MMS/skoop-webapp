@@ -3,11 +3,11 @@ import { SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material';
 
 @Component({
-  selector: 'app-sales-search',
-  templateUrl: './sales-search.component.html',
-  styleUrls: ['./sales-search.component.scss']
+  selector: 'app-user-profile-search',
+  templateUrl: './user-profile-search.component.html',
+  styleUrls: ['./user-profile-search.component.scss']
 })
-export class SalesSearchComponent implements OnInit {
+export class UserProfileSearchComponent implements OnInit {
 
   readonly separatorKeysCodes: number[] = [SPACE];
   terms: string[] = [];

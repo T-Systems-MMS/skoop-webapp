@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SalesSearchComponent } from './sales-search.component';
+import { UserProfileSearchComponent } from './user-profile-search.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -9,9 +9,9 @@ import { AppMaterialModule } from '../app-material.module';
 import { By } from '@angular/platform-browser';
 import { SPACE } from '@angular/cdk/keycodes';
 
-describe('SalesSearchComponent', () => {
-  let component: SalesSearchComponent;
-  let fixture: ComponentFixture<SalesSearchComponent>;
+describe('UserProfileSearchComponent', () => {
+  let component: UserProfileSearchComponent;
+  let fixture: ComponentFixture<UserProfileSearchComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -22,13 +22,13 @@ describe('SalesSearchComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ SalesSearchComponent ]
+      declarations: [ UserProfileSearchComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SalesSearchComponent);
+    fixture = TestBed.createComponent(UserProfileSearchComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

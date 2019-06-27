@@ -1,7 +1,7 @@
 <div class="mat-typography">
-  <h1>Sales search</h1>
+  <h1>User profile search</h1>
   <div fxLayout="row">
-    <mat-form-field class="sales-search-input">
+    <mat-form-field class="user-profile-search-input">
       <mat-chip-list #termsChipList>
         <mat-chip *ngFor="let term of terms; let i = index;" [selectable]="false"
                   [removable]="true" (removed)="remove(i)">
@@ -16,6 +16,6 @@
                (matChipInputTokenEnd)="add($event)">
       </mat-chip-list>
     </mat-form-field>
-    <button mat-raised-button color="primary" class="sales-search-button" (click)="search()">Search</button>
+    <button mat-raised-button color="primary" class="user-profile-search-button" (click)="search()">Search</button>
   </div>
 </div>
