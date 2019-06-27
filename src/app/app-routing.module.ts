@@ -22,6 +22,7 @@ import { CommunityViewComponent } from './community-view/community-view.componen
 import { MyMessagesComponent } from './my-messages/my-messages.component';
 import { MySubordinatesComponent } from './my-subordinates/my-subordinates.component';
 import { ProjectMembershipsComponent } from './project-memberships/project-memberships.component';
+import { UserProfileSearchComponent } from './user-profile-search/user-profile-search.component';
 
 export const routes: Routes = [
   { path: 'my-messages', component: MyMessagesComponent },
@@ -54,9 +55,10 @@ export const routes: Routes = [
   { path: 'users', component: OtherUserProfilesComponent },
   { path: 'users/:userId/skills', component: OtherUserSkillsComponent },
   { path: 'search-users', component: SearchUsersComponent },
+  { path: 'user-profile-search', component: UserProfileSearchComponent },
   { path: 'communities', component: CommunitiesComponent },
   { path: 'communities/:communityId', component: CommunityViewComponent },
-  { path: '', redirectTo: 'my-skills', pathMatch: 'full' },
+  { path: '', redirectTo: 'user-profile-search', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent }
 ];
 
