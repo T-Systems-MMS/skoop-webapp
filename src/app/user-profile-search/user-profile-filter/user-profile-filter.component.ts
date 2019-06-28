@@ -31,7 +31,12 @@ export class UserProfileFilterComponent implements OnInit {
   }
 
   filter() {
-
+    this.filteredSearchResult = this.foundUsers.filter(user =>
+      this.filterByCertifications(user)
+      && this.filterBySkills(user)
+      && this.filterByIndustrySectors(user)
+      && this.filterByPositionProfile(user)
+    );
   }
 
   private getCertificatesValues(): FilterValue[] {
@@ -78,6 +83,58 @@ export class UserProfileFilterComponent implements OnInit {
       }
     });
     return filterValues;
+  }
+
+  private filterByCertifications(user: UserProfileSearchResult): boolean {
+    const filterValues = this.certificatesFilter.filter(item => item.checked);
+    if (filterValues.length === 0) {
+      return true;
+    }
+
+    if (!user.certificates || user.certificates.length === 0) {
+      return false;
+    }
+
+    // if there is some certificate in the filter array which user doesn't have -> filter this user
+    return !filterValues.some(filterValue => !user.certificates.includes(filterValue.title));
+  }
+
+  private filterBySkills(user: UserProfileSearchResult): boolean {
+    const filterValues = this.skillsFilter.filter(item => item.checked);
+    if (filterValues.length === 0) {
+      return true;
+    }
+
+    if (!user.skills || user.skills.length === 0) {
+      return false;
+    }
+
+    // if there is some skill in the filter array which user doesn't have -> filter this user
+    return !filterValues.some(filterValue => user.skills.find(userSkill => userSkill.skill.name === filterValue.title) == null);
+  }
+
+  private filterByIndustrySectors(user: UserProfileSearchResult): boolean {
+    const filterValues = this.industrySectorsFilter.filter(item => item.checked);
+    if (filterValues.length === 0) {
+      return true;
+    }
+
+    if (!user.industrySectors || user.industrySectors.length === 0) {
+      return false;
+    }
+
+    // if there is some industry sector in the filter array which user doesn't have -> filter this user
+    return !filterValues.some(filterValue => !user.industrySectors.includes(filterValue.title));
+  }
+
+  private filterByPositionProfile(user: UserProfileSearchResult): boolean {
+    const filterValues = this.positionProfilesFilter.filter(item => item.checked);
+    if (filterValues.length === 0) {
+      return true;
+    }
+
+    // if there is some positionProfile in the filter array which user doesn't have -> filter this user
+    return !filterValues.some(filterValue => user.positionProfile !== filterValue.title);
   }
 
 }
