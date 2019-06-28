@@ -1,0 +1,31 @@
+<div>
+  <p>
+    Found {{filteredSearchResult.length}} users matching these criteria
+  </p>
+  <mat-card *ngFor="let user of filteredSearchResult" class="user-profile-search-result-card">
+    <mat-card-content>
+      <div fxLayout="row">
+        <div fxFlex>
+          <h2 class="user-profile-search-result-heading">{{user.firstName}} {{user.lastName}}</h2>
+        </div>
+      </div>
+      <div fxLayout="row">
+        <div fxFlex>
+          <div fxLayout="row">
+            <div class="user-profile-search-result-description-label">Position:</div>
+            <div>{{user.positionProfile}}</div>
+          </div>
+          <div fxLayout="row">
+            <div class="user-profile-search-result-description-label">Manager:</div>
+            <div>{{user.manager.firstName}} {{user.manager.lastName}} (<a href="mailto:{{user.manager.email}}">{{user.manager.email}}</a>)</div>
+          </div>
+          <div fxLayout="row">
+            <div class="user-profile-search-result-description-label">Business area:</div>
+            <div>{{user.department}}</div>
+          </div>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+

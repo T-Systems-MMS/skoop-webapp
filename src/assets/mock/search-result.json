@@ -1,0 +1,114 @@
+[
+  {
+    "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
+    "userName": "first",
+    "firstName": "First",
+    "lastName": "User",
+    "email": "first.user@skoop.io",
+    "academicDegree": "academic degree",
+    "positionProfile": "Tester",
+    "industrySectors": ["sector1", "sector2", "sector3"],
+    "specializations": ["specialization1", "specialization2", "specialization3"],
+    "certificates": ["certificate1", "certificate2", "certificate3"],
+    "manager": {
+      "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
+      "userName": "manager",
+      "firstName": "Toni",
+      "lastName": "Manager",
+      "email": "manager.manager@skoop.io"
+    },
+    "skills": [
+      {
+        "skill": {
+          "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
+          "name": "Mockito"
+        },
+        "currentLevel": 2,
+        "desiredLevel": 3,
+        "priority": 4
+      }
+    ]
+  },
+  {
+    "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17456",
+    "userName": "second",
+    "firstName": "Second",
+    "lastName": "User",
+    "email": "second.user@skoop.io",
+    "academicDegree": "academic degree",
+    "positionProfile": "Developer",
+    "industrySectors": ["sector1", "sector2", "sector3"],
+    "specializations": ["specialization1", "specialization2", "specialization3"],
+    "certificates": ["certificate1", "certificate3", "certificate6"],
+    "manager": {
+      "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
+      "userName": "manager",
+      "firstName": "Toni",
+      "lastName": "Manager",
+      "email": "manager.manager@skoop.io"
+    },
+    "skills": [
+      {
+        "skill": {
+          "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17666",
+          "name": "Angular",
+          "description": "JavaScript Framework"
+        },
+        "currentLevel": 2,
+        "desiredLevel": 3,
+        "priority": 4
+      },
+      {
+        "skill": {
+          "id": "460d96f3-0deb-4b6c-9653-978a4f5fe888",
+          "name": "Spring Boot",
+          "description": "Java Framework"
+        },
+        "currentLevel": 3,
+        "desiredLevel": 4,
+        "priority": 2
+      }
+    ]
+  },
+  {
+    "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17789",
+    "userName": "third",
+    "firstName": "Third",
+    "lastName": "User",
+    "email": "third.user@skoop.io",
+    "academicDegree": "academic degree",
+    "positionProfile": "Developer",
+    "industrySectors": ["sector1", "sector2", "sector3"],
+    "specializations": ["specialization1", "specialization2", "specialization3"],
+    "certificates": ["certificate1", "certificate5", "certificate6"],
+    "manager": {
+      "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
+      "userName": "manager2",
+      "firstName": "Another",
+      "lastName": "Manager",
+      "email": "another.manager@skoop.io"
+    },
+    "skills": [
+      {
+        "skill": {
+          "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17666",
+          "name": "Angular",
+          "description": "JavaScript Framework"
+        },
+        "currentLevel": 2,
+        "desiredLevel": 3,
+        "priority": 4
+      },
+      {
+        "skill": {
+          "id": "460d96f3-0deb-4b6c-9653-978a4f5fe888",
+          "name": "Spring Boot",
+          "description": "Java Framework"
+        },
+        "currentLevel": 3,
+        "desiredLevel": 4,
+        "priority": 2
+      }
+    ]
+  }
+]
