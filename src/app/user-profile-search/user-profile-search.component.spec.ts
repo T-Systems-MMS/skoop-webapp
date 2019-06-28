@@ -19,10 +19,10 @@ describe('UserProfileSearchComponent', () => {
   let fixture: ComponentFixture<UserProfileSearchComponent>;
 
   @Component({
-    selector: 'app-user-profile-search-result',
+    selector: 'app-user-profile-filter',
     template: ''
   })
-  class UserProfileSearchResultStubComponent {
+  class UserProfileFilterStubComponent {
     @Input() foundUsers: UserProfileSearchResult[];
   }
 
@@ -35,7 +35,7 @@ describe('UserProfileSearchComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ UserProfileSearchComponent, UserProfileSearchResultStubComponent ],
+      declarations: [ UserProfileSearchComponent, UserProfileFilterStubComponent ],
       providers: [
         {
           provide: UserProfileSearchService,

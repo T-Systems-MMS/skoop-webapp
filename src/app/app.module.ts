@@ -88,6 +88,7 @@ import { ApproveProjectMessageCardComponent } from './my-messages/approve-projec
 import { SelectedValueTitleDirective } from './my-skills/selected-value-title.directive';
 import { UserProfileSearchComponent } from './user-profile-search/user-profile-search.component';
 import { UserProfileSearchResultComponent } from './user-profile-search/user-profile-search-result/user-profile-search-result.component';
+import { UserProfileFilterComponent } from './user-profile-search/user-profile-filter/user-profile-filter.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -169,7 +170,8 @@ export const CUSTOM_FORMATS = {
     ApproveProjectMessageCardComponent,
     SelectedValueTitleDirective,
     UserProfileSearchComponent,
-    UserProfileSearchResultComponent
+    UserProfileSearchResultComponent,
+    UserProfileFilterComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,35 @@
+<div fxLayout="row">
+  <div fxFlex="20%">
+    <div *ngIf="showCertificatesFilter()">
+      <strong>Certification</strong>
+      <div *ngFor="let value of getCertificatesValues()">
+        <mat-checkbox>{{value}}</mat-checkbox>
+      </div>
+    </div>
+
+    <div *ngIf="showSkillsFilter()">
+      <strong>Skills</strong>
+      <div *ngFor="let value of getSkillsValues()">
+        <mat-checkbox>{{value}}</mat-checkbox>
+      </div>
+    </div>
+
+    <div *ngIf="showIndustrySectorsFilter()">
+      <strong>Industry sectors</strong>
+      <div *ngFor="let value of getIndustrySectorsValues()">
+        <mat-checkbox>{{value}}</mat-checkbox>
+      </div>
+    </div>
+
+    <div *ngIf="showPositionProfileFilter()">
+      <strong>Position profile</strong>
+      <div *ngFor="let value of getPositionProfileValues()">
+        <mat-checkbox>{{value}}</mat-checkbox>
+      </div>
+    </div>
+  </div>
+  <div fxFlex>
+    <app-user-profile-search-result [users]="filteredSearchResult"></app-user-profile-search-result>
+  </div>
+</div>
+

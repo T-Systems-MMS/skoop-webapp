@@ -8,13 +8,11 @@ import { UserProfileSearchResult } from '../user-profile-search-result';
 })
 export class UserProfileSearchResultComponent implements OnInit {
 
-  @Input() foundUsers: UserProfileSearchResult[];
-  public filteredSearchResult: UserProfileSearchResult[];
+  @Input() users: UserProfileSearchResult[];
 
   constructor() { }
 
   ngOnInit() {
-    this.filteredSearchResult = this.foundUsers;
   }
 
 }
