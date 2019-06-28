@@ -19,6 +19,10 @@
             <div class="user-profile-search-result-description-label">Manager:</div>
             <div>{{user.manager.firstName}} {{user.manager.lastName}} (<a href="mailto:{{user.manager.email}}">{{user.manager.email}}</a>)</div>
           </div>
+          <div fxLayout="row">
+            <div class="user-profile-search-result-description-label">Business area:</div>
+            <div>{{user.department}}</div>
+          </div>
         </div>
       </div>
     </mat-card-content>
