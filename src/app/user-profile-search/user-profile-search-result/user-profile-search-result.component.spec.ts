@@ -69,7 +69,7 @@ describe('UserProfileSearchResultComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(UserProfileSearchResultComponent);
     component = fixture.componentInstance;
-    component.foundUsers = users;
+    component.users = users;
     fixture.detectChanges();
   });
 

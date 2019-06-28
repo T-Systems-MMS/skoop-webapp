@@ -1,7 +1,7 @@
 <div fxLayout="row">
   <div fxFlex="15%">
     <div *ngIf="certificatesFilter.length > 0">
-      <strong>Certification</strong>
+      <strong>Certifications</strong>
       <div class="user-profile-filter-group">
         <app-checkboxes-group [values]="certificatesFilter" (selectionChanged)="filter()"></app-checkboxes-group>
       </div>
