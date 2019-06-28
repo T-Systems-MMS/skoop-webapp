@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UserProfileSearchResult } from '../user-profile-search-result';
+import { FilterValue } from '../filter-value';
+import { FilterName } from './filter-name.enum';
 
 @Component({
   selector: 'app-user-profile-filter',
@@ -11,74 +13,67 @@ export class UserProfileFilterComponent implements OnInit {
   @Input() foundUsers: UserProfileSearchResult[];
   public filteredSearchResult: UserProfileSearchResult[];
 
-  constructor() { }
+  public certificatesFilter: FilterValue[];
+  public skillsFilter: FilterValue[];
+  public industrySectorsFilter: FilterValue[];
+  public positionProfilesFilter: FilterValue[];
+
+  constructor() {
+  }
 
   ngOnInit() {
     this.filteredSearchResult = this.foundUsers;
+
+    this.certificatesFilter = this.getCertificatesValues();
+    this.skillsFilter = this.getSkillsValues();
+    this.industrySectorsFilter = this.getIndustrySectorsValues();
+    this.positionProfilesFilter = this.getPositionProfileValues();
   }
 
-  showCertificatesFilter(): boolean {
-    return this.existUsersWith('certificates');
+  filter() {
+
   }
 
-  showSkillsFilter(): boolean {
-    return this.existUsersWith('skills');
+  private getCertificatesValues(): FilterValue[] {
+    return this.getFilterValuesFor(FilterName.CERTIFICATIONS)
   }
 
-  showIndustrySectorsFilter(): boolean {
-    return this.existUsersWith('industrySectors');
-  }
-
-  showPositionProfileFilter(): boolean {
-    return this.existUsersWith('positionProfile');
-  }
-
-  getCertificatesValues(): string[] {
-    return this.getFilterValuesFor('certificates')
-  }
-
-  getSkillsValues(): string[] {
-    const filterValues: string[] = [];
+  private getSkillsValues(): FilterValue[] {
+    const filterValues: FilterValue[] = [];
     this.foundUsers.forEach(user => {
       user.skills.forEach(value => {
-        if (!filterValues.includes(value.skill.name)) {
-          filterValues.push(value.skill.name);
+        if (!filterValues.find(filter => filter.title === value.skill.name)) {
+          filterValues.push({title: value.skill.name, checked: false});
         }
       });
     });
     return filterValues;
   }
 
-  getIndustrySectorsValues(): string[] {
-    return this.getFilterValuesFor('industrySectors')
+  private getIndustrySectorsValues(): FilterValue[] {
+    return this.getFilterValuesFor(FilterName.INDUSTRY_SECTORS)
   }
 
-  getPositionProfileValues(): string[] {
-    const filterValues: string[] = [];
+  private getPositionProfileValues(): FilterValue[] {
+    const filterValues: FilterValue[] = [];
     this.foundUsers.forEach(user => {
-      if (!filterValues.includes(user.positionProfile)) {
-        filterValues.push(user.positionProfile);
+      if (!filterValues.find(filter => filter.title === user.positionProfile)) {
+        filterValues.push({title: user.positionProfile, checked: false});
       }
     });
     return filterValues;
   }
 
-
-  private existUsersWith(filterName: string): boolean {
-    return this.foundUsers.find(item => item[filterName] !== null && item[filterName].length > 0) != null;
-  }
-
-  private getFilterValuesFor(filterName: string): string[] {
-    const filterValues: string[] = [];
+  private getFilterValuesFor(filterName: string): FilterValue[] {
+    const filterValues: FilterValue[] = [];
     this.foundUsers.forEach(user => {
       user[filterName].forEach(value => {
-        if (!filterValues.includes(value)) {
-          filterValues.push(value);
+        if (!filterValues.find(filter => filter.title === value)) {
+          filterValues.push({title: value, checked: false});
         }
       });
     });
     return filterValues;
   }
-
 
 }

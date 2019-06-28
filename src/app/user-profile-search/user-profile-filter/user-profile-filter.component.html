@@ -1,30 +1,30 @@
 <div fxLayout="row">
-  <div fxFlex="20%">
-    <div *ngIf="showCertificatesFilter()">
+  <div fxFlex="15%">
+    <div *ngIf="certificatesFilter.length > 0">
       <strong>Certification</strong>
-      <div *ngFor="let value of getCertificatesValues()">
-        <mat-checkbox>{{value}}</mat-checkbox>
+      <div class="user-profile-filter-group">
+        <app-checkboxes-group [values]="certificatesFilter" (selectionChanged)="filter()"></app-checkboxes-group>
       </div>
     </div>
 
-    <div *ngIf="showSkillsFilter()">
+    <div *ngIf="skillsFilter.length > 0">
       <strong>Skills</strong>
-      <div *ngFor="let value of getSkillsValues()">
-        <mat-checkbox>{{value}}</mat-checkbox>
+      <div class="user-profile-filter-group">
+        <app-checkboxes-group [values]="skillsFilter" (selectionChanged)="filter()"></app-checkboxes-group>
       </div>
     </div>
 
-    <div *ngIf="showIndustrySectorsFilter()">
+    <div *ngIf="industrySectorsFilter.length > 0">
       <strong>Industry sectors</strong>
-      <div *ngFor="let value of getIndustrySectorsValues()">
-        <mat-checkbox>{{value}}</mat-checkbox>
+      <div class="user-profile-filter-group">
+        <app-checkboxes-group [values]="industrySectorsFilter" (selectionChanged)="filter()"></app-checkboxes-group>
       </div>
     </div>
 
-    <div *ngIf="showPositionProfileFilter()">
+    <div *ngIf="positionProfilesFilter.length > 0">
       <strong>Position profile</strong>
-      <div *ngFor="let value of getPositionProfileValues()">
-        <mat-checkbox>{{value}}</mat-checkbox>
+      <div class="user-profile-filter-group">
+        <app-checkboxes-group [values]="positionProfilesFilter" (selectionChanged)="filter()"></app-checkboxes-group>
       </div>
     </div>
   </div>

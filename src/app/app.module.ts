@@ -89,6 +89,7 @@ import { SelectedValueTitleDirective } from './my-skills/selected-value-title.di
 import { UserProfileSearchComponent } from './user-profile-search/user-profile-search.component';
 import { UserProfileSearchResultComponent } from './user-profile-search/user-profile-search-result/user-profile-search-result.component';
 import { UserProfileFilterComponent } from './user-profile-search/user-profile-filter/user-profile-filter.component';
+import { CheckboxesGroupComponent } from './user-profile-search/checkboxes-group/checkboxes-group.component';
 
 export const CUSTOM_FORMATS = {
   parse: {
@@ -171,7 +172,8 @@ export const CUSTOM_FORMATS = {
     SelectedValueTitleDirective,
     UserProfileSearchComponent,
     UserProfileSearchResultComponent,
-    UserProfileFilterComponent
+    UserProfileFilterComponent,
+    CheckboxesGroupComponent
   ],
   imports: [
     BrowserModule,
