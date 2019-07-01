@@ -145,6 +145,7 @@ describe('PermissionsComponent', () => {
     expect(component.allowAllToViewSkills.value).toBeTruthy();
     expect(component.allowAllToViewProfile.value).toBeTruthy();
     expect(component.allowToBeCoach.value).toBeFalsy();
+    expect(component.allowSalesToUsePersonalizedProfile.value).toBeFalsy();
   });
 
   it('should update the list of authorized to view skills users', async(() => {
@@ -206,6 +207,7 @@ describe('PermissionsComponent', () => {
 
   it('should update the list of global permissions', async(() => {
     component.allowToBeCoach.setValue(true);
+    component.allowSalesToUsePersonalizedProfile.setValue(true);
     component.savePermissions();
     fixture.whenStable().then(() => {
       fixture.detectChanges();
@@ -220,6 +222,9 @@ describe('PermissionsComponent', () => {
         },
         {
           scope: GlobalPermissionScope.FIND_AS_COACH,
+        },
+        {
+          scope: GlobalPermissionScope.ALLOW_SALES_TO_USE_PERSONALIZED_PROFILE
         }
       ];
       expect(userService.updateGlobalUserPermissions).toHaveBeenCalledWith(expectedRequest);

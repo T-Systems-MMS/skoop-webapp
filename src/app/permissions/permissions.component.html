@@ -25,6 +25,12 @@
   <mat-checkbox [formControl]="allowToBeCoach">I agree to be shown as coach to other users</mat-checkbox>
 </div>
 
+<div class="permissions-settings-section">
+  <p class="permissions-settings-explanation">By enabling the following option you agree that sales person can
+    use your personalized profile (e.g. to pass your personalized profile to customers for project acquisition).</p>
+  <mat-checkbox [formControl]="allowSalesToUsePersonalizedProfile">I allow sales person to use my personalized profile</mat-checkbox>
+</div>
+
 <mat-divider></mat-divider>
 <div class="permissions-actions">
   <button mat-raised-button color="primary" [disabled]="savingInProgress" (click)="savePermissions()">Save
