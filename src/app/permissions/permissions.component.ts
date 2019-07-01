@@ -26,6 +26,7 @@ export class PermissionsComponent implements OnInit {
   allowAllToViewProfile = new FormControl();
   allowAllToViewSkills = new FormControl();
   allowToBeCoach = new FormControl();
+  allowSalesToUsePersonalizedProfile = new FormControl();
 
   @Input() savingInProgress: boolean;
   private savingUsersPermissionInProgress = false;
@@ -91,6 +92,9 @@ export class PermissionsComponent implements OnInit {
     if (this.allowToBeCoach.value) {
       globalPermissions.push({scope: GlobalPermissionScope.FIND_AS_COACH});
     }
+    if (this.allowSalesToUsePersonalizedProfile.value) {
+      globalPermissions.push({scope: GlobalPermissionScope.ALLOW_SALES_TO_USE_PERSONALIZED_PROFILE});
+    }
 
     this.usersService.updateGlobalUserPermissions(globalPermissions)
       .pipe(
@@ -145,6 +149,10 @@ export class PermissionsComponent implements OnInit {
 
     permission = userPermissions.find(userPermission => userPermission.scope === GlobalPermissionScope.FIND_AS_COACH);
     this.allowToBeCoach.setValue(permission != null);
+
+    permission = userPermissions.find(userPermission =>
+      userPermission.scope === GlobalPermissionScope.ALLOW_SALES_TO_USE_PERSONALIZED_PROFILE);
+    this.allowSalesToUsePersonalizedProfile.setValue(permission != null);
   }
 
   private handleErrorResponse(errorResponse: HttpErrorResponse) {
