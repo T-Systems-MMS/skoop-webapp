@@ -1,5 +1,5 @@
 <div *ngFor="let value of values | slice : 0: countLimit">
-  <mat-checkbox (change)="onChange()" [(ngModel)]="value.checked">{{value.title}}</mat-checkbox>
+  <mat-checkbox (change)="onChange($event)" [id]="value.title">{{value.title}}</mat-checkbox>
 </div>
 <a *ngIf ="countLimit < values.length" href="javascript:;" (click)="showMoreItems()">Show all</a>
 <a *ngIf ="countLimit > maxCountToShow" href="javascript:;" (click)="showLessItems()">Show less</a>

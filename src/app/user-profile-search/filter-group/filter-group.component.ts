@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FilterValue } from '../filter-value';
+import { MatCheckboxChange } from '@angular/material';
 
 @Component({
   selector: 'app-filter-group',
@@ -10,9 +11,13 @@ export class FilterGroupComponent implements OnInit {
 
   @Input() values: FilterValue[];
   @Input() maxCountToShow = 5;
-  @Output() selectionChanged: EventEmitter<void> = new EventEmitter();
+  /**
+   * Emit selected filter values
+   */
+  @Output() selectionChanged: EventEmitter<FilterValue[]> = new EventEmitter();
 
   public countLimit = this.maxCountToShow;
+  private currentSelection: FilterValue[] = [];
 
   constructor() {
   }
@@ -20,8 +25,22 @@ export class FilterGroupComponent implements OnInit {
   ngOnInit() {
   }
 
-  onChange() {
-    this.selectionChanged.emit();
+  onChange(event: MatCheckboxChange) {
+    if (event.checked) {
+      const filterValue: FilterValue = {
+        title: event.source.id,
+        checked: event.checked
+      };
+
+      this.currentSelection.push(filterValue);
+    } else {
+      const index = this.currentSelection.findIndex(value => value.title === event.source.id);
+      if (index > -1) {
+        this.currentSelection.splice(index, 1);
+      }
+    }
+
+    this.selectionChanged.emit(this.currentSelection);
   }
 
   showMoreItems() {

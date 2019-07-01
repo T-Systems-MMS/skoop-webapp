@@ -79,15 +79,26 @@ describe('FilterGroupComponent', () => {
     expect(linkElem.nativeElement.text).toBe('Show all');
   });
 
-  it('should emit selectionChanged event', () => {
+  it('should emit selectionChanged event with current selection', () => {
     const spy = spyOn(component.selectionChanged, 'emit');
-    const checkbox = fixture.debugElement.query(By.directive(MatCheckbox));
-    checkbox.nativeElement.value = true;
-    checkbox.nativeElement.dispatchEvent(new Event('change'));
+    const checkbox = fixture.debugElement.nativeElement.querySelector('mat-checkbox label');
+    checkbox.click();
 
     fixture.detectChanges();
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith([{title: filterValues[0].title, checked: true}]);
+  });
+
+  it('should emit selectionChanged event with empty array', () => {
+    const spy = spyOn(component.selectionChanged, 'emit');
+    const checkbox = fixture.debugElement.nativeElement.querySelector('mat-checkbox label');
+    // check and uncheck value
+    checkbox.click();
+    checkbox.click();
+
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith([]);
   });
 
   it('should display all checkboxes, link should have text "Show less" when "Show all" clicked', () => {

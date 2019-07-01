@@ -18,6 +18,11 @@ export class UserProfileFilterComponent implements OnInit {
   public industrySectorsFilter: FilterValue[];
   public positionProfilesFilter: FilterValue[];
 
+  private selectedCertificatesFilterValues: FilterValue[];
+  private selectedSkillsFilterValues: FilterValue[];
+  private selectedIndustrySectorsFilterValues: FilterValue[];
+  private selectedPositionsProfilesFilterValues: FilterValue[];
+
   constructor() {
   }
 
@@ -28,14 +33,39 @@ export class UserProfileFilterComponent implements OnInit {
     this.skillsFilter = this.getSkillsValues();
     this.industrySectorsFilter = this.getIndustrySectorsValues();
     this.positionProfilesFilter = this.getPositionProfileValues();
+
+    this.selectedCertificatesFilterValues = [];
+    this.selectedSkillsFilterValues = [];
+    this.selectedIndustrySectorsFilterValues = [];
+    this.selectedPositionsProfilesFilterValues = [];
   }
 
-  filter() {
+  filterByCertificates(selectedFilterValues: FilterValue[]) {
+    this.selectedCertificatesFilterValues = selectedFilterValues;
+    this.filter();
+  }
+
+  filterBySkills(selectedFilterValues: FilterValue[]) {
+    this.selectedSkillsFilterValues = selectedFilterValues;
+    this.filter();
+  }
+
+  filterByIndustrySectors(selectedFilterValues: FilterValue[]) {
+    this.selectedIndustrySectorsFilterValues = selectedFilterValues;
+    this.filter();
+  }
+
+  filterByPositionProfiles(selectedFilterValues: FilterValue[]) {
+    this.selectedPositionsProfilesFilterValues = selectedFilterValues;
+    this.filter();
+  }
+
+  private filter() {
     this.filteredSearchResult = this.foundUsers.filter(user =>
-      this.filterByCertifications(user)
-      && this.filterBySkills(user)
-      && this.filterByIndustrySectors(user)
-      && this.filterByPositionProfile(user)
+      this.innerFilterByCertifications(user)
+      && this.innerFilterBySkills(user)
+      && this.innerFilterByIndustrySectors(user)
+      && this.innerFilterByPositionProfile(user)
     );
   }
 
@@ -85,9 +115,8 @@ export class UserProfileFilterComponent implements OnInit {
     return filterValues;
   }
 
-  private filterByCertifications(user: UserProfileSearchResult): boolean {
-    const filterValues = this.certificatesFilter.filter(item => item.checked);
-    if (filterValues.length === 0) {
+  private innerFilterByCertifications(user: UserProfileSearchResult): boolean {
+    if (this.selectedCertificatesFilterValues.length === 0) {
       return true;
     }
 
@@ -96,12 +125,11 @@ export class UserProfileFilterComponent implements OnInit {
     }
 
     // if there is some certificate in the filter array which user doesn't have -> filter this user
-    return !filterValues.some(filterValue => !user.certificates.includes(filterValue.title));
+    return !this.selectedCertificatesFilterValues.some(filterValue => !user.certificates.includes(filterValue.title));
   }
 
-  private filterBySkills(user: UserProfileSearchResult): boolean {
-    const filterValues = this.skillsFilter.filter(item => item.checked);
-    if (filterValues.length === 0) {
+  private innerFilterBySkills(user: UserProfileSearchResult): boolean {
+    if (this.selectedSkillsFilterValues.length === 0) {
       return true;
     }
 
@@ -110,12 +138,11 @@ export class UserProfileFilterComponent implements OnInit {
     }
 
     // if there is some skill in the filter array which user doesn't have -> filter this user
-    return !filterValues.some(filterValue => user.skills.find(userSkill => userSkill.skill.name === filterValue.title) == null);
+    return !this.selectedSkillsFilterValues.some(filterValue => user.skills.find(userSkill => userSkill.skill.name === filterValue.title) == null);
   }
 
-  private filterByIndustrySectors(user: UserProfileSearchResult): boolean {
-    const filterValues = this.industrySectorsFilter.filter(item => item.checked);
-    if (filterValues.length === 0) {
+  private innerFilterByIndustrySectors(user: UserProfileSearchResult): boolean {
+    if (this.selectedIndustrySectorsFilterValues.length === 0) {
       return true;
     }
 
@@ -124,17 +151,16 @@ export class UserProfileFilterComponent implements OnInit {
     }
 
     // if there is some industry sector in the filter array which user doesn't have -> filter this user
-    return !filterValues.some(filterValue => !user.industrySectors.includes(filterValue.title));
+    return !this.selectedIndustrySectorsFilterValues.some(filterValue => !user.industrySectors.includes(filterValue.title));
   }
 
-  private filterByPositionProfile(user: UserProfileSearchResult): boolean {
-    const filterValues = this.positionProfilesFilter.filter(item => item.checked);
-    if (filterValues.length === 0) {
+  private innerFilterByPositionProfile(user: UserProfileSearchResult): boolean {
+    if (this.selectedPositionsProfilesFilterValues.length === 0) {
       return true;
     }
 
     // if there is some positionProfile in the filter array which user doesn't have -> filter this user
-    return !filterValues.some(filterValue => user.positionProfile !== filterValue.title);
+    return !this.selectedPositionsProfilesFilterValues.some(filterValue => user.positionProfile !== filterValue.title);
   }
 
 }

@@ -127,41 +127,49 @@ describe('UserProfileFilterComponent', () => {
   });
 
   it('should show 2 users when "cert1" selected', () => {
-    component.certificatesFilter[0].checked = true;
-
-    component.filter();
+    const selectedFilterValues = [{title: 'cert1', checked: true}];
+    component.filterByCertificates(selectedFilterValues);
     expect(component.filteredSearchResult.length).toBe(2);
   });
 
   it('should show only second user when "cert1" & "cert2" selected', () => {
-    component.certificatesFilter[0].checked = true;
-    component.certificatesFilter[1].checked = true;
+    const selectedFilterValues = [
+      {
+        title: 'cert1',
+        checked: true
+      },
+      {
+        title: 'cert2',
+        checked: true
+      }
+    ];
+    component.filterByCertificates(selectedFilterValues);
 
-    component.filter();
     expect(component.filteredSearchResult.length).toBe(1);
     expect(component.filteredSearchResult).toContain(users[1]);
   });
 
   it('should show only first user when "Angular" selected', () => {
-    component.skillsFilter[0].checked = true;
+    const selectedFilterValues = [{title: 'Angular', checked: true}];
 
-    component.filter();
+    component.filterBySkills(selectedFilterValues);
     expect(component.filteredSearchResult.length).toBe(1);
     expect(component.filteredSearchResult).toContain(users[0]);
   });
 
   it('should not show users when "cert2" & "Angular" selected', () => {
-    component.certificatesFilter[1].checked = true;
-    component.skillsFilter[0].checked = true;
+    const selectedCertificatesFilterValues = [{title: 'cert2', checked: true}];
+    const selectedSkillsFilterValues = [{title: 'Angular', checked: true}];
 
-    component.filter();
+    component.filterBySkills(selectedSkillsFilterValues);
+    component.filterByCertificates(selectedCertificatesFilterValues);
     expect(component.filteredSearchResult.length).toBe(0);
   });
 
   it('should show only first user when "Developer" selected', () => {
-    component.positionProfilesFilter[0].checked = true;
+    const selectedFilterValues = [{title: 'Developer', checked: true}];
 
-    component.filter();
+    component.filterByPositionProfiles(selectedFilterValues);
     expect(component.filteredSearchResult.length).toBe(1);
     expect(component.filteredSearchResult).toContain(users[0]);
   });
