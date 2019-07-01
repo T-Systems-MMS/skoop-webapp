@@ -80,7 +80,7 @@
     "positionProfile": "Developer",
     "industrySectors": ["sector1", "sector2", "sector3"],
     "specializations": ["specialization1", "specialization2", "specialization3"],
-    "certificates": ["certificate1", "certificate5", "certificate6"],
+    "certificates": ["certificate1", "certificate5", "certificate6", "certificate7", "certificate8"],
     "manager": {
       "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
       "userName": "manager2",

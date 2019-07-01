@@ -42,7 +42,29 @@ describe('UserProfileSearchService', () => {
           firstName: 'Manager',
           lastName: 'Manager',
           email: 'manager.manager@skoop.io'
-        }
+        },
+        skills: [
+          {
+            skill: {
+              id: 'e6b808eb-b6bd-447d-8dce-3e0d66b17759',
+              name: 'Angular',
+              description: 'JavaScript Framework'
+            },
+            currentLevel: 2,
+            desiredLevel: 3,
+            priority: 4
+          },
+          {
+            skill: {
+              id: '460d96f3-0deb-4b6c-9653-978a4f5fe76a',
+              name: 'Spring Boot',
+              description: 'Java Framework'
+            },
+            currentLevel: 3,
+            desiredLevel: 4,
+            priority: 2
+          }
+        ]
       }
     ];
     const terms = ['Java', '"java script"'];

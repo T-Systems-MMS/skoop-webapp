@@ -14,17 +14,18 @@ import { UserProfileSearchService } from './user-profile-search.service';
 import { of } from 'rxjs';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 
+
+@Component({
+  selector: 'app-user-profile-filter',
+  template: ''
+})
+class UserProfileFilterStubComponent {
+  @Input() foundUsers: UserProfileSearchResult[];
+}
+
 describe('UserProfileSearchComponent', () => {
   let component: UserProfileSearchComponent;
   let fixture: ComponentFixture<UserProfileSearchComponent>;
-
-  @Component({
-    selector: 'app-user-profile-search-result',
-    template: ''
-  })
-  class UserProfileSearchResultStubComponent {
-    @Input() foundUsers: UserProfileSearchResult[];
-  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -35,7 +36,7 @@ describe('UserProfileSearchComponent', () => {
         ReactiveFormsModule,
         AppMaterialModule
       ],
-      declarations: [ UserProfileSearchComponent, UserProfileSearchResultStubComponent ],
+      declarations: [ UserProfileSearchComponent, UserProfileFilterStubComponent ],
       providers: [
         {
           provide: UserProfileSearchService,

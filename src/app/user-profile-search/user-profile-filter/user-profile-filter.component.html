@@ -1,0 +1,35 @@
+<div fxLayout="row">
+  <div fxFlex="15%">
+    <div *ngIf="certificatesFilter.length > 0">
+      <strong>Certifications</strong>
+      <div class="user-profile-filter-group">
+        <app-filter-group [values]="certificatesFilter" (selectionChanged)="filterByCertificates($event)"></app-filter-group>
+      </div>
+    </div>
+
+    <div *ngIf="skillsFilter.length > 0">
+      <strong>Skills</strong>
+      <div class="user-profile-filter-group">
+        <app-filter-group [values]="skillsFilter" (selectionChanged)="filterBySkills($event)"></app-filter-group>
+      </div>
+    </div>
+
+    <div *ngIf="industrySectorsFilter.length > 0">
+      <strong>Industry sectors</strong>
+      <div class="user-profile-filter-group">
+        <app-filter-group [values]="industrySectorsFilter" (selectionChanged)="filterByIndustrySectors($event)"></app-filter-group>
+      </div>
+    </div>
+
+    <div *ngIf="positionProfilesFilter.length > 0">
+      <strong>Position profile</strong>
+      <div class="user-profile-filter-group">
+        <app-filter-group [values]="positionProfilesFilter" (selectionChanged)="filterByPositionProfiles($event)"></app-filter-group>
+      </div>
+    </div>
+  </div>
+  <div fxFlex>
+    <app-user-profile-search-result [users]="filteredSearchResult"></app-user-profile-search-result>
+  </div>
+</div>
+
