@@ -21,6 +21,10 @@
       </div>
       <div fxLayout="row">
         <div fxFlex>
+          <div fxLayout="row" *ngIf="membership.startDate">
+            <div class="memberships-description-label">Period:</div>
+            <div>{{membership.startDate | date:'dd.MM.yyyy'}} - {{membership.endDate ? (membership.endDate | date:'dd.MM.yyyy') : 'N/A'}}</div>
+          </div>
           <div fxLayout="row">
             <div class="memberships-description-label">Description:</div>
             <div>{{membership.description}}</div>

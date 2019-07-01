@@ -6,6 +6,21 @@
         <input matInput id="memberships-edit-title" placeholder="Organisation, web-site, blog, etc." formControlName="name" [required]="true">
       </mat-form-field>
     </div>
+    <div fxFlex fxLayout="row" fxLayoutGap="10px">
+      <mat-form-field class="publications-new-form-field">
+        <input matInput [matDatepicker]="startDatePicker" [max]="membershipForm.controls.endDate.value"  placeholder="Start date" formControlName="startDate">
+        <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #startDatePicker></mat-datepicker>
+      </mat-form-field>
+      <mat-form-field class="publications-new-form-field">
+        <input matInput [matDatepicker]="endDatePicker" [min]="membershipForm.controls.startDate.value" [max]="maxDate"  placeholder="End date" formControlName="endDate">
+        <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div>
+      <mat-error *ngIf="membershipForm.hasError('endDateCannotBeDefinedWithoutStartDate')">End date cannot be defined without start date.</mat-error>
+    </div>
     <div fxFlex>
       <app-skill-select-input [parentForm]="membershipForm"></app-skill-select-input>
     </div>

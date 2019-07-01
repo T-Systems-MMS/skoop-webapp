@@ -20,6 +20,8 @@ import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { MatDialog } from '@angular/material/dialog';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { PopupNotificationService } from '../shared/popup-notification.service';
+import * as moment from 'moment';
+import {Util} from '../util/util';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -35,7 +37,9 @@ const membershipResponses: MembershipResponse[] = [
     name: 'Membership name',
     description: 'Additional Information',
     link: 'https://www.google.com',
-    'skills': []
+    'skills': [],
+    startDate: Util.ignoreTimezone(moment('2019-07-01')),
+    endDate: Util.ignoreTimezone(moment('2019-08-01'))
   },
   {
     id: '369710e0-5808-4318-961e-0161f9f81f1c',
@@ -49,7 +53,9 @@ const membershipResponses: MembershipResponse[] = [
         description: 'Java programming language.',
         skillGroups: null
       }
-    ]
+    ],
+    startDate: Util.ignoreTimezone(moment('2020-07-01')),
+    endDate: Util.ignoreTimezone(moment('2020-08-01'))
   }
 ];
 
