@@ -6,39 +6,17 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { AppMaterialModule } from '../../app-material.module';
-import { FilterValue } from '../filter-value';
 import { By } from '@angular/platform-browser';
 import { MatCheckbox } from '@angular/material';
 
-const filterValues: FilterValue[] = [
-  {
-    title: 'filter1',
-    checked: false
-  },
-  {
-    title: 'filter2',
-    checked: false
-  },
-  {
-    title: 'filter3',
-    checked: false
-  },
-  {
-    title: 'filter4',
-    checked: false
-  },
-  {
-    title: 'filter5',
-    checked: false
-  },
-  {
-    title: 'filter6',
-    checked: false
-  },
-  {
-    title: 'filter7',
-    checked: false
-  }
+const filterValues: string[] = [
+  'filter1',
+  'filter2',
+  'filter3',
+  'filter4',
+  'filter5',
+  'filter6',
+  'filter7'
 ];
 
 describe('FilterGroupComponent', () => {
@@ -86,7 +64,7 @@ describe('FilterGroupComponent', () => {
 
     fixture.detectChanges();
 
-    expect(spy).toHaveBeenCalledWith([{title: filterValues[0].title, checked: true}]);
+    expect(spy).toHaveBeenCalledWith([{title: filterValues[0], checked: true}]);
   });
 
   it('should emit selectionChanged event with empty array', () => {
@@ -133,12 +111,7 @@ describe('FilterGroupComponent', () => {
   });
 
   it('should not display "Show all"/"Show less" link when filter count is less than @maxCountToShow', () => {
-    component.values = [
-      {
-        title: 'filter1',
-        checked: false
-      }
-    ];
+    component.values = ['filter1'];
     fixture.detectChanges();
 
     const linkElem = fixture.debugElement.query(By.css('a'));

@@ -13,10 +13,10 @@ export class UserProfileFilterComponent implements OnInit {
   @Input() foundUsers: UserProfileSearchResult[];
   public filteredSearchResult: UserProfileSearchResult[];
 
-  public certificatesFilter: FilterValue[];
-  public skillsFilter: FilterValue[];
-  public industrySectorsFilter: FilterValue[];
-  public positionProfilesFilter: FilterValue[];
+  public certificatesFilter: string[];
+  public skillsFilter: string[];
+  public industrySectorsFilter: string[];
+  public positionProfilesFilter: string[];
 
   private selectedCertificatesFilterValues: FilterValue[];
   private selectedSkillsFilterValues: FilterValue[];
@@ -69,17 +69,17 @@ export class UserProfileFilterComponent implements OnInit {
     );
   }
 
-  private getCertificatesValues(): FilterValue[] {
+  private getCertificatesValues(): string[] {
     return this.getFilterValuesFor(FilterName.CERTIFICATIONS);
   }
 
-  private getSkillsValues(): FilterValue[] {
-    const filterValues: FilterValue[] = [];
+  private getSkillsValues(): string[] {
+    const filterValues: string[] = [];
     this.foundUsers.forEach(user => {
       if (user.skills) {
         user.skills.forEach(value => {
-          if (!filterValues.find(filter => filter.title === value.skill.name)) {
-            filterValues.push({title: value.skill.name, checked: false});
+          if (!filterValues.find(filterValue => filterValue === value.skill.name)) {
+            filterValues.push(value.skill.name);
           }
         });
       }
@@ -87,27 +87,27 @@ export class UserProfileFilterComponent implements OnInit {
     return filterValues;
   }
 
-  private getIndustrySectorsValues(): FilterValue[] {
+  private getIndustrySectorsValues(): string[] {
     return this.getFilterValuesFor(FilterName.INDUSTRY_SECTORS);
   }
 
-  private getPositionProfileValues(): FilterValue[] {
-    const filterValues: FilterValue[] = [];
+  private getPositionProfileValues(): string[] {
+    const filterValues: string[] = [];
     this.foundUsers.forEach(user => {
-      if (!filterValues.find(filter => filter.title === user.positionProfile)) {
-        filterValues.push({title: user.positionProfile, checked: false});
+      if (!filterValues.find(filterValue => filterValue === user.positionProfile)) {
+        filterValues.push(user.positionProfile);
       }
     });
     return filterValues;
   }
 
-  private getFilterValuesFor(filterName: string): FilterValue[] {
-    const filterValues: FilterValue[] = [];
+  private getFilterValuesFor(filterName: string): string[] {
+    const filterValues: string[] = [];
     this.foundUsers.forEach(user => {
       if (user[filterName]) {
         user[filterName].forEach(value => {
-          if (!filterValues.find(filter => filter.title === value)) {
-            filterValues.push({title: value, checked: false});
+          if (!filterValues.find(filterValue => filterValue === value)) {
+            filterValues.push(value);
           }
         });
       }

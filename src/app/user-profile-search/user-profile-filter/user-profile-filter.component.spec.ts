@@ -117,13 +117,13 @@ describe('UserProfileFilterComponent', () => {
 
   it('should fill in filter arrays', () => {
     expect(component.certificatesFilter)
-      .toEqual([{title: 'cert1', checked: false}, {title: 'cert2', checked: false}, {title: 'cert3', checked: false}]);
+      .toEqual(['cert1', 'cert2', 'cert3']);
     expect(component.skillsFilter)
-      .toEqual([{title: 'Angular', checked: false}, {title: 'Spring Boot', checked: false}]);
+      .toEqual(['Angular', 'Spring Boot']);
     expect(component.industrySectorsFilter)
       .toEqual([]);
     expect(component.positionProfilesFilter)
-      .toEqual([{title: 'Developer', checked: false}, {title: 'Tester', checked: false}]);
+      .toEqual(['Developer', 'Tester']);
   });
 
   it('should show 2 users when "cert1" selected', () => {

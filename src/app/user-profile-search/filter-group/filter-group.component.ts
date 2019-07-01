@@ -9,7 +9,7 @@ import { MatCheckboxChange } from '@angular/material';
 })
 export class FilterGroupComponent implements OnInit {
 
-  @Input() values: FilterValue[];
+  @Input() values: string[];
   @Input() maxCountToShow = 5;
   /**
    * Emit selected filter values
@@ -17,29 +17,22 @@ export class FilterGroupComponent implements OnInit {
   @Output() selectionChanged: EventEmitter<FilterValue[]> = new EventEmitter();
 
   public countLimit = this.maxCountToShow;
+  public filterValues: FilterValue[];
   private currentSelection: FilterValue[] = [];
 
   constructor() {
   }
 
   ngOnInit() {
+    this.filterValues = this.values.map(item => {
+      return {title: item, checked: false}
+    });
   }
 
   onChange(event: MatCheckboxChange) {
-    if (event.checked) {
-      const filterValue: FilterValue = {
-        title: event.source.id,
-        checked: event.checked
-      };
+    this.filterValues.find(value => value.title === event.source.id).checked = event.checked;
 
-      this.currentSelection.push(filterValue);
-    } else {
-      const index = this.currentSelection.findIndex(value => value.title === event.source.id);
-      if (index > -1) {
-        this.currentSelection.splice(index, 1);
-      }
-    }
-
+    this.currentSelection = this.filterValues.filter(item => item.checked);
     this.selectionChanged.emit(this.currentSelection);
   }
 
