@@ -11,7 +11,7 @@ import { AppMaterialModule } from '../../app-material.module';
 import { UserProfileSearchResult } from '../user-profile-search-result';
 
 @Component({
-  selector: 'app-checkboxes-group',
+  selector: 'app-filter-group',
   template: ''
 })
 class CheckboxesGroupStubComponent {

@@ -3,28 +3,28 @@
     <div *ngIf="certificatesFilter.length > 0">
       <strong>Certifications</strong>
       <div class="user-profile-filter-group">
-        <app-checkboxes-group [values]="certificatesFilter" (selectionChanged)="filter()"></app-checkboxes-group>
+        <app-filter-group [values]="certificatesFilter" (selectionChanged)="filter()"></app-filter-group>
       </div>
     </div>
 
     <div *ngIf="skillsFilter.length > 0">
       <strong>Skills</strong>
       <div class="user-profile-filter-group">
-        <app-checkboxes-group [values]="skillsFilter" (selectionChanged)="filter()"></app-checkboxes-group>
+        <app-filter-group [values]="skillsFilter" (selectionChanged)="filter()"></app-filter-group>
       </div>
     </div>
 
     <div *ngIf="industrySectorsFilter.length > 0">
       <strong>Industry sectors</strong>
       <div class="user-profile-filter-group">
-        <app-checkboxes-group [values]="industrySectorsFilter" (selectionChanged)="filter()"></app-checkboxes-group>
+        <app-filter-group [values]="industrySectorsFilter" (selectionChanged)="filter()"></app-filter-group>
       </div>
     </div>
 
     <div *ngIf="positionProfilesFilter.length > 0">
       <strong>Position profile</strong>
       <div class="user-profile-filter-group">
-        <app-checkboxes-group [values]="positionProfilesFilter" (selectionChanged)="filter()"></app-checkboxes-group>
+        <app-filter-group [values]="positionProfilesFilter" (selectionChanged)="filter()"></app-filter-group>
       </div>
     </div>
   </div>

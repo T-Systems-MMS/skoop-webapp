@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CheckboxesGroupComponent } from './checkboxes-group.component';
+import { FilterGroupComponent } from './filter-group.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LayoutModule } from '@angular/cdk/layout';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -41,9 +41,9 @@ const filterValues: FilterValue[] = [
   }
 ];
 
-describe('CheckboxesGroupComponent', () => {
-  let component: CheckboxesGroupComponent;
-  let fixture: ComponentFixture<CheckboxesGroupComponent>;
+describe('FilterGroupComponent', () => {
+  let component: FilterGroupComponent;
+  let fixture: ComponentFixture<FilterGroupComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -54,13 +54,13 @@ describe('CheckboxesGroupComponent', () => {
         FormsModule,
         AppMaterialModule
       ],
-      declarations: [ CheckboxesGroupComponent ]
+      declarations: [ FilterGroupComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CheckboxesGroupComponent);
+    fixture = TestBed.createComponent(FilterGroupComponent);
     component = fixture.componentInstance;
     component.values = filterValues;
     fixture.detectChanges();

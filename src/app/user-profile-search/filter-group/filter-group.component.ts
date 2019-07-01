@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FilterValue } from '../filter-value';
 
 @Component({
-  selector: 'app-checkboxes-group',
-  templateUrl: './checkboxes-group.component.html',
-  styleUrls: ['./checkboxes-group.component.scss']
+  selector: 'app-filter-group',
+  templateUrl: './filter-group.component.html',
+  styleUrls: ['./filter-group.component.scss']
 })
-export class CheckboxesGroupComponent implements OnInit {
+export class FilterGroupComponent implements OnInit {
 
   @Input() values: FilterValue[];
   @Input() maxCountToShow = 5;
