@@ -15,7 +15,7 @@ import { of } from 'rxjs';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MembershipService } from './membership.service';
 import * as moment from 'moment';
-import {Util} from '../util/util';
+import { Util } from '../util/util';
 
 @Component({
   selector: 'app-skill-select-input',

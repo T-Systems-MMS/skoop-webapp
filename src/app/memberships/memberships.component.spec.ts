@@ -21,7 +21,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { BrowserDynamicTestingModule } from '@angular/platform-browser-dynamic/testing';
 import { PopupNotificationService } from '../shared/popup-notification.service';
 import * as moment from 'moment';
-import {Util} from '../util/util';
+import { Util } from '../util/util';
 
 @Component({
   selector: 'app-skill-select-input',

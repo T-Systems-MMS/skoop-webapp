@@ -1,13 +1,13 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ValidationErrors, Validators} from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MembershipService } from './membership.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MembershipResponse } from './membership-response';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MembershipRequest } from './membership-request';
-import {Util} from '../util/util';
-import {Moment} from 'moment';
+import { Util } from '../util/util';
+import { Moment } from 'moment';
 import * as moment from 'moment';
 
 @Component({
