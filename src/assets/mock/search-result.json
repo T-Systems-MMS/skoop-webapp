@@ -10,6 +10,7 @@
     "industrySectors": ["sector1", "sector2", "sector3"],
     "specializations": ["specialization1", "specialization2", "specialization3"],
     "certificates": ["certificate1", "certificate2", "certificate3"],
+    "department": "Department",
     "manager": {
       "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
       "userName": "manager",
@@ -22,6 +23,15 @@
         "skill": {
           "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
           "name": "Mockito"
+        },
+        "currentLevel": 2,
+        "desiredLevel": 3,
+        "priority": 4
+      },
+      {
+        "skill": {
+          "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17111",
+          "name": "English"
         },
         "currentLevel": 2,
         "desiredLevel": 3,
@@ -40,6 +50,7 @@
     "industrySectors": ["sector1", "sector2", "sector3"],
     "specializations": ["specialization1", "specialization2", "specialization3"],
     "certificates": ["certificate1", "certificate3", "certificate6"],
+    "department": "Department",
     "manager": {
       "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
       "userName": "manager",
@@ -67,6 +78,15 @@
         "currentLevel": 3,
         "desiredLevel": 4,
         "priority": 2
+      },
+      {
+        "skill": {
+          "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17111",
+          "name": "English"
+        },
+        "currentLevel": 2,
+        "desiredLevel": 3,
+        "priority": 4
       }
     ]
   },
@@ -81,6 +101,7 @@
     "industrySectors": ["sector1", "sector2", "sector3"],
     "specializations": ["specialization1", "specialization2", "specialization3"],
     "certificates": ["certificate1", "certificate5", "certificate6", "certificate7", "certificate8"],
+    "department": "Department",
     "manager": {
       "id": "e6b808eb-b6bd-447d-8dce-3e0d66b17759",
       "userName": "manager2",
