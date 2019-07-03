@@ -6,6 +6,7 @@ import { UserSkill } from '../user-skills/user-skill';
 import { UserSkillsService } from '../user-skills/user-skills.service';
 import { UserIdentityService } from '../shared/user-identity.service';
 import { User } from '../users/user';
+import { UpdateUserSkillRequest } from './update-user-skill-request';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +37,10 @@ export class MySkillsService {
         userIdentity.userId, skillName, currentLevel, desiredLevel, priority)));
   }
 
-  updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number): Observable<UserSkill> {
+  updateCurrentUserSkill(skillId: string, requestData: UpdateUserSkillRequest): Observable<UserSkill> {
     return this.userIdentityService.getUserIdentity()
       .pipe(switchMap(userIdentity => this.userSkillsService.updateUserSkill(
-        userIdentity.userId, skillId, currentLevel, desiredLevel, priority)));
+        userIdentity.userId, skillId, requestData)));
   }
 
   deleteCurrentUserSkill(skillId: string): Observable<void> {

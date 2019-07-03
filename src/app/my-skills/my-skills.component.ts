@@ -10,6 +10,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { DeleteConfirmationDialogComponent } from '../shared/delete-confirmation-dialog/delete-confirmation-dialog.component';
 import { MySkillsService } from './my-skills.service';
+import { UpdateUserSkillRequest } from './update-user-skill-request';
 
 @Component({
   selector: 'app-my-skills',
@@ -61,7 +62,8 @@ export class MySkillsComponent implements OnInit {
         },
         currentLevel: userSkill.currentLevel,
         desiredLevel: userSkill.desiredLevel,
-        priority: userSkill.priority
+        priority: userSkill.priority,
+        favorite: userSkill.favorite
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadUserSkills());
   }
@@ -77,12 +79,20 @@ export class MySkillsComponent implements OnInit {
           .subscribe(() => {
             this.loadUserSkills();
           }, (errorResponse: HttpErrorResponse) => {
-            this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-            // Dirty fix because of: https://github.com/angular/angular/issues/17772
-            this.changeDetector.markForCheck();
+            this.handleErrorResponse(errorResponse);
           });
       }
     });
+  }
+
+  markAsFavorite(userSkill: UserSkillView) {
+    userSkill.favorite = true;
+    this.editUserSkill(userSkill);
+  }
+
+  removeFromFavorites(userSkill: UserSkillView) {
+    userSkill.favorite = false;
+    this.editUserSkill(userSkill);
   }
 
   private loadUserSkills(): void {
@@ -94,7 +104,8 @@ export class MySkillsComponent implements OnInit {
         },
         currentLevel: userSkill.currentLevel,
         desiredLevel: userSkill.desiredLevel,
-        priority: userSkill.priority
+        priority: userSkill.priority,
+        favorite: userSkill.favorite
       }))))
       .subscribe(userSkills => {
         this.userSkills = userSkills.sort((a, b) => {
@@ -104,10 +115,30 @@ export class MySkillsComponent implements OnInit {
           return a.skill.name.toLocaleLowerCase().localeCompare(b.skill.name.toLocaleLowerCase());
         });
       }, (errorResponse: HttpErrorResponse) => {
-        this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
-        // Dirty fix because of: https://github.com/angular/angular/issues/17772
-        this.changeDetector.markForCheck();
+        this.handleErrorResponse(errorResponse);
       });
+  }
+
+  private editUserSkill(userSkill: UserSkillView) {
+    const requestData: UpdateUserSkillRequest = {
+      currentLevel: userSkill.currentLevel,
+      desiredLevel: userSkill.desiredLevel,
+      priority: userSkill.priority,
+      favorite: userSkill.favorite
+    };
+    this.mySkillsService.updateCurrentUserSkill(
+      userSkill.skill.id, requestData)
+      .subscribe(() => {
+        this.loadUserSkills();
+      }, (errorResponse: HttpErrorResponse) => {
+        this.handleErrorResponse(errorResponse);
+      });
+  }
+
+  private handleErrorResponse(errorResponse: HttpErrorResponse) {
+    this.errorMessage = this.globalErrorHandlerService.createFullMessage(errorResponse);
+    // Dirty fix because of: https://github.com/angular/angular/issues/17772
+    this.changeDetector.markForCheck();
   }
 }
 
@@ -116,6 +147,7 @@ interface UserSkillView {
   currentLevel: number;
   desiredLevel: number;
   priority: number;
+  favorite: boolean;
   coaches?: UserView[];
 }
 

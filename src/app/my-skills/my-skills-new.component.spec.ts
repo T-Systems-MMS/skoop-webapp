@@ -110,7 +110,8 @@ describe('MySkillsNewComponent', () => {
       },
       currentLevel: 2,
       desiredLevel: 3,
-      priority: 4
+      priority: 4,
+      favorite: false
     };
     // Spy on service methods used during interaction with the component.
     const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;
@@ -148,7 +149,8 @@ describe('MySkillsNewComponent', () => {
       },
       currentLevel: 2,
       desiredLevel: 3,
-      priority: 4
+      priority: 4,
+      favorite: false
     };
     // Spy on service methods used during interaction with the component.
     const mySkillsService = TestBed.get(MySkillsService) as MySkillsService;

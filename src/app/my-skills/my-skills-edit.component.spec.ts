@@ -17,9 +17,10 @@ import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
 import { SelectedValueTitleDirective } from './selected-value-title.directive';
 import { By } from '@angular/platform-browser';
+import { UpdateUserSkillRequest } from './update-user-skill-request';
 
 const mySkillsServiceStub: Partial<MySkillsService> = {
-  updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
+  updateCurrentUserSkill(skillId: string, requestData: UpdateUserSkillRequest):
     Observable<UserSkill> { return null; }
 };
 
@@ -41,7 +42,8 @@ const userSkillTestData: UserSkillView = {
   },
   currentLevel: 2,
   desiredLevel: 3,
-  priority: 4
+  priority: 4,
+  favorite: true
 };
 
 const levelDescription: StepDescription = {

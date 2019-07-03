@@ -9,6 +9,7 @@ import { UserSkillView } from '../shared/skill-card/user-skill-view';
 import { StepDescription } from './step-description';
 import { ExternalAssetsService } from '../shared/external-assets.service';
 import { MySkillsDialogComponentTrait } from './my-skills-dialog-component-trait';
+import { UpdateUserSkillRequest } from './update-user-skill-request';
 
 @Component({
   selector: 'app-my-skills-edit',
@@ -49,8 +50,14 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
   saveUserSkill(): void {
     this.operationInProgress = true;
     this.errorMessage = null;
+    const requestData: UpdateUserSkillRequest = {
+      currentLevel: this.currentLevel.value,
+      desiredLevel: this.desiredLevel.value,
+      priority: this.priority.value,
+      favorite: this.userSkill.favorite
+    };
     this.mySkillsService.updateCurrentUserSkill(
-      this.userSkill.skill.id, this.currentLevel.value, this.desiredLevel.value, this.priority.value)
+      this.userSkill.skill.id, requestData)
       .subscribe(() => {
         // Return 'true' to indicate that the user skill was changed.
         this.bottomSheet.dismiss(true);

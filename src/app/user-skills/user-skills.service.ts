@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { UserSkill } from './user-skill';
 import { User } from '../users/user';
+import { UpdateUserSkillRequest } from '../my-skills/update-user-skill-request';
 
 @Injectable({
   providedIn: 'root'
@@ -48,18 +49,9 @@ export class UserSkillsService {
       });
   }
 
-  updateUserSkill(userId: string, skillId: string, currentLevel: number, desiredLevel: number, priority: number): Observable<UserSkill> {
+  updateUserSkill(userId: string, skillId: string, requestData: UpdateUserSkillRequest): Observable<UserSkill> {
     return this.httpClient.put<UserSkill>(this.userSkillUrlPattern.replace('{userId}', userId).replace('{skillId}', skillId),
-      {
-        currentLevel,
-        desiredLevel,
-        priority
-      },
-      {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      });
+      requestData);
   }
 
   deleteUserSkill(userId: string, skillId: string): Observable<void> {
