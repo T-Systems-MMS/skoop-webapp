@@ -1,11 +1,14 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { MembershipService } from './membership.service';
 import { GlobalErrorHandlerService } from '../error/global-error-handler.service';
 import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MembershipResponse } from './membership-response';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MembershipRequest } from './membership-request';
+import { Util } from '../util/util';
+import { Moment } from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-memberships-edit',
@@ -16,6 +19,7 @@ export class MembershipsEditComponent implements OnInit {
 
   membershipForm: FormGroup;
   errorMessage: string = null;
+  maxDate: Date = new Date();
 
   constructor(@Inject(MAT_BOTTOM_SHEET_DATA) public membership: MembershipResponse,
               private membershipService: MembershipService,
@@ -31,6 +35,13 @@ export class MembershipsEditComponent implements OnInit {
       description: new FormControl(this.membership.description),
       link: new FormControl(this.membership.link),
       skills: new FormControl((this.membership.skills || []).map(item => item.name)),
+      startDate: new FormControl(moment(this.membership.startDate).isValid() ? moment(this.membership.startDate) : null),
+      endDate: new FormControl(moment(this.membership.endDate).isValid() ? moment(this.membership.endDate) : null)
+    }, { validators: (control: FormGroup): ValidationErrors | null => {
+        const startDate = control.get('startDate');
+        const endDate = control.get('endDate');
+        return endDate && startDate && !startDate.value && endDate.value ? { 'endDateCannotBeDefinedWithoutStartDate': true } : null;
+      }
     });
   }
 
@@ -59,7 +70,9 @@ export class MembershipsEditComponent implements OnInit {
       name: this.membershipForm.get('name').value,
       description: this.membershipForm.get('description').value,
       link: this.membershipForm.get('link').value,
-      skills: this.skillsArray || []
+      skills: this.skillsArray || [],
+      startDate: Util.ignoreTimezone(this.membershipForm.get('startDate').value as Moment),
+      endDate: Util.ignoreTimezone(this.membershipForm.get('endDate').value as Moment)
     } as MembershipRequest;
   }
 

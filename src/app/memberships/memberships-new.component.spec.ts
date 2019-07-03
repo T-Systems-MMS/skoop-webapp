@@ -14,6 +14,8 @@ import { GlobalErrorHandlerService } from '../error/global-error-handler.service
 import { of } from 'rxjs';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { MembershipService } from './membership.service';
+import * as moment from 'moment';
+import { Util } from '../util/util';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -27,7 +29,9 @@ const membershipRequest: MembershipRequest = {
   name: 'membership name',
   description: 'Additional Information',
   link: 'https://www.google.com',
-  skills: ['Skill1', 'Skill2']
+  skills: ['Skill1', 'Skill2'],
+  startDate: Util.ignoreTimezone(moment('2019-07-01')),
+  endDate: Util.ignoreTimezone(moment('2019-08-01'))
 };
 
 const membershipResponse: MembershipResponse = {
@@ -44,7 +48,9 @@ const membershipResponse: MembershipResponse = {
       id: '4325345345',
       name: 'Skill2'
     },
-  ]
+  ],
+  startDate: Util.ignoreTimezone(moment('2019-07-01')),
+  endDate: Util.ignoreTimezone(moment('2019-08-01'))
 };
 
 describe('MembershipsNewComponent', () => {
@@ -92,6 +98,8 @@ describe('MembershipsNewComponent', () => {
     component.membershipForm.get('description').setValue(membershipRequest.description);
     component.membershipForm.get('link').setValue(membershipRequest.link);
     component.membershipForm.get('skills').setValue(membershipRequest.skills);
+    component.membershipForm.get('startDate').setValue(membershipRequest.startDate);
+    component.membershipForm.get('endDate').setValue(membershipRequest.endDate);
 
     component.addMembership();
 

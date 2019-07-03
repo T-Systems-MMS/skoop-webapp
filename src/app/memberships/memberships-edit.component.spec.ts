@@ -14,7 +14,8 @@ import { MAT_BOTTOM_SHEET_DATA, MatBottomSheetRef } from '@angular/material/bott
 import { of } from 'rxjs';
 import { MembershipService } from './membership.service';
 import { MembershipRequest } from './membership-request';
-
+import * as moment from 'moment';
+import { Util } from '../util/util';
 
 @Component({
   selector: 'app-skill-select-input',
@@ -36,7 +37,9 @@ const membershipEditData: MembershipResponse = {
       description: 'Java programming language.',
       skillGroups: null
     }
-  ]
+  ],
+  startDate: Util.ignoreTimezone(moment('2019-07-01')),
+  endDate: Util.ignoreTimezone(moment('2019-08-01'))
 };
 
 describe('MembershipsEditComponent', () => {
@@ -88,6 +91,8 @@ describe('MembershipsEditComponent', () => {
     expect(component.membershipForm.get('description').value).toBe(membershipEditData.description);
     expect(component.membershipForm.get('link').value).toBe(membershipEditData.link);
     expect(component.membershipForm.get('skills').value).toEqual(membershipEditData.skills.map(item => item.name));
+    expect(component.membershipForm.get('startDate').value).toEqual(membershipEditData.startDate);
+    expect(component.membershipForm.get('endDate').value).toEqual(membershipEditData.endDate);
   });
 
   it('should send a request to update a membership', () => {
@@ -96,13 +101,17 @@ describe('MembershipsEditComponent', () => {
       name: 'new title',
       description: membershipEditData.description,
       link: 'https://www.new-google.com',
-      skills: ['Skill1']
+      skills: ['Skill1'],
+      startDate: membershipEditData.startDate,
+      endDate: membershipEditData.endDate
     };
 
     component.membershipForm.get('name').setValue(membershipRequest.name);
     component.membershipForm.get('description').setValue(membershipRequest.description);
     component.membershipForm.get('link').setValue(membershipRequest.link);
     component.membershipForm.get('skills').setValue(membershipRequest.skills);
+    component.membershipForm.get('startDate').setValue(membershipRequest.startDate);
+    component.membershipForm.get('endDate').setValue(membershipRequest.endDate);
 
     component.editMembership();
     const membershipService: MembershipService = TestBed.get(MembershipService);
