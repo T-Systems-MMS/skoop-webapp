@@ -5,5 +5,5 @@ export interface UserSkill {
   currentLevel: number;
   desiredLevel: number;
   priority: number;
-  favorite?: boolean;
+  favourite?: boolean;
 }

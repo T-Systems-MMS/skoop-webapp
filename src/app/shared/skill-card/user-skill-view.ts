@@ -5,5 +5,5 @@ export interface UserSkillView {
   currentLevel: number;
   desiredLevel: number;
   priority: number;
-  favorite?: boolean
+  favourite?: boolean;
 }

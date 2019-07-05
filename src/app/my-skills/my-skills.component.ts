@@ -63,7 +63,7 @@ export class MySkillsComponent implements OnInit {
         currentLevel: userSkill.currentLevel,
         desiredLevel: userSkill.desiredLevel,
         priority: userSkill.priority,
-        favorite: userSkill.favorite
+        favourite: userSkill.favourite
       }
     }).afterDismissed().pipe(filter(Boolean)).subscribe(() => this.loadUserSkills());
   }
@@ -86,12 +86,12 @@ export class MySkillsComponent implements OnInit {
   }
 
   markAsFavorite(userSkill: UserSkillView) {
-    userSkill.favorite = true;
+    userSkill.favourite = true;
     this.editUserSkill(userSkill);
   }
 
   removeFromFavorites(userSkill: UserSkillView) {
-    userSkill.favorite = false;
+    userSkill.favourite = false;
     this.editUserSkill(userSkill);
   }
 
@@ -105,7 +105,7 @@ export class MySkillsComponent implements OnInit {
         currentLevel: userSkill.currentLevel,
         desiredLevel: userSkill.desiredLevel,
         priority: userSkill.priority,
-        favorite: userSkill.favorite
+        favourite: userSkill.favourite
       }))))
       .subscribe(userSkills => {
         this.userSkills = userSkills.sort((a, b) => {
@@ -124,7 +124,7 @@ export class MySkillsComponent implements OnInit {
       currentLevel: userSkill.currentLevel,
       desiredLevel: userSkill.desiredLevel,
       priority: userSkill.priority,
-      favorite: userSkill.favorite
+      favourite: userSkill.favourite
     };
     this.mySkillsService.updateCurrentUserSkill(
       userSkill.skill.id, requestData)
@@ -147,7 +147,7 @@ interface UserSkillView {
   currentLevel: number;
   desiredLevel: number;
   priority: number;
-  favorite: boolean;
+  favourite: boolean;
   coaches?: UserView[];
 }
 

@@ -8,7 +8,7 @@
 
   <app-skill-card *ngFor="let userSkill of userSkills" [userSkill]="userSkill">
     <div fxFlex="none" buttonContent>
-      <button *ngIf="userSkill.favorite; else mark_as_favorite_content" mat-icon-button
+      <button *ngIf="userSkill.favourite; else mark_as_favorite_content" mat-icon-button
               (click)="removeFromFavorites(userSkill)" title="Remove from favorites" aria-label="Remove from favorites">
         <mat-icon>star</mat-icon>
       </button>

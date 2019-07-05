@@ -67,7 +67,7 @@ describe('UserSkillsService', () => {
         currentLevel: 2,
         desiredLevel: 3,
         priority: 4,
-        favorite: false
+        favourite: false
       },
       {
         skill: {
@@ -78,7 +78,7 @@ describe('UserSkillsService', () => {
         currentLevel: 3,
         desiredLevel: 4,
         priority: 2,
-        favorite: false
+        favourite: false
       }
     ];
 
@@ -124,7 +124,7 @@ describe('UserSkillsService', () => {
       currentLevel: 2,
       desiredLevel: 3,
       priority: 4,
-      favorite: false
+      favourite: false
     };
 
     service.createUserSkill('123', 'Angular', 2, 3, 4).subscribe(userSkill => {
@@ -158,14 +158,14 @@ describe('UserSkillsService', () => {
       currentLevel: 3,
       desiredLevel: 4,
       priority: 0,
-      favorite: true
+      favourite: true
     };
 
     const requestData: UpdateUserSkillRequest = {
       currentLevel: 3,
       desiredLevel: 4,
       priority: 0,
-      favorite: true
+      favourite: true
     };
 
     service.updateUserSkill('123', '456', requestData).subscribe(userSkill => {
@@ -182,7 +182,7 @@ describe('UserSkillsService', () => {
       currentLevel: 3,
       desiredLevel: 4,
       priority: 0,
-      favorite: true
+      favourite: true
     });
 
     request.flush(mockUserSkillData);

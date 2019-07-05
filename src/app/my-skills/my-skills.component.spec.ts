@@ -32,7 +32,7 @@ const initialUserSkills: UserSkill[] = [
     currentLevel: 2,
     desiredLevel: 3,
     priority: 4,
-    favorite: false
+    favourite: false
   },
   {
     skill: {
@@ -43,7 +43,7 @@ const initialUserSkills: UserSkill[] = [
     currentLevel: 1,
     desiredLevel: 2,
     priority: 3,
-    favorite: false
+    favourite: false
   }
 ];
 
@@ -144,14 +144,14 @@ describe('MySkillsComponent', () => {
     expect(coaches.nativeElement.textContent).toContain('Tina Testing (testing)');
   }));
 
-  it('should mark the skill as favorite', fakeAsync(() => {
+  it('should mark the skill as favourite', fakeAsync(() => {
     const spy = spyOn(TestBed.get(MySkillsService) as MySkillsService, 'updateCurrentUserSkill')
       .and.returnValue(of<UserSkill[]>(initialUserSkills));
     const expectedRequest: UpdateUserSkillRequest = {
       currentLevel: component.userSkills[0].currentLevel,
       desiredLevel: component.userSkills[0].desiredLevel,
       priority: component.userSkills[0].priority,
-      favorite: true
+      favourite: true
     };
     component.markAsFavorite(component.userSkills[0]);
     fixture.detectChanges();
@@ -166,7 +166,7 @@ describe('MySkillsComponent', () => {
       currentLevel: component.userSkills[0].currentLevel,
       desiredLevel: component.userSkills[0].desiredLevel,
       priority: component.userSkills[0].priority,
-      favorite: false
+      favourite: false
     };
     component.removeFromFavorites(component.userSkills[0]);
     fixture.detectChanges();

@@ -43,7 +43,7 @@ const userSkillTestData: UserSkillView = {
   currentLevel: 2,
   desiredLevel: 3,
   priority: 4,
-  favorite: true
+  favourite: true
 };
 
 const levelDescription: StepDescription = {

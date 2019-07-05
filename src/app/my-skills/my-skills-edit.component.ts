@@ -54,7 +54,7 @@ export class MySkillsEditComponent extends MySkillsDialogComponentTrait implemen
       currentLevel: this.currentLevel.value,
       desiredLevel: this.desiredLevel.value,
       priority: this.priority.value,
-      favorite: this.userSkill.favorite
+      favourite: this.userSkill.favourite
     };
     this.mySkillsService.updateCurrentUserSkill(
       this.userSkill.skill.id, requestData)
