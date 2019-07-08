@@ -1,9 +1,10 @@
-import { TestBed, inject, async } from '@angular/core/testing';
+import { TestBed, async } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 
 import { environment } from '../../environments/environment';
 import { UserSkillsService } from './user-skills.service';
 import { UserSkill } from './user-skill';
+import { UpdateUserSkillRequest } from '../my-skills/update-user-skill-request';
 
 describe('UserSkillsService', () => {
   let service: UserSkillsService;
@@ -65,7 +66,8 @@ describe('UserSkillsService', () => {
         },
         currentLevel: 2,
         desiredLevel: 3,
-        priority: 4
+        priority: 4,
+        favourite: false
       },
       {
         skill: {
@@ -75,7 +77,8 @@ describe('UserSkillsService', () => {
         },
         currentLevel: 3,
         desiredLevel: 4,
-        priority: 2
+        priority: 2,
+        favourite: false
       }
     ];
 
@@ -120,7 +123,8 @@ describe('UserSkillsService', () => {
       },
       currentLevel: 2,
       desiredLevel: 3,
-      priority: 4
+      priority: 4,
+      favourite: false
     };
 
     service.createUserSkill('123', 'Angular', 2, 3, 4).subscribe(userSkill => {
@@ -153,10 +157,18 @@ describe('UserSkillsService', () => {
       },
       currentLevel: 3,
       desiredLevel: 4,
-      priority: 0
+      priority: 0,
+      favourite: true
     };
 
-    service.updateUserSkill('123', '456', 3, 4, 0).subscribe(userSkill => {
+    const requestData: UpdateUserSkillRequest = {
+      currentLevel: 3,
+      desiredLevel: 4,
+      priority: 0,
+      favourite: true
+    };
+
+    service.updateUserSkill('123', '456', requestData).subscribe(userSkill => {
       expect(userSkill).toEqual(mockUserSkillData);
     });
 
@@ -166,11 +178,11 @@ describe('UserSkillsService', () => {
     });
 
     expect(request.request.responseType).toEqual('json');
-    expect(request.request.headers.get('Content-Type')).toEqual('application/json');
     expect(request.request.body).toEqual({
       currentLevel: 3,
       desiredLevel: 4,
-      priority: 0
+      priority: 0,
+      favourite: true
     });
 
     request.flush(mockUserSkillData);

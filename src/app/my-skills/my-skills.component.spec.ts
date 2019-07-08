@@ -11,12 +11,15 @@ import { User } from '../users/user';
 import { MySkillsComponent } from './my-skills.component';
 import { MySkillsService } from './my-skills.service';
 import { SkillCardComponent } from '../shared/skill-card/skill-card.component';
+import { UpdateUserSkillRequest } from './update-user-skill-request';
 
 // Stub only those methods of the service which are used by the component.
 const mySkillsServiceStub: Partial<MySkillsService> = {
   getCurrentUserSkills(): Observable<UserSkill[]> { return null; },
   getCurrentUserSkillCoaches(skillId: string): Observable<User[]> { return null; },
-  deleteCurrentUserSkill(skillId: string): Observable<void> { return null; }
+  deleteCurrentUserSkill(skillId: string): Observable<void> { return null; },
+  updateCurrentUserSkill(skillId: string, requestData: UpdateUserSkillRequest):
+    Observable<UserSkill> { return null; }
 };
 
 const initialUserSkills: UserSkill[] = [
@@ -28,7 +31,8 @@ const initialUserSkills: UserSkill[] = [
     },
     currentLevel: 2,
     desiredLevel: 3,
-    priority: 4
+    priority: 4,
+    favourite: false
   },
   {
     skill: {
@@ -38,7 +42,8 @@ const initialUserSkills: UserSkill[] = [
     },
     currentLevel: 1,
     desiredLevel: 2,
-    priority: 3
+    priority: 3,
+    favourite: false
   }
 ];
 
@@ -137,5 +142,35 @@ describe('MySkillsComponent', () => {
     expect(coaches).toBeDefined();
     expect(coaches.nativeElement.textContent).toContain('Toni Tester (tester)');
     expect(coaches.nativeElement.textContent).toContain('Tina Testing (testing)');
+  }));
+
+  it('should mark the skill as favourite', fakeAsync(() => {
+    const spy = spyOn(TestBed.get(MySkillsService) as MySkillsService, 'updateCurrentUserSkill')
+      .and.returnValue(of<UserSkill[]>(initialUserSkills));
+    const expectedRequest: UpdateUserSkillRequest = {
+      currentLevel: component.userSkills[0].currentLevel,
+      desiredLevel: component.userSkills[0].desiredLevel,
+      priority: component.userSkills[0].priority,
+      favourite: true
+    };
+    component.markAsFavorite(component.userSkills[0]);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(component.userSkills[0].skill.id, expectedRequest);
+  }));
+
+  it('should remove the skill from the favourites', fakeAsync(() => {
+    const spy = spyOn(TestBed.get(MySkillsService) as MySkillsService, 'updateCurrentUserSkill')
+      .and.returnValue(of<UserSkill[]>(initialUserSkills));
+    const expectedRequest: UpdateUserSkillRequest = {
+      currentLevel: component.userSkills[0].currentLevel,
+      desiredLevel: component.userSkills[0].desiredLevel,
+      priority: component.userSkills[0].priority,
+      favourite: false
+    };
+    component.removeFromFavorites(component.userSkills[0]);
+    fixture.detectChanges();
+
+    expect(spy).toHaveBeenCalledWith(component.userSkills[0].skill.id, expectedRequest);
   }));
 });

@@ -17,16 +17,7 @@ import { ExternalAssetsService } from '../shared/external-assets.service';
 import { StepDescription } from './step-description';
 import { SelectedValueTitleDirective } from './selected-value-title.directive';
 import { By } from '@angular/platform-browser';
-
-const mySkillsServiceStub: Partial<MySkillsService> = {
-  updateCurrentUserSkill(skillId: string, currentLevel: number, desiredLevel: number, priority: number):
-    Observable<UserSkill> { return null; }
-};
-
-const bottomSheetStub: Partial<MatBottomSheetRef> = {
-  dismiss(result?: any): void { }
-};
-
+import { UpdateUserSkillRequest } from './update-user-skill-request';
 
 const externalAssetsServiceStub: Partial<ExternalAssetsService> = {
   getJSON<T>(filePath: string): Observable<T> {
@@ -41,7 +32,8 @@ const userSkillTestData: UserSkillView = {
   },
   currentLevel: 2,
   desiredLevel: 3,
-  priority: 4
+  priority: 4,
+  favourite: true
 };
 
 const levelDescription: StepDescription = {
@@ -58,8 +50,6 @@ describe('MySkillsEditComponent', () => {
   let externalAssetsServiceSpy;
 
   beforeEach(async(() => {
-    spyOn(mySkillsServiceStub, 'updateCurrentUserSkill');
-    spyOn(bottomSheetStub, 'dismiss');
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
@@ -71,8 +61,18 @@ describe('MySkillsEditComponent', () => {
       declarations: [MySkillsEditComponent, SelectedValueTitleDirective],
       providers: [
         GlobalErrorHandlerService, SelectedValueTitleDirective,
-        { provide: MySkillsService, useValue: mySkillsServiceStub },
-        { provide: MatBottomSheetRef, useValue: bottomSheetStub },
+        { provide: MySkillsService, useValue: jasmine.createSpyObj('mySkillsService', {
+            'updateCurrentUserSkill': of<UserSkill>(
+              {
+                currentLevel: userSkillTestData.currentLevel,
+                desiredLevel: userSkillTestData.desiredLevel,
+                priority: 3,
+                favourite: userSkillTestData.favourite,
+                skill: userSkillTestData.skill
+              }
+            )
+          }) },
+        { provide: MatBottomSheetRef, useValue: jasmine.createSpyObj('matBottomSheetRef', ['dismiss'] ) },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: userSkillTestData },
         { provide: ExternalAssetsService, useValue: externalAssetsServiceStub }
       ]
@@ -125,6 +125,22 @@ describe('MySkillsEditComponent', () => {
 
     const label = fixtureForTest.debugElement.query(By.css('label[for=priority]'));
     expect(label.nativeElement.title).toBe('');
+  }));
+
+  it('should edit user skill', async(() => {
+    component.priority.setValue(3);
+    const matBottomSheetRef: MatBottomSheetRef = TestBed.get(MatBottomSheetRef);
+    component.saveUserSkill();
+    const mySkillsService: MySkillsService = TestBed.get(MySkillsService);
+    expect(mySkillsService.updateCurrentUserSkill).toHaveBeenCalledWith(userSkillTestData.skill.id, {
+      currentLevel: userSkillTestData.currentLevel,
+      desiredLevel: userSkillTestData.desiredLevel,
+      priority: 3,
+      favourite: userSkillTestData.favourite
+    } as UpdateUserSkillRequest);
+    fixture.whenStable().then(() => {
+      expect(matBottomSheetRef.dismiss).toHaveBeenCalledWith(true);
+    });
   }));
 
 });
