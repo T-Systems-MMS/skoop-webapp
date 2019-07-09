@@ -89,7 +89,7 @@ docker run \
   -e SKOOP_WEBAPP_AUTHENTICATION_INSECURE=true \
   -v ./skoop-config:/usr/local/apache2/conf/skoop \
   --network=skoop_nw -itd \
-  skoop/webapp:latest
+  tsystemsmms/skoop-webapp:latest
 ----
 
 Alternatively you still can create your own image after building the application from source.
