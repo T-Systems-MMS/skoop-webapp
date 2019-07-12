@@ -59,7 +59,40 @@ Additionally, the web server must forward every request starting with `/api/` to
 
 === Running as Docker container
 
-We do not provide any public Docker images at the moment. But you can create your own after building the application from source.
+At first you must create an https://httpd.apache.org/[Apache HTTP Server] configuration file to set up forwarding of API requests to the SKOOP Server application. You only need to declare the `ProxyPass` directives for the backend:
+
+----
+ProxyPass         "/api/" "http://skoop-server:8080/"
+ProxyPassReverse  "/api/" "http://skoop-server:8080/"
+----
+
+You should store this configuration file with the extension `.conf` in a separate directory, e.g. `skoop-config`.
+
+Then you must create a network to enable the web app to connect to the KeyCloak and the SKOOP server.
+
+----
+docker network create --driver bridge skoop_nw
+----
+
+We provide https://hub.docker.com/r/tsystemsmms/skoop-webapp[the public Docker image] on Docker Hub.
+
+You can start the container and mount the configuration directory as a volume:
+
+----
+docker run \
+  --name skoop-webapp \
+  -d \
+  -p 4200:80 \
+  -e SERVER_NAME=localhost:4200 \
+  -e SERVER_ADMIN=your-name@your-domain.com \
+  -e SKOOP_WEBAPP_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/SKOOP \
+  -e SKOOP_WEBAPP_AUTHENTICATION_INSECURE=true \
+  -v ./skoop-config:/usr/local/apache2/conf/skoop \
+  --network=skoop_nw -itd \
+  tsystemsmms/skoop-webapp:latest
+----
+
+Alternatively you still can create your own image after building the application from source.
 
 After completing the NPM build run the following command in the project root (mind the dot at the end):
 
@@ -69,15 +102,6 @@ docker build \
   .
 ----
 
-Then you must create an https://httpd.apache.org/[Apache HTTP Server] configuration file to set up forwarding of API requests to the SKOOP Server application. You only need to declare the `ProxyPass` directives for the backend:
-
-----
-ProxyPass         "/api/" "http://skoop-server:8080/"
-ProxyPassReverse  "/api/" "http://skoop-server:8080/"
-----
-
-You should store this configuration file with the extension `.conf` in a separate directory, e.g. `skoop-config`.
-
 Finally, you can start the container and mount the configuration directory as a volume:
 
 ----
@@ -85,18 +109,18 @@ docker run \
   --name skoop-webapp \
   -d \
   -p 4200:80 \
-  --link skoop-server \
   -e SERVER_NAME=localhost:4200 \
   -e SERVER_ADMIN=your-name@your-domain.com \
   -e SKOOP_WEBAPP_AUTHENTICATION_ISSUER=http://localhost:9000/auth/realms/SKOOP \
   -e SKOOP_WEBAPP_AUTHENTICATION_INSECURE=true \
   -v ./skoop-config:/usr/local/apache2/conf/skoop \
+  --network=skoop_nw -itd \
   skoop/webapp:latest
 ----
 
 Now the SKOOP WebApp is accessible at http://localhost:4200/
 
-NOTE: This example assumes that the configuration file is located in the subdirectory `skoop-config`, that you have created a Docker service for the SKOOP Server named `skoop-server` and that a KeyCloak server with a `SKOOP` realm is running on `localhost:9000`.
+NOTE: This example assumes that the configuration file is located in the subdirectory `skoop-config`, that you have created a Docker service for the SKOOP Server named `skoop-server` and that a KeyCloak server with a `SKOOP` realm is running on `localhost:9000`. Both SKOOP server and the KeyCloak server are expected to be connected to the `skoop_nw` network.
 
 CAUTION: Do not use `SKOOP_WEBAPP_AUTHENTICATION_INSECURE=true` on a production environment!
 
